@@ -200,6 +200,7 @@
 
   <div class="tabs">
     <div class="tab active" onclick="showTab('overview')">OVERVIEW</div>
+    <div class="tab" onclick="showTab('config')">CONFIG</div>
     <div class="tab" onclick="showTab('step1')">STEP 1</div>
     <div class="tab" onclick="showTab('step2')">STEP 2</div>
     <div class="tab" onclick="showTab('step3')">STEP 3</div>
@@ -426,6 +427,139 @@
           <td>You're here!</td>
         </tr>
       </table>
+    </div>
+  </div>
+
+  <!-- CONFIG TAB -->
+  <div id="config" class="tab-content">
+    <div class="section">
+      <h2>System Configuration</h2>
+      <p class="step-header">Active currencies, estimators, generators, and strategies</p>
+
+      <div style="margin-top:20px;">
+        <h3 style="color:#00ff41; font-size:1.1em;">📊 Active Currencies (11)</h3>
+        <div style="padding:10px 15px; background:#0f1229; border-radius:4px; margin-top:5px;">
+          <span style="color:#ccc; font-family:monospace;">EUR, USD, GBP, JPY, CHF, AUD, CAD, NOK, SEK, CNY, MXN</span>
+        </div>
+      </div>
+
+      <div style="margin-top:25px;">
+        <h3 style="color:#00ff41; font-size:1.1em;">🔮 Horizon Estimators</h3>
+
+        <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #00ff41; border-radius:4px;">
+          <div style="color:#00ff41; font-weight:bold;">✓ ACTIVE: llm-horizon-v1-default</div>
+          <div style="color:#888; font-size:0.9em; margin-top:5px;">LLM-based horizon extraction via nanoclaw (default)</div>
+          <div style="color:#666; font-size:0.85em; margin-top:8px; font-family:monospace;">
+            Parameters:<br>
+            • model: claude-haiku<br>
+            • temperature: 0.3
+          </div>
+        </div>
+
+        <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #555; border-radius:4px;">
+          <div style="color:#888; font-weight:bold;">○ Available: llm-horizon-v1-conservative</div>
+          <div style="color:#666; font-size:0.9em; margin-top:5px;">LLM-based with lower temperature (more conservative)</div>
+          <div style="color:#555; font-size:0.85em; margin-top:8px; font-family:monospace;">
+            Parameters:<br>
+            • model: claude-haiku<br>
+            • temperature: 0.1
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:25px;">
+        <h3 style="color:#00ff41; font-size:1.1em;">📈 Signal Generators</h3>
+
+        <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #00ff41; border-radius:4px;">
+          <div style="color:#00ff41; font-weight:bold;">✓ ACTIVE: keyword-sentiment-v1.1-standard</div>
+          <div style="color:#888; font-size:0.9em; margin-top:5px;">Keyword-based with 47 bullish, 51 bearish keywords (standard sensitivity)</div>
+          <div style="color:#666; font-size:0.85em; margin-top:8px; font-family:monospace;">
+            Parameters:<br>
+            • keyword_set: standard<br>
+            • negation_enabled: true<br>
+            • confidence_boost: 1.5<br>
+            • min_keyword_count: 1<br>
+            • magnitude_estimation: true
+          </div>
+        </div>
+
+        <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #555; border-radius:4px;">
+          <div style="color:#888; font-weight:bold;">○ Available: keyword-sentiment-v1.1-aggressive</div>
+          <div style="color:#666; font-size:0.9em; margin-top:5px;">Keyword-based with higher confidence boost (more aggressive)</div>
+          <div style="color:#555; font-size:0.85em; margin-top:8px; font-family:monospace;">
+            Parameters: confidence_boost: 1.8
+          </div>
+        </div>
+
+        <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #555; border-radius:4px;">
+          <div style="color:#888; font-weight:bold;">○ Available: keyword-sentiment-v1.1-conservative</div>
+          <div style="color:#666; font-size:0.9em; margin-top:5px;">Keyword-based with lower boost, requires 2+ keywords (conservative)</div>
+          <div style="color:#555; font-size:0.85em; margin-top:8px; font-family:monospace;">
+            Parameters: confidence_boost: 1.2, min_keyword_count: 2
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:25px;">
+        <h3 style="color:#00ff41; font-size:1.1em;">🎯 Strategies</h3>
+
+        <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #00ff41; border-radius:4px;">
+          <div style="color:#00ff41; font-weight:bold;">✓ ACTIVE: simple-momentum-grid</div>
+          <div style="color:#888; font-size:0.9em; margin-top:5px;">Grid search: 9 parameter combinations (3 confidence × 3 sizes)</div>
+          <div style="color:#666; font-size:0.85em; margin-top:8px; font-family:monospace;">
+            Parameters:<br>
+            • confidence_threshold: [0.5, 0.6, 0.7]<br>
+            • trade_size_pct: [0.25, 0.50, 0.75]<br>
+            • aggregation_method: average<br>
+            <br>
+            Composition:<br>
+            • Estimators: llm-horizon-v1-default<br>
+            • Generators: keyword-sentiment-v1.1-standard
+          </div>
+        </div>
+
+        <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #555; border-radius:4px;">
+          <div style="color:#888; font-weight:bold;">○ Available: simple-momentum-ensemble</div>
+          <div style="color:#666; font-size:0.9em; margin-top:5px;">Ensemble strategy averaging 2 estimators × 2 generators (4 combinations)</div>
+          <div style="color:#555; font-size:0.85em; margin-top:8px; font-family:monospace;">
+            Composition:<br>
+            • Estimators: llm-horizon-v1-default, llm-horizon-v1-conservative<br>
+            • Generators: keyword-sentiment-v1.1-standard, keyword-sentiment-v1.1-aggressive<br>
+            • Aggregation: weighted average of 4 combinations
+          </div>
+        </div>
+
+        <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #555; border-radius:4px;">
+          <div style="color:#888; font-weight:bold;">○ Available: simple-momentum-default</div>
+          <div style="color:#666; font-size:0.9em; margin-top:5px;">Simple momentum with single generator/estimator (baseline)</div>
+          <div style="color:#555; font-size:0.85em; margin-top:8px; font-family:monospace;">
+            Composition:<br>
+            • Estimators: llm-horizon-v1-default<br>
+            • Generators: keyword-sentiment-v1.1-standard<br>
+            • Single configuration (no ensemble)
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:25px; padding:15px; background:#1a1e3a; border:1px solid #333; border-radius:4px;">
+        <h3 style="color:#00ff41; font-size:1em; margin-top:0;">⚙️ Configuration Management</h3>
+        <div style="color:#888; font-size:0.9em;">
+          <p>To modify the system configuration:</p>
+          <pre style="background:#0f1229; padding:10px; border-radius:4px; color:#00ff41; font-size:0.85em;">
+# View current config
+python scripts/config_loader.py list
+
+# Activate/deactivate generators
+python scripts/config_loader.py activate-generator keyword-sentiment-v1.1-aggressive
+python scripts/config_loader.py deactivate-generator keyword-sentiment-v1.1-standard
+
+# Add/remove currencies
+python scripts/config_loader.py add-currency BRL
+python scripts/config_loader.py remove-currency CNY</pre>
+          <p style="margin-top:10px;">Configuration file: <code style="color:#00ff41;">/workspace/group/fx-portfolio/config/system_config.json</code></p>
+        </div>
+      </div>
+
     </div>
   </div>
 
