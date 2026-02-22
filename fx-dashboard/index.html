@@ -218,35 +218,39 @@
       <h2>9-Step Pipeline Architecture</h2>
       <div class="architecture-diagram">
         <pre>
-1. EUR PAIRS ──► 2. INDICES ──► 3. NEWS AGGREGATOR
-       │               │                  │
-       └───────────────┴──────────────────┘
-                       │
-       ┌───────────────┴───────────────┐
-       │                               │
-       ▼                               ▼
-4. TIME HORIZONS              5. SENTIMENT SIGNALS
-   (Parallel)                    (Per-Article)
-   • LLM Estimator               • News-Sentiment
-   • Keyword (future)            • LLM (future)
-       │                               │
-       └───────────────┬───────────────┘
-                       ▼
-            6. REALIZATION CHECKER
-               • Predicted vs Actual
-               • Tag: realized=T/F
-                       │
-       ┌───────────────┴───────────────┐
-       │                               │
-       ▼                               ▼
-7. STRATEGIES                  9. DASHBOARD
-   • Filter unrealized            • This page
-   • Time-decay weights
-       │
-       ▼
-8. PERFORMANCE
-   • Daily returns
-   • Win rate & drawdown
+1. EXCHANGE RATES ──► 2. INDICES ──► 3. NEWS AGGREGATOR
+       │                   │                  │
+       └───────────────────┴──────────────────┘
+                           │
+           ┌───────────────┴───────────────┐
+           │                               │
+           ▼                               ▼
+    4. TIME HORIZONS              5. SENTIMENT SIGNALS
+       (Parallel)                    (Per-Article)
+       • LLM Estimator               • News-Sentiment
+       • Keyword (future)            • LLM (future)
+           │                               │
+           └───────────────┬───────────────┘
+                           ▼
+                6. REALIZATION CHECKER
+                   • Predicted vs Actual
+                   • Tag: realized=T/F
+                           │
+                           ▼
+                    7. STRATEGIES
+                   • Filter unrealized
+                   • Execute trades
+                   • Track portfolio
+                           │
+                           ▼
+                   8. PERFORMANCE
+                   • Daily returns
+                   • Win rate & drawdown
+                           │
+                           ▼
+                    9. DASHBOARD
+                       • This page
+                       • Visualizations
         </pre>
       </div>
       <div style="margin-top:10px; color:#888; font-size:0.85em;">
@@ -290,32 +294,40 @@
 
         <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 4: Horizon Estimator</h3>
         <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Active:</strong> llm-horizon-estimator-v1<br>
-          <strong>Purpose:</strong> Extracts predicted time horizon from articles (e.g., "1-3 days", "this week")<br>
-          <strong>Method:</strong> LLM analysis via nanoclaw orchestrator<br>
-          <strong>Parameters:</strong> (default configuration)
-          <ul style="margin:5px 0; padding-left:20px;">
-            <li>Model: Claude Haiku (via nanoclaw)</li>
-            <li>Temperature: 0.3</li>
-          </ul>
-          <strong>Future:</strong> keyword-based estimator for common phrases
+          <strong>Purpose:</strong> Extracts predicted time horizon from articles (e.g., "1-3 days", "this week")<br><br>
+
+          <div style="border:1px solid #333; border-radius:4px; padding:10px; margin:10px 0; background:#0f1229;">
+            <strong style="color:#00ff41;">Type:</strong> llm-horizon-estimator-v1<br>
+            <strong>Method:</strong> LLM analysis via nanoclaw orchestrator<br>
+            <strong>Parameters:</strong>
+            <ul style="margin:5px 0; padding-left:20px;">
+              <li>Model: Claude Haiku (via nanoclaw)</li>
+              <li>Temperature: 0.3</li>
+            </ul>
+          </div>
+
+          <strong>Future types:</strong> keyword-based estimator for common phrases
         </div>
 
         <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 5: Signal Generator</h3>
         <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Active:</strong> keyword-sentiment-v1.1<br>
-          <strong>Purpose:</strong> Analyzes article sentiment to predict currency direction & magnitude<br>
-          <strong>Method:</strong> Keyword matching with negation detection<br>
-          <strong>Parameters:</strong>
-          <ul style="margin:5px 0; padding-left:20px;">
-            <li>keyword_set: standard (47 bullish, 51 bearish, 12 neutral)</li>
-            <li>negation_enabled: true (detects "shedding gains", "pares gains")</li>
-            <li>confidence_boost: 1.5x multiplier</li>
-            <li>min_keyword_count: 1</li>
-            <li>magnitude_estimation: true (low/medium/high)</li>
-          </ul>
-          <strong>Coverage:</strong> 47 bullish, 51 bearish keywords<br>
-          <strong>Future:</strong> llm-sentiment-v1 for enhanced analysis
+          <strong>Purpose:</strong> Analyzes article sentiment to predict currency direction & magnitude<br><br>
+
+          <div style="border:1px solid #333; border-radius:4px; padding:10px; margin:10px 0; background:#0f1229;">
+            <strong style="color:#00ff41;">Type:</strong> keyword-sentiment-v1.1<br>
+            <strong>Method:</strong> Keyword matching with negation detection<br>
+            <strong>Parameters:</strong>
+            <ul style="margin:5px 0; padding-left:20px;">
+              <li>keyword_set: standard (47 bullish, 51 bearish, 12 neutral)</li>
+              <li>negation_enabled: true (detects "shedding gains", "pares gains")</li>
+              <li>confidence_boost: 1.5x multiplier</li>
+              <li>min_keyword_count: 1</li>
+              <li>magnitude_estimation: true (low/medium/high)</li>
+            </ul>
+            <strong>Coverage:</strong> 47 bullish, 51 bearish keywords
+          </div>
+
+          <strong>Future types:</strong> llm-sentiment-v1 for enhanced analysis
         </div>
 
         <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 6: Realization Checker</h3>
@@ -333,18 +345,22 @@
 
         <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 7: Strategy</h3>
         <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Active:</strong> simple-momentum<br>
-          <strong>Purpose:</strong> Pairs strongest vs weakest currencies, executes hypothetical trades<br>
-          <strong>Method:</strong> Aggregate unrealized signals, apply time-decay weights<br>
-          <strong>Combinations:</strong> 9 parameter sets (3 confidence × 3 trade sizes)
-          <ul style="margin:5px 0; padding-left:20px;">
-            <li>confidence_threshold: 0.5, 0.6, 0.7</li>
-            <li>trade_size_pct: 0.25, 0.50, 0.75</li>
-            <li>aggregation_method: average</li>
-          </ul>
-          <strong>Spreads:</strong> Revolut 0.74% total (0.37% each side)<br>
-          <strong>Portfolio:</strong> Start with €10,000, track all 11 currency balances<br>
-          <strong>Future:</strong> mean-reversion, breakout-trader strategies
+          <strong>Purpose:</strong> Pairs strongest vs weakest currencies, executes hypothetical trades<br><br>
+
+          <div style="border:1px solid #333; border-radius:4px; padding:10px; margin:10px 0; background:#0f1229;">
+            <strong style="color:#00ff41;">Type:</strong> simple-momentum<br>
+            <strong>Method:</strong> Aggregate unrealized signals, apply time-decay weights<br>
+            <strong>Instances:</strong> 9 parameter combinations (3 confidence × 3 trade sizes)
+            <ul style="margin:5px 0; padding-left:20px;">
+              <li>confidence_threshold: 0.5, 0.6, 0.7</li>
+              <li>trade_size_pct: 0.25, 0.50, 0.75</li>
+              <li>aggregation_method: average</li>
+            </ul>
+            <strong>Spreads:</strong> Revolut 0.74% total (0.37% each side)<br>
+            <strong>Portfolio:</strong> Start with €10,000, track all 11 currency balances
+          </div>
+
+          <strong>Future types:</strong> mean-reversion, breakout-trader strategies
         </div>
 
         <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 8: Performance Tracking</h3>
