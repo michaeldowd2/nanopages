@@ -4,109 +4,141 @@
   ],
 
   "horizon_estimators": {
-    "available": {
-      "llm-horizon-v1-default": {
-        "estimator": "llm-horizon-estimator-v1",
-        "params": {
-          "model": "claude-haiku",
-          "temperature": 0.3
-        },
-        "description": "LLM-based horizon extraction via nanoclaw (default)"
+    "llm-horizon-v1-default": {
+      "id": "llm-horizon-v1-default",
+      "type": "llm-horizon-estimator-v1",
+      "params": {
+        "model": "claude-haiku",
+        "temperature": 0.3
       },
-      "llm-horizon-v1-conservative": {
-        "estimator": "llm-horizon-estimator-v1",
-        "params": {
-          "model": "claude-haiku",
-          "temperature": 0.1
-        },
-        "description": "LLM-based with lower temperature (more conservative)"
-      }
-    },
-    "active": ["llm-horizon-v1-default"]
+      "description": "LLM-based horizon extraction via nanoclaw (default)"
+    }
   },
 
   "signal_generators": {
-    "available": {
-      "keyword-sentiment-v1.1-standard": {
-        "generator": "keyword-sentiment-v1.1",
-        "params": {
-          "keyword_set": "standard",
-          "negation_enabled": true,
-          "confidence_boost": 1.5,
-          "min_keyword_count": 1,
-          "magnitude_estimation": true
-        },
-        "description": "Keyword-based with 47 bullish, 51 bearish keywords (standard sensitivity)"
+    "keyword-sentiment-v1.1-standard": {
+      "id": "keyword-sentiment-v1.1-standard",
+      "type": "keyword-sentiment-v1.1",
+      "params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
       },
-      "keyword-sentiment-v1.1-aggressive": {
-        "generator": "keyword-sentiment-v1.1",
-        "params": {
-          "keyword_set": "standard",
-          "negation_enabled": true,
-          "confidence_boost": 1.8,
-          "min_keyword_count": 1,
-          "magnitude_estimation": true
-        },
-        "description": "Keyword-based with higher confidence boost (more aggressive)"
-      },
-      "keyword-sentiment-v1.1-conservative": {
-        "generator": "keyword-sentiment-v1.1",
-        "params": {
-          "keyword_set": "standard",
-          "negation_enabled": true,
-          "confidence_boost": 1.2,
-          "min_keyword_count": 2,
-          "magnitude_estimation": true
-        },
-        "description": "Keyword-based with lower boost, requires 2+ keywords (conservative)"
-      }
-    },
-    "active": ["keyword-sentiment-v1.1-standard"]
+      "description": "Keyword-based with 47 bullish, 51 bearish keywords (standard sensitivity)"
+    }
   },
 
   "strategies": {
-    "available": {
-      "simple-momentum-default": {
-        "strategy": "simple-momentum",
-        "params": {
-          "confidence_threshold": 0.5,
-          "trade_size_pct": 0.25,
-          "aggregation_method": "average",
-          "estimator_combos": ["llm-horizon-v1-default"],
-          "generator_combos": ["keyword-sentiment-v1.1-standard"]
-        },
-        "description": "Simple momentum with single generator/estimator (baseline)"
+    "simple-momentum-conf0.5-size0.25": {
+      "id": "simple-momentum-conf0.5-size0.25",
+      "type": "simple-momentum",
+      "params": {
+        "confidence_threshold": 0.5,
+        "trade_size_pct": 0.25,
+        "aggregation_method": "average",
+        "estimator_ids": ["llm-horizon-v1-default"],
+        "generator_ids": ["keyword-sentiment-v1.1-standard"]
       },
-      "simple-momentum-ensemble": {
-        "strategy": "simple-momentum",
-        "params": {
-          "confidence_threshold": 0.6,
-          "trade_size_pct": 0.50,
-          "aggregation_method": "weighted",
-          "estimator_combos": [
-            "llm-horizon-v1-default",
-            "llm-horizon-v1-conservative"
-          ],
-          "generator_combos": [
-            "keyword-sentiment-v1.1-standard",
-            "keyword-sentiment-v1.1-aggressive"
-          ]
-        },
-        "description": "Ensemble strategy averaging 2 estimators × 2 generators (4 combinations)"
-      },
-      "simple-momentum-grid": {
-        "strategy": "simple-momentum",
-        "params": {
-          "confidence_threshold": [0.5, 0.6, 0.7],
-          "trade_size_pct": [0.25, 0.50, 0.75],
-          "aggregation_method": "average",
-          "estimator_combos": ["llm-horizon-v1-default"],
-          "generator_combos": ["keyword-sentiment-v1.1-standard"]
-        },
-        "description": "Grid search: 9 parameter combinations (3 confidence × 3 sizes)"
-      }
+      "description": "Simple momentum: 50% confidence, 25% position size"
     },
-    "active": ["simple-momentum-grid"]
+    "simple-momentum-conf0.5-size0.5": {
+      "id": "simple-momentum-conf0.5-size0.5",
+      "type": "simple-momentum",
+      "params": {
+        "confidence_threshold": 0.5,
+        "trade_size_pct": 0.5,
+        "aggregation_method": "average",
+        "estimator_ids": ["llm-horizon-v1-default"],
+        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+      },
+      "description": "Simple momentum: 50% confidence, 50% position size"
+    },
+    "simple-momentum-conf0.5-size0.75": {
+      "id": "simple-momentum-conf0.5-size0.75",
+      "type": "simple-momentum",
+      "params": {
+        "confidence_threshold": 0.5,
+        "trade_size_pct": 0.75,
+        "aggregation_method": "average",
+        "estimator_ids": ["llm-horizon-v1-default"],
+        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+      },
+      "description": "Simple momentum: 50% confidence, 75% position size"
+    },
+    "simple-momentum-conf0.6-size0.25": {
+      "id": "simple-momentum-conf0.6-size0.25",
+      "type": "simple-momentum",
+      "params": {
+        "confidence_threshold": 0.6,
+        "trade_size_pct": 0.25,
+        "aggregation_method": "average",
+        "estimator_ids": ["llm-horizon-v1-default"],
+        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+      },
+      "description": "Simple momentum: 60% confidence, 25% position size"
+    },
+    "simple-momentum-conf0.6-size0.5": {
+      "id": "simple-momentum-conf0.6-size0.5",
+      "type": "simple-momentum",
+      "params": {
+        "confidence_threshold": 0.6,
+        "trade_size_pct": 0.5,
+        "aggregation_method": "average",
+        "estimator_ids": ["llm-horizon-v1-default"],
+        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+      },
+      "description": "Simple momentum: 60% confidence, 50% position size"
+    },
+    "simple-momentum-conf0.6-size0.75": {
+      "id": "simple-momentum-conf0.6-size0.75",
+      "type": "simple-momentum",
+      "params": {
+        "confidence_threshold": 0.6,
+        "trade_size_pct": 0.75,
+        "aggregation_method": "average",
+        "estimator_ids": ["llm-horizon-v1-default"],
+        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+      },
+      "description": "Simple momentum: 60% confidence, 75% position size"
+    },
+    "simple-momentum-conf0.7-size0.25": {
+      "id": "simple-momentum-conf0.7-size0.25",
+      "type": "simple-momentum",
+      "params": {
+        "confidence_threshold": 0.7,
+        "trade_size_pct": 0.25,
+        "aggregation_method": "average",
+        "estimator_ids": ["llm-horizon-v1-default"],
+        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+      },
+      "description": "Simple momentum: 70% confidence, 25% position size"
+    },
+    "simple-momentum-conf0.7-size0.5": {
+      "id": "simple-momentum-conf0.7-size0.5",
+      "type": "simple-momentum",
+      "params": {
+        "confidence_threshold": 0.7,
+        "trade_size_pct": 0.5,
+        "aggregation_method": "average",
+        "estimator_ids": ["llm-horizon-v1-default"],
+        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+      },
+      "description": "Simple momentum: 70% confidence, 50% position size"
+    },
+    "simple-momentum-conf0.7-size0.75": {
+      "id": "simple-momentum-conf0.7-size0.75",
+      "type": "simple-momentum",
+      "params": {
+        "confidence_threshold": 0.7,
+        "trade_size_pct": 0.75,
+        "aggregation_method": "average",
+        "estimator_ids": ["llm-horizon-v1-default"],
+        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+      },
+      "description": "Simple momentum: 70% confidence, 75% position size"
+    }
   },
 
   "pipeline_settings": {
