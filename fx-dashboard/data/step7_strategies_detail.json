@@ -6,6 +6,12 @@
     "confidence_threshold": 0.5,
     "trade_size_pct": 0.25,
     "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
     "signals_count": 29,
     "unrealized_signals_count": 29,
     "aggregate_signals": {
@@ -79,6 +85,12 @@
     "confidence_threshold": 0.5,
     "trade_size_pct": 0.5,
     "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
     "signals_count": 29,
     "unrealized_signals_count": 29,
     "aggregate_signals": {
@@ -152,6 +164,12 @@
     "confidence_threshold": 0.5,
     "trade_size_pct": 0.75,
     "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
     "signals_count": 29,
     "unrealized_signals_count": 29,
     "aggregate_signals": {
@@ -225,6 +243,12 @@
     "confidence_threshold": 0.6,
     "trade_size_pct": 0.25,
     "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
     "signals_count": 29,
     "unrealized_signals_count": 29,
     "aggregate_signals": {
@@ -298,6 +322,12 @@
     "confidence_threshold": 0.6,
     "trade_size_pct": 0.5,
     "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
     "signals_count": 29,
     "unrealized_signals_count": 29,
     "aggregate_signals": {
@@ -371,6 +401,12 @@
     "confidence_threshold": 0.6,
     "trade_size_pct": 0.75,
     "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
     "signals_count": 29,
     "unrealized_signals_count": 29,
     "aggregate_signals": {
@@ -444,6 +480,12 @@
     "confidence_threshold": 0.7,
     "trade_size_pct": 0.25,
     "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
     "signals_count": 29,
     "unrealized_signals_count": 29,
     "aggregate_signals": {
@@ -517,6 +559,12 @@
     "confidence_threshold": 0.7,
     "trade_size_pct": 0.5,
     "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
     "signals_count": 29,
     "unrealized_signals_count": 29,
     "aggregate_signals": {
@@ -590,6 +638,12 @@
     "confidence_threshold": 0.7,
     "trade_size_pct": 0.75,
     "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
     "signals_count": 29,
     "unrealized_signals_count": 29,
     "aggregate_signals": {

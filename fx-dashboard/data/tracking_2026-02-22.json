@@ -86,8 +86,8 @@
       "step_id": "step7",
       "step_name": "Execute Trading Strategies",
       "date": "2026-02-22",
-      "start_time": "2026-02-22T20:18:50.330481",
-      "end_time": "2026-02-22T20:18:50.363746",
+      "start_time": "2026-02-22T22:25:02.803712",
+      "end_time": "2026-02-22T22:25:02.831126",
       "duration": 0.03,
       "status": "success",
       "counts": {
@@ -101,8 +101,8 @@
         "output_csv": "/workspace/group/fx-portfolio/data/exports/step7_strategies.csv",
         "output_json": "/workspace/group/fx-portfolio/data/exports/step7_strategies_detail.json"
       },
-      "start_time_display": "2026-02-22 20:18:50",
-      "end_time_display": "2026-02-22 20:18:50",
+      "start_time_display": "2026-02-22 22:25:02",
+      "end_time_display": "2026-02-22 22:25:02",
       "status_icon": "\u2713"
     }
   ]
