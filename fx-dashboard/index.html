@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FX Portfolio - nano</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Courier New', monospace;
+      background: #0a0e27;
+      color: #00ff41;
+      line-height: 1.3;
+      padding: 15px;
+      font-size: 11px;
+    }
+    .header {
+      border-bottom: 2px solid #00ff41;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    .header h1 {
+      font-size: 1.5em;
+      color: #00ff41;
+      text-shadow: 0 0 10px #00ff41;
+    }
+    .header .timestamp {
+      color: #888;
+      font-size: 0.85em;
+      margin-top: 3px;
+    }
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 8px;
+      flex-wrap: wrap;
+      font-size: 0.8em;
+    }
+    .tab {
+      padding: 4px 10px;
+      background: #1a1e3a;
+      border: 1px solid #333;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #888;
+    }
+    .tab:hover {
+      background: #2a2e4a;
+      border-color: #00ff41;
+    }
+    .tab.active {
+      background: #00ff41;
+      color: #0a0e27;
+      border-color: #00ff41;
+      font-weight: bold;
+    }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .section {
+      background: #1a1e3a;
+      border: 1px solid #333;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+    }
+    .section h2 {
+      color: #00ff41;
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 6px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 0.95em;
+    }
+    th, td {
+      padding: 4px 6px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    th {
+      color: #00ff41;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      background: #1a1e3a;
+      font-size: 0.9em;
+    }
+    td {
+      color: #ccc;
+    }
+    .bullish { color: #00ff41; }
+    .bearish { color: #ff4444; }
+    .neutral { color: #888; }
+    .csv-table-container {
+      max-height: 500px;
+      overflow-y: auto;
+      overflow-x: auto;
+      margin-top: 8px;
+    }
+    .loading {
+      color: #888;
+      text-align: center;
+      padding: 30px;
+      font-size: 0.9em;
+    }
+    .architecture-diagram {
+      background: #0f1229;
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: monospace;
+    }
+    pre {
+      color: #00ff41;
+      font-size: 0.7em;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+    .status-indicator {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .status-active { background: #00ff41; box-shadow: 0 0 4px #00ff41; }
+    .status-inactive { background: #555; }
+    .step-header {
+      color: #888;
+      font-size: 0.85em;
+      margin-bottom: 8px;
+    }
+    .csv-download {
+      float: right;
+      color: #00ff41;
+      text-decoration: none;
+      font-size: 0.85em;
+      border: 1px solid #00ff41;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+    .csv-download:hover {
+      background: #00ff41;
+      color: #0a0e27;
+    }
+    .chart {
+      margin: 15px 0;
+      padding: 10px;
+      background: #0f1229;
+      border: 1px solid #333;
+      border-radius: 4px;
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      margin: 3px 0;
+    }
+    .bar-label {
+      width: 60px;
+      color: #888;
+      font-size: 0.85em;
+    }
+    .bar-fill {
+      height: 14px;
+      background: #00ff41;
+      margin-right: 8px;
+      transition: width 0.3s;
+    }
+    .bar-value {
+      color: #ccc;
+      font-size: 0.85em;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>⚡ FX PORTFOLIO DASHBOARD</h1>
+    <div class="timestamp">Last updated: <span id="lastUpdate"></span></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('overview')">OVERVIEW</div>
+    <div class="tab" onclick="showTab('step1')">STEP 1</div>
+    <div class="tab" onclick="showTab('step2')">STEP 2</div>
+    <div class="tab" onclick="showTab('step3')">STEP 3</div>
+    <div class="tab" onclick="showTab('step4')">STEP 4</div>
+    <div class="tab" onclick="showTab('step5')">STEP 5</div>
+    <div class="tab" onclick="showTab('step6')">STEP 6</div>
+    <div class="tab" onclick="showTab('step7')">STEP 7</div>
+    <div class="tab" onclick="showTab('step8')">STEP 8</div>
+  </div>
+
+  <!-- OVERVIEW TAB -->
+  <div id="overview" class="tab-content active">
+    <div class="section">
+      <h2>9-Step Pipeline Architecture</h2>
+      <div class="architecture-diagram">
+        <pre>
+1. EUR PAIRS ──► 2. INDICES ──► 3. NEWS AGGREGATOR
+       │               │                  │
+       └───────────────┴──────────────────┘
+                       │
+       ┌───────────────┴───────────────┐
+       │                               │
+       ▼                               ▼
+4. TIME HORIZONS              5. SENTIMENT SIGNALS
+   (Parallel)                    (Per-Article)
+   • LLM Estimator               • News-Sentiment
+   • Keyword (future)            • LLM (future)
+       │                               │
+       └───────────────┬───────────────┘
+                       ▼
+            6. REALIZATION CHECKER
+               • Predicted vs Actual
+               • Tag: realized=T/F
+                       │
+       ┌───────────────┴───────────────┐
+       │                               │
+       ▼                               ▼
+7. STRATEGIES                  9. DASHBOARD
+   • Filter unrealized            • This page
+   • Time-decay weights
+       │
+       ▼
+8. PERFORMANCE
+   • Daily returns
+   • Win rate & drawdown
+        </pre>
+      </div>
+      <div style="margin-top:10px; color:#888; font-size:0.85em;">
+        <strong>Principles:</strong> Separation | Parallelizable | Composable | Testable | Observable
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Pipeline Status</h2>
+      <table>
+        <tr>
+          <th>Step</th>
+          <th>Component</th>
+          <th>Status</th>
+          <th>Details</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td><span class="status-indicator status-active"></span>EUR Pairs</td>
+          <td class="bullish">Active</td>
+          <td><span id="step1-count">-</span> records</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><span class="status-indicator status-active"></span>Indices</td>
+          <td class="bullish">Active</td>
+          <td><span id="step2-count">-</span> points</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><span class="status-indicator status-active"></span>News</td>
+          <td class="bullish">Active</td>
+          <td><span id="step3-count">-</span> articles</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><span class="status-indicator status-active"></span>Horizons</td>
+          <td class="bullish">LLM</td>
+          <td><span id="step4-count">-</span> analyzed</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><span class="status-indicator status-active"></span>Signals</td>
+          <td class="bullish">Active</td>
+          <td><span id="step5-count">-</span> signals</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><span class="status-indicator status-active"></span>Realization</td>
+          <td class="bullish">Active</td>
+          <td><span id="step6-count">-</span> checked</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><span class="status-indicator status-active"></span>Strategies</td>
+          <td class="bullish">Active</td>
+          <td><span id="step7-count">-</span> combos</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><span class="status-indicator status-inactive"></span>Performance</td>
+          <td class="neutral">Future</td>
+          <td>Track accuracy</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><span class="status-indicator status-active"></span>Dashboard</td>
+          <td class="bullish">Active</td>
+          <td>You're here!</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- STEP TABS -->
+  <div id="step1" class="tab-content">
+    <div class="section">
+      <h2>Step 1: EUR Pairs <a href="data/step1_eur_pairs.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">EUR-based exchange rates</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step1-loading">Loading...</div>
+        <table id="step1-table" style="display:none;">
+          <thead id="step1-thead"></thead>
+          <tbody id="step1-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step2" class="tab-content">
+    <div class="section">
+      <h2>Step 2: Indices <a href="data/step2_indices.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Synthetic currency strength (100=base)</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step2-loading">Loading...</div>
+        <table id="step2-table" style="display:none;">
+          <thead id="step2-thead"></thead>
+          <tbody id="step2-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step3" class="tab-content">
+    <div class="section">
+      <h2>Step 3: News <a href="data/step3_news.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Aggregated FX news (30-day retention)</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step3-loading">Loading...</div>
+        <table id="step3-table" style="display:none;">
+          <thead id="step3-thead"></thead>
+          <tbody id="step3-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step4" class="tab-content">
+    <div class="section">
+      <h2>Step 4: Time Horizons <a href="data/step4_horizons.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">LLM-estimated timeframes</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step4-loading">Loading...</div>
+        <table id="step4-table" style="display:none;">
+          <thead id="step4-thead"></thead>
+          <tbody id="step4-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step5" class="tab-content">
+    <div class="section">
+      <h2>Step 5: Signals <a href="data/step5_signals.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Per-article signals with predictions</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step5-loading">Loading...</div>
+        <table id="step5-table" style="display:none;">
+          <thead id="step5-thead"></thead>
+          <tbody id="step5-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step6" class="tab-content">
+    <div class="section">
+      <h2>Step 6: Realization <a href="data/step6_realization.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Predicted vs actual (realized=T/F)</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step6-loading">Loading...</div>
+        <table id="step6-table" style="display:none;">
+          <thead id="step6-thead"></thead>
+          <tbody id="step6-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step7" class="tab-content">
+    <div class="section">
+      <h2>Step 7: Strategies <a href="data/step7_strategies.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">9 parameter combinations (Simple Momentum)</p>
+
+      <div class="chart">
+        <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Portfolio Values by Strategy</h3>
+        <div id="strategy-chart"></div>
+      </div>
+
+      <div class="csv-table-container">
+        <div class="loading" id="step7-loading">Loading...</div>
+        <table id="step7-table" style="display:none;">
+          <thead id="step7-thead"></thead>
+          <tbody id="step7-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step8" class="tab-content">
+    <div class="section">
+      <h2>Step 8: Performance Tracking <a href="data/step8_performance.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Strategy performance over time (requires ≥2 days of data)</p>
+
+      <div class="chart">
+        <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Total Return % by Strategy</h3>
+        <div id="performance-chart"></div>
+      </div>
+
+      <div class="csv-table-container">
+        <div class="loading" id="step8-loading">Loading...</div>
+        <table id="step8-table" style="display:none;">
+          <thead id="step8-thead"></thead>
+          <tbody id="step8-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showTab(tabName) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tabName).classList.add('active');
+      if (tabName.startsWith('step')) loadCSV(tabName);
+    }
+
+    function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim());
+      const rows = lines.slice(1).map(line => {
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+        for (let char of line) {
+          if (char === '"') inQuotes = !inQuotes;
+          else if (char === ',' && !inQuotes) { values.push(current.trim()); current = ''; }
+          else current += char;
+        }
+        values.push(current.trim());
+        return headers.reduce((obj, header, i) => {
+          obj[header] = values[i] || '';
+          return obj;
+        }, {});
+      });
+      return { headers, rows };
+    }
+
+    const loadedCSVs = {};
+    function loadCSV(step) {
+      if (loadedCSVs[step]) return;
+      const csvFile = {
+        'step1': 'data/step1_eur_pairs.csv',
+        'step2': 'data/step2_indices.csv',
+        'step3': 'data/step3_news.csv',
+        'step4': 'data/step4_horizons.csv',
+        'step5': 'data/step5_signals.csv',
+        'step6': 'data/step6_realization.csv',
+        'step7': 'data/step7_strategies.csv'
+      }[step];
+
+      fetch(csvFile)
+        .then(res => res.text())
+        .then(text => {
+          const { headers, rows } = parseCSV(text);
+          const thead = document.getElementById(`${step}-thead`);
+          const tbody = document.getElementById(`${step}-tbody`);
+          const table = document.getElementById(`${step}-table`);
+          const loading = document.getElementById(`${step}-loading`);
+
+          thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+          tbody.innerHTML = rows.map(row => {
+            return '<tr>' + headers.map(h => {
+              let value = row[h];
+              let className = '';
+              if (value === 'bullish') className = 'bullish';
+              else if (value === 'bearish') className = 'bearish';
+              else if (value === 'neutral') className = 'neutral';
+              else if (value === 'true') className = 'bullish';
+              else if (value === 'false') className = 'bearish';
+              return `<td class="${className}" title="${value}">${value}</td>`;
+            }).join('') + '</tr>';
+          }).join('');
+
+          loading.style.display = 'none';
+          table.style.display = 'table';
+          loadedCSVs[step] = true;
+
+          const countEl = document.getElementById(`${step}-count`);
+          if (countEl) countEl.textContent = rows.length;
+
+          // Generate charts
+          if (step === 'step7' && rows.length > 0) {
+            generateStrategyChart(rows);
+          }
+          if (step === 'step8' && rows.length > 0) {
+            generatePerformanceChart(rows);
+          }
+        })
+        .catch(err => {
+          document.getElementById(`${step}-loading`).textContent = 'Error: ' + err.message;
+        });
+    }
+
+    function generateStrategyChart(rows) {
+      const chartDiv = document.getElementById('strategy-chart');
+      const maxValue = Math.max(...rows.map(r => parseFloat(r.current_value) || 0));
+
+      chartDiv.innerHTML = rows.map(row => {
+        const value = parseFloat(row.current_value) || 0;
+        const pct = (value / maxValue) * 100;
+        const params = row.strategy_params.replace(/_/g, ' ');
+
+        return `
+          <div class="bar">
+            <div class="bar-label">${params}</div>
+            <div class="bar-fill" style="width:${pct}%"></div>
+            <div class="bar-value">€${value.toLocaleString()}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function generatePerformanceChart(rows) {
+      const chartDiv = document.getElementById('performance-chart');
+
+      if (rows.length === 0) {
+        chartDiv.innerHTML = '<p style="color:#888;font-size:0.9em;">No performance data yet (need ≥2 days of strategy runs)</p>';
+        return;
+      }
+
+      // Find max absolute value for scaling (handle negative returns)
+      const values = rows.map(r => parseFloat(r.total_return_pct) || 0);
+      const maxAbs = Math.max(...values.map(Math.abs), 1);
+
+      chartDiv.innerHTML = rows.map(row => {
+        const value = parseFloat(row.total_return_pct) || 0;
+        const pct = (Math.abs(value) / maxAbs) * 100;
+        const params = row.strategy_params.replace(/_/g, ' ');
+        const isPositive = value >= 0;
+        const color = isPositive ? '#00ff41' : '#ff4444';
+
+        return `
+          <div class="bar">
+            <div class="bar-label">${params}</div>
+            <div class="bar-fill" style="width:${pct}%;background-color:${color};"></div>
+            <div class="bar-value">${isPositive ? '+' : ''}${value.toFixed(2)}%</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
+    ['step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7', 'step8'].forEach(loadCSV);
+  </script>
+</body>
+</html>
