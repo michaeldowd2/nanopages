@@ -208,6 +208,7 @@
     <div class="tab" onclick="showTab('step5')">STEP 5</div>
     <div class="tab" onclick="showTab('step6')">STEP 6</div>
     <div class="tab" onclick="showTab('step7')">STEP 7</div>
+    <div class="tab" onclick="showTab('tracking')">TRACKING</div>
     <div class="tab" onclick="showTab('step8')">STEP 8</div>
   </div>
 
@@ -313,8 +314,8 @@
             <li>min_keyword_count: 1</li>
             <li>magnitude_estimation: true (low/medium/high)</li>
           </ul>
-          <strong>Accuracy:</strong> ~85% on test cases<br>
-          <strong>Future:</strong> llm-sentiment-v1 for 95%+ accuracy
+          <strong>Coverage:</strong> 47 bullish, 51 bearish keywords<br>
+          <strong>Future:</strong> llm-sentiment-v1 for enhanced analysis
         </div>
 
         <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 6: Realization Checker</h3>
@@ -418,7 +419,7 @@
           <td>8</td>
           <td><span class="status-indicator status-inactive"></span>Performance</td>
           <td class="neutral">Future</td>
-          <td>Track accuracy</td>
+          <td>Track performance</td>
         </tr>
         <tr>
           <td>9</td>
@@ -431,10 +432,40 @@
   </div>
 
   <!-- CONFIG TAB -->
+  <div id="tracking" class="tab-content">
+    <div class="section">
+      <h2>Pipeline Run Tracking</h2>
+      <p class="step-header">Debug view: step durations, errors, and execution logs per day</p>
+
+      <div style="margin:20px 0;">
+        <label for="tracking-date-selector" style="color:#ccc; font-size:0.9em;">Select Date:</label>
+        <select id="tracking-date-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:8px; margin:10px 0; font-size:1em; border-radius:4px; width:200px;">
+          <option value="">Loading dates...</option>
+        </select>
+        <span id="tracking-summary" style="color:#888; font-size:0.9em; margin-left:15px;"></span>
+      </div>
+
+      <div id="tracking-content" style="color:#888; font-size:0.9em;">
+        Select a date to view run tracking information.
+      </div>
+
+      <div id="tracking-steps" style="display:none; margin-top:20px;"></div>
+    </div>
+  </div>
+
   <div id="config" class="tab-content">
     <div class="section">
       <h2>System Configuration</h2>
       <p class="step-header">Active currencies, estimators, generators, and strategies</p>
+
+      <div style="background:#1a1a1a; border:1px solid #333; border-radius:4px; padding:12px; margin:15px 0; color:#ccc; font-size:0.9em;">
+        <strong style="color:#00ff41;">ℹ️ About "Active" Configurations:</strong><br>
+        • <strong>Multiple configs can be active simultaneously</strong><br>
+        • Green "✓ ACTIVE" = Currently used in pipeline runs<br>
+        • Grey "○ Available" = Defined but not currently active<br>
+        • <strong>Strategies compose multiple estimators and generators</strong> (see below)<br>
+        • Change active configurations via <code style="background:#0a0a0a; padding:2px 6px; border-radius:2px;">python scripts/config_loader.py</code>
+      </div>
 
       <div style="margin-top:20px;">
         <h3 style="color:#00ff41; font-size:1.1em;">📊 Active Currencies (11)</h3>
@@ -566,14 +597,27 @@ python scripts/config_loader.py remove-currency CNY</pre>
   <!-- STEP TABS -->
   <div id="step1" class="tab-content">
     <div class="section">
-      <h2>Step 1: EUR Pairs <a href="data/step1_eur_pairs.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">EUR-based exchange rates</p>
+      <h2>Step 1: Exchange Rates (All Pairs) <a href="data/step1_exchange_rates.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">All currency pair exchange rates (10×10 matrix)</p>
+      <p style="color:#888; font-size:0.9em; margin-bottom:10px;">
+        Each cell shows how much COLUMN currency you get for 1 ROW currency.<br>
+        Example: Row=USD, Column=JPY shows USD/JPY rate (how many JPY per 1 USD).
+      </p>
       <div class="csv-table-container">
         <div class="loading" id="step1-loading">Loading...</div>
-        <table id="step1-table" style="display:none;">
-          <thead id="step1-thead"></thead>
-          <tbody id="step1-tbody"></tbody>
-        </table>
+        <div id="step1-matrix" style="display:none; overflow-x:auto;">
+          <p id="step1-date" style="color:#888; font-size:0.9em; margin-bottom:10px;"></p>
+          <table id="step1-table" style="font-size:0.85em;">
+            <thead>
+              <tr>
+                <th style="background:#1a1a1a; position:sticky; left:0; z-index:2;">Base \ Quote</th>
+                <th>EUR</th><th>USD</th><th>GBP</th><th>JPY</th><th>CHF</th>
+                <th>AUD</th><th>CAD</th><th>NOK</th><th>SEK</th><th>CNY</th><th>MXN</th>
+              </tr>
+            </thead>
+            <tbody id="step1-tbody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -665,6 +709,43 @@ python scripts/config_loader.py remove-currency CNY</pre>
           <tbody id="step7-tbody"></tbody>
         </table>
       </div>
+
+      <!-- Strategy Detail Section -->
+      <div id="strategy-detail" style="display:none; margin-top:30px; padding-top:30px; border-top:1px solid #333;">
+        <h3 style="color:#00ff41;font-size:1.1em;margin-bottom:15px;">Strategy Details</h3>
+
+        <label for="strategy-selector" style="color:#ccc; font-size:0.9em;">Select Strategy:</label>
+        <select id="strategy-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:8px; margin:10px 0; font-size:1em; border-radius:4px;">
+          <option value="">Choose a strategy...</option>
+        </select>
+
+        <div id="strategy-info" style="display:none;">
+          <!-- Currency Signals -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Currency Signals</h4>
+            <div id="currency-signals" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px;"></div>
+          </div>
+
+          <!-- Trade Recommendations -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Trade Recommendations</h4>
+            <div id="trade-recommendations"></div>
+          </div>
+
+          <!-- Portfolio Breakdown -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Portfolio Breakdown</h4>
+            <div id="portfolio-breakdown"></div>
+          </div>
+
+          <!-- Time Series (Future) -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Portfolio Value Over Time</h4>
+            <p style="color:#888; font-size:0.9em;">Requires multiple days of data (coming soon)</p>
+            <div id="portfolio-timeseries"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -721,8 +802,14 @@ python scripts/config_loader.py remove-currency CNY</pre>
     const loadedCSVs = {};
     function loadCSV(step) {
       if (loadedCSVs[step]) return;
+
+      // Step 1 uses special matrix format
+      if (step === 'step1') {
+        loadExchangeRateMatrix();
+        return;
+      }
+
       const csvFile = {
-        'step1': 'data/step1_eur_pairs.csv',
         'step2': 'data/step2_indices.csv',
         'step3': 'data/step3_news.csv',
         'step4': 'data/step4_horizons.csv',
@@ -764,6 +851,7 @@ python scripts/config_loader.py remove-currency CNY</pre>
           // Generate charts
           if (step === 'step7' && rows.length > 0) {
             generateStrategyChart(rows);
+            loadStrategyDetails();
           }
           if (step === 'step8' && rows.length > 0) {
             generatePerformanceChart(rows);
@@ -822,8 +910,295 @@ python scripts/config_loader.py remove-currency CNY</pre>
       }).join('');
     }
 
+    let strategyDetailData = [];
+
+    function loadStrategyDetails() {
+      fetch('data/step7_strategies_detail.json')
+        .then(res => res.json())
+        .then(data => {
+          strategyDetailData = data;
+
+          const selector = document.getElementById('strategy-selector');
+          const detailDiv = document.getElementById('strategy-detail');
+
+          // Populate selector
+          selector.innerHTML = '<option value="">Choose a strategy...</option>' +
+            data.map((strat, idx) => {
+              const params = strat.strategy_params.replace(/_/g, ' ');
+              return `<option value="${idx}">${params}</option>`;
+            }).join('');
+
+          // Show detail section
+          detailDiv.style.display = 'block';
+
+          // Add change listener
+          selector.addEventListener('change', (e) => {
+            const idx = e.target.value;
+            if (idx === '') {
+              document.getElementById('strategy-info').style.display = 'none';
+            } else {
+              displayStrategyDetails(strategyDetailData[idx]);
+            }
+          });
+        })
+        .catch(err => {
+          console.error('Error loading strategy details:', err);
+        });
+    }
+
+    function displayStrategyDetails(strat) {
+      const infoDiv = document.getElementById('strategy-info');
+      infoDiv.style.display = 'block';
+
+      // Currency Signals
+      const signalsDiv = document.getElementById('currency-signals');
+      const signals = strat.aggregate_signals || {};
+      signalsDiv.innerHTML = Object.keys(signals).map(curr => {
+        const sig = signals[curr];
+        const dirClass = sig.direction === 'bullish' ? 'bullish' : sig.direction === 'bearish' ? 'bearish' : 'neutral';
+        const dirSymbol = sig.direction === 'bullish' ? '▲' : sig.direction === 'bearish' ? '▼' : '—';
+        return `
+          <div style="padding:10px; background:#1a1a1a; border-left:3px solid ${dirClass === 'bullish' ? '#00ff41' : dirClass === 'bearish' ? '#ff4444' : '#666'}; border-radius:4px;">
+            <div style="font-weight:bold; font-size:1.1em;">${curr}</div>
+            <div class="${dirClass}" style="font-size:0.9em;">${dirSymbol} ${sig.direction}</div>
+            <div style="color:#888; font-size:0.85em;">conf: ${(sig.confidence * 100).toFixed(0)}%</div>
+          </div>
+        `;
+      }).join('');
+
+      // Trade Recommendations
+      const tradesDiv = document.getElementById('trade-recommendations');
+      const trades = strat.executed_trades || [];
+      if (trades.length === 0) {
+        tradesDiv.innerHTML = '<p style="color:#888; font-size:0.9em;">No trades executed (insufficient signal confidence or balance)</p>';
+      } else {
+        tradesDiv.innerHTML = '<table style="width:100%; font-size:0.9em; border-collapse:collapse;">' +
+          '<thead><tr><th>From</th><th>Amount</th><th>To</th><th>Amount</th><th>Rate</th><th>Confidence</th></tr></thead>' +
+          '<tbody>' +
+          trades.map(t => `
+            <tr style="border-bottom:1px solid #333;">
+              <td class="bearish">${t.from_currency}</td>
+              <td>${t.from_amount.toLocaleString()}</td>
+              <td class="bullish">${t.to_currency}</td>
+              <td>${t.to_amount.toLocaleString()}</td>
+              <td>${t.pair_rate ? t.pair_rate.toFixed(4) : 'N/A'}</td>
+              <td>${((t.buy_confidence + t.sell_confidence) / 2 * 100).toFixed(0)}%</td>
+            </tr>
+          `).join('') +
+          '</tbody></table>';
+      }
+
+      // Portfolio Breakdown
+      const portfolioDiv = document.getElementById('portfolio-breakdown');
+      const portfolio = strat.portfolio || {};
+      const totalValue = strat.current_value || 0;
+
+      portfolioDiv.innerHTML = `
+        <div style="margin-bottom:15px;">
+          <span style="color:#00ff41; font-size:1.2em; font-weight:bold;">Total: €${totalValue.toLocaleString()}</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:10px;">
+          ${Object.keys(portfolio).filter(curr => portfolio[curr] > 0).map(curr => `
+            <div style="padding:10px; background:#1a1a1a; border-radius:4px;">
+              <div style="font-weight:bold;">${curr}</div>
+              <div style="color:#00ff41; font-size:0.9em;">${portfolio[curr].toLocaleString()}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function loadExchangeRateMatrix() {
+      if (loadedCSVs['step1']) return;
+
+      const loading = document.getElementById('step1-loading');
+      const matrixDiv = document.getElementById('step1-matrix');
+      const tbody = document.getElementById('step1-tbody');
+      const dateEl = document.getElementById('step1-date');
+
+      fetch('data/step1_exchange_rates_matrix.json')
+        .then(res => res.json())
+        .then(data => {
+          const matrix = data.matrix || {};
+          const date = data.date || '';
+
+          dateEl.textContent = `Exchange rates as of: ${date}`;
+
+          const currencies = Object.keys(matrix).sort();
+
+          tbody.innerHTML = currencies.map(baseCurr => {
+            return `
+              <tr>
+                <th style="background:#1a1a1a; position:sticky; left:0; z-index:1; text-align:left; padding:8px;">${baseCurr}</th>
+                ${currencies.map(quoteCurr => {
+                  const rate = matrix[baseCurr] && matrix[baseCurr][quoteCurr];
+                  const displayRate = rate === 1.0 ? '—' : (rate ? rate.toFixed(4) : 'N/A');
+                  const cellStyle = rate === 1.0 ? 'background:#0a0a0a; color:#555;' : '';
+                  return `<td style="${cellStyle}">${displayRate}</td>`;
+                }).join('')}
+              </tr>
+            `;
+          }).join('');
+
+          loading.style.display = 'none';
+          matrixDiv.style.display = 'block';
+          loadedCSVs['step1'] = true;
+        })
+        .catch(err => {
+          loading.textContent = 'Error loading exchange rates: ' + err.message;
+        });
+    }
+
+    function loadTrackingDates() {
+      fetch('data/tracking_dates.json')
+        .then(res => res.json())
+        .then(data => {
+          const selector = document.getElementById('tracking-date-selector');
+          const dates = data.dates || [];
+
+          if (dates.length === 0) {
+            selector.innerHTML = '<option value="">No runs available</option>';
+            return;
+          }
+
+          selector.innerHTML = '<option value="">Select a date...</option>' +
+            dates.map(d => {
+              const statusIcon = d.status === 'success' ? '✓' : d.status === 'partial' ? '⚠️' : '❌';
+              return `<option value="${d.date}">${statusIcon} ${d.date} (${d.successful_steps}/${d.total_steps} steps)</option>`;
+            }).join('');
+
+          // Add change listener
+          selector.addEventListener('change', (e) => {
+            const date = e.target.value;
+            if (date) {
+              loadTrackingLog(date);
+            } else {
+              document.getElementById('tracking-steps').style.display = 'none';
+              document.getElementById('tracking-content').textContent = 'Select a date to view run tracking information.';
+            }
+          });
+        })
+        .catch(err => {
+          document.getElementById('tracking-date-selector').innerHTML = '<option value="">Error loading dates</option>';
+          console.error('Error loading tracking dates:', err);
+        });
+    }
+
+    function loadTrackingLog(date) {
+      const summaryEl = document.getElementById('tracking-summary');
+      const contentEl = document.getElementById('tracking-content');
+      const stepsEl = document.getElementById('tracking-steps');
+
+      summaryEl.textContent = 'Loading...';
+      contentEl.textContent = '';
+      stepsEl.style.display = 'none';
+
+      fetch(`data/tracking_${date}.json`)
+        .then(res => res.json())
+        .then(data => {
+          const steps = data.steps || [];
+
+          // Summary
+          const totalDuration = steps.reduce((sum, s) => sum + (s.duration || 0), 0);
+          const successCount = steps.filter(s => s.status === 'success').length;
+          const failCount = steps.filter(s => s.status === 'failed').length;
+          const errorCount = steps.reduce((sum, s) => sum + (s.errors || []).length, 0);
+          const warnCount = steps.reduce((sum, s) => sum + (s.warnings || []).length, 0);
+
+          summaryEl.innerHTML = `
+            <span style="color:#00ff41;">${successCount} ✓</span>
+            ${failCount > 0 ? `<span style="color:#ff4444; margin-left:10px;">${failCount} ❌</span>` : ''}
+            <span style="margin-left:10px;">Total: ${totalDuration.toFixed(1)}s</span>
+            ${errorCount > 0 ? `<span style="color:#ff4444; margin-left:10px;">${errorCount} errors</span>` : ''}
+            ${warnCount > 0 ? `<span style="color:#ff8800; margin-left:10px;">${warnCount} warnings</span>` : ''}
+          `;
+
+          contentEl.innerHTML = '';
+
+          // Render steps
+          stepsEl.innerHTML = steps.map(step => {
+            const statusColor = step.status === 'success' ? '#00ff41' : step.status === 'failed' ? '#ff4444' : '#888';
+            const borderColor = step.status === 'success' ? '#00ff41' : step.status === 'failed' ? '#ff4444' : '#666';
+
+            return `
+              <div style="background:#1a1a1a; border-left:3px solid ${borderColor}; border-radius:4px; padding:15px; margin-bottom:15px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <h3 style="color:${statusColor}; font-size:1.1em; margin:0;">
+                    ${step.status_icon} ${step.step_name}
+                  </h3>
+                  <span style="color:#888; font-size:0.9em;">${step.duration ? step.duration.toFixed(2) + 's' : 'N/A'}</span>
+                </div>
+
+                <div style="color:#888; font-size:0.85em; margin-bottom:10px;">
+                  <div>${step.start_time_display || 'N/A'} → ${step.end_time_display || 'N/A'}</div>
+                </div>
+
+                ${Object.keys(step.counts || {}).length > 0 ? `
+                  <div style="margin-top:10px;">
+                    <strong style="color:#00ff41; font-size:0.9em;">Counts:</strong>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:8px; margin-top:5px;">
+                      ${Object.entries(step.counts).map(([k, v]) => `
+                        <div style="background:#0a0a0a; padding:6px 10px; border-radius:3px;">
+                          <span style="color:#666; font-size:0.85em;">${k.replace(/_/g, ' ')}:</span>
+                          <span style="color:#00ff41; font-weight:bold; margin-left:5px;">${v.toLocaleString()}</span>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${Object.keys(step.info || {}).length > 0 ? `
+                  <div style="margin-top:10px;">
+                    <strong style="color:#00ff41; font-size:0.9em;">Info:</strong>
+                    <div style="color:#888; font-size:0.85em; margin-top:5px; padding:8px; background:#0a0a0a; border-radius:3px; font-family:monospace;">
+                      ${Object.entries(step.info).map(([k, v]) => `
+                        <div>${k}: ${v}</div>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${(step.warnings || []).length > 0 ? `
+                  <div style="margin-top:10px;">
+                    <strong style="color:#ff8800; font-size:0.9em;">⚠️ Warnings (${step.warnings.length}):</strong>
+                    <div style="margin-top:5px;">
+                      ${step.warnings.map(w => `
+                        <div style="background:#2a1a00; border-left:3px solid #ff8800; padding:8px; margin:5px 0; border-radius:3px; font-size:0.85em;">
+                          ${w.message}
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${(step.errors || []).length > 0 ? `
+                  <div style="margin-top:10px;">
+                    <strong style="color:#ff4444; font-size:0.9em;">❌ Errors (${step.errors.length}):</strong>
+                    <div style="margin-top:5px;">
+                      ${step.errors.map(e => `
+                        <div style="background:#2a0000; border-left:3px solid #ff4444; padding:8px; margin:5px 0; border-radius:3px; font-size:0.85em; font-family:monospace;">
+                          ${e.message}
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join('');
+
+          stepsEl.style.display = 'block';
+        })
+        .catch(err => {
+          summaryEl.textContent = '';
+          contentEl.textContent = 'Error loading log: ' + err.message;
+          console.error('Error loading tracking log:', err);
+        });
+    }
+
     document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
     ['step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7', 'step8'].forEach(loadCSV);
+    loadTrackingDates();
   </script>
 </body>
 </html>
