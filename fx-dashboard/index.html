@@ -209,13 +209,12 @@
     <div class="tab" onclick="showTab('step6')">STEP 6</div>
     <div class="tab" onclick="showTab('step7')">STEP 7</div>
     <div class="tab" onclick="showTab('tracking')">TRACKING</div>
-    <div class="tab" onclick="showTab('step8')">STEP 8</div>
   </div>
 
   <!-- OVERVIEW TAB -->
   <div id="overview" class="tab-content active">
     <div class="section">
-      <h2>9-Step Pipeline Architecture</h2>
+      <h2>7-Step Pipeline Architecture</h2>
       <div class="architecture-diagram">
         <pre>
 1. EXCHANGE RATES ──► 2. INDICES ──► 3. NEWS AGGREGATOR
@@ -241,16 +240,6 @@
                    • Filter unrealized
                    • Execute trades
                    • Track portfolio
-                           │
-                           ▼
-                   8. PERFORMANCE
-                   • Daily returns
-                   • Win rate & drawdown
-                           │
-                           ▼
-                    9. DASHBOARD
-                       • This page
-                       • Visualizations
         </pre>
       </div>
       <div style="margin-top:10px; color:#888; font-size:0.85em;">
@@ -272,10 +261,12 @@
 
         <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 2: Synthetic Indices</h3>
         <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Purpose:</strong> Calculate currency strength indices from EUR pairs<br>
-          <strong>Formula:</strong> index = (base_rate / current_rate) × 100<br>
+          <strong>Purpose:</strong> Calculate currency strength indices using geometric mean methodology<br>
+          <strong>Method:</strong> Geometric mean of all currency pairs (isolates each currency's movement)<br>
+          <strong>Formula:</strong> index = (rate₁ × rate₂ × ... × rateₙ)^(1/n) normalized to base=100<br>
+          <strong>Pairs used:</strong> 10 pairs per currency (all other currencies)<br>
           <strong>Use:</strong> Enables measuring actual currency movements for realization checking<br>
-          <strong>Note:</strong> Synthetic indices (future: use real DXY, EUR TWI, etc.)
+          <strong>Note:</strong> Professional-grade synthetic indices (same methodology as DXY, EXY)
         </div>
 
         <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 3: News Aggregator</h3>
@@ -364,20 +355,6 @@
           <strong>Future types:</strong> mean-reversion, breakout-trader strategies
         </div>
 
-        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 8: Performance Tracking</h3>
-        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Purpose:</strong> Analyze strategy performance over time<br>
-          <strong>Metrics:</strong>
-          <ul style="margin:5px 0; padding-left:20px;">
-            <li>Total return % (vs initial €10,000)</li>
-            <li>Average daily return %</li>
-            <li>Win rate % (profitable days)</li>
-            <li>Max drawdown % (peak to trough)</li>
-          </ul>
-          <strong>Note:</strong> Requires ≥2 days of strategy runs to calculate returns<br>
-          <strong>Output:</strong> Performance comparison across all 9 strategy parameter combinations
-        </div>
-
       </div>
     </div>
 
@@ -431,18 +408,6 @@
           <td><span class="status-indicator status-active"></span>Strategies</td>
           <td class="bullish">Active</td>
           <td><span id="step7-count">-</span> combos</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td><span class="status-indicator status-inactive"></span>Performance</td>
-          <td class="neutral">Future</td>
-          <td>Track performance</td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td><span class="status-indicator status-active"></span>Dashboard</td>
-          <td class="bullish">Active</td>
-          <td>You're here!</td>
         </tr>
       </table>
     </div>
@@ -643,26 +608,6 @@
     </div>
   </div>
 
-  <div id="step8" class="tab-content">
-    <div class="section">
-      <h2>Step 8: Performance Tracking <a href="data/step8_performance.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">Strategy performance over time (requires ≥2 days of data)</p>
-
-      <div class="chart">
-        <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Total Return % by Strategy</h3>
-        <div id="performance-chart"></div>
-      </div>
-
-      <div class="csv-table-container">
-        <div class="loading" id="step8-loading">Loading...</div>
-        <table id="step8-table" style="display:none;">
-          <thead id="step8-thead"></thead>
-          <tbody id="step8-tbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
   <script>
     function showTab(tabName) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -747,9 +692,6 @@
             generateStrategyChart(rows);
             loadStrategyDetails();
           }
-          if (step === 'step8' && rows.length > 0) {
-            generatePerformanceChart(rows);
-          }
         })
         .catch(err => {
           document.getElementById(`${step}-loading`).textContent = 'Error: ' + err.message;
@@ -770,35 +712,6 @@
             <div class="bar-label">${params}</div>
             <div class="bar-fill" style="width:${pct}%"></div>
             <div class="bar-value">€${value.toLocaleString()}</div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function generatePerformanceChart(rows) {
-      const chartDiv = document.getElementById('performance-chart');
-
-      if (rows.length === 0) {
-        chartDiv.innerHTML = '<p style="color:#888;font-size:0.9em;">No performance data yet (need ≥2 days of strategy runs)</p>';
-        return;
-      }
-
-      // Find max absolute value for scaling (handle negative returns)
-      const values = rows.map(r => parseFloat(r.total_return_pct) || 0);
-      const maxAbs = Math.max(...values.map(Math.abs), 1);
-
-      chartDiv.innerHTML = rows.map(row => {
-        const value = parseFloat(row.total_return_pct) || 0;
-        const pct = (Math.abs(value) / maxAbs) * 100;
-        const params = row.strategy_params.replace(/_/g, ' ');
-        const isPositive = value >= 0;
-        const color = isPositive ? '#00ff41' : '#ff4444';
-
-        return `
-          <div class="bar">
-            <div class="bar-label">${params}</div>
-            <div class="bar-fill" style="width:${pct}%;background-color:${color};"></div>
-            <div class="bar-value">${isPositive ? '+' : ''}${value.toFixed(2)}%</div>
           </div>
         `;
       }).join('');
@@ -1197,7 +1110,7 @@
     }
 
     document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
-    ['step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7', 'step8'].forEach(loadCSV);
+    ['step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7'].forEach(loadCSV);
     loadSystemConfig();
     loadTrackingDates();
   </script>

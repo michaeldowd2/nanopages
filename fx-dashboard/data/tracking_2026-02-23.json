@@ -1,0 +1,54 @@
+{
+  "date": "2026-02-23",
+  "steps": [
+    {
+      "step_id": "step5",
+      "step_name": "Generate Sentiment Signals",
+      "date": "2026-02-23",
+      "start_time": "2026-02-23T19:12:33.413213",
+      "end_time": "2026-02-23T19:12:33.421030",
+      "duration": 0.01,
+      "status": "success",
+      "counts": {
+        "currencies_analyzed": 11,
+        "total_signals": 0,
+        "currencies_with_signals": 0,
+        "bullish_signals": 0,
+        "bearish_signals": 0,
+        "neutral_signals": 0
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "generator_id": "keyword-sentiment-v1.1-standard",
+        "generator_type": "keyword-sentiment-v1.1"
+      },
+      "start_time_display": "2026-02-23 19:12:33",
+      "end_time_display": "2026-02-23 19:12:33",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step7",
+      "step_name": "Execute Trading Strategies",
+      "date": "2026-02-23",
+      "start_time": "2026-02-23T19:12:37.919114",
+      "end_time": "2026-02-23T19:12:37.953658",
+      "duration": 0.03,
+      "status": "success",
+      "counts": {
+        "strategy_combinations": 9,
+        "strategies_executed": 9,
+        "total_trades": 0
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_csv": "/workspace/group/fx-portfolio/data/exports/step7_strategies.csv",
+        "output_json": "/workspace/group/fx-portfolio/data/exports/step7_strategies_detail.json"
+      },
+      "start_time_display": "2026-02-23 19:12:37",
+      "end_time_display": "2026-02-23 19:12:37",
+      "status_icon": "\u2713"
+    }
+  ]
+}

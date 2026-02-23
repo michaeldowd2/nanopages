@@ -1,6 +1,7 @@
 [
   {
-    "date": "2026-02-22",
+    "date": "2026-02-23",
+    "strategy_id": "simple-momentum-conf0.5-size0.25",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.5_size=0.25_agg=average",
     "confidence_threshold": 0.5,
@@ -79,7 +80,8 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-22",
+    "date": "2026-02-23",
+    "strategy_id": "simple-momentum-conf0.5-size0.5",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.5_size=0.5_agg=average",
     "confidence_threshold": 0.5,
@@ -158,7 +160,8 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-22",
+    "date": "2026-02-23",
+    "strategy_id": "simple-momentum-conf0.5-size0.75",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.5_size=0.75_agg=average",
     "confidence_threshold": 0.5,
@@ -237,7 +240,8 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-22",
+    "date": "2026-02-23",
+    "strategy_id": "simple-momentum-conf0.6-size0.25",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.6_size=0.25_agg=average",
     "confidence_threshold": 0.6,
@@ -316,7 +320,8 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-22",
+    "date": "2026-02-23",
+    "strategy_id": "simple-momentum-conf0.6-size0.5",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.6_size=0.5_agg=average",
     "confidence_threshold": 0.6,
@@ -395,7 +400,8 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-22",
+    "date": "2026-02-23",
+    "strategy_id": "simple-momentum-conf0.6-size0.75",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.6_size=0.75_agg=average",
     "confidence_threshold": 0.6,
@@ -474,7 +480,8 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-22",
+    "date": "2026-02-23",
+    "strategy_id": "simple-momentum-conf0.7-size0.25",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.7_size=0.25_agg=average",
     "confidence_threshold": 0.7,
@@ -553,7 +560,8 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-22",
+    "date": "2026-02-23",
+    "strategy_id": "simple-momentum-conf0.7-size0.5",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.7_size=0.5_agg=average",
     "confidence_threshold": 0.7,
@@ -632,7 +640,8 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-22",
+    "date": "2026-02-23",
+    "strategy_id": "simple-momentum-conf0.7-size0.75",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.7_size=0.75_agg=average",
     "confidence_threshold": 0.7,
