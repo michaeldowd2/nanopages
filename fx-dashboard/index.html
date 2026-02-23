@@ -467,14 +467,7 @@
         <div id="step1-matrix" style="display:none; overflow-x:auto;">
           <p id="step1-date" style="color:#888; font-size:0.9em; margin-bottom:10px;"></p>
           <table id="step1-table" style="font-size:0.85em;">
-            <thead>
-              <tr>
-                <th style="background:#1a1a1a; position:sticky; left:0; z-index:2;">Base \ Quote</th>
-                <th>EUR</th><th>USD</th><th>GBP</th><th>JPY</th><th>CHF</th>
-                <th>AUD</th><th>CAD</th><th>NOK</th><th>SEK</th><th>CNY</th><th>MXN</th>
-              </tr>
-            </thead>
-            <tbody id="step1-tbody"></tbody>
+            <!-- Table header and body generated dynamically from matrix data -->
           </table>
         </div>
       </div>
@@ -820,7 +813,7 @@
 
       const loading = document.getElementById('step1-loading');
       const matrixDiv = document.getElementById('step1-matrix');
-      const tbody = document.getElementById('step1-tbody');
+      const table = document.getElementById('step1-table');
       const dateEl = document.getElementById('step1-date');
 
       fetch('data/step1_exchange_rates_matrix.json')
@@ -833,19 +826,35 @@
 
           const currencies = Object.keys(matrix).sort();
 
-          tbody.innerHTML = currencies.map(baseCurr => {
-            return `
+          // Generate thead dynamically
+          const theadHtml = `
+            <thead>
               <tr>
-                <th style="background:#1a1a1a; position:sticky; left:0; z-index:1; text-align:left; padding:8px;">${baseCurr}</th>
-                ${currencies.map(quoteCurr => {
-                  const rate = matrix[baseCurr] && matrix[baseCurr][quoteCurr];
-                  const displayRate = rate === 1.0 ? '—' : (rate ? rate.toFixed(4) : 'N/A');
-                  const cellStyle = rate === 1.0 ? 'background:#0a0a0a; color:#555;' : '';
-                  return `<td style="${cellStyle}">${displayRate}</td>`;
-                }).join('')}
+                <th style="background:#1a1a1a; position:sticky; left:0; z-index:2;">Base \\ Quote</th>
+                ${currencies.map(curr => `<th>${curr}</th>`).join('')}
               </tr>
-            `;
-          }).join('');
+            </thead>
+          `;
+
+          // Generate tbody dynamically
+          const tbodyHtml = `
+            <tbody>
+              ${currencies.map(baseCurr => `
+                <tr>
+                  <th style="background:#1a1a1a; position:sticky; left:0; z-index:1; text-align:left; padding:8px;">${baseCurr}</th>
+                  ${currencies.map(quoteCurr => {
+                    const rate = matrix[baseCurr] && matrix[baseCurr][quoteCurr];
+                    const displayRate = rate === 1.0 ? '—' : (rate ? rate.toFixed(4) : 'N/A');
+                    const cellStyle = rate === 1.0 ? 'background:#0a0a0a; color:#555;' : '';
+                    return `<td style="${cellStyle}">${displayRate}</td>`;
+                  }).join('')}
+                </tr>
+              `).join('')}
+            </tbody>
+          `;
+
+          // Replace entire table content
+          table.innerHTML = theadHtml + tbodyHtml;
 
           loading.style.display = 'none';
           matrixDiv.style.display = 'block';
