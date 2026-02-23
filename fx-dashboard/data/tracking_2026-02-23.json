@@ -5,9 +5,9 @@
       "step_id": "step1",
       "step_name": "Fetch Exchange Rates (All Pairs)",
       "date": "2026-02-23",
-      "start_time": "2026-02-23T21:06:08.202764",
-      "end_time": "2026-02-23T21:06:08.204797",
-      "duration": 0.0,
+      "start_time": "2026-02-23T21:40:57.230332",
+      "end_time": "2026-02-23T21:40:57.367399",
+      "duration": 0.14,
       "status": "success",
       "counts": {
         "currencies": 11,
@@ -16,26 +16,21 @@
         "pairs_calculated": 121
       },
       "errors": [],
-      "warnings": [
-        {
-          "message": "Using mock data - set FIXER_API_KEY for real rates",
-          "timestamp": "2026-02-23T21:06:08.203364"
-        }
-      ],
+      "warnings": [],
       "info": {
-        "data_source": "mock data",
+        "data_source": "github-currency-api",
         "output_file": "/workspace/group/fx-portfolio/data/prices/fx-rates-2026-02-23.json"
       },
-      "start_time_display": "2026-02-23 21:06:08",
-      "end_time_display": "2026-02-23 21:06:08",
+      "start_time_display": "2026-02-23 21:40:57",
+      "end_time_display": "2026-02-23 21:40:57",
       "status_icon": "\u2713"
     },
     {
       "step_id": "step2",
       "step_name": "Calculate Currency Indices (Geometric Mean)",
       "date": "2026-02-23",
-      "start_time": "2026-02-23T21:06:19.117772",
-      "end_time": "2026-02-23T21:06:19.126680",
+      "start_time": "2026-02-23T21:41:56.684725",
+      "end_time": "2026-02-23T21:41:56.694832",
       "duration": 0.01,
       "status": "success",
       "counts": {
@@ -51,8 +46,8 @@
         "output_csv": "/workspace/group/fx-portfolio/data/exports/step2_indices.csv",
         "output_validation": "/workspace/group/fx-portfolio/data/exports/step2_indices_validation.json"
       },
-      "start_time_display": "2026-02-23 21:06:19",
-      "end_time_display": "2026-02-23 21:06:19",
+      "start_time_display": "2026-02-23 21:41:56",
+      "end_time_display": "2026-02-23 21:41:56",
       "status_icon": "\u2713"
     },
     {
