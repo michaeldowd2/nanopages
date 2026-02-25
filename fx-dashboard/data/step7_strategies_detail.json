@@ -11,9 +11,27 @@
       "llm-horizon-v1-default"
     ],
     "generator_ids": [
-      "keyword-sentiment-v1.1-standard"
+      "keyword-sentiment-v1.1-standard",
+      "llm-sentiment-v1-haiku"
     ],
+    "generator_weights": {
+      "keyword-sentiment-v1.1-standard": 0.5,
+      "llm-sentiment-v1-haiku": 1.0
+    },
     "signals_count": 0,
+    "signal_volumes": {
+      "EUR": 0,
+      "USD": 0,
+      "GBP": 0,
+      "JPY": 0,
+      "CHF": 0,
+      "AUD": 0,
+      "CAD": 0,
+      "NOK": 0,
+      "SEK": 0,
+      "CNY": 0,
+      "MXN": 0
+    },
     "unrealized_signals_count": 0,
     "aggregate_signals": {
       "EUR": {
@@ -91,9 +109,27 @@
       "llm-horizon-v1-default"
     ],
     "generator_ids": [
-      "keyword-sentiment-v1.1-standard"
+      "keyword-sentiment-v1.1-standard",
+      "llm-sentiment-v1-haiku"
     ],
+    "generator_weights": {
+      "keyword-sentiment-v1.1-standard": 0.5,
+      "llm-sentiment-v1-haiku": 1.0
+    },
     "signals_count": 0,
+    "signal_volumes": {
+      "EUR": 0,
+      "USD": 0,
+      "GBP": 0,
+      "JPY": 0,
+      "CHF": 0,
+      "AUD": 0,
+      "CAD": 0,
+      "NOK": 0,
+      "SEK": 0,
+      "CNY": 0,
+      "MXN": 0
+    },
     "unrealized_signals_count": 0,
     "aggregate_signals": {
       "EUR": {
@@ -171,9 +207,27 @@
       "llm-horizon-v1-default"
     ],
     "generator_ids": [
-      "keyword-sentiment-v1.1-standard"
+      "keyword-sentiment-v1.1-standard",
+      "llm-sentiment-v1-haiku"
     ],
+    "generator_weights": {
+      "keyword-sentiment-v1.1-standard": 0.5,
+      "llm-sentiment-v1-haiku": 1.0
+    },
     "signals_count": 0,
+    "signal_volumes": {
+      "EUR": 0,
+      "USD": 0,
+      "GBP": 0,
+      "JPY": 0,
+      "CHF": 0,
+      "AUD": 0,
+      "CAD": 0,
+      "NOK": 0,
+      "SEK": 0,
+      "CNY": 0,
+      "MXN": 0
+    },
     "unrealized_signals_count": 0,
     "aggregate_signals": {
       "EUR": {
@@ -251,9 +305,27 @@
       "llm-horizon-v1-default"
     ],
     "generator_ids": [
-      "keyword-sentiment-v1.1-standard"
+      "keyword-sentiment-v1.1-standard",
+      "llm-sentiment-v1-haiku"
     ],
+    "generator_weights": {
+      "keyword-sentiment-v1.1-standard": 0.5,
+      "llm-sentiment-v1-haiku": 1.0
+    },
     "signals_count": 0,
+    "signal_volumes": {
+      "EUR": 0,
+      "USD": 0,
+      "GBP": 0,
+      "JPY": 0,
+      "CHF": 0,
+      "AUD": 0,
+      "CAD": 0,
+      "NOK": 0,
+      "SEK": 0,
+      "CNY": 0,
+      "MXN": 0
+    },
     "unrealized_signals_count": 0,
     "aggregate_signals": {
       "EUR": {
@@ -331,9 +403,27 @@
       "llm-horizon-v1-default"
     ],
     "generator_ids": [
-      "keyword-sentiment-v1.1-standard"
+      "keyword-sentiment-v1.1-standard",
+      "llm-sentiment-v1-haiku"
     ],
+    "generator_weights": {
+      "keyword-sentiment-v1.1-standard": 0.5,
+      "llm-sentiment-v1-haiku": 1.0
+    },
     "signals_count": 0,
+    "signal_volumes": {
+      "EUR": 0,
+      "USD": 0,
+      "GBP": 0,
+      "JPY": 0,
+      "CHF": 0,
+      "AUD": 0,
+      "CAD": 0,
+      "NOK": 0,
+      "SEK": 0,
+      "CNY": 0,
+      "MXN": 0
+    },
     "unrealized_signals_count": 0,
     "aggregate_signals": {
       "EUR": {
@@ -411,9 +501,27 @@
       "llm-horizon-v1-default"
     ],
     "generator_ids": [
-      "keyword-sentiment-v1.1-standard"
+      "keyword-sentiment-v1.1-standard",
+      "llm-sentiment-v1-haiku"
     ],
+    "generator_weights": {
+      "keyword-sentiment-v1.1-standard": 0.5,
+      "llm-sentiment-v1-haiku": 1.0
+    },
     "signals_count": 0,
+    "signal_volumes": {
+      "EUR": 0,
+      "USD": 0,
+      "GBP": 0,
+      "JPY": 0,
+      "CHF": 0,
+      "AUD": 0,
+      "CAD": 0,
+      "NOK": 0,
+      "SEK": 0,
+      "CNY": 0,
+      "MXN": 0
+    },
     "unrealized_signals_count": 0,
     "aggregate_signals": {
       "EUR": {
@@ -491,9 +599,27 @@
       "llm-horizon-v1-default"
     ],
     "generator_ids": [
-      "keyword-sentiment-v1.1-standard"
+      "keyword-sentiment-v1.1-standard",
+      "llm-sentiment-v1-haiku"
     ],
+    "generator_weights": {
+      "keyword-sentiment-v1.1-standard": 0.5,
+      "llm-sentiment-v1-haiku": 1.0
+    },
     "signals_count": 0,
+    "signal_volumes": {
+      "EUR": 0,
+      "USD": 0,
+      "GBP": 0,
+      "JPY": 0,
+      "CHF": 0,
+      "AUD": 0,
+      "CAD": 0,
+      "NOK": 0,
+      "SEK": 0,
+      "CNY": 0,
+      "MXN": 0
+    },
     "unrealized_signals_count": 0,
     "aggregate_signals": {
       "EUR": {
@@ -571,9 +697,27 @@
       "llm-horizon-v1-default"
     ],
     "generator_ids": [
-      "keyword-sentiment-v1.1-standard"
+      "keyword-sentiment-v1.1-standard",
+      "llm-sentiment-v1-haiku"
     ],
+    "generator_weights": {
+      "keyword-sentiment-v1.1-standard": 0.5,
+      "llm-sentiment-v1-haiku": 1.0
+    },
     "signals_count": 0,
+    "signal_volumes": {
+      "EUR": 0,
+      "USD": 0,
+      "GBP": 0,
+      "JPY": 0,
+      "CHF": 0,
+      "AUD": 0,
+      "CAD": 0,
+      "NOK": 0,
+      "SEK": 0,
+      "CNY": 0,
+      "MXN": 0
+    },
     "unrealized_signals_count": 0,
     "aggregate_signals": {
       "EUR": {
@@ -651,9 +795,27 @@
       "llm-horizon-v1-default"
     ],
     "generator_ids": [
-      "keyword-sentiment-v1.1-standard"
+      "keyword-sentiment-v1.1-standard",
+      "llm-sentiment-v1-haiku"
     ],
+    "generator_weights": {
+      "keyword-sentiment-v1.1-standard": 0.5,
+      "llm-sentiment-v1-haiku": 1.0
+    },
     "signals_count": 0,
+    "signal_volumes": {
+      "EUR": 0,
+      "USD": 0,
+      "GBP": 0,
+      "JPY": 0,
+      "CHF": 0,
+      "AUD": 0,
+      "CAD": 0,
+      "NOK": 0,
+      "SEK": 0,
+      "CNY": 0,
+      "MXN": 0
+    },
     "unrealized_signals_count": 0,
     "aggregate_signals": {
       "EUR": {
