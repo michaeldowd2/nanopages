@@ -528,7 +528,31 @@
   <div id="step5" class="tab-content">
     <div class="section">
       <h2>Step 5: Signals <a href="data/step5_signals.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">Per-article signals with predictions</p>
+      <p class="step-header">Per-article signals with predictions (<span id="step5-count">0</span> signals)</p>
+
+      <!-- Filters -->
+      <div style="margin: 15px 0; padding: 15px; background: #0a0a0a; border-radius: 5px;">
+        <strong style="color:#00ff41;">Filters:</strong>
+        <select id="step5-generator-filter" style="margin-left: 10px; padding: 5px;">
+          <option value="">All Generators</option>
+        </select>
+        <select id="step5-currency-filter" style="margin-left: 10px; padding: 5px;">
+          <option value="">All Currencies</option>
+        </select>
+        <select id="step5-direction-filter" style="margin-left: 10px; padding: 5px;">
+          <option value="">All Directions</option>
+          <option value="bullish">Bullish</option>
+          <option value="bearish">Bearish</option>
+          <option value="neutral">Neutral</option>
+        </select>
+      </div>
+
+      <!-- Signal Distribution Chart -->
+      <div style="margin: 20px 0;">
+        <h3 style="color:#00ff41; margin-bottom:15px;">Signal Distribution by Generator</h3>
+        <div id="step5-chart"></div>
+      </div>
+
       <div class="csv-table-container">
         <div class="loading" id="step5-loading">Loading...</div>
         <table id="step5-table" style="display:none;">
