@@ -1,0 +1,125 @@
+{
+  "date": "2026-02-24",
+  "steps": [
+    {
+      "step_id": "step1",
+      "step_name": "Fetch Exchange Rates (All Pairs)",
+      "date": "2026-02-24",
+      "start_time": "2026-02-24T21:18:38.815953",
+      "end_time": "2026-02-24T21:18:38.971035",
+      "duration": 0.16,
+      "status": "success",
+      "counts": {
+        "currencies": 11,
+        "total_pairs": 121,
+        "eur_rates_fetched": 11,
+        "pairs_calculated": 121
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "data_source": "github-currency-api",
+        "output_file": "/workspace/group/fx-portfolio/data/prices/fx-rates-2026-02-24.json"
+      },
+      "start_time_display": "2026-02-24 21:18:38",
+      "end_time_display": "2026-02-24 21:18:38",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step2",
+      "step_name": "Calculate Currency Indices (Geometric Mean)",
+      "date": "2026-02-24",
+      "start_time": "2026-02-24T21:18:45.096056",
+      "end_time": "2026-02-24T21:18:45.102114",
+      "duration": 0.01,
+      "status": "success",
+      "counts": {
+        "days_loaded": 1,
+        "currencies_calculated": 11,
+        "total_index_points": 11
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "base_date": "2026-02-24",
+        "latest_date": "2026-02-24",
+        "output_csv": "/workspace/group/fx-portfolio/data/exports/step2_indices.csv",
+        "output_validation": "/workspace/group/fx-portfolio/data/exports/step2_indices_validation.json"
+      },
+      "start_time_display": "2026-02-24 21:18:45",
+      "end_time_display": "2026-02-24 21:18:45",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step5",
+      "step_name": "Generate Sentiment Signals",
+      "date": "2026-02-24",
+      "start_time": "2026-02-24T21:18:53.824704",
+      "end_time": "2026-02-24T21:18:53.832054",
+      "duration": 0.01,
+      "status": "success",
+      "counts": {
+        "currencies_analyzed": 11,
+        "total_signals": 35,
+        "currencies_with_signals": 8,
+        "bullish_signals": 9,
+        "bearish_signals": 9,
+        "neutral_signals": 17
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "generator_id": "keyword-sentiment-v1.1-standard",
+        "generator_type": "keyword-sentiment-v1.1"
+      },
+      "start_time_display": "2026-02-24 21:18:53",
+      "end_time_display": "2026-02-24 21:18:53",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step6",
+      "step_name": "Check Signal Realization",
+      "date": "2026-02-24",
+      "start_time": "2026-02-24T21:18:53.867837",
+      "end_time": "2026-02-24T21:18:53.871866",
+      "duration": 0.0,
+      "status": "success",
+      "counts": {
+        "total_signals": 35,
+        "signals_checked": 35,
+        "signals_with_horizon": 0,
+        "realized": 0,
+        "unrealized": 35
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {},
+      "start_time_display": "2026-02-24 21:18:53",
+      "end_time_display": "2026-02-24 21:18:53",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step7",
+      "step_name": "Execute Trading Strategies",
+      "date": "2026-02-24",
+      "start_time": "2026-02-24T21:18:53.907280",
+      "end_time": "2026-02-24T21:18:53.925142",
+      "duration": 0.02,
+      "status": "success",
+      "counts": {
+        "strategy_combinations": 9,
+        "strategies_executed": 9,
+        "total_trades": 0
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_csv": "/workspace/group/fx-portfolio/data/exports/step7_strategies.csv",
+        "output_json": "/workspace/group/fx-portfolio/data/exports/step7_strategies_detail.json"
+      },
+      "start_time_display": "2026-02-24 21:18:53",
+      "end_time_display": "2026-02-24 21:18:53",
+      "status_icon": "\u2713"
+    }
+  ]
+}

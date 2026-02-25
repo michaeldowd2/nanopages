@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FX Portfolio - nano</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Courier New', monospace;
+      background: #0a0e27;
+      color: #00ff41;
+      line-height: 1.3;
+      padding: 15px;
+      font-size: 11px;
+    }
+    .header {
+      border-bottom: 2px solid #00ff41;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    .header h1 {
+      font-size: 1.5em;
+      color: #00ff41;
+      text-shadow: 0 0 10px #00ff41;
+    }
+    .header .timestamp {
+      color: #888;
+      font-size: 0.85em;
+      margin-top: 3px;
+    }
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 8px;
+      flex-wrap: wrap;
+      font-size: 0.8em;
+    }
+    .tab {
+      padding: 4px 10px;
+      background: #1a1e3a;
+      border: 1px solid #333;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #888;
+    }
+    .tab:hover {
+      background: #2a2e4a;
+      border-color: #00ff41;
+    }
+    .tab.active {
+      background: #00ff41;
+      color: #0a0e27;
+      border-color: #00ff41;
+      font-weight: bold;
+    }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .section {
+      background: #1a1e3a;
+      border: 1px solid #333;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+    }
+    .section h2 {
+      color: #00ff41;
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 6px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 0.95em;
+    }
+    th, td {
+      padding: 4px 6px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    th {
+      color: #00ff41;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      background: #1a1e3a;
+      font-size: 0.9em;
+    }
+    td {
+      color: #ccc;
+    }
+    .bullish { color: #00ff41; }
+    .bearish { color: #ff4444; }
+    .neutral { color: #888; }
+    .csv-table-container {
+      max-height: 500px;
+      overflow-y: auto;
+      overflow-x: auto;
+      margin-top: 8px;
+    }
+    .loading {
+      color: #888;
+      text-align: center;
+      padding: 30px;
+      font-size: 0.9em;
+    }
+    .architecture-diagram {
+      background: #0f1229;
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: monospace;
+    }
+    pre {
+      color: #00ff41;
+      font-size: 0.7em;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+    .status-indicator {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .status-active { background: #00ff41; box-shadow: 0 0 4px #00ff41; }
+    .status-inactive { background: #555; }
+    .step-header {
+      color: #888;
+      font-size: 0.85em;
+      margin-bottom: 8px;
+    }
+    .csv-download {
+      float: right;
+      color: #00ff41;
+      text-decoration: none;
+      font-size: 0.85em;
+      border: 1px solid #00ff41;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+    .csv-download:hover {
+      background: #00ff41;
+      color: #0a0e27;
+    }
+    .chart {
+      margin: 15px 0;
+      padding: 10px;
+      background: #0f1229;
+      border: 1px solid #333;
+      border-radius: 4px;
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      margin: 3px 0;
+    }
+    .bar-label {
+      width: 60px;
+      color: #888;
+      font-size: 0.85em;
+    }
+    .bar-fill {
+      height: 14px;
+      background: #00ff41;
+      margin-right: 8px;
+      transition: width 0.3s;
+    }
+    .bar-value {
+      color: #ccc;
+      font-size: 0.85em;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>⚡ FX PORTFOLIO DASHBOARD</h1>
+    <div class="timestamp">Last updated: <span id="lastUpdate"></span></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('overview')">OVERVIEW</div>
+    <div class="tab" onclick="showTab('config')">CONFIG</div>
+    <div class="tab" onclick="showTab('step1')">STEP 1</div>
+    <div class="tab" onclick="showTab('step2')">STEP 2</div>
+    <div class="tab" onclick="showTab('step3')">STEP 3</div>
+    <div class="tab" onclick="showTab('step4')">STEP 4</div>
+    <div class="tab" onclick="showTab('step5')">STEP 5</div>
+    <div class="tab" onclick="showTab('step6')">STEP 6</div>
+    <div class="tab" onclick="showTab('step7')">STEP 7</div>
+    <div class="tab" onclick="showTab('tracking')">TRACKING</div>
+  </div>
+
+  <!-- OVERVIEW TAB -->
+  <div id="overview" class="tab-content active">
+    <div class="section">
+      <h2>7-Step Pipeline Architecture</h2>
+      <div class="architecture-diagram">
+        <pre>
+1. EXCHANGE RATES ──► 2. INDICES ──► 3. NEWS AGGREGATOR
+       │                   │                  │
+       └───────────────────┴──────────────────┘
+                           │
+           ┌───────────────┴───────────────┐
+           │                               │
+           ▼                               ▼
+    4. TIME HORIZONS              5. SENTIMENT SIGNALS
+       (Parallel)                    (Per-Article)
+       • LLM Estimator               • News-Sentiment
+       • Keyword (future)            • LLM (future)
+           │                               │
+           └───────────────┬───────────────┘
+                           ▼
+                6. REALIZATION CHECKER
+                   • Predicted vs Actual
+                   • Tag: realized=T/F
+                           │
+                           ▼
+                    7. STRATEGIES
+                   • Filter unrealized
+                   • Execute trades
+                   • Track portfolio
+        </pre>
+      </div>
+      <div style="margin-top:10px; color:#888; font-size:0.85em;">
+        <strong>Principles:</strong> Separation | Parallelizable | Composable | Testable | Observable
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Pipeline Components</h2>
+      <div style="margin-bottom: 20px;">
+
+        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 1: EUR Pairs</h3>
+        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
+          <strong>Purpose:</strong> Download daily EUR-based FX rates for all 11 currencies<br>
+          <strong>Source:</strong> External FX data API<br>
+          <strong>Output:</strong> fx-rates-{date}.json with EUR as base currency<br>
+          <strong>Frequency:</strong> Daily
+        </div>
+
+        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 2: Synthetic Indices</h3>
+        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
+          <strong>Purpose:</strong> Calculate currency strength indices using geometric mean methodology<br>
+          <strong>Method:</strong> Geometric mean of all currency pairs (isolates each currency's movement)<br>
+          <strong>Formula:</strong> index = (rate₁ × rate₂ × ... × rateₙ)^(1/n) normalized to base=100<br>
+          <strong>Pairs used:</strong> 10 pairs per currency (all other currencies)<br>
+          <strong>Use:</strong> Enables measuring actual currency movements for realization checking<br>
+          <strong>Note:</strong> Professional-grade synthetic indices (same methodology as DXY, EXY)
+        </div>
+
+        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 3: News Aggregator</h3>
+        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
+          <strong>Purpose:</strong> Fetch and filter FX news articles per currency<br>
+          <strong>Sources:</strong> RSS feeds, web scraping<br>
+          <strong>Features:</strong>
+          <ul style="margin:5px 0; padding-left:20px;">
+            <li>Timestamp extraction from articles</li>
+            <li>URL deduplication (global index)</li>
+            <li>30-day retention window</li>
+            <li>Relevance scoring per currency (keyword matching)</li>
+            <li>Pair-aware filing (e.g., "AUD/USD" → filed under both AUD & USD)</li>
+          </ul>
+        </div>
+
+        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 4: Horizon Estimator</h3>
+        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
+          <strong>Purpose:</strong> Extracts predicted time horizon from articles (e.g., "1-3 days", "this week")<br><br>
+
+          <div style="border:1px solid #333; border-radius:4px; padding:10px; margin:10px 0; background:#0f1229;">
+            <strong style="color:#00ff41;">Type:</strong> llm-horizon-estimator-v1<br>
+            <strong>Method:</strong> LLM analysis via nanoclaw orchestrator<br>
+            <strong>Parameters:</strong>
+            <ul style="margin:5px 0; padding-left:20px;">
+              <li>Model: Claude Haiku (via nanoclaw)</li>
+              <li>Temperature: 0.3</li>
+            </ul>
+          </div>
+
+          <strong>Future types:</strong> keyword-based estimator for common phrases
+        </div>
+
+        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 5: Signal Generator</h3>
+        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
+          <strong>Purpose:</strong> Analyzes article sentiment to predict currency direction & magnitude<br><br>
+
+          <div style="border:1px solid #333; border-radius:4px; padding:10px; margin:10px 0; background:#0f1229;">
+            <strong style="color:#00ff41;">Type:</strong> keyword-sentiment-v1.1<br>
+            <strong>Method:</strong> Keyword matching with negation detection<br>
+            <strong>Parameters:</strong>
+            <ul style="margin:5px 0; padding-left:20px;">
+              <li>keyword_set: standard (47 bullish, 51 bearish, 12 neutral)</li>
+              <li>negation_enabled: true (detects "shedding gains", "pares gains")</li>
+              <li>confidence_boost: 1.5x multiplier</li>
+              <li>min_keyword_count: 1</li>
+              <li>magnitude_estimation: true (low/medium/high)</li>
+            </ul>
+          </div>
+
+          <strong>Future types:</strong> llm-sentiment-v1 for enhanced analysis
+        </div>
+
+        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 6: Realization Checker</h3>
+        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
+          <strong>Purpose:</strong> Validates signal predictions against actual currency movements<br>
+          <strong>Method:</strong> Compare predicted direction/magnitude with actual index changes<br>
+          <strong>Logic:</strong>
+          <ul style="margin:5px 0; padding-left:20px;">
+            <li>Direction match: predicted bullish/bearish vs actual movement</li>
+            <li>Magnitude check: actual ≥ 50% of predicted magnitude</li>
+            <li>Status: realized | partially_realized | unrealized | contradicted</li>
+          </ul>
+          <strong>Output:</strong> Tags each signal with realized=true/false + actual_movement data
+        </div>
+
+        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 7: Strategy</h3>
+        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
+          <strong>Purpose:</strong> Pairs strongest vs weakest currencies, executes hypothetical trades<br><br>
+
+          <div style="border:1px solid #333; border-radius:4px; padding:10px; margin:10px 0; background:#0f1229;">
+            <strong style="color:#00ff41;">Type:</strong> simple-momentum<br>
+            <strong>Method:</strong> Aggregate unrealized signals, pair strongest vs weakest, execute trades with spreads<br>
+            <strong>Parameters:</strong> 9 instances (3 confidence × 3 trade sizes)
+            <ul style="margin:5px 0; padding-left:20px;">
+              <li>confidence_threshold: 0.5, 0.6, 0.7</li>
+              <li>trade_size_pct: 0.25, 0.50, 0.75</li>
+              <li>aggregation_method: average</li>
+              <li>estimator_ids: ["llm-horizon-v1-default"]</li>
+              <li>generator_ids: ["keyword-sentiment-v1.1-standard"]</li>
+              <li>spread: 0.74% (Revolut)</li>
+              <li>initial_portfolio: €10,000</li>
+            </ul>
+          </div>
+
+          <strong>Future types:</strong> mean-reversion, breakout-trader strategies
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Pipeline Status</h2>
+      <table>
+        <tr>
+          <th>Step</th>
+          <th>Component</th>
+          <th>Status</th>
+          <th>Details</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td><span class="status-indicator status-active"></span>EUR Pairs</td>
+          <td class="bullish">Active</td>
+          <td><span id="step1-count">-</span> records</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><span class="status-indicator status-active"></span>Indices</td>
+          <td class="bullish">Active</td>
+          <td><span id="step2-count">-</span> points</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><span class="status-indicator status-active"></span>News</td>
+          <td class="bullish">Active</td>
+          <td><span id="step3-count">-</span> articles</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><span class="status-indicator status-active"></span>Horizons</td>
+          <td class="bullish">LLM</td>
+          <td><span id="step4-count">-</span> analyzed</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><span class="status-indicator status-active"></span>Signals</td>
+          <td class="bullish">Active</td>
+          <td><span id="step5-count">-</span> signals</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><span class="status-indicator status-active"></span>Realization</td>
+          <td class="bullish">Active</td>
+          <td><span id="step6-count">-</span> checked</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><span class="status-indicator status-active"></span>Strategies</td>
+          <td class="bullish">Active</td>
+          <td><span id="step7-count">-</span> combos</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- CONFIG TAB -->
+  <div id="tracking" class="tab-content">
+    <div class="section">
+      <h2>Pipeline Run Tracking</h2>
+      <p class="step-header">Debug view: step durations, errors, and execution logs per day</p>
+
+      <div style="margin:20px 0;">
+        <label for="tracking-date-selector" style="color:#ccc; font-size:0.9em;">Select Date:</label>
+        <select id="tracking-date-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:8px; margin:10px 0; font-size:1em; border-radius:4px; width:200px;">
+          <option value="">Loading dates...</option>
+        </select>
+        <span id="tracking-summary" style="color:#888; font-size:0.9em; margin-left:15px;"></span>
+      </div>
+
+      <div id="tracking-content" style="color:#888; font-size:0.9em;">
+        Select a date to view run tracking information.
+      </div>
+
+      <div id="tracking-steps" style="display:none; margin-top:20px;"></div>
+    </div>
+  </div>
+
+  <div id="config" class="tab-content">
+    <div class="section">
+      <h2>System Configuration</h2>
+      <p class="step-header">All configured modules are active (presence in config = active)</p>
+
+      <div style="background:#1a1a1a; border:1px solid #333; border-radius:4px; padding:12px; margin:15px 0; color:#ccc; font-size:0.9em;">
+        <strong style="color:#00ff41;">ℹ️ Configuration Design:</strong><br>
+        • Each module+parameter combination has a unique ID<br>
+        • <strong>All listed modules are active</strong> - no separate "active" flag<br>
+        • Strategies reference specific estimator and generator IDs<br>
+        • To add/remove: edit <code style="background:#0a0a0a; padding:2px 6px; border-radius:2px;">config/system_config.json</code>
+      </div>
+
+      <div id="config-loading" style="color:#888; margin:20px 0;">Loading configuration...</div>
+      <div id="config-content"></div>
+    </div>
+  </div>
+
+  <!-- STEP TABS -->
+  <div id="step1" class="tab-content">
+    <div class="section">
+      <h2>Step 1: Exchange Rates (All Pairs) <a href="data/step1_exchange_rates.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">All currency pair exchange rates (10×10 matrix)</p>
+      <p style="color:#888; font-size:0.9em; margin-bottom:10px;">
+        Each cell shows how much COLUMN currency you get for 1 ROW currency.<br>
+        Example: Row=USD, Column=JPY shows USD/JPY rate (how many JPY per 1 USD).
+      </p>
+      <div class="csv-table-container">
+        <div class="loading" id="step1-loading">Loading...</div>
+        <div id="step1-matrix" style="display:none; overflow-x:auto;">
+          <p id="step1-date" style="color:#888; font-size:0.9em; margin-bottom:10px;"></p>
+          <table id="step1-table" style="font-size:0.85em;">
+            <!-- Table header and body generated dynamically from matrix data -->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="step2" class="tab-content">
+    <div class="section">
+      <h2>Step 2: Indices <a href="data/step2_indices.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Synthetic currency strength (100=base)</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step2-loading">Loading...</div>
+        <table id="step2-table" style="display:none;">
+          <thead id="step2-thead"></thead>
+          <tbody id="step2-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step3" class="tab-content">
+    <div class="section">
+      <h2>Step 3: News <a href="data/step3_news.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Aggregated FX news (30-day retention)</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step3-loading">Loading...</div>
+        <table id="step3-table" style="display:none;">
+          <thead id="step3-thead"></thead>
+          <tbody id="step3-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step4" class="tab-content">
+    <div class="section">
+      <h2>Step 4: Time Horizons <a href="data/step4_horizons.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">LLM-estimated timeframes</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step4-loading">Loading...</div>
+        <table id="step4-table" style="display:none;">
+          <thead id="step4-thead"></thead>
+          <tbody id="step4-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step5" class="tab-content">
+    <div class="section">
+      <h2>Step 5: Signals <a href="data/step5_signals.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Per-article signals with predictions</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step5-loading">Loading...</div>
+        <table id="step5-table" style="display:none;">
+          <thead id="step5-thead"></thead>
+          <tbody id="step5-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step6" class="tab-content">
+    <div class="section">
+      <h2>Step 6: Realization <a href="data/step6_realization.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Predicted vs actual (realized=T/F)</p>
+      <div class="csv-table-container">
+        <div class="loading" id="step6-loading">Loading...</div>
+        <table id="step6-table" style="display:none;">
+          <thead id="step6-thead"></thead>
+          <tbody id="step6-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="step7" class="tab-content">
+    <div class="section">
+      <h2>Step 7: Strategies <a href="data/step7_strategies.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">9 parameter combinations (Simple Momentum)</p>
+
+      <div class="chart">
+        <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Portfolio Values by Strategy</h3>
+        <div id="strategy-chart"></div>
+      </div>
+
+      <div class="csv-table-container">
+        <div class="loading" id="step7-loading">Loading...</div>
+        <table id="step7-table" style="display:none;">
+          <thead id="step7-thead"></thead>
+          <tbody id="step7-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Strategy Detail Section -->
+      <div id="strategy-detail" style="display:none; margin-top:30px; padding-top:30px; border-top:1px solid #333;">
+        <h3 style="color:#00ff41;font-size:1.1em;margin-bottom:15px;">Strategy Details</h3>
+
+        <label for="strategy-selector" style="color:#ccc; font-size:0.9em;">Select Strategy:</label>
+        <select id="strategy-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:8px; margin:10px 0; font-size:1em; border-radius:4px;">
+          <option value="">Choose a strategy...</option>
+        </select>
+
+        <div id="strategy-info" style="display:none;">
+          <!-- Currency Signals -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Currency Signals</h4>
+            <div id="currency-signals" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px;"></div>
+          </div>
+
+          <!-- Trade Recommendations -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Trade Recommendations</h4>
+            <div id="trade-recommendations"></div>
+          </div>
+
+          <!-- Portfolio Breakdown -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Portfolio Breakdown</h4>
+            <div id="portfolio-breakdown"></div>
+          </div>
+
+          <!-- Time Series (Future) -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Portfolio Value Over Time</h4>
+            <p style="color:#888; font-size:0.9em;">Requires multiple days of data (coming soon)</p>
+            <div id="portfolio-timeseries"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showTab(tabName) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tabName).classList.add('active');
+      if (tabName.startsWith('step')) loadCSV(tabName);
+    }
+
+    function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim());
+      const rows = lines.slice(1).map(line => {
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+        for (let char of line) {
+          if (char === '"') inQuotes = !inQuotes;
+          else if (char === ',' && !inQuotes) { values.push(current.trim()); current = ''; }
+          else current += char;
+        }
+        values.push(current.trim());
+        return headers.reduce((obj, header, i) => {
+          obj[header] = values[i] || '';
+          return obj;
+        }, {});
+      });
+      return { headers, rows };
+    }
+
+    const loadedCSVs = {};
+    function loadCSV(step) {
+      if (loadedCSVs[step]) return;
+
+      // Step 1 uses special matrix format
+      if (step === 'step1') {
+        loadExchangeRateMatrix();
+        return;
+      }
+
+      const csvFile = {
+        'step2': 'data/step2_indices.csv',
+        'step3': 'data/step3_news.csv',
+        'step4': 'data/step4_horizons.csv',
+        'step5': 'data/step5_signals.csv',
+        'step6': 'data/step6_realization.csv',
+        'step7': 'data/step7_strategies.csv'
+      }[step];
+
+      fetch(csvFile)
+        .then(res => res.text())
+        .then(text => {
+          const { headers, rows } = parseCSV(text);
+          const thead = document.getElementById(`${step}-thead`);
+          const tbody = document.getElementById(`${step}-tbody`);
+          const table = document.getElementById(`${step}-table`);
+          const loading = document.getElementById(`${step}-loading`);
+
+          thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+          tbody.innerHTML = rows.map(row => {
+            return '<tr>' + headers.map(h => {
+              let value = row[h];
+              let className = '';
+              if (value === 'bullish') className = 'bullish';
+              else if (value === 'bearish') className = 'bearish';
+              else if (value === 'neutral') className = 'neutral';
+              else if (value === 'true') className = 'bullish';
+              else if (value === 'false') className = 'bearish';
+              return `<td class="${className}" title="${value}">${value}</td>`;
+            }).join('') + '</tr>';
+          }).join('');
+
+          loading.style.display = 'none';
+          table.style.display = 'table';
+          loadedCSVs[step] = true;
+
+          const countEl = document.getElementById(`${step}-count`);
+          if (countEl) countEl.textContent = rows.length;
+
+          // Generate charts
+          if (step === 'step7' && rows.length > 0) {
+            generateStrategyChart(rows);
+            loadStrategyDetails();
+          }
+        })
+        .catch(err => {
+          document.getElementById(`${step}-loading`).textContent = 'Error: ' + err.message;
+        });
+    }
+
+    function generateStrategyChart(rows) {
+      const chartDiv = document.getElementById('strategy-chart');
+      const maxValue = Math.max(...rows.map(r => parseFloat(r.current_value) || 0));
+
+      chartDiv.innerHTML = rows.map(row => {
+        const value = parseFloat(row.current_value) || 0;
+        const pct = (value / maxValue) * 100;
+        const params = row.strategy_params.replace(/_/g, ' ');
+
+        return `
+          <div class="bar">
+            <div class="bar-label">${params}</div>
+            <div class="bar-fill" style="width:${pct}%"></div>
+            <div class="bar-value">€${value.toLocaleString()}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    let strategyDetailData = [];
+
+    function loadStrategyDetails() {
+      fetch('data/step7_strategies_detail.json')
+        .then(res => res.json())
+        .then(data => {
+          strategyDetailData = data;
+
+          const selector = document.getElementById('strategy-selector');
+          const detailDiv = document.getElementById('strategy-detail');
+
+          // Populate selector
+          selector.innerHTML = '<option value="">Choose a strategy...</option>' +
+            data.map((strat, idx) => {
+              const params = strat.strategy_params.replace(/_/g, ' ');
+              return `<option value="${idx}">${params}</option>`;
+            }).join('');
+
+          // Show detail section
+          detailDiv.style.display = 'block';
+
+          // Add change listener
+          selector.addEventListener('change', (e) => {
+            const idx = e.target.value;
+            if (idx === '') {
+              document.getElementById('strategy-info').style.display = 'none';
+            } else {
+              displayStrategyDetails(strategyDetailData[idx]);
+            }
+          });
+        })
+        .catch(err => {
+          console.error('Error loading strategy details:', err);
+        });
+    }
+
+    function displayStrategyDetails(strat) {
+      const infoDiv = document.getElementById('strategy-info');
+      infoDiv.style.display = 'block';
+
+      // Currency Signals
+      const signalsDiv = document.getElementById('currency-signals');
+      const signals = strat.aggregate_signals || {};
+      signalsDiv.innerHTML = Object.keys(signals).map(curr => {
+        const sig = signals[curr];
+        const dirClass = sig.direction === 'bullish' ? 'bullish' : sig.direction === 'bearish' ? 'bearish' : 'neutral';
+        const dirSymbol = sig.direction === 'bullish' ? '▲' : sig.direction === 'bearish' ? '▼' : '—';
+        return `
+          <div style="padding:10px; background:#1a1a1a; border-left:3px solid ${dirClass === 'bullish' ? '#00ff41' : dirClass === 'bearish' ? '#ff4444' : '#666'}; border-radius:4px;">
+            <div style="font-weight:bold; font-size:1.1em;">${curr}</div>
+            <div class="${dirClass}" style="font-size:0.9em;">${dirSymbol} ${sig.direction}</div>
+            <div style="color:#888; font-size:0.85em;">conf: ${(sig.confidence * 100).toFixed(0)}%</div>
+          </div>
+        `;
+      }).join('');
+
+      // Trade Recommendations
+      const tradesDiv = document.getElementById('trade-recommendations');
+      const trades = strat.executed_trades || [];
+      if (trades.length === 0) {
+        tradesDiv.innerHTML = '<p style="color:#888; font-size:0.9em;">No trades executed (insufficient signal confidence or balance)</p>';
+      } else {
+        tradesDiv.innerHTML = '<table style="width:100%; font-size:0.9em; border-collapse:collapse;">' +
+          '<thead><tr><th>From</th><th>Amount</th><th>To</th><th>Amount</th><th>Rate</th><th>Confidence</th></tr></thead>' +
+          '<tbody>' +
+          trades.map(t => `
+            <tr style="border-bottom:1px solid #333;">
+              <td class="bearish">${t.from_currency}</td>
+              <td>${t.from_amount.toLocaleString()}</td>
+              <td class="bullish">${t.to_currency}</td>
+              <td>${t.to_amount.toLocaleString()}</td>
+              <td>${t.pair_rate ? t.pair_rate.toFixed(4) : 'N/A'}</td>
+              <td>${((t.buy_confidence + t.sell_confidence) / 2 * 100).toFixed(0)}%</td>
+            </tr>
+          `).join('') +
+          '</tbody></table>';
+      }
+
+      // Portfolio Breakdown
+      const portfolioDiv = document.getElementById('portfolio-breakdown');
+      const portfolio = strat.portfolio || {};
+      const totalValue = strat.current_value || 0;
+
+      portfolioDiv.innerHTML = `
+        <div style="margin-bottom:15px;">
+          <span style="color:#00ff41; font-size:1.2em; font-weight:bold;">Total: €${totalValue.toLocaleString()}</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:10px;">
+          ${Object.keys(portfolio).filter(curr => portfolio[curr] > 0).map(curr => `
+            <div style="padding:10px; background:#1a1a1a; border-radius:4px;">
+              <div style="font-weight:bold;">${curr}</div>
+              <div style="color:#00ff41; font-size:0.9em;">${portfolio[curr].toLocaleString()}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function loadExchangeRateMatrix() {
+      if (loadedCSVs['step1']) return;
+
+      const loading = document.getElementById('step1-loading');
+      const matrixDiv = document.getElementById('step1-matrix');
+      const table = document.getElementById('step1-table');
+      const dateEl = document.getElementById('step1-date');
+
+      fetch('data/step1_exchange_rates_matrix.json')
+        .then(res => res.json())
+        .then(data => {
+          const matrix = data.matrix || {};
+          const date = data.date || '';
+
+          dateEl.textContent = `Exchange rates as of: ${date}`;
+
+          const currencies = Object.keys(matrix).sort();
+
+          // Generate thead dynamically
+          const theadHtml = `
+            <thead>
+              <tr>
+                <th style="background:#1a1a1a; position:sticky; left:0; z-index:2;">Base \\ Quote</th>
+                ${currencies.map(curr => `<th>${curr}</th>`).join('')}
+              </tr>
+            </thead>
+          `;
+
+          // Generate tbody dynamically
+          const tbodyHtml = `
+            <tbody>
+              ${currencies.map(baseCurr => `
+                <tr>
+                  <th style="background:#1a1a1a; position:sticky; left:0; z-index:1; text-align:left; padding:8px;">${baseCurr}</th>
+                  ${currencies.map(quoteCurr => {
+                    const rate = matrix[baseCurr] && matrix[baseCurr][quoteCurr];
+                    const displayRate = rate === 1.0 ? '—' : (rate ? rate.toFixed(4) : 'N/A');
+                    const cellStyle = rate === 1.0 ? 'background:#0a0a0a; color:#555;' : '';
+                    return `<td style="${cellStyle}">${displayRate}</td>`;
+                  }).join('')}
+                </tr>
+              `).join('')}
+            </tbody>
+          `;
+
+          // Replace entire table content
+          table.innerHTML = theadHtml + tbodyHtml;
+
+          loading.style.display = 'none';
+          matrixDiv.style.display = 'block';
+          loadedCSVs['step1'] = true;
+        })
+        .catch(err => {
+          loading.textContent = 'Error loading exchange rates: ' + err.message;
+        });
+    }
+
+    function loadSystemConfig() {
+      const loading = document.getElementById('config-loading');
+      const content = document.getElementById('config-content');
+
+      fetch('data/system_config.json')
+        .then(res => res.json())
+        .then(config => {
+          loading.style.display = 'none';
+
+          // Currencies
+          const currencies = config.currencies || [];
+          content.innerHTML = `
+            <div style="margin-top:20px;">
+              <h3 style="color:#00ff41; font-size:1.1em;">📊 Currencies (${currencies.length})</h3>
+              <div style="padding:10px 15px; background:#0f1229; border-radius:4px; margin-top:5px;">
+                <span style="color:#ccc; font-family:monospace;">${currencies.join(', ')}</span>
+              </div>
+            </div>
+          `;
+
+          // Estimators
+          const estimators = config.horizon_estimators || {};
+          const estCount = Object.keys(estimators).length;
+          content.innerHTML += `
+            <div style="margin-top:25px;">
+              <h3 style="color:#00ff41; font-size:1.1em;">🔮 Horizon Estimators (${estCount})</h3>
+              ${Object.entries(estimators).map(([id, est]) => `
+                <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #00ff41; border-radius:4px;">
+                  <div style="color:#00ff41; font-weight:bold;">${id}</div>
+                  <div style="color:#888; font-size:0.9em; margin-top:5px;">${est.description || ''}</div>
+                  <div style="color:#666; font-size:0.85em; margin-top:8px; font-family:monospace;">
+                    Type: ${est.type}<br>
+                    Parameters:<br>
+                    ${Object.entries(est.params || {}).map(([k, v]) => `• ${k}: ${JSON.stringify(v)}`).join('<br>')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+
+          // Generators
+          const generators = config.signal_generators || {};
+          const genCount = Object.keys(generators).length;
+          content.innerHTML += `
+            <div style="margin-top:25px;">
+              <h3 style="color:#00ff41; font-size:1.1em;">📈 Signal Generators (${genCount})</h3>
+              ${Object.entries(generators).map(([id, gen]) => `
+                <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #00ff41; border-radius:4px;">
+                  <div style="color:#00ff41; font-weight:bold;">${id}</div>
+                  <div style="color:#888; font-size:0.9em; margin-top:5px;">${gen.description || ''}</div>
+                  <div style="color:#666; font-size:0.85em; margin-top:8px; font-family:monospace;">
+                    Type: ${gen.type}<br>
+                    Parameters:<br>
+                    ${Object.entries(gen.params || {}).map(([k, v]) => `• ${k}: ${JSON.stringify(v)}`).join('<br>')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+
+          // Strategies
+          const strategies = config.strategies || {};
+          const stratCount = Object.keys(strategies).length;
+          content.innerHTML += `
+            <div style="margin-top:25px;">
+              <h3 style="color:#00ff41; font-size:1.1em;">🎯 Strategies (${stratCount})</h3>
+              ${Object.entries(strategies).map(([id, strat]) => {
+                const params = strat.params || {};
+                return `
+                  <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #00ff41; border-radius:4px;">
+                    <div style="color:#00ff41; font-weight:bold;">${id}</div>
+                    <div style="color:#888; font-size:0.9em; margin-top:5px;">${strat.description || ''}</div>
+                    <div style="color:#666; font-size:0.85em; margin-top:8px; font-family:monospace;">
+                      Type: ${strat.type}<br>
+                      Parameters:<br>
+                      • confidence_threshold: ${params.confidence_threshold}<br>
+                      • trade_size_pct: ${params.trade_size_pct}<br>
+                      • aggregation_method: ${params.aggregation_method}<br>
+                      <br>
+                      Uses:<br>
+                      • Estimators: ${(params.estimator_ids || []).join(', ')}<br>
+                      • Generators: ${(params.generator_ids || []).join(', ')}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `;
+
+          // Config file info
+          content.innerHTML += `
+            <div style="margin-top:25px; padding:15px; background:#1a1e3a; border:1px solid #333; border-radius:4px;">
+              <h3 style="color:#00ff41; font-size:1em; margin-top:0;">⚙️ Configuration File</h3>
+              <div style="color:#888; font-size:0.9em;">
+                <p>Location: <code style="color:#00ff41;">/workspace/group/fx-portfolio/config/system_config.json</code></p>
+                <p>To modify: Edit the JSON file and redeploy the dashboard</p>
+                <p>All modules listed in the config are active - presence in config = active</p>
+              </div>
+            </div>
+          `;
+        })
+        .catch(err => {
+          loading.textContent = 'Error loading configuration: ' + err.message;
+        });
+    }
+
+    function loadTrackingDates() {
+      fetch('data/tracking_dates.json')
+        .then(res => res.json())
+        .then(data => {
+          const selector = document.getElementById('tracking-date-selector');
+          const dates = data.dates || [];
+
+          if (dates.length === 0) {
+            selector.innerHTML = '<option value="">No runs available</option>';
+            return;
+          }
+
+          selector.innerHTML = '<option value="">Select a date...</option>' +
+            dates.map(d => {
+              const statusIcon = d.status === 'success' ? '✓' : d.status === 'partial' ? '⚠️' : '❌';
+              return `<option value="${d.date}">${statusIcon} ${d.date} (${d.successful_steps}/${d.total_steps} steps)</option>`;
+            }).join('');
+
+          // Add change listener
+          selector.addEventListener('change', (e) => {
+            const date = e.target.value;
+            if (date) {
+              loadTrackingLog(date);
+            } else {
+              document.getElementById('tracking-steps').style.display = 'none';
+              document.getElementById('tracking-content').textContent = 'Select a date to view run tracking information.';
+            }
+          });
+        })
+        .catch(err => {
+          document.getElementById('tracking-date-selector').innerHTML = '<option value="">Error loading dates</option>';
+          console.error('Error loading tracking dates:', err);
+        });
+    }
+
+    function loadTrackingLog(date) {
+      const summaryEl = document.getElementById('tracking-summary');
+      const contentEl = document.getElementById('tracking-content');
+      const stepsEl = document.getElementById('tracking-steps');
+
+      summaryEl.textContent = 'Loading...';
+      contentEl.textContent = '';
+      stepsEl.style.display = 'none';
+
+      fetch(`data/tracking_${date}.json`)
+        .then(res => res.json())
+        .then(data => {
+          const steps = data.steps || [];
+
+          // Summary
+          const totalDuration = steps.reduce((sum, s) => sum + (s.duration || 0), 0);
+          const successCount = steps.filter(s => s.status === 'success').length;
+          const failCount = steps.filter(s => s.status === 'failed').length;
+          const errorCount = steps.reduce((sum, s) => sum + (s.errors || []).length, 0);
+          const warnCount = steps.reduce((sum, s) => sum + (s.warnings || []).length, 0);
+
+          summaryEl.innerHTML = `
+            <span style="color:#00ff41;">${successCount} ✓</span>
+            ${failCount > 0 ? `<span style="color:#ff4444; margin-left:10px;">${failCount} ❌</span>` : ''}
+            <span style="margin-left:10px;">Total: ${totalDuration.toFixed(1)}s</span>
+            ${errorCount > 0 ? `<span style="color:#ff4444; margin-left:10px;">${errorCount} errors</span>` : ''}
+            ${warnCount > 0 ? `<span style="color:#ff8800; margin-left:10px;">${warnCount} warnings</span>` : ''}
+          `;
+
+          contentEl.innerHTML = '';
+
+          // Render steps
+          stepsEl.innerHTML = steps.map(step => {
+            const statusColor = step.status === 'success' ? '#00ff41' : step.status === 'failed' ? '#ff4444' : '#888';
+            const borderColor = step.status === 'success' ? '#00ff41' : step.status === 'failed' ? '#ff4444' : '#666';
+
+            return `
+              <div style="background:#1a1a1a; border-left:3px solid ${borderColor}; border-radius:4px; padding:15px; margin-bottom:15px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <h3 style="color:${statusColor}; font-size:1.1em; margin:0;">
+                    ${step.status_icon} ${step.step_name}
+                  </h3>
+                  <span style="color:#888; font-size:0.9em;">${step.duration ? step.duration.toFixed(2) + 's' : 'N/A'}</span>
+                </div>
+
+                <div style="color:#888; font-size:0.85em; margin-bottom:10px;">
+                  <div>${step.start_time_display || 'N/A'} → ${step.end_time_display || 'N/A'}</div>
+                </div>
+
+                ${Object.keys(step.counts || {}).length > 0 ? `
+                  <div style="margin-top:10px;">
+                    <strong style="color:#00ff41; font-size:0.9em;">Counts:</strong>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:8px; margin-top:5px;">
+                      ${Object.entries(step.counts).map(([k, v]) => `
+                        <div style="background:#0a0a0a; padding:6px 10px; border-radius:3px;">
+                          <span style="color:#666; font-size:0.85em;">${k.replace(/_/g, ' ')}:</span>
+                          <span style="color:#00ff41; font-weight:bold; margin-left:5px;">${v.toLocaleString()}</span>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${Object.keys(step.info || {}).length > 0 ? `
+                  <div style="margin-top:10px;">
+                    <strong style="color:#00ff41; font-size:0.9em;">Info:</strong>
+                    <div style="color:#888; font-size:0.85em; margin-top:5px; padding:8px; background:#0a0a0a; border-radius:3px; font-family:monospace;">
+                      ${Object.entries(step.info).map(([k, v]) => `
+                        <div>${k}: ${v}</div>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${(step.warnings || []).length > 0 ? `
+                  <div style="margin-top:10px;">
+                    <strong style="color:#ff8800; font-size:0.9em;">⚠️ Warnings (${step.warnings.length}):</strong>
+                    <div style="margin-top:5px;">
+                      ${step.warnings.map(w => `
+                        <div style="background:#2a1a00; border-left:3px solid #ff8800; padding:8px; margin:5px 0; border-radius:3px; font-size:0.85em;">
+                          ${w.message}
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${(step.errors || []).length > 0 ? `
+                  <div style="margin-top:10px;">
+                    <strong style="color:#ff4444; font-size:0.9em;">❌ Errors (${step.errors.length}):</strong>
+                    <div style="margin-top:5px;">
+                      ${step.errors.map(e => `
+                        <div style="background:#2a0000; border-left:3px solid #ff4444; padding:8px; margin:5px 0; border-radius:3px; font-size:0.85em; font-family:monospace;">
+                          ${e.message}
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join('');
+
+          stepsEl.style.display = 'block';
+        })
+        .catch(err => {
+          summaryEl.textContent = '';
+          contentEl.textContent = 'Error loading log: ' + err.message;
+          console.error('Error loading tracking log:', err);
+        });
+    }
+
+    document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
+    ['step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7'].forEach(loadCSV);
+    loadSystemConfig();
+    loadTrackingDates();
+  </script>
+</body>
+</html>

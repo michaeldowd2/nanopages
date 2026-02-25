@@ -1,0 +1,722 @@
+[
+  {
+    "date": "2026-02-24",
+    "strategy_id": "simple-momentum-conf0.5-size0.25",
+    "strategy_name": "simple-momentum",
+    "strategy_params": "conf=0.5_size=0.25_agg=average",
+    "confidence_threshold": 0.5,
+    "trade_size_pct": 0.25,
+    "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
+    "signals_count": 0,
+    "unrealized_signals_count": 0,
+    "aggregate_signals": {
+      "EUR": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "USD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "GBP": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "JPY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CHF": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "AUD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CAD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "NOK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "SEK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CNY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "MXN": {
+        "direction": "neutral",
+        "confidence": 0.0
+      }
+    },
+    "proposed_trades_count": 0,
+    "executed_trades_count": 0,
+    "executed_trades": [],
+    "portfolio": {
+      "EUR": 10000,
+      "USD": 0.0,
+      "GBP": 0.0,
+      "JPY": 0.0,
+      "CHF": 0.0,
+      "AUD": 0.0,
+      "CAD": 0.0,
+      "NOK": 0.0,
+      "SEK": 0.0,
+      "CNY": 0.0,
+      "MXN": 0.0
+    },
+    "current_value": 10000.0
+  },
+  {
+    "date": "2026-02-24",
+    "strategy_id": "simple-momentum-conf0.5-size0.5",
+    "strategy_name": "simple-momentum",
+    "strategy_params": "conf=0.5_size=0.5_agg=average",
+    "confidence_threshold": 0.5,
+    "trade_size_pct": 0.5,
+    "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
+    "signals_count": 0,
+    "unrealized_signals_count": 0,
+    "aggregate_signals": {
+      "EUR": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "USD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "GBP": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "JPY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CHF": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "AUD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CAD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "NOK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "SEK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CNY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "MXN": {
+        "direction": "neutral",
+        "confidence": 0.0
+      }
+    },
+    "proposed_trades_count": 0,
+    "executed_trades_count": 0,
+    "executed_trades": [],
+    "portfolio": {
+      "EUR": 10000,
+      "USD": 0.0,
+      "GBP": 0.0,
+      "JPY": 0.0,
+      "CHF": 0.0,
+      "AUD": 0.0,
+      "CAD": 0.0,
+      "NOK": 0.0,
+      "SEK": 0.0,
+      "CNY": 0.0,
+      "MXN": 0.0
+    },
+    "current_value": 10000.0
+  },
+  {
+    "date": "2026-02-24",
+    "strategy_id": "simple-momentum-conf0.5-size0.75",
+    "strategy_name": "simple-momentum",
+    "strategy_params": "conf=0.5_size=0.75_agg=average",
+    "confidence_threshold": 0.5,
+    "trade_size_pct": 0.75,
+    "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
+    "signals_count": 0,
+    "unrealized_signals_count": 0,
+    "aggregate_signals": {
+      "EUR": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "USD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "GBP": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "JPY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CHF": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "AUD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CAD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "NOK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "SEK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CNY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "MXN": {
+        "direction": "neutral",
+        "confidence": 0.0
+      }
+    },
+    "proposed_trades_count": 0,
+    "executed_trades_count": 0,
+    "executed_trades": [],
+    "portfolio": {
+      "EUR": 10000,
+      "USD": 0.0,
+      "GBP": 0.0,
+      "JPY": 0.0,
+      "CHF": 0.0,
+      "AUD": 0.0,
+      "CAD": 0.0,
+      "NOK": 0.0,
+      "SEK": 0.0,
+      "CNY": 0.0,
+      "MXN": 0.0
+    },
+    "current_value": 10000.0
+  },
+  {
+    "date": "2026-02-24",
+    "strategy_id": "simple-momentum-conf0.6-size0.25",
+    "strategy_name": "simple-momentum",
+    "strategy_params": "conf=0.6_size=0.25_agg=average",
+    "confidence_threshold": 0.6,
+    "trade_size_pct": 0.25,
+    "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
+    "signals_count": 0,
+    "unrealized_signals_count": 0,
+    "aggregate_signals": {
+      "EUR": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "USD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "GBP": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "JPY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CHF": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "AUD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CAD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "NOK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "SEK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CNY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "MXN": {
+        "direction": "neutral",
+        "confidence": 0.0
+      }
+    },
+    "proposed_trades_count": 0,
+    "executed_trades_count": 0,
+    "executed_trades": [],
+    "portfolio": {
+      "EUR": 10000,
+      "USD": 0.0,
+      "GBP": 0.0,
+      "JPY": 0.0,
+      "CHF": 0.0,
+      "AUD": 0.0,
+      "CAD": 0.0,
+      "NOK": 0.0,
+      "SEK": 0.0,
+      "CNY": 0.0,
+      "MXN": 0.0
+    },
+    "current_value": 10000.0
+  },
+  {
+    "date": "2026-02-24",
+    "strategy_id": "simple-momentum-conf0.6-size0.5",
+    "strategy_name": "simple-momentum",
+    "strategy_params": "conf=0.6_size=0.5_agg=average",
+    "confidence_threshold": 0.6,
+    "trade_size_pct": 0.5,
+    "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
+    "signals_count": 0,
+    "unrealized_signals_count": 0,
+    "aggregate_signals": {
+      "EUR": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "USD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "GBP": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "JPY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CHF": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "AUD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CAD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "NOK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "SEK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CNY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "MXN": {
+        "direction": "neutral",
+        "confidence": 0.0
+      }
+    },
+    "proposed_trades_count": 0,
+    "executed_trades_count": 0,
+    "executed_trades": [],
+    "portfolio": {
+      "EUR": 10000,
+      "USD": 0.0,
+      "GBP": 0.0,
+      "JPY": 0.0,
+      "CHF": 0.0,
+      "AUD": 0.0,
+      "CAD": 0.0,
+      "NOK": 0.0,
+      "SEK": 0.0,
+      "CNY": 0.0,
+      "MXN": 0.0
+    },
+    "current_value": 10000.0
+  },
+  {
+    "date": "2026-02-24",
+    "strategy_id": "simple-momentum-conf0.6-size0.75",
+    "strategy_name": "simple-momentum",
+    "strategy_params": "conf=0.6_size=0.75_agg=average",
+    "confidence_threshold": 0.6,
+    "trade_size_pct": 0.75,
+    "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
+    "signals_count": 0,
+    "unrealized_signals_count": 0,
+    "aggregate_signals": {
+      "EUR": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "USD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "GBP": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "JPY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CHF": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "AUD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CAD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "NOK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "SEK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CNY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "MXN": {
+        "direction": "neutral",
+        "confidence": 0.0
+      }
+    },
+    "proposed_trades_count": 0,
+    "executed_trades_count": 0,
+    "executed_trades": [],
+    "portfolio": {
+      "EUR": 10000,
+      "USD": 0.0,
+      "GBP": 0.0,
+      "JPY": 0.0,
+      "CHF": 0.0,
+      "AUD": 0.0,
+      "CAD": 0.0,
+      "NOK": 0.0,
+      "SEK": 0.0,
+      "CNY": 0.0,
+      "MXN": 0.0
+    },
+    "current_value": 10000.0
+  },
+  {
+    "date": "2026-02-24",
+    "strategy_id": "simple-momentum-conf0.7-size0.25",
+    "strategy_name": "simple-momentum",
+    "strategy_params": "conf=0.7_size=0.25_agg=average",
+    "confidence_threshold": 0.7,
+    "trade_size_pct": 0.25,
+    "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
+    "signals_count": 0,
+    "unrealized_signals_count": 0,
+    "aggregate_signals": {
+      "EUR": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "USD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "GBP": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "JPY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CHF": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "AUD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CAD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "NOK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "SEK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CNY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "MXN": {
+        "direction": "neutral",
+        "confidence": 0.0
+      }
+    },
+    "proposed_trades_count": 0,
+    "executed_trades_count": 0,
+    "executed_trades": [],
+    "portfolio": {
+      "EUR": 10000,
+      "USD": 0.0,
+      "GBP": 0.0,
+      "JPY": 0.0,
+      "CHF": 0.0,
+      "AUD": 0.0,
+      "CAD": 0.0,
+      "NOK": 0.0,
+      "SEK": 0.0,
+      "CNY": 0.0,
+      "MXN": 0.0
+    },
+    "current_value": 10000.0
+  },
+  {
+    "date": "2026-02-24",
+    "strategy_id": "simple-momentum-conf0.7-size0.5",
+    "strategy_name": "simple-momentum",
+    "strategy_params": "conf=0.7_size=0.5_agg=average",
+    "confidence_threshold": 0.7,
+    "trade_size_pct": 0.5,
+    "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
+    "signals_count": 0,
+    "unrealized_signals_count": 0,
+    "aggregate_signals": {
+      "EUR": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "USD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "GBP": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "JPY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CHF": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "AUD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CAD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "NOK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "SEK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CNY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "MXN": {
+        "direction": "neutral",
+        "confidence": 0.0
+      }
+    },
+    "proposed_trades_count": 0,
+    "executed_trades_count": 0,
+    "executed_trades": [],
+    "portfolio": {
+      "EUR": 10000,
+      "USD": 0.0,
+      "GBP": 0.0,
+      "JPY": 0.0,
+      "CHF": 0.0,
+      "AUD": 0.0,
+      "CAD": 0.0,
+      "NOK": 0.0,
+      "SEK": 0.0,
+      "CNY": 0.0,
+      "MXN": 0.0
+    },
+    "current_value": 10000.0
+  },
+  {
+    "date": "2026-02-24",
+    "strategy_id": "simple-momentum-conf0.7-size0.75",
+    "strategy_name": "simple-momentum",
+    "strategy_params": "conf=0.7_size=0.75_agg=average",
+    "confidence_threshold": 0.7,
+    "trade_size_pct": 0.75,
+    "aggregation_method": "average",
+    "estimator_ids": [
+      "llm-horizon-v1-default"
+    ],
+    "generator_ids": [
+      "keyword-sentiment-v1.1-standard"
+    ],
+    "signals_count": 0,
+    "unrealized_signals_count": 0,
+    "aggregate_signals": {
+      "EUR": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "USD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "GBP": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "JPY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CHF": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "AUD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CAD": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "NOK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "SEK": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "CNY": {
+        "direction": "neutral",
+        "confidence": 0.0
+      },
+      "MXN": {
+        "direction": "neutral",
+        "confidence": 0.0
+      }
+    },
+    "proposed_trades_count": 0,
+    "executed_trades_count": 0,
+    "executed_trades": [],
+    "portfolio": {
+      "EUR": 10000,
+      "USD": 0.0,
+      "GBP": 0.0,
+      "JPY": 0.0,
+      "CHF": 0.0,
+      "AUD": 0.0,
+      "CAD": 0.0,
+      "NOK": 0.0,
+      "SEK": 0.0,
+      "CNY": 0.0,
+      "MXN": 0.0
+    },
+    "current_value": 10000.0
+  }
+]

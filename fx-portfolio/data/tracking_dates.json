@@ -1,0 +1,16 @@
+{
+  "last_updated": "2026-02-24T21:18:57.563286",
+  "total_runs": 1,
+  "dates": [
+    {
+      "date": "2026-02-24",
+      "total_steps": 5,
+      "successful_steps": 5,
+      "failed_steps": 0,
+      "total_duration": 0.2,
+      "total_errors": 0,
+      "total_warnings": 0,
+      "status": "success"
+    }
+  ]
+}
