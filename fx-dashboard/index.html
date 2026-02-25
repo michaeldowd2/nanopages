@@ -505,9 +505,18 @@
   <div id="step4" class="tab-content">
     <div class="section">
       <h2>Step 4: Time Horizons <a href="data/step4_horizons.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">LLM-estimated timeframes</p>
+      <p class="step-header">LLM-estimated timeframes (<span id="step4-count">0</span> articles)</p>
+
+      <!-- Horizon Distribution Chart -->
+      <div style="margin: 20px 0;">
+        <h3 style="color:#00ff41; margin-bottom:15px;">Horizon Distribution</h3>
+        <div id="horizon-chart" style="max-width:800px;"></div>
+      </div>
+
+      <!-- Detailed Table -->
       <div class="csv-table-container">
         <div class="loading" id="step4-loading">Loading...</div>
+        <div id="step4-summary" style="display:none; margin-bottom:15px;"></div>
         <table id="step4-table" style="display:none;">
           <thead id="step4-thead"></thead>
           <tbody id="step4-tbody"></tbody>
@@ -659,19 +668,49 @@
           const table = document.getElementById(`${step}-table`);
           const loading = document.getElementById(`${step}-loading`);
 
-          thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
-          tbody.innerHTML = rows.map(row => {
-            return '<tr>' + headers.map(h => {
-              let value = row[h];
-              let className = '';
-              if (value === 'bullish') className = 'bullish';
-              else if (value === 'bearish') className = 'bearish';
-              else if (value === 'neutral') className = 'neutral';
-              else if (value === 'true') className = 'bullish';
-              else if (value === 'false') className = 'bearish';
-              return `<td class="${className}" title="${value}">${value}</td>`;
-            }).join('') + '</tr>';
-          }).join('');
+          // Special rendering for step4 (show only key columns)
+          if (step === 'step4') {
+            const keyColumns = ['currency', 'title', 'time_horizon', 'horizon_category', 'confidence', 'reasoning'];
+            thead.innerHTML = '<tr>' + keyColumns.map(h => `<th>${h}</th>`).join('') + '</tr>';
+            tbody.innerHTML = rows.map(row => {
+              return '<tr>' + keyColumns.map(h => {
+                let value = row[h] || '';
+                let displayValue = value;
+
+                // Truncate long fields
+                if (h === 'title' && value.length > 60) {
+                  displayValue = value.substring(0, 60) + '...';
+                } else if (h === 'reasoning' && value.length > 80) {
+                  displayValue = value.substring(0, 80) + '...';
+                }
+
+                // Color code horizons
+                let className = '';
+                if (h === 'time_horizon') {
+                  if (value === '1day') className = 'bearish';  // Red for immediate
+                  else if (value === '1week') className = 'neutral';
+                  else if (value === '1month') className = 'bullish';  // Green for long-term
+                }
+
+                return `<td class="${className}" title="${value}">${displayValue}</td>`;
+              }).join('') + '</tr>';
+            }).join('');
+          } else {
+            // Default rendering for other steps
+            thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+            tbody.innerHTML = rows.map(row => {
+              return '<tr>' + headers.map(h => {
+                let value = row[h];
+                let className = '';
+                if (value === 'bullish') className = 'bullish';
+                else if (value === 'bearish') className = 'bearish';
+                else if (value === 'neutral') className = 'neutral';
+                else if (value === 'true') className = 'bullish';
+                else if (value === 'false') className = 'bearish';
+                return `<td class="${className}" title="${value}">${value}</td>`;
+              }).join('') + '</tr>';
+            }).join('');
+          }
 
           loading.style.display = 'none';
           table.style.display = 'table';
@@ -681,7 +720,10 @@
           if (countEl) countEl.textContent = rows.length;
 
           // Generate charts
-          if (step === 'step7' && rows.length > 0) {
+          if (step === 'step4' && rows.length > 0) {
+            generateHorizonChart(rows);
+            generateHorizonSummary(rows);
+          } else if (step === 'step7' && rows.length > 0) {
             generateStrategyChart(rows);
             loadStrategyDetails();
           }
@@ -689,6 +731,71 @@
         .catch(err => {
           document.getElementById(`${step}-loading`).textContent = 'Error: ' + err.message;
         });
+    }
+
+    function generateHorizonChart(rows) {
+      // Count articles by horizon
+      const horizonCounts = {};
+      const horizonOrder = ['1day', '3day', '1week', '2week', '1month'];
+      const horizonLabels = {
+        '1day': '1 Day',
+        '3day': '3 Days',
+        '1week': '1 Week',
+        '2week': '2 Weeks',
+        '1month': '1 Month'
+      };
+
+      rows.forEach(row => {
+        const horizon = row.time_horizon;
+        horizonCounts[horizon] = (horizonCounts[horizon] || 0) + 1;
+      });
+
+      const chartDiv = document.getElementById('horizon-chart');
+      const total = rows.length;
+      const maxCount = Math.max(...Object.values(horizonCounts));
+
+      chartDiv.innerHTML = horizonOrder.map(horizon => {
+        const count = horizonCounts[horizon] || 0;
+        const pct = total > 0 ? (count / total * 100).toFixed(1) : 0;
+        const barWidth = maxCount > 0 ? (count / maxCount * 100) : 0;
+
+        return `
+          <div class="bar">
+            <div class="bar-label">${horizonLabels[horizon]}</div>
+            <div class="bar-fill" style="width:${barWidth}%; background:#00ff41;"></div>
+            <div class="bar-value">${count} articles (${pct}%)</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function generateHorizonSummary(rows) {
+      const summaryDiv = document.getElementById('step4-summary');
+
+      // Calculate average confidence
+      const avgConfidence = rows.reduce((sum, r) => sum + (parseFloat(r.confidence) || 0), 0) / rows.length;
+
+      // Count by estimator
+      const estimatorCounts = {};
+      rows.forEach(r => {
+        const est = r.estimator_id;
+        estimatorCounts[est] = (estimatorCounts[est] || 0) + 1;
+      });
+
+      summaryDiv.innerHTML = `
+        <div style="display:flex; gap:30px; flex-wrap:wrap; padding:15px; background:#0a0a0a; border-radius:5px;">
+          <div>
+            <strong style="color:#00ff41;">Total Articles:</strong> ${rows.length}
+          </div>
+          <div>
+            <strong style="color:#00ff41;">Avg Confidence:</strong> ${avgConfidence.toFixed(2)}
+          </div>
+          <div>
+            <strong style="color:#00ff41;">Estimator:</strong> ${Object.keys(estimatorCounts)[0] || 'N/A'}
+          </div>
+        </div>
+      `;
+      summaryDiv.style.display = 'block';
     }
 
     function generateStrategyChart(rows) {
