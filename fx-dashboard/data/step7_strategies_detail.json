@@ -3,10 +3,9 @@
     "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.5-size0.25",
     "strategy_name": "simple-momentum",
-    "strategy_params": "conf=0.0_size=0.25_agg=average",
+    "strategy_params": "conf=0.0_size=0.1",
     "confidence_threshold": 0.0,
-    "trade_size_pct": 0.25,
-    "aggregation_method": "average",
+    "max_trade_size_pct": 0.1,
     "estimator_ids": [
       "llm-horizon-v1-default"
     ],
@@ -79,32 +78,56 @@
         "confidence": 0.0
       }
     },
-    "proposed_trades_count": 0,
-    "executed_trades_count": 0,
-    "executed_trades": [],
+    "proposed_trades_count": 2,
+    "executed_trades_count": 2,
+    "executed_trades": [
+      {
+        "from_currency": "EUR",
+        "to_currency": "CNY",
+        "from_amount": 387.5,
+        "to_amount": 3115.63,
+        "pair_rate": 8.10028,
+        "eur_value": 387.5,
+        "spread_cost_eur": 2.8675,
+        "signal_strength_factor": 0.39,
+        "buy_confidence": 0.21,
+        "sell_confidence": 0.57
+      },
+      {
+        "from_currency": "EUR",
+        "to_currency": "AUD",
+        "from_amount": 186.11,
+        "to_amount": 307.3,
+        "pair_rate": 1.663477,
+        "eur_value": 186.11,
+        "spread_cost_eur": 1.3772,
+        "signal_strength_factor": 0.19,
+        "buy_confidence": 0.19,
+        "sell_confidence": 0.18
+      }
+    ],
     "portfolio": {
-      "EUR": 10000,
+      "EUR": 9426.39,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 307.3,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 0.0,
+      "CNY": 3115.63,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9995.76
   },
   {
     "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.5-size0.5",
     "strategy_name": "simple-momentum",
-    "strategy_params": "conf=0.0_size=0.5_agg=average",
+    "strategy_params": "conf=0.0_size=0.25",
     "confidence_threshold": 0.0,
-    "trade_size_pct": 0.5,
-    "aggregation_method": "average",
+    "max_trade_size_pct": 0.25,
     "estimator_ids": [
       "llm-horizon-v1-default"
     ],
@@ -177,32 +200,56 @@
         "confidence": 0.0
       }
     },
-    "proposed_trades_count": 0,
-    "executed_trades_count": 0,
-    "executed_trades": [],
+    "proposed_trades_count": 2,
+    "executed_trades_count": 2,
+    "executed_trades": [
+      {
+        "from_currency": "EUR",
+        "to_currency": "CNY",
+        "from_amount": 968.75,
+        "to_amount": 7789.08,
+        "pair_rate": 8.10028,
+        "eur_value": 968.75,
+        "spread_cost_eur": 7.1687,
+        "signal_strength_factor": 0.39,
+        "buy_confidence": 0.21,
+        "sell_confidence": 0.57
+      },
+      {
+        "from_currency": "EUR",
+        "to_currency": "AUD",
+        "from_amount": 465.28,
+        "to_amount": 768.26,
+        "pair_rate": 1.663477,
+        "eur_value": 465.28,
+        "spread_cost_eur": 3.4431,
+        "signal_strength_factor": 0.19,
+        "buy_confidence": 0.19,
+        "sell_confidence": 0.18
+      }
+    ],
     "portfolio": {
-      "EUR": 10000,
+      "EUR": 8565.97,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 768.26,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 0.0,
+      "CNY": 7789.08,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9989.39
   },
   {
     "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.5-size0.75",
     "strategy_name": "simple-momentum",
-    "strategy_params": "conf=0.0_size=0.75_agg=average",
+    "strategy_params": "conf=0.0_size=0.5",
     "confidence_threshold": 0.0,
-    "trade_size_pct": 0.75,
-    "aggregation_method": "average",
+    "max_trade_size_pct": 0.5,
     "estimator_ids": [
       "llm-horizon-v1-default"
     ],
@@ -275,32 +322,56 @@
         "confidence": 0.0
       }
     },
-    "proposed_trades_count": 0,
-    "executed_trades_count": 0,
-    "executed_trades": [],
+    "proposed_trades_count": 2,
+    "executed_trades_count": 2,
+    "executed_trades": [
+      {
+        "from_currency": "EUR",
+        "to_currency": "CNY",
+        "from_amount": 1937.5,
+        "to_amount": 15578.15,
+        "pair_rate": 8.10028,
+        "eur_value": 1937.5,
+        "spread_cost_eur": 14.3375,
+        "signal_strength_factor": 0.39,
+        "buy_confidence": 0.21,
+        "sell_confidence": 0.57
+      },
+      {
+        "from_currency": "EUR",
+        "to_currency": "AUD",
+        "from_amount": 930.56,
+        "to_amount": 1536.51,
+        "pair_rate": 1.663477,
+        "eur_value": 930.56,
+        "spread_cost_eur": 6.8861,
+        "signal_strength_factor": 0.19,
+        "buy_confidence": 0.19,
+        "sell_confidence": 0.18
+      }
+    ],
     "portfolio": {
-      "EUR": 10000,
+      "EUR": 7131.94,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 1536.51,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 0.0,
+      "CNY": 15578.15,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9978.78
   },
   {
     "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.6-size0.25",
     "strategy_name": "simple-momentum",
-    "strategy_params": "conf=0.6_size=0.25_agg=average",
+    "strategy_params": "conf=0.6_size=0.1",
     "confidence_threshold": 0.6,
-    "trade_size_pct": 0.25,
-    "aggregation_method": "average",
+    "max_trade_size_pct": 0.1,
     "estimator_ids": [
       "llm-horizon-v1-default"
     ],
@@ -395,10 +466,9 @@
     "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.6-size0.5",
     "strategy_name": "simple-momentum",
-    "strategy_params": "conf=0.6_size=0.5_agg=average",
+    "strategy_params": "conf=0.6_size=0.25",
     "confidence_threshold": 0.6,
-    "trade_size_pct": 0.5,
-    "aggregation_method": "average",
+    "max_trade_size_pct": 0.25,
     "estimator_ids": [
       "llm-horizon-v1-default"
     ],
@@ -493,10 +563,9 @@
     "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.6-size0.75",
     "strategy_name": "simple-momentum",
-    "strategy_params": "conf=0.6_size=0.75_agg=average",
+    "strategy_params": "conf=0.6_size=0.5",
     "confidence_threshold": 0.6,
-    "trade_size_pct": 0.75,
-    "aggregation_method": "average",
+    "max_trade_size_pct": 0.5,
     "estimator_ids": [
       "llm-horizon-v1-default"
     ],
@@ -591,10 +660,9 @@
     "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.7-size0.25",
     "strategy_name": "simple-momentum",
-    "strategy_params": "conf=0.3_size=0.25_agg=average",
+    "strategy_params": "conf=0.3_size=0.1",
     "confidence_threshold": 0.3,
-    "trade_size_pct": 0.25,
-    "aggregation_method": "average",
+    "max_trade_size_pct": 0.1,
     "estimator_ids": [
       "llm-horizon-v1-default"
     ],
@@ -689,10 +757,9 @@
     "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.7-size0.5",
     "strategy_name": "simple-momentum",
-    "strategy_params": "conf=0.3_size=0.5_agg=average",
+    "strategy_params": "conf=0.3_size=0.25",
     "confidence_threshold": 0.3,
-    "trade_size_pct": 0.5,
-    "aggregation_method": "average",
+    "max_trade_size_pct": 0.25,
     "estimator_ids": [
       "llm-horizon-v1-default"
     ],
@@ -787,10 +854,9 @@
     "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.7-size0.75",
     "strategy_name": "simple-momentum",
-    "strategy_params": "conf=0.3_size=0.75_agg=average",
+    "strategy_params": "conf=0.3_size=0.5",
     "confidence_threshold": 0.3,
-    "trade_size_pct": 0.75,
-    "aggregation_method": "average",
+    "max_trade_size_pct": 0.5,
     "estimator_ids": [
       "llm-horizon-v1-default"
     ],

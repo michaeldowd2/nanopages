@@ -54,8 +54,7 @@
       "type": "simple-momentum",
       "params": {
         "confidence_threshold": 0.0,
-        "trade_size_pct": 0.25,
-        "aggregation_method": "average",
+        "trade_size_pct": 0.1,
         "estimator_ids": [
           "llm-horizon-v1-default"
         ],
@@ -68,15 +67,14 @@
           "llm-sentiment-v1-haiku": 1.0
         }
       },
-      "description": "Simple momentum: 50% confidence, 25% position size"
+      "description": "Low confidence (0), conservative size (10% max)"
     },
     "simple-momentum-conf0.5-size0.5": {
       "id": "simple-momentum-conf0.5-size0.5",
       "type": "simple-momentum",
       "params": {
         "confidence_threshold": 0.0,
-        "trade_size_pct": 0.5,
-        "aggregation_method": "average",
+        "trade_size_pct": 0.25,
         "estimator_ids": [
           "llm-horizon-v1-default"
         ],
@@ -89,15 +87,14 @@
           "llm-sentiment-v1-haiku": 1.0
         }
       },
-      "description": "Simple momentum: 50% confidence, 50% position size"
+      "description": "Low confidence (0), moderate size (25% max)"
     },
     "simple-momentum-conf0.5-size0.75": {
       "id": "simple-momentum-conf0.5-size0.75",
       "type": "simple-momentum",
       "params": {
         "confidence_threshold": 0.0,
-        "trade_size_pct": 0.75,
-        "aggregation_method": "average",
+        "trade_size_pct": 0.5,
         "estimator_ids": [
           "llm-horizon-v1-default"
         ],
@@ -110,15 +107,14 @@
           "llm-sentiment-v1-haiku": 1.0
         }
       },
-      "description": "Simple momentum: 50% confidence, 75% position size"
+      "description": "Low confidence (0), aggressive size (50% max)"
     },
     "simple-momentum-conf0.6-size0.25": {
       "id": "simple-momentum-conf0.6-size0.25",
       "type": "simple-momentum",
       "params": {
         "confidence_threshold": 0.6,
-        "trade_size_pct": 0.25,
-        "aggregation_method": "average",
+        "trade_size_pct": 0.1,
         "estimator_ids": [
           "llm-horizon-v1-default"
         ],
@@ -131,15 +127,14 @@
           "llm-sentiment-v1-haiku": 1.0
         }
       },
-      "description": "Simple momentum: 60% confidence, 25% position size"
+      "description": "High confidence (0.6), conservative size (10% max)"
     },
     "simple-momentum-conf0.6-size0.5": {
       "id": "simple-momentum-conf0.6-size0.5",
       "type": "simple-momentum",
       "params": {
         "confidence_threshold": 0.6,
-        "trade_size_pct": 0.5,
-        "aggregation_method": "average",
+        "trade_size_pct": 0.25,
         "estimator_ids": [
           "llm-horizon-v1-default"
         ],
@@ -152,15 +147,14 @@
           "llm-sentiment-v1-haiku": 1.0
         }
       },
-      "description": "Simple momentum: 60% confidence, 50% position size"
+      "description": "High confidence (0.6), moderate size (25% max)"
     },
     "simple-momentum-conf0.6-size0.75": {
       "id": "simple-momentum-conf0.6-size0.75",
       "type": "simple-momentum",
       "params": {
         "confidence_threshold": 0.6,
-        "trade_size_pct": 0.75,
-        "aggregation_method": "average",
+        "trade_size_pct": 0.5,
         "estimator_ids": [
           "llm-horizon-v1-default"
         ],
@@ -173,15 +167,14 @@
           "llm-sentiment-v1-haiku": 1.0
         }
       },
-      "description": "Simple momentum: 60% confidence, 75% position size"
+      "description": "High confidence (0.6), aggressive size (50% max)"
     },
     "simple-momentum-conf0.7-size0.25": {
       "id": "simple-momentum-conf0.7-size0.25",
       "type": "simple-momentum",
       "params": {
         "confidence_threshold": 0.3,
-        "trade_size_pct": 0.25,
-        "aggregation_method": "average",
+        "trade_size_pct": 0.1,
         "estimator_ids": [
           "llm-horizon-v1-default"
         ],
@@ -194,15 +187,14 @@
           "llm-sentiment-v1-haiku": 1.0
         }
       },
-      "description": "Simple momentum: 70% confidence, 25% position size"
+      "description": "Medium confidence (0.3), conservative size (10% max)"
     },
     "simple-momentum-conf0.7-size0.5": {
       "id": "simple-momentum-conf0.7-size0.5",
       "type": "simple-momentum",
       "params": {
         "confidence_threshold": 0.3,
-        "trade_size_pct": 0.5,
-        "aggregation_method": "average",
+        "trade_size_pct": 0.25,
         "estimator_ids": [
           "llm-horizon-v1-default"
         ],
@@ -215,15 +207,14 @@
           "llm-sentiment-v1-haiku": 1.0
         }
       },
-      "description": "Simple momentum: 70% confidence, 50% position size"
+      "description": "Medium confidence (0.3), moderate size (25% max)"
     },
     "simple-momentum-conf0.7-size0.75": {
       "id": "simple-momentum-conf0.7-size0.75",
       "type": "simple-momentum",
       "params": {
         "confidence_threshold": 0.3,
-        "trade_size_pct": 0.75,
-        "aggregation_method": "average",
+        "trade_size_pct": 0.5,
         "estimator_ids": [
           "llm-horizon-v1-default"
         ],
@@ -236,7 +227,7 @@
           "llm-sentiment-v1-haiku": 1.0
         }
       },
-      "description": "Simple momentum: 70% confidence, 75% position size"
+      "description": "Medium confidence (0.3), aggressive size (50% max)"
     }
   },
   "pipeline_settings": {
