@@ -1,8 +1,17 @@
 {
   "currencies": [
-    "EUR", "USD", "GBP", "JPY", "CHF", "AUD", "CAD", "NOK", "SEK", "CNY", "MXN"
+    "EUR",
+    "USD",
+    "GBP",
+    "JPY",
+    "CHF",
+    "AUD",
+    "CAD",
+    "NOK",
+    "SEK",
+    "CNY",
+    "MXN"
   ],
-
   "horizon_estimators": {
     "llm-horizon-v1-default": {
       "id": "llm-horizon-v1-default",
@@ -14,7 +23,6 @@
       "description": "LLM-based horizon extraction via nanoclaw (default)"
     }
   },
-
   "signal_generators": {
     "keyword-sentiment-v1.1-standard": {
       "id": "keyword-sentiment-v1.1-standard",
@@ -27,9 +35,18 @@
         "magnitude_estimation": true
       },
       "description": "Keyword-based with 47 bullish, 51 bearish keywords (standard sensitivity)"
+    },
+    "llm-sentiment-v1-haiku": {
+      "id": "llm-sentiment-v1-haiku",
+      "type": "llm-sentiment-v1",
+      "params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "description": "LLM-based sentiment analysis using Claude Haiku (more nuanced than keywords)"
     }
   },
-
   "strategies": {
     "simple-momentum-conf0.5-size0.25": {
       "id": "simple-momentum-conf0.5-size0.25",
@@ -38,8 +55,17 @@
         "confidence_threshold": 0.5,
         "trade_size_pct": 0.25,
         "aggregation_method": "average",
-        "estimator_ids": ["llm-horizon-v1-default"],
-        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+        "estimator_ids": [
+          "llm-horizon-v1-default"
+        ],
+        "generator_ids": [
+          "keyword-sentiment-v1.1-standard",
+          "llm-sentiment-v1-haiku"
+        ],
+        "generator_weights": {
+          "keyword-sentiment-v1.1-standard": 0.5,
+          "llm-sentiment-v1-haiku": 1.0
+        }
       },
       "description": "Simple momentum: 50% confidence, 25% position size"
     },
@@ -50,8 +76,17 @@
         "confidence_threshold": 0.5,
         "trade_size_pct": 0.5,
         "aggregation_method": "average",
-        "estimator_ids": ["llm-horizon-v1-default"],
-        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+        "estimator_ids": [
+          "llm-horizon-v1-default"
+        ],
+        "generator_ids": [
+          "keyword-sentiment-v1.1-standard",
+          "llm-sentiment-v1-haiku"
+        ],
+        "generator_weights": {
+          "keyword-sentiment-v1.1-standard": 0.5,
+          "llm-sentiment-v1-haiku": 1.0
+        }
       },
       "description": "Simple momentum: 50% confidence, 50% position size"
     },
@@ -62,8 +97,17 @@
         "confidence_threshold": 0.5,
         "trade_size_pct": 0.75,
         "aggregation_method": "average",
-        "estimator_ids": ["llm-horizon-v1-default"],
-        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+        "estimator_ids": [
+          "llm-horizon-v1-default"
+        ],
+        "generator_ids": [
+          "keyword-sentiment-v1.1-standard",
+          "llm-sentiment-v1-haiku"
+        ],
+        "generator_weights": {
+          "keyword-sentiment-v1.1-standard": 0.5,
+          "llm-sentiment-v1-haiku": 1.0
+        }
       },
       "description": "Simple momentum: 50% confidence, 75% position size"
     },
@@ -74,8 +118,17 @@
         "confidence_threshold": 0.6,
         "trade_size_pct": 0.25,
         "aggregation_method": "average",
-        "estimator_ids": ["llm-horizon-v1-default"],
-        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+        "estimator_ids": [
+          "llm-horizon-v1-default"
+        ],
+        "generator_ids": [
+          "keyword-sentiment-v1.1-standard",
+          "llm-sentiment-v1-haiku"
+        ],
+        "generator_weights": {
+          "keyword-sentiment-v1.1-standard": 0.5,
+          "llm-sentiment-v1-haiku": 1.0
+        }
       },
       "description": "Simple momentum: 60% confidence, 25% position size"
     },
@@ -86,8 +139,17 @@
         "confidence_threshold": 0.6,
         "trade_size_pct": 0.5,
         "aggregation_method": "average",
-        "estimator_ids": ["llm-horizon-v1-default"],
-        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+        "estimator_ids": [
+          "llm-horizon-v1-default"
+        ],
+        "generator_ids": [
+          "keyword-sentiment-v1.1-standard",
+          "llm-sentiment-v1-haiku"
+        ],
+        "generator_weights": {
+          "keyword-sentiment-v1.1-standard": 0.5,
+          "llm-sentiment-v1-haiku": 1.0
+        }
       },
       "description": "Simple momentum: 60% confidence, 50% position size"
     },
@@ -98,8 +160,17 @@
         "confidence_threshold": 0.6,
         "trade_size_pct": 0.75,
         "aggregation_method": "average",
-        "estimator_ids": ["llm-horizon-v1-default"],
-        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+        "estimator_ids": [
+          "llm-horizon-v1-default"
+        ],
+        "generator_ids": [
+          "keyword-sentiment-v1.1-standard",
+          "llm-sentiment-v1-haiku"
+        ],
+        "generator_weights": {
+          "keyword-sentiment-v1.1-standard": 0.5,
+          "llm-sentiment-v1-haiku": 1.0
+        }
       },
       "description": "Simple momentum: 60% confidence, 75% position size"
     },
@@ -110,8 +181,17 @@
         "confidence_threshold": 0.7,
         "trade_size_pct": 0.25,
         "aggregation_method": "average",
-        "estimator_ids": ["llm-horizon-v1-default"],
-        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+        "estimator_ids": [
+          "llm-horizon-v1-default"
+        ],
+        "generator_ids": [
+          "keyword-sentiment-v1.1-standard",
+          "llm-sentiment-v1-haiku"
+        ],
+        "generator_weights": {
+          "keyword-sentiment-v1.1-standard": 0.5,
+          "llm-sentiment-v1-haiku": 1.0
+        }
       },
       "description": "Simple momentum: 70% confidence, 25% position size"
     },
@@ -122,8 +202,17 @@
         "confidence_threshold": 0.7,
         "trade_size_pct": 0.5,
         "aggregation_method": "average",
-        "estimator_ids": ["llm-horizon-v1-default"],
-        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+        "estimator_ids": [
+          "llm-horizon-v1-default"
+        ],
+        "generator_ids": [
+          "keyword-sentiment-v1.1-standard",
+          "llm-sentiment-v1-haiku"
+        ],
+        "generator_weights": {
+          "keyword-sentiment-v1.1-standard": 0.5,
+          "llm-sentiment-v1-haiku": 1.0
+        }
       },
       "description": "Simple momentum: 70% confidence, 50% position size"
     },
@@ -134,13 +223,21 @@
         "confidence_threshold": 0.7,
         "trade_size_pct": 0.75,
         "aggregation_method": "average",
-        "estimator_ids": ["llm-horizon-v1-default"],
-        "generator_ids": ["keyword-sentiment-v1.1-standard"]
+        "estimator_ids": [
+          "llm-horizon-v1-default"
+        ],
+        "generator_ids": [
+          "keyword-sentiment-v1.1-standard",
+          "llm-sentiment-v1-haiku"
+        ],
+        "generator_weights": {
+          "keyword-sentiment-v1.1-standard": 0.5,
+          "llm-sentiment-v1-haiku": 1.0
+        }
       },
       "description": "Simple momentum: 70% confidence, 75% position size"
     }
   },
-
   "pipeline_settings": {
     "news_retention_days": 30,
     "realization_check_threshold": 0.5,
