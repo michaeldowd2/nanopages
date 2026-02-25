@@ -804,11 +804,24 @@
           return '<tr>' + headers.map(h => {
             let value = row[h];
             let className = '';
+
+            // Color text values
             if (value === 'bullish') className = 'bullish';
             else if (value === 'bearish') className = 'bearish';
             else if (value === 'neutral') className = 'neutral';
             else if (value === 'true') className = 'bullish';
             else if (value === 'false') className = 'bearish';
+
+            // Color numeric signal values (column names ending in _signal)
+            if (h.endsWith('_signal') && value) {
+              const numVal = parseFloat(value);
+              if (!isNaN(numVal)) {
+                if (numVal > 0) className = 'bullish';
+                else if (numVal < 0) className = 'bearish';
+                else className = 'neutral';
+              }
+            }
+
             return `<td class="${className}" title="${value}">${value}</td>`;
           }).join('') + '</tr>';
         }).join('');
