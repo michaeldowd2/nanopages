@@ -223,49 +223,7 @@
   <!-- OVERVIEW TAB -->
   <div id="overview" class="tab-content active">
     <div class="section">
-      <h2>8-Step Pipeline Architecture</h2>
-      <div class="architecture-diagram">
-        <pre>
-1. EXCHANGE RATES ──► 2. INDICES ──► 3. NEWS AGGREGATOR
-       │                   │                  │
-       └───────────────────┴──────────────────┘
-                           │
-           ┌───────────────┴───────────────┐
-           │                               │
-           ▼                               ▼
-    4. TIME HORIZONS              5. SENTIMENT SIGNALS
-       (LLM/Keyword)                 (Keyword + LLM)
-       • llm-horizon-v1              • keyword-sentiment
-       • Parallel execution          • llm-sentiment
-           │                               │
-           └───────────────┬───────────────┘
-                           ▼
-                6. REALIZATION CHECKER
-                   • Predicted vs Actual
-                   • Tag: realized=T/F
-                           │
-                ┌──────────┴──────────┐
-                ▼                     ▼
-           7a. CALCULATE          7b. EXECUTE
-               TRADES                 PORTFOLIOS
-           • Aggregate signals    • Apply trades
-           • Generate trades      • Update balances
-           • Show costs           • Track P&L
-                │                     │
-                └──────────┬──────────┘
-                           ▼
-                    8. DASHBOARD
-                   • Export data
-                   • Deploy to Pages
-        </pre>
-      </div>
-      <div style="margin-top:10px; color:#888; font-size:0.85em;">
-        <strong>Principles:</strong> Separation | Parallelizable | Composable | Testable | Observable
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Step Dependencies</h2>
+      <h2>Pipeline Architecture</h2>
 
       <!-- Visual Dependency Graph -->
       <div id="dependency-graph" style="background:#0f1229; padding:20px; border:1px solid #333; border-radius:4px; margin-bottom:15px; overflow-x:auto;">
@@ -286,117 +244,6 @@
             <div>⚠️ May not be re-fetchable</div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Pipeline Components</h2>
-      <div style="margin-bottom: 20px;">
-
-        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 1: EUR Pairs</h3>
-        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Purpose:</strong> Download daily EUR-based FX rates for all 11 currencies<br>
-          <strong>Source:</strong> External FX data API<br>
-          <strong>Output:</strong> fx-rates-{date}.json with EUR as base currency<br>
-          <strong>Frequency:</strong> Daily
-        </div>
-
-        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 2: Synthetic Indices</h3>
-        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Purpose:</strong> Calculate currency strength indices using geometric mean methodology<br>
-          <strong>Method:</strong> Geometric mean of all currency pairs (isolates each currency's movement)<br>
-          <strong>Formula:</strong> index = (rate₁ × rate₂ × ... × rateₙ)^(1/n) normalized to base=100<br>
-          <strong>Pairs used:</strong> 10 pairs per currency (all other currencies)<br>
-          <strong>Use:</strong> Enables measuring actual currency movements for realization checking<br>
-          <strong>Note:</strong> Professional-grade synthetic indices (same methodology as DXY, EXY)
-        </div>
-
-        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 3: News Aggregator</h3>
-        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Purpose:</strong> Fetch and filter FX news articles per currency<br>
-          <strong>Sources:</strong> RSS feeds, web scraping<br>
-          <strong>Features:</strong>
-          <ul style="margin:5px 0; padding-left:20px;">
-            <li>Timestamp extraction from articles</li>
-            <li>URL deduplication (global index)</li>
-            <li>30-day retention window</li>
-            <li>Relevance scoring per currency (keyword matching)</li>
-            <li>Pair-aware filing (e.g., "AUD/USD" → filed under both AUD & USD)</li>
-          </ul>
-        </div>
-
-        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 4: Horizon Estimator</h3>
-        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Purpose:</strong> Extracts predicted time horizon from articles (e.g., "1-3 days", "this week")<br><br>
-
-          <div style="border:1px solid #333; border-radius:4px; padding:10px; margin:10px 0; background:#0f1229;">
-            <strong style="color:#00ff41;">Type:</strong> llm-horizon-estimator-v1<br>
-            <strong>Method:</strong> LLM analysis via nanoclaw orchestrator<br>
-            <strong>Parameters:</strong>
-            <ul style="margin:5px 0; padding-left:20px;">
-              <li>Model: Claude Haiku (via nanoclaw)</li>
-              <li>Temperature: 0.3</li>
-            </ul>
-          </div>
-
-          <strong>Future types:</strong> keyword-based estimator for common phrases
-        </div>
-
-        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 5: Signal Generator</h3>
-        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Purpose:</strong> Analyzes article sentiment to predict currency direction & magnitude<br><br>
-
-          <div style="border:1px solid #333; border-radius:4px; padding:10px; margin:10px 0; background:#0f1229;">
-            <strong style="color:#00ff41;">Type:</strong> keyword-sentiment-v1.1<br>
-            <strong>Method:</strong> Keyword matching with negation detection<br>
-            <strong>Parameters:</strong>
-            <ul style="margin:5px 0; padding-left:20px;">
-              <li>keyword_set: standard (47 bullish, 51 bearish, 12 neutral)</li>
-              <li>negation_enabled: true (detects "shedding gains", "pares gains")</li>
-              <li>confidence_boost: 1.5x multiplier</li>
-              <li>min_keyword_count: 1</li>
-              <li>magnitude_estimation: true (low/medium/high)</li>
-            </ul>
-          </div>
-
-          <strong>Future types:</strong> llm-sentiment-v1 for enhanced analysis
-        </div>
-
-        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 6: Realization Checker</h3>
-        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Purpose:</strong> Validates signal predictions against actual currency movements<br>
-          <strong>Method:</strong> Compare predicted direction/magnitude with actual index changes<br>
-          <strong>Logic:</strong>
-          <ul style="margin:5px 0; padding-left:20px;">
-            <li>Direction match: predicted bullish/bearish vs actual movement</li>
-            <li>Magnitude check: actual ≥ 50% of predicted magnitude</li>
-            <li>Status: realized | partially_realized | unrealized | contradicted</li>
-          </ul>
-          <strong>Output:</strong> Tags each signal with realized=true/false + actual_movement data
-        </div>
-
-        <h3 style="color:#00ff41; font-size:1em; margin-top:15px;">Step 7: Strategy</h3>
-        <div style="padding-left:15px; color:#ccc; font-size:0.9em;">
-          <strong>Purpose:</strong> Pairs strongest vs weakest currencies, executes hypothetical trades<br><br>
-
-          <div style="border:1px solid #333; border-radius:4px; padding:10px; margin:10px 0; background:#0f1229;">
-            <strong style="color:#00ff41;">Type:</strong> simple-momentum<br>
-            <strong>Method:</strong> Aggregate unrealized signals, pair strongest vs weakest, execute trades with spreads<br>
-            <strong>Parameters:</strong> 9 instances (3 confidence × 3 trade sizes)
-            <ul style="margin:5px 0; padding-left:20px;">
-              <li>confidence_threshold: 0.5, 0.6, 0.7</li>
-              <li>trade_size_pct: 0.25, 0.50, 0.75</li>
-              <li>aggregation_method: average</li>
-              <li>estimator_ids: ["llm-horizon-v1-default"]</li>
-              <li>generator_ids: ["keyword-sentiment-v1.1-standard"]</li>
-              <li>spread: 0.74% (Revolut)</li>
-              <li>initial_portfolio: €10,000</li>
-            </ul>
-          </div>
-
-          <strong>Future types:</strong> mean-reversion, breakout-trader strategies
-        </div>
-
       </div>
     </div>
 
@@ -1786,6 +1633,15 @@
             html += `<div style="margin-bottom:12px; padding:10px; background:${stepId === '7b' ? '#2a1a1a' : '#1a1e3a'}; border:1px solid #333; border-radius:4px;">`;
             html += `<div style="color:#00ff41; font-weight:bold;">${icon} Step ${stepId}: ${step.name}</div>`;
             html += `<div style="color:#888; margin-top:4px; font-size:0.9em;">${step.description}</div>`;
+
+            // Show script and parameters
+            html += `<div style="color:#66aaff; margin-top:6px; font-size:0.85em; font-family:monospace;">`;
+            html += `📜 ${step.script}`;
+            if (step.supports_date_filter) {
+              html += ` <span style="color:#888;">[--date YYYY-MM-DD]</span>`;
+            }
+            html += `</div>`;
+
             html += `<div style="color:#666; margin-top:4px; font-size:0.85em;">${depText}</div>`;
 
             if (step.warning) {
