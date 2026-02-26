@@ -206,18 +206,10 @@
     <div class="timestamp">Last updated: <span id="lastUpdate"></span></div>
   </div>
 
-  <div class="tabs">
+  <div class="tabs" id="nav-tabs">
     <div class="tab active" onclick="showTab('overview')">OVERVIEW</div>
     <div class="tab" onclick="showTab('config')">CONFIG</div>
-    <div class="tab" onclick="showTab('step1')">STEP 1</div>
-    <div class="tab" onclick="showTab('step2')">STEP 2</div>
-    <div class="tab" onclick="showTab('step3')">STEP 3</div>
-    <div class="tab" onclick="showTab('step4')">STEP 4</div>
-    <div class="tab" onclick="showTab('step5')">STEP 5</div>
-    <div class="tab" onclick="showTab('step6')">STEP 6</div>
-    <div class="tab" onclick="showTab('step7')">STEP 7</div>
-    <div class="tab" onclick="showTab('step8')">STEP 8: PORTFOLIOS</div>
-    <div class="tab" onclick="showTab('trades')">TRADES</div>
+    <!-- Step tabs will be generated dynamically from config -->
     <div class="tab" onclick="showTab('tracking')">TRACKING</div>
   </div>
 
@@ -373,19 +365,6 @@
     </div>
   </div>
 
-  <div id="step2" class="tab-content">
-    <div class="section">
-      <h2>Step 2: Indices <a href="data/step2_indices.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">Synthetic currency strength (100=base)</p>
-
-      <!-- Date Filter -->
-      <div style="margin:15px 0;">
-        <label for="step2-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
-        <select id="step2-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
-          <option value="">All Dates</option>
-        </select>
-      </div>
-
       <div class="csv-table-container">
         <div class="loading" id="step2-loading">Loading...</div>
         <table id="step2-table" style="display:none;">
@@ -396,19 +375,6 @@
     </div>
   </div>
 
-  <div id="step3" class="tab-content">
-    <div class="section">
-      <h2>Step 3: News <a href="data/step3_news.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">Aggregated FX news (30-day retention)</p>
-
-      <!-- Date Filter -->
-      <div style="margin:15px 0;">
-        <label for="step3-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
-        <select id="step3-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
-          <option value="">All Dates</option>
-        </select>
-      </div>
-
       <div class="csv-table-container">
         <div class="loading" id="step3-loading">Loading...</div>
         <table id="step3-table" style="display:none;">
@@ -418,19 +384,6 @@
       </div>
     </div>
   </div>
-
-  <div id="step4" class="tab-content">
-    <div class="section">
-      <h2>Step 4: Time Horizons <a href="data/step4_horizons.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">LLM-estimated timeframes (<span id="step4-count">0</span> articles)</p>
-
-      <!-- Date Filter -->
-      <div style="margin:15px 0;">
-        <label for="step4-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
-        <select id="step4-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
-          <option value="">All Dates</option>
-        </select>
-      </div>
 
       <!-- Horizon Distribution Chart -->
       <div style="margin: 20px 0;">
@@ -449,19 +402,6 @@
       </div>
     </div>
   </div>
-
-  <div id="step5" class="tab-content">
-    <div class="section">
-      <h2>Step 5: Signals <a href="data/step5_signals.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">Per-article signals with predictions (<span id="step5-count">0</span> signals)</p>
-
-      <!-- Date Filter -->
-      <div style="margin:15px 0;">
-        <label for="step5-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
-        <select id="step5-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
-          <option value="">All Dates</option>
-        </select>
-      </div>
 
       <!-- Filters -->
       <div style="margin: 15px 0; padding: 15px; background: #0a0a0a; border-radius: 5px;">
@@ -496,19 +436,6 @@
     </div>
   </div>
 
-  <div id="step6" class="tab-content">
-    <div class="section">
-      <h2>Step 6: Realization <a href="data/step6_realization.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">Predicted vs actual (realized=T/F)</p>
-
-      <!-- Date Filter -->
-      <div style="margin:15px 0;">
-        <label for="step6-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
-        <select id="step6-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
-          <option value="">All Dates</option>
-        </select>
-      </div>
-
       <div class="csv-table-container">
         <div class="loading" id="step6-loading">Loading...</div>
         <table id="step6-table" style="display:none;">
@@ -519,19 +446,6 @@
     </div>
   </div>
 
-  <div id="step7" class="tab-content">
-    <div class="section">
-      <h2>Step 7: Trade Calculation <a href="data/step7_trades.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">Proposed trades showing spread costs before portfolio execution</p>
-
-      <!-- Date Filter -->
-      <div style="margin:15px 0;">
-        <label for="step7-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
-        <select id="step7-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
-          <option value="">All Dates</option>
-        </select>
-      </div>
-
       <div class="csv-table-container">
         <div class="loading" id="step7-loading">Loading...</div>
         <table id="step7-table" style="display:none;">
@@ -541,19 +455,6 @@
       </div>
     </div>
   </div>
-
-  <div id="step8" class="tab-content">
-    <div class="section">
-      <h2>Step 8: Portfolio Execution <a href="data/step8_strategies.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">9 parameter combinations (Simple Momentum)</p>
-
-      <!-- Date Filter -->
-      <div style="margin:15px 0;">
-        <label for="step8-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
-        <select id="step8-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
-          <option value="">All Dates</option>
-        </select>
-      </div>
 
       <div class="chart">
         <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Portfolio Values by Strategy</h3>
@@ -1713,13 +1614,173 @@
         });
     }
 
-    document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
-    ['step2', 'step3', 'step4', 'step5', 'step6', 'step7', 'step8'].forEach(loadCSV);
-    loadTradesCSV();
-    loadStep1Dates();  // Load Step 1 with date selector
-    loadSystemConfig();
-    loadPipelineDependencies();
-    loadTrackingDates();
+    // Initialize dashboard - load config first, then generate tabs and load data
+    function initializeDashboard() {
+      document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
+
+      // Load pipeline config and generate tabs dynamically
+      fetch('data/pipeline_steps.json')
+        .then(res => res.json())
+        .then(config => {
+          generateDynamicTabs(config);
+          generateDynamicContent(config);
+
+          // Load data for all steps
+          Object.keys(config.steps).forEach(stepId => {
+            if (stepId !== '9') {  // Skip deployment step
+              loadCSV(`step${stepId}`);
+            }
+          });
+
+          loadStep1Dates();
+          loadSystemConfig();
+          loadPipelineDependencies();
+          loadTrackingDates();
+        })
+        .catch(err => {
+          console.error('Failed to load pipeline config:', err);
+          // Fallback: load without dynamic generation
+          ['step2', 'step3', 'step4', 'step5', 'step6', 'step7', 'step8'].forEach(loadCSV);
+          loadStep1Dates();
+          loadSystemConfig();
+          loadPipelineDependencies();
+          loadTrackingDates();
+        });
+    }
+
+    function generateDynamicTabs(config) {
+      const navTabs = document.getElementById('nav-tabs');
+      const trackingTab = navTabs.querySelector('[onclick*="tracking"]');
+
+      // Generate step tabs
+      const stepTabs = Object.keys(config.steps)
+        .filter(id => id !== '9')  // Skip deployment step
+        .sort((a, b) => {
+          const order = ['1', '2', '3', '4', '5', '6', '7', '8'];
+          return order.indexOf(a) - order.indexOf(b);
+        })
+        .map(stepId => {
+          const step = config.steps[stepId];
+          const label = stepId === '8' ? `STEP ${stepId}: PORTFOLIOS` : `STEP ${stepId}`;
+          return `<div class="tab" onclick="showTab('step${stepId}')">${label}</div>`;
+        })
+        .join('');
+
+      // Insert step tabs before tracking tab
+      trackingTab.insertAdjacentHTML('beforebegin', stepTabs);
+    }
+
+    function generateDynamicContent(config) {
+      const trackingDiv = document.getElementById('tracking');
+
+      // Generate content divs for each step
+      Object.keys(config.steps)
+        .filter(id => id !== '9')  // Skip deployment step
+        .sort((a, b) => {
+          const order = ['1', '2', '3', '4', '5', '6', '7', '8'];
+          return order.indexOf(a) - order.indexOf(b);
+        })
+        .forEach(stepId => {
+          const step = config.steps[stepId];
+
+          // Skip if already exists (step1 is manually defined)
+          if (document.getElementById(`step${stepId}`)) return;
+
+          const contentHtml = `
+            <div id="step${stepId}" class="tab-content">
+              <div class="section">
+                <h2>Step ${stepId}: ${step.name} <a href="data/step${stepId}_${getDefaultFilename(stepId)}.csv" class="csv-download" download>CSV</a></h2>
+                <p class="step-header">${step.description}</p>
+
+                ${step.supports_date_filter ? `
+                <!-- Date Filter -->
+                <div style="margin:15px 0;">
+                  <label for="step${stepId}-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
+                  <select id="step${stepId}-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
+                    <option value="">All Dates</option>
+                  </select>
+                </div>
+                ` : ''}
+
+                ${stepId === '8' ? generatePortfolioContent(stepId) : generateTableContent(stepId)}
+              </div>
+            </div>
+          `;
+
+          trackingDiv.insertAdjacentHTML('beforebegin', contentHtml);
+        });
+    }
+
+    function getDefaultFilename(stepId) {
+      const filenames = {
+        '2': 'indices',
+        '3': 'news',
+        '4': 'horizons',
+        '5': 'signals',
+        '6': 'realization',
+        '7': 'trades',
+        '8': 'strategies'
+      };
+      return filenames[stepId] || 'data';
+    }
+
+    function generateTableContent(stepId) {
+      return `
+        <div class="csv-table-container">
+          <div class="loading" id="step${stepId}-loading">Loading...</div>
+          <table id="step${stepId}-table" style="display:none;">
+            <thead id="step${stepId}-thead"></thead>
+            <tbody id="step${stepId}-tbody"></tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function generatePortfolioContent(stepId) {
+      return `
+        <div class="chart">
+          <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Portfolio Values by Strategy</h3>
+          <div id="strategy-chart"></div>
+        </div>
+
+        <div class="csv-table-container">
+          <div class="loading" id="step${stepId}-loading">Loading...</div>
+          <table id="step${stepId}-table" style="display:none;">
+            <thead id="step${stepId}-thead"></thead>
+            <tbody id="step${stepId}-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Strategy Detail Section -->
+        <div id="strategy-detail" style="display:none; margin-top:30px; padding-top:30px; border-top:1px solid #333;">
+          <h3 style="color:#00ff41;font-size:1.1em;margin-bottom:15px;">Strategy Details</h3>
+
+          <label for="strategy-selector" style="color:#ccc; font-size:0.9em;">Select Strategy:</label>
+          <select id="strategy-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:8px; margin:10px 0; font-size:1em; border-radius:4px;">
+            <option value="">Choose a strategy...</option>
+          </select>
+
+          <div id="strategy-info" style="display:none;">
+            <div style="margin-top:20px;">
+              <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Currency Signals</h4>
+              <div id="currency-signals" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px;"></div>
+            </div>
+
+            <div style="margin-top:20px;">
+              <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Trade Recommendations</h4>
+              <div id="trade-recommendations"></div>
+            </div>
+
+            <div style="margin-top:20px;">
+              <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Portfolio Timeline</h4>
+              <div id="portfolio-timeseries"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    initializeDashboard();
   </script>
 </body>
 </html>
