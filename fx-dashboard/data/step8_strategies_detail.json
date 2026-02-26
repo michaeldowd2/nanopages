@@ -17,37 +17,37 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 207,
+    "signals_count": 79,
     "signal_volumes": {
-      "EUR": 36,
-      "USD": 96,
-      "GBP": 12,
-      "JPY": 12,
+      "EUR": 12,
+      "USD": 40,
+      "GBP": 2,
+      "JPY": 4,
       "CHF": 0,
-      "AUD": 12,
-      "CAD": 12,
+      "AUD": 4,
+      "CAD": 4,
       "NOK": 0,
-      "SEK": 8,
-      "CNY": 16,
+      "SEK": 2,
+      "CNY": 8,
       "MXN": 3
     },
-    "unrealized_signals_count": 207,
+    "unrealized_signals_count": 79,
     "aggregate_signals": {
       "EUR": {
-        "direction": "bearish",
-        "confidence": 0.15
-      },
-      "USD": {
-        "direction": "neutral",
-        "confidence": 0.1
-      },
-      "GBP": {
         "direction": "neutral",
         "confidence": 0.08
       },
-      "JPY": {
+      "USD": {
         "direction": "bearish",
-        "confidence": 0.11
+        "confidence": 0.12
+      },
+      "GBP": {
+        "direction": "bullish",
+        "confidence": 0.47
+      },
+      "JPY": {
+        "direction": "bullish",
+        "confidence": 0.15
       },
       "CHF": {
         "direction": "neutral",
@@ -55,23 +55,23 @@
       },
       "AUD": {
         "direction": "bullish",
-        "confidence": 0.19
+        "confidence": 0.68
       },
       "CAD": {
-        "direction": "bearish",
-        "confidence": 0.18
+        "direction": "bullish",
+        "confidence": 0.32
       },
       "NOK": {
         "direction": "neutral",
         "confidence": 0.0
       },
       "SEK": {
-        "direction": "bearish",
-        "confidence": 0.57
+        "direction": "neutral",
+        "confidence": 0.0
       },
       "CNY": {
-        "direction": "bullish",
-        "confidence": 0.21
+        "direction": "bearish",
+        "confidence": 0.4
       },
       "MXN": {
         "direction": "neutral",
@@ -83,43 +83,43 @@
     "executed_trades": [
       {
         "from_currency": "EUR",
-        "to_currency": "CNY",
-        "from_amount": 387.5,
-        "to_amount": 3115.63,
-        "pair_rate": 8.10028,
-        "eur_value": 387.5,
-        "spread_cost_eur": 2.8675,
-        "signal_strength_factor": 0.39,
-        "buy_confidence": 0.21,
-        "sell_confidence": 0.57
+        "to_currency": "AUD",
+        "from_amount": 540.95,
+        "to_amount": 893.2,
+        "pair_rate": 1.663477,
+        "eur_value": 540.95,
+        "spread_cost_eur": 4.003,
+        "signal_strength_factor": 0.54,
+        "buy_confidence": 0.26,
+        "sell_confidence": 0.82
       },
       {
         "from_currency": "EUR",
-        "to_currency": "AUD",
-        "from_amount": 186.11,
-        "to_amount": 307.3,
-        "pair_rate": 1.663477,
-        "eur_value": 186.11,
-        "spread_cost_eur": 1.3772,
-        "signal_strength_factor": 0.19,
-        "buy_confidence": 0.19,
-        "sell_confidence": 0.18
+        "to_currency": "CNY",
+        "from_amount": 410.83,
+        "to_amount": 3303.21,
+        "pair_rate": 8.10028,
+        "eur_value": 410.83,
+        "spread_cost_eur": 3.0401,
+        "signal_strength_factor": 0.41,
+        "buy_confidence": 0.26,
+        "sell_confidence": 0.57
       }
     ],
     "portfolio": {
-      "EUR": 8213.04,
+      "EUR": 7834.87,
       "USD": 254.45,
       "GBP": 0.0,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 1287.12,
+      "AUD": 1873.02,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 6372.63,
+      "CNY": 6560.21,
       "MXN": 0.0
     },
-    "current_value": 9989.38
+    "current_value": 9986.58
   },
   {
     "date": "2026-02-25",
@@ -139,37 +139,37 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 207,
+    "signals_count": 79,
     "signal_volumes": {
-      "EUR": 36,
-      "USD": 96,
-      "GBP": 12,
-      "JPY": 12,
+      "EUR": 12,
+      "USD": 40,
+      "GBP": 2,
+      "JPY": 4,
       "CHF": 0,
-      "AUD": 12,
-      "CAD": 12,
+      "AUD": 4,
+      "CAD": 4,
       "NOK": 0,
-      "SEK": 8,
-      "CNY": 16,
+      "SEK": 2,
+      "CNY": 8,
       "MXN": 3
     },
-    "unrealized_signals_count": 207,
+    "unrealized_signals_count": 79,
     "aggregate_signals": {
       "EUR": {
-        "direction": "bearish",
-        "confidence": 0.15
-      },
-      "USD": {
-        "direction": "neutral",
-        "confidence": 0.1
-      },
-      "GBP": {
         "direction": "neutral",
         "confidence": 0.08
       },
-      "JPY": {
+      "USD": {
         "direction": "bearish",
-        "confidence": 0.11
+        "confidence": 0.12
+      },
+      "GBP": {
+        "direction": "bullish",
+        "confidence": 0.47
+      },
+      "JPY": {
+        "direction": "bullish",
+        "confidence": 0.15
       },
       "CHF": {
         "direction": "neutral",
@@ -177,23 +177,23 @@
       },
       "AUD": {
         "direction": "bullish",
-        "confidence": 0.19
+        "confidence": 0.68
       },
       "CAD": {
-        "direction": "bearish",
-        "confidence": 0.18
+        "direction": "bullish",
+        "confidence": 0.32
       },
       "NOK": {
         "direction": "neutral",
         "confidence": 0.0
       },
       "SEK": {
-        "direction": "bearish",
-        "confidence": 0.57
+        "direction": "neutral",
+        "confidence": 0.0
       },
       "CNY": {
-        "direction": "bullish",
-        "confidence": 0.21
+        "direction": "bearish",
+        "confidence": 0.4
       },
       "MXN": {
         "direction": "neutral",
@@ -261,37 +261,37 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 207,
+    "signals_count": 79,
     "signal_volumes": {
-      "EUR": 36,
-      "USD": 96,
-      "GBP": 12,
-      "JPY": 12,
+      "EUR": 12,
+      "USD": 40,
+      "GBP": 2,
+      "JPY": 4,
       "CHF": 0,
-      "AUD": 12,
-      "CAD": 12,
+      "AUD": 4,
+      "CAD": 4,
       "NOK": 0,
-      "SEK": 8,
-      "CNY": 16,
+      "SEK": 2,
+      "CNY": 8,
       "MXN": 3
     },
-    "unrealized_signals_count": 207,
+    "unrealized_signals_count": 79,
     "aggregate_signals": {
       "EUR": {
-        "direction": "bearish",
-        "confidence": 0.15
-      },
-      "USD": {
-        "direction": "neutral",
-        "confidence": 0.1
-      },
-      "GBP": {
         "direction": "neutral",
         "confidence": 0.08
       },
-      "JPY": {
+      "USD": {
         "direction": "bearish",
-        "confidence": 0.11
+        "confidence": 0.12
+      },
+      "GBP": {
+        "direction": "bullish",
+        "confidence": 0.47
+      },
+      "JPY": {
+        "direction": "bullish",
+        "confidence": 0.15
       },
       "CHF": {
         "direction": "neutral",
@@ -299,23 +299,23 @@
       },
       "AUD": {
         "direction": "bullish",
-        "confidence": 0.19
+        "confidence": 0.68
       },
       "CAD": {
-        "direction": "bearish",
-        "confidence": 0.18
+        "direction": "bullish",
+        "confidence": 0.32
       },
       "NOK": {
         "direction": "neutral",
         "confidence": 0.0
       },
       "SEK": {
-        "direction": "bearish",
-        "confidence": 0.57
+        "direction": "neutral",
+        "confidence": 0.0
       },
       "CNY": {
-        "direction": "bullish",
-        "confidence": 0.21
+        "direction": "bearish",
+        "confidence": 0.4
       },
       "MXN": {
         "direction": "neutral",
@@ -383,37 +383,37 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 207,
+    "signals_count": 79,
     "signal_volumes": {
-      "EUR": 36,
-      "USD": 96,
-      "GBP": 12,
-      "JPY": 12,
+      "EUR": 12,
+      "USD": 40,
+      "GBP": 2,
+      "JPY": 4,
       "CHF": 0,
-      "AUD": 12,
-      "CAD": 12,
+      "AUD": 4,
+      "CAD": 4,
       "NOK": 0,
-      "SEK": 8,
-      "CNY": 16,
+      "SEK": 2,
+      "CNY": 8,
       "MXN": 3
     },
-    "unrealized_signals_count": 207,
+    "unrealized_signals_count": 79,
     "aggregate_signals": {
       "EUR": {
-        "direction": "bearish",
-        "confidence": 0.15
-      },
-      "USD": {
-        "direction": "neutral",
-        "confidence": 0.1
-      },
-      "GBP": {
         "direction": "neutral",
         "confidence": 0.08
       },
-      "JPY": {
+      "USD": {
         "direction": "bearish",
-        "confidence": 0.11
+        "confidence": 0.12
+      },
+      "GBP": {
+        "direction": "bullish",
+        "confidence": 0.47
+      },
+      "JPY": {
+        "direction": "bullish",
+        "confidence": 0.15
       },
       "CHF": {
         "direction": "neutral",
@@ -421,23 +421,23 @@
       },
       "AUD": {
         "direction": "bullish",
-        "confidence": 0.19
+        "confidence": 0.68
       },
       "CAD": {
-        "direction": "bearish",
-        "confidence": 0.18
+        "direction": "bullish",
+        "confidence": 0.32
       },
       "NOK": {
         "direction": "neutral",
         "confidence": 0.0
       },
       "SEK": {
-        "direction": "bearish",
-        "confidence": 0.57
+        "direction": "neutral",
+        "confidence": 0.0
       },
       "CNY": {
-        "direction": "bullish",
-        "confidence": 0.21
+        "direction": "bearish",
+        "confidence": 0.4
       },
       "MXN": {
         "direction": "neutral",
@@ -480,37 +480,37 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 207,
+    "signals_count": 79,
     "signal_volumes": {
-      "EUR": 36,
-      "USD": 96,
-      "GBP": 12,
-      "JPY": 12,
+      "EUR": 12,
+      "USD": 40,
+      "GBP": 2,
+      "JPY": 4,
       "CHF": 0,
-      "AUD": 12,
-      "CAD": 12,
+      "AUD": 4,
+      "CAD": 4,
       "NOK": 0,
-      "SEK": 8,
-      "CNY": 16,
+      "SEK": 2,
+      "CNY": 8,
       "MXN": 3
     },
-    "unrealized_signals_count": 207,
+    "unrealized_signals_count": 79,
     "aggregate_signals": {
       "EUR": {
-        "direction": "bearish",
-        "confidence": 0.15
-      },
-      "USD": {
-        "direction": "neutral",
-        "confidence": 0.1
-      },
-      "GBP": {
         "direction": "neutral",
         "confidence": 0.08
       },
-      "JPY": {
+      "USD": {
         "direction": "bearish",
-        "confidence": 0.11
+        "confidence": 0.12
+      },
+      "GBP": {
+        "direction": "bullish",
+        "confidence": 0.47
+      },
+      "JPY": {
+        "direction": "bullish",
+        "confidence": 0.15
       },
       "CHF": {
         "direction": "neutral",
@@ -518,23 +518,23 @@
       },
       "AUD": {
         "direction": "bullish",
-        "confidence": 0.19
+        "confidence": 0.68
       },
       "CAD": {
-        "direction": "bearish",
-        "confidence": 0.18
+        "direction": "bullish",
+        "confidence": 0.32
       },
       "NOK": {
         "direction": "neutral",
         "confidence": 0.0
       },
       "SEK": {
-        "direction": "bearish",
-        "confidence": 0.57
+        "direction": "neutral",
+        "confidence": 0.0
       },
       "CNY": {
-        "direction": "bullish",
-        "confidence": 0.21
+        "direction": "bearish",
+        "confidence": 0.4
       },
       "MXN": {
         "direction": "neutral",
@@ -577,37 +577,37 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 207,
+    "signals_count": 79,
     "signal_volumes": {
-      "EUR": 36,
-      "USD": 96,
-      "GBP": 12,
-      "JPY": 12,
+      "EUR": 12,
+      "USD": 40,
+      "GBP": 2,
+      "JPY": 4,
       "CHF": 0,
-      "AUD": 12,
-      "CAD": 12,
+      "AUD": 4,
+      "CAD": 4,
       "NOK": 0,
-      "SEK": 8,
-      "CNY": 16,
+      "SEK": 2,
+      "CNY": 8,
       "MXN": 3
     },
-    "unrealized_signals_count": 207,
+    "unrealized_signals_count": 79,
     "aggregate_signals": {
       "EUR": {
-        "direction": "bearish",
-        "confidence": 0.15
-      },
-      "USD": {
-        "direction": "neutral",
-        "confidence": 0.1
-      },
-      "GBP": {
         "direction": "neutral",
         "confidence": 0.08
       },
-      "JPY": {
+      "USD": {
         "direction": "bearish",
-        "confidence": 0.11
+        "confidence": 0.12
+      },
+      "GBP": {
+        "direction": "bullish",
+        "confidence": 0.47
+      },
+      "JPY": {
+        "direction": "bullish",
+        "confidence": 0.15
       },
       "CHF": {
         "direction": "neutral",
@@ -615,23 +615,23 @@
       },
       "AUD": {
         "direction": "bullish",
-        "confidence": 0.19
+        "confidence": 0.68
       },
       "CAD": {
-        "direction": "bearish",
-        "confidence": 0.18
+        "direction": "bullish",
+        "confidence": 0.32
       },
       "NOK": {
         "direction": "neutral",
         "confidence": 0.0
       },
       "SEK": {
-        "direction": "bearish",
-        "confidence": 0.57
+        "direction": "neutral",
+        "confidence": 0.0
       },
       "CNY": {
-        "direction": "bullish",
-        "confidence": 0.21
+        "direction": "bearish",
+        "confidence": 0.4
       },
       "MXN": {
         "direction": "neutral",
@@ -674,37 +674,37 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 207,
+    "signals_count": 79,
     "signal_volumes": {
-      "EUR": 36,
-      "USD": 96,
-      "GBP": 12,
-      "JPY": 12,
+      "EUR": 12,
+      "USD": 40,
+      "GBP": 2,
+      "JPY": 4,
       "CHF": 0,
-      "AUD": 12,
-      "CAD": 12,
+      "AUD": 4,
+      "CAD": 4,
       "NOK": 0,
-      "SEK": 8,
-      "CNY": 16,
+      "SEK": 2,
+      "CNY": 8,
       "MXN": 3
     },
-    "unrealized_signals_count": 207,
+    "unrealized_signals_count": 79,
     "aggregate_signals": {
       "EUR": {
-        "direction": "bearish",
-        "confidence": 0.15
-      },
-      "USD": {
-        "direction": "neutral",
-        "confidence": 0.1
-      },
-      "GBP": {
         "direction": "neutral",
         "confidence": 0.08
       },
-      "JPY": {
+      "USD": {
         "direction": "bearish",
-        "confidence": 0.11
+        "confidence": 0.12
+      },
+      "GBP": {
+        "direction": "bullish",
+        "confidence": 0.47
+      },
+      "JPY": {
+        "direction": "bullish",
+        "confidence": 0.15
       },
       "CHF": {
         "direction": "neutral",
@@ -712,23 +712,23 @@
       },
       "AUD": {
         "direction": "bullish",
-        "confidence": 0.19
+        "confidence": 0.68
       },
       "CAD": {
-        "direction": "bearish",
-        "confidence": 0.18
+        "direction": "bullish",
+        "confidence": 0.32
       },
       "NOK": {
         "direction": "neutral",
         "confidence": 0.0
       },
       "SEK": {
-        "direction": "bearish",
-        "confidence": 0.57
+        "direction": "neutral",
+        "confidence": 0.0
       },
       "CNY": {
-        "direction": "bullish",
-        "confidence": 0.21
+        "direction": "bearish",
+        "confidence": 0.4
       },
       "MXN": {
         "direction": "neutral",
@@ -771,37 +771,37 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 207,
+    "signals_count": 79,
     "signal_volumes": {
-      "EUR": 36,
-      "USD": 96,
-      "GBP": 12,
-      "JPY": 12,
+      "EUR": 12,
+      "USD": 40,
+      "GBP": 2,
+      "JPY": 4,
       "CHF": 0,
-      "AUD": 12,
-      "CAD": 12,
+      "AUD": 4,
+      "CAD": 4,
       "NOK": 0,
-      "SEK": 8,
-      "CNY": 16,
+      "SEK": 2,
+      "CNY": 8,
       "MXN": 3
     },
-    "unrealized_signals_count": 207,
+    "unrealized_signals_count": 79,
     "aggregate_signals": {
       "EUR": {
-        "direction": "bearish",
-        "confidence": 0.15
-      },
-      "USD": {
-        "direction": "neutral",
-        "confidence": 0.1
-      },
-      "GBP": {
         "direction": "neutral",
         "confidence": 0.08
       },
-      "JPY": {
+      "USD": {
         "direction": "bearish",
-        "confidence": 0.11
+        "confidence": 0.12
+      },
+      "GBP": {
+        "direction": "bullish",
+        "confidence": 0.47
+      },
+      "JPY": {
+        "direction": "bullish",
+        "confidence": 0.15
       },
       "CHF": {
         "direction": "neutral",
@@ -809,23 +809,23 @@
       },
       "AUD": {
         "direction": "bullish",
-        "confidence": 0.19
+        "confidence": 0.68
       },
       "CAD": {
-        "direction": "bearish",
-        "confidence": 0.18
+        "direction": "bullish",
+        "confidence": 0.32
       },
       "NOK": {
         "direction": "neutral",
         "confidence": 0.0
       },
       "SEK": {
-        "direction": "bearish",
-        "confidence": 0.57
+        "direction": "neutral",
+        "confidence": 0.0
       },
       "CNY": {
-        "direction": "bullish",
-        "confidence": 0.21
+        "direction": "bearish",
+        "confidence": 0.4
       },
       "MXN": {
         "direction": "neutral",
@@ -868,37 +868,37 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 207,
+    "signals_count": 79,
     "signal_volumes": {
-      "EUR": 36,
-      "USD": 96,
-      "GBP": 12,
-      "JPY": 12,
+      "EUR": 12,
+      "USD": 40,
+      "GBP": 2,
+      "JPY": 4,
       "CHF": 0,
-      "AUD": 12,
-      "CAD": 12,
+      "AUD": 4,
+      "CAD": 4,
       "NOK": 0,
-      "SEK": 8,
-      "CNY": 16,
+      "SEK": 2,
+      "CNY": 8,
       "MXN": 3
     },
-    "unrealized_signals_count": 207,
+    "unrealized_signals_count": 79,
     "aggregate_signals": {
       "EUR": {
-        "direction": "bearish",
-        "confidence": 0.15
-      },
-      "USD": {
-        "direction": "neutral",
-        "confidence": 0.1
-      },
-      "GBP": {
         "direction": "neutral",
         "confidence": 0.08
       },
-      "JPY": {
+      "USD": {
         "direction": "bearish",
-        "confidence": 0.11
+        "confidence": 0.12
+      },
+      "GBP": {
+        "direction": "bullish",
+        "confidence": 0.47
+      },
+      "JPY": {
+        "direction": "bullish",
+        "confidence": 0.15
       },
       "CHF": {
         "direction": "neutral",
@@ -906,23 +906,23 @@
       },
       "AUD": {
         "direction": "bullish",
-        "confidence": 0.19
+        "confidence": 0.68
       },
       "CAD": {
-        "direction": "bearish",
-        "confidence": 0.18
+        "direction": "bullish",
+        "confidence": 0.32
       },
       "NOK": {
         "direction": "neutral",
         "confidence": 0.0
       },
       "SEK": {
-        "direction": "bearish",
-        "confidence": 0.57
+        "direction": "neutral",
+        "confidence": 0.0
       },
       "CNY": {
-        "direction": "bullish",
-        "confidence": 0.21
+        "direction": "bearish",
+        "confidence": 0.4
       },
       "MXN": {
         "direction": "neutral",
