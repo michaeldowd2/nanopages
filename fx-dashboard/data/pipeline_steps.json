@@ -116,7 +116,7 @@
       "name": "Dashboard Deployment",
       "script": "scripts/deploy-dashboard.sh",
       "description": "Export data and deploy to GitHub Pages",
-      "depends_on": ["1", "2", "4", "6", "7b"],
+      "depends_on": ["1", "2", "3", "4", "5", "6", "7a", "7b"],
       "outputs": {
         "source": [],
         "exports": ["All step exports copied to dashboard"]
