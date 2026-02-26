@@ -25,11 +25,92 @@
     },
     {
       "step_id": "step7",
+      "step_name": "Calculate Trades",
+      "date": "2026-02-26",
+      "start_time": "2026-02-26T22:17:14.704160",
+      "end_time": "2026-02-26T22:17:14.725593",
+      "duration": 0.02,
+      "status": "success",
+      "counts": {
+        "strategy_combinations": 9,
+        "total_trades": 6
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "total_spread_cost": "\u20ac36.09",
+        "output_csv": "/workspace/group/fx-portfolio/data/exports/step7_trades.csv"
+      },
+      "start_time_display": "2026-02-26 22:17:14",
+      "end_time_display": "2026-02-26 22:17:14",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "Step 4",
+      "step_name": "Analyze Time Horizons (LLM)",
+      "date": "2026-02-26",
+      "start_time": "2026-02-26T22:15:39.102018",
+      "end_time": "2026-02-26T22:15:39.108382",
+      "duration": 0.01,
+      "status": "success",
+      "counts": {},
+      "errors": [],
+      "warnings": [],
+      "info": {},
+      "start_time_display": "2026-02-26 22:15:39",
+      "end_time_display": "2026-02-26 22:15:39",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step5",
+      "step_name": "Generate Sentiment Signals (v2)",
+      "date": "2026-02-26",
+      "start_time": "2026-02-26T22:15:44.124923",
+      "end_time": "2026-02-26T22:16:54.310674",
+      "duration": 70.19,
+      "status": "success",
+      "counts": {
+        "generators_configured": 2,
+        "currencies_to_analyze": 11,
+        "total_signals": 124,
+        "generators_executed": 2
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {},
+      "start_time_display": "2026-02-26 22:15:44",
+      "end_time_display": "2026-02-26 22:16:54",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step6",
+      "step_name": "Check Signal Realization",
+      "date": "2026-02-26",
+      "start_time": "2026-02-26T22:16:59.521988",
+      "end_time": "2026-02-26T22:16:59.632461",
+      "duration": 0.11,
+      "status": "success",
+      "counts": {
+        "total_signals": 373,
+        "signals_checked": 373,
+        "signals_with_horizon": 315,
+        "realized": 0,
+        "unrealized": 0
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {},
+      "start_time_display": "2026-02-26 22:16:59",
+      "end_time_display": "2026-02-26 22:16:59",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step8",
       "step_name": "Execute Trading Strategies",
       "date": "2026-02-26",
-      "start_time": "2026-02-26T09:00:33.033235",
-      "end_time": "2026-02-26T09:00:33.070020",
-      "duration": 0.04,
+      "start_time": "2026-02-26T22:17:14.759895",
+      "end_time": "2026-02-26T22:17:14.784363",
+      "duration": 0.02,
       "status": "success",
       "counts": {
         "strategy_combinations": 9,
@@ -39,11 +120,11 @@
       "errors": [],
       "warnings": [],
       "info": {
-        "output_csv": "/workspace/group/fx-portfolio/data/exports/step7_strategies.csv",
-        "output_json": "/workspace/group/fx-portfolio/data/exports/step7_strategies_detail.json"
+        "output_csv": "/workspace/group/fx-portfolio/data/exports/step8_strategies.csv",
+        "output_json": "/workspace/group/fx-portfolio/data/exports/step8_strategies_detail.json"
       },
-      "start_time_display": "2026-02-26 09:00:33",
-      "end_time_display": "2026-02-26 09:00:33",
+      "start_time_display": "2026-02-26 22:17:14",
+      "end_time_display": "2026-02-26 22:17:14",
       "status_icon": "\u2713"
     }
   ]
