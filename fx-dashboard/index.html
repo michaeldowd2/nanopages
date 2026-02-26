@@ -207,14 +207,15 @@
     <div class="tab" onclick="showTab('step4')">STEP 4</div>
     <div class="tab" onclick="showTab('step5')">STEP 5</div>
     <div class="tab" onclick="showTab('step6')">STEP 6</div>
-    <div class="tab" onclick="showTab('step7')">STEP 7</div>
+    <div class="tab" onclick="showTab('step7')">STEP 7: PORTFOLIOS</div>
+    <div class="tab" onclick="showTab('trades')">TRADES</div>
     <div class="tab" onclick="showTab('tracking')">TRACKING</div>
   </div>
 
   <!-- OVERVIEW TAB -->
   <div id="overview" class="tab-content active">
     <div class="section">
-      <h2>7-Step Pipeline Architecture</h2>
+      <h2>8-Step Pipeline Architecture</h2>
       <div class="architecture-diagram">
         <pre>
 1. EXCHANGE RATES ──► 2. INDICES ──► 3. NEWS AGGREGATOR
@@ -225,9 +226,9 @@
            │                               │
            ▼                               ▼
     4. TIME HORIZONS              5. SENTIMENT SIGNALS
-       (Parallel)                    (Per-Article)
-       • LLM Estimator               • News-Sentiment
-       • Keyword (future)            • LLM (future)
+       (LLM/Keyword)                 (Keyword + LLM)
+       • llm-horizon-v1              • keyword-sentiment
+       • Parallel execution          • llm-sentiment
            │                               │
            └───────────────┬───────────────┘
                            ▼
@@ -235,11 +236,19 @@
                    • Predicted vs Actual
                    • Tag: realized=T/F
                            │
+                ┌──────────┴──────────┐
+                ▼                     ▼
+           7a. CALCULATE          7b. EXECUTE
+               TRADES                 PORTFOLIOS
+           • Aggregate signals    • Apply trades
+           • Generate trades      • Update balances
+           • Show costs           • Track P&L
+                │                     │
+                └──────────┬──────────┘
                            ▼
-                    7. STRATEGIES
-                   • Filter unrealized
-                   • Execute trades
-                   • Track portfolio
+                    8. DASHBOARD
+                   • Export data
+                   • Deploy to Pages
         </pre>
       </div>
       <div style="margin-top:10px; color:#888; font-size:0.85em;">
@@ -690,6 +699,46 @@
             <div id="portfolio-timeseries"></div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRADES TAB -->
+  <div id="trades" class="tab-content">
+    <div class="section">
+      <h2>Trade Calculations (Step 7a) <a href="data/step7a_trades.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Proposed trades showing spread costs before portfolio execution</p>
+
+      <!-- Date Filter -->
+      <div style="margin:15px 0;">
+        <label for="trades-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
+        <select id="trades-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
+          <option value="">All Dates</option>
+        </select>
+      </div>
+
+      <!-- Summary Stats -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin:15px 0;">
+        <div style="background:#0f1229; padding:12px; border:1px solid #333; border-radius:4px;">
+          <div style="color:#888; font-size:0.85em; margin-bottom:5px;">Total Trades</div>
+          <div id="trades-total-count" style="color:#00ff41; font-size:1.3em; font-weight:bold;">-</div>
+        </div>
+        <div style="background:#0f1229; padding:12px; border:1px solid #333; border-radius:4px;">
+          <div style="color:#888; font-size:0.85em; margin-bottom:5px;">Total Spread Cost</div>
+          <div id="trades-total-cost" style="color:#ff4444; font-size:1.3em; font-weight:bold;">-</div>
+        </div>
+        <div style="background:#0f1229; padding:12px; border:1px solid #333; border-radius:4px;">
+          <div style="color:#888; font-size:0.85em; margin-bottom:5px;">Avg Cost per Trade</div>
+          <div id="trades-avg-cost" style="color:#888; font-size:1.3em; font-weight:bold;">-</div>
+        </div>
+      </div>
+
+      <div class="csv-table-container">
+        <div class="loading" id="trades-loading">Loading...</div>
+        <table id="trades-table" style="display:none;">
+          <thead id="trades-thead"></thead>
+          <tbody id="trades-tbody"></tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -1324,6 +1373,68 @@
         });
     }
 
+    function loadTradesCSV() {
+      const step = 'trades';
+      fetch('data/step7a_trades.csv')
+        .then(res => res.text())
+        .then(text => {
+          const { headers, rows } = parseCSV(text);
+
+          document.getElementById(`${step}-loading`).style.display = 'none';
+          document.getElementById(`${step}-table`).style.display = 'table';
+
+          // Calculate summary stats
+          const totalCount = rows.length;
+          const totalCost = rows.reduce((sum, r) => sum + parseFloat(r.cost_euro || 0), 0);
+          const avgCost = totalCount > 0 ? totalCost / totalCount : 0;
+
+          document.getElementById('trades-total-count').textContent = totalCount;
+          document.getElementById('trades-total-cost').textContent = `€${totalCost.toFixed(2)}`;
+          document.getElementById('trades-avg-cost').textContent = `€${avgCost.toFixed(2)}`;
+
+          // Cache data for filtering
+          stepDataCache[step] = { headers, allRows: rows };
+
+          // Populate date filter
+          populateDateFilter(step, rows);
+
+          // Render table
+          const thead = document.getElementById(`${step}-thead`);
+          const tbody = document.getElementById(`${step}-tbody`);
+
+          thead.innerHTML = '<tr>' + headers.map(h => `<th>${h.replace(/_/g, ' ').toUpperCase()}</th>`).join('') + '</tr>';
+
+          tbody.innerHTML = rows.map(row => {
+            return '<tr>' + headers.map(h => {
+              let value = row[h];
+              let className = '';
+
+              // Color cost_euro (red)
+              if (h === 'cost_euro') {
+                className = 'bearish';
+              }
+              // Color confidence values
+              else if (h.includes('confidence') && value) {
+                const numVal = parseFloat(value);
+                if (!isNaN(numVal)) {
+                  className = numVal > 0.5 ? 'bullish' : 'neutral';
+                }
+              }
+              // Highlight currency pairs
+              else if (h === 'from_currency' || h === 'to_currency') {
+                className = 'bullish';
+              }
+
+              return `<td class="${className}">${value}</td>`;
+            }).join('') + '</tr>';
+          }).join('');
+        })
+        .catch(err => {
+          document.getElementById(`${step}-loading`).textContent = 'Error: ' + err.message;
+          console.error('Error loading trades CSV:', err);
+        });
+    }
+
     function loadTrackingDates() {
       fetch('data/tracking_dates.json')
         .then(res => res.json())
@@ -1473,6 +1584,7 @@
 
     document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
     ['step2', 'step3', 'step4', 'step5', 'step6', 'step7'].forEach(loadCSV);
+    loadTradesCSV();
     loadStep1Dates();  // Load Step 1 with date selector
     loadSystemConfig();
     loadTrackingDates();
