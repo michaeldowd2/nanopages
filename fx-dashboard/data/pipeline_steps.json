@@ -1,0 +1,148 @@
+{
+  "version": "1.0",
+  "description": "FX Portfolio Trading Pipeline - Step Dependencies and Configuration",
+  "steps": {
+    "1": {
+      "id": "1",
+      "name": "Exchange Rates",
+      "script": "scripts/fetch-exchange-rates.py",
+      "description": "Fetch current exchange rates from API",
+      "depends_on": [],
+      "outputs": {
+        "source": ["data/prices/fx-rates-*.json"],
+        "exports": ["data/exports/step1_exchange_rates.csv", "data/exports/step1_exchange_rates_matrix*.json", "data/exports/step1_dates.json"]
+      },
+      "supports_date_filter": true,
+      "is_safe_to_clear": true
+    },
+    "2": {
+      "id": "2",
+      "name": "Currency Indices",
+      "script": "scripts/calculate-currency-indices.py",
+      "description": "Calculate synthetic currency strength indices",
+      "depends_on": ["1"],
+      "outputs": {
+        "source": ["data/indices/*.json"],
+        "exports": ["data/exports/step2_indices.csv"]
+      },
+      "supports_date_filter": true,
+      "is_safe_to_clear": true
+    },
+    "3": {
+      "id": "3",
+      "name": "News Aggregation",
+      "script": "scripts/fetch-news.py",
+      "description": "Fetch and store news articles from various sources",
+      "depends_on": ["1"],
+      "outputs": {
+        "source": ["data/news/*/", "data/news/url_index.json"],
+        "exports": ["data/exports/step3_news.csv"]
+      },
+      "supports_date_filter": true,
+      "is_safe_to_clear": true,
+      "warning": "Clearing news articles will require re-fetching from external APIs"
+    },
+    "4": {
+      "id": "4",
+      "name": "Time Horizon Analysis",
+      "script": "scripts/analyze-time-horizons-llm.py",
+      "description": "Extract time horizons from articles using LLM",
+      "depends_on": ["3"],
+      "outputs": {
+        "source": ["data/article-analysis/*.json"],
+        "exports": ["data/exports/step4_horizons.csv"]
+      },
+      "supports_date_filter": true,
+      "is_safe_to_clear": true,
+      "warning": "Uses LLM API - clearing will incur re-analysis costs"
+    },
+    "5": {
+      "id": "5",
+      "name": "Sentiment Signals",
+      "script": "scripts/generate-sentiment-signals-v2.py",
+      "description": "Generate sentiment signals using keyword and LLM generators",
+      "depends_on": ["4"],
+      "outputs": {
+        "source": ["data/signals/*/*.json"],
+        "exports": ["data/exports/step5_signals.csv"]
+      },
+      "supports_date_filter": true,
+      "is_safe_to_clear": true,
+      "warning": "Uses LLM API - clearing will incur re-generation costs"
+    },
+    "6": {
+      "id": "6",
+      "name": "Signal Realization",
+      "script": "scripts/check-signal-realization.py",
+      "description": "Check if signals have been realized (predicted events occurred)",
+      "depends_on": ["5", "1"],
+      "outputs": {
+        "source": ["data/signals/*/*.json"],
+        "exports": ["data/exports/step6_realization.csv"]
+      },
+      "supports_date_filter": true,
+      "is_safe_to_clear": true,
+      "note": "Modifies signal files in-place (adds realized flag)"
+    },
+    "7a": {
+      "id": "7a",
+      "name": "Trade Calculation",
+      "script": "scripts/calculate-trades.py",
+      "description": "Calculate proposed trades with spread cost analysis",
+      "depends_on": ["6"],
+      "outputs": {
+        "source": [],
+        "exports": ["data/exports/step7a_trades.csv"]
+      },
+      "supports_date_filter": true,
+      "is_safe_to_clear": true
+    },
+    "7b": {
+      "id": "7b",
+      "name": "Portfolio Execution",
+      "script": "scripts/execute-strategies.py",
+      "description": "Execute trades on portfolios and track values",
+      "depends_on": ["7a", "6"],
+      "outputs": {
+        "source": ["data/portfolios/*.json"],
+        "exports": ["data/exports/step7_strategies.csv", "data/exports/step7_strategies_detail.json"]
+      },
+      "supports_date_filter": true,
+      "is_safe_to_clear": false,
+      "warning": "Portfolio state is cumulative - clearing resets all portfolio history!"
+    },
+    "8": {
+      "id": "8",
+      "name": "Dashboard Deployment",
+      "script": "scripts/deploy-dashboard.sh",
+      "description": "Export data and deploy to GitHub Pages",
+      "depends_on": ["1", "2", "3", "4", "5", "6", "7a", "7b"],
+      "outputs": {
+        "source": [],
+        "exports": ["All step exports copied to dashboard"]
+      },
+      "supports_date_filter": false,
+      "is_safe_to_clear": false,
+      "note": "Deployment step - does not produce local data to clear"
+    }
+  },
+  "notes": {
+    "dependency_rules": [
+      "Steps must be run in dependency order",
+      "Clearing a step requires clearing all downstream dependencies",
+      "Portfolio state (7b) is cumulative across dates",
+      "LLM-based steps (4, 5) incur API costs when regenerated"
+    ],
+    "date_filtering": [
+      "Most steps support date-specific operations",
+      "Portfolio execution (7b) maintains state across dates",
+      "Deployment (8) always includes all available dates"
+    ],
+    "safety_guidelines": [
+      "Always clear downstream before clearing upstream (prevents orphaned data)",
+      "Use --dry-run to preview what will be cleared",
+      "Back up portfolio state before clearing Step 7b",
+      "News articles (Step 3) may not be re-fetchable for old dates"
+    ]
+  }
+}
