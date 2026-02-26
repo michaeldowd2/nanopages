@@ -119,7 +119,7 @@
       "CNY": 6372.63,
       "MXN": 0.0
     },
-    "current_value": 9989.39
+    "current_value": 9989.38
   },
   {
     "date": "2026-02-25",
@@ -238,10 +238,10 @@
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 15931.62,
+      "CNY": 15931.63,
       "MXN": 0.0
     },
-    "current_value": 9973.46
+    "current_value": 9973.47
   },
   {
     "date": "2026-02-25",
@@ -448,7 +448,7 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000,
+      "EUR": 10000.0,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
@@ -545,7 +545,7 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000,
+      "EUR": 10000.0,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
@@ -642,7 +642,7 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000,
+      "EUR": 10000.0,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
@@ -751,7 +751,7 @@
       "CNY": 3257.0,
       "MXN": 0.0
     },
-    "current_value": 9995.31
+    "current_value": 9995.3
   },
   {
     "date": "2026-02-25",
