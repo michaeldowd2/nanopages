@@ -33,7 +33,7 @@
       "name": "News Aggregation",
       "script": "scripts/fetch-news.py",
       "description": "Fetch and store news articles from various sources",
-      "depends_on": ["1"],
+      "depends_on": [],
       "outputs": {
         "source": ["data/news/*/", "data/news/url_index.json"],
         "exports": ["data/exports/step3_news.csv"]
@@ -61,7 +61,7 @@
       "name": "Sentiment Signals",
       "script": "scripts/generate-sentiment-signals-v2.py",
       "description": "Generate sentiment signals using keyword and LLM generators",
-      "depends_on": ["4"],
+      "depends_on": ["3"],
       "outputs": {
         "source": ["data/signals/*/*.json"],
         "exports": ["data/exports/step5_signals.csv"]
@@ -75,7 +75,7 @@
       "name": "Signal Realization",
       "script": "scripts/check-signal-realization.py",
       "description": "Check if signals have been realized (predicted events occurred)",
-      "depends_on": ["5", "1"],
+      "depends_on": ["5", "4", "2"],
       "outputs": {
         "source": ["data/signals/*/*.json"],
         "exports": ["data/exports/step6_realization.csv"]
@@ -102,7 +102,7 @@
       "name": "Portfolio Execution",
       "script": "scripts/execute-strategies.py",
       "description": "Execute trades on portfolios and track values",
-      "depends_on": ["7a", "6"],
+      "depends_on": ["7a"],
       "outputs": {
         "source": ["data/portfolios/*.json"],
         "exports": ["data/exports/step7_strategies.csv", "data/exports/step7_strategies_detail.json"]
@@ -116,7 +116,7 @@
       "name": "Dashboard Deployment",
       "script": "scripts/deploy-dashboard.sh",
       "description": "Export data and deploy to GitHub Pages",
-      "depends_on": ["1", "2", "3", "4", "5", "6", "7a", "7b"],
+      "depends_on": ["1", "2", "4", "6", "7b"],
       "outputs": {
         "source": [],
         "exports": ["All step exports copied to dashboard"]
