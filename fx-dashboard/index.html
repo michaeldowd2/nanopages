@@ -215,7 +215,8 @@
     <div class="tab" onclick="showTab('step4')">STEP 4</div>
     <div class="tab" onclick="showTab('step5')">STEP 5</div>
     <div class="tab" onclick="showTab('step6')">STEP 6</div>
-    <div class="tab" onclick="showTab('step7')">STEP 7: PORTFOLIOS</div>
+    <div class="tab" onclick="showTab('step7')">STEP 7</div>
+    <div class="tab" onclick="showTab('step8')">STEP 8: PORTFOLIOS</div>
     <div class="tab" onclick="showTab('trades')">TRADES</div>
     <div class="tab" onclick="showTab('tracking')">TRACKING</div>
   </div>
@@ -520,8 +521,8 @@
 
   <div id="step7" class="tab-content">
     <div class="section">
-      <h2>Step 7: Strategies <a href="data/step7_strategies.csv" class="csv-download" download>CSV</a></h2>
-      <p class="step-header">9 parameter combinations (Simple Momentum)</p>
+      <h2>Step 7: Trade Calculation <a href="data/step7_trades.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">Proposed trades showing spread costs before portfolio execution</p>
 
       <!-- Date Filter -->
       <div style="margin:15px 0;">
@@ -583,10 +584,68 @@
     </div>
   </div>
 
+  <div id="step8" class="tab-content">
+    <div class="section">
+      <h2>Step 8: Portfolio Execution <a href="data/step8_strategies.csv" class="csv-download" download>CSV</a></h2>
+      <p class="step-header">9 parameter combinations (Simple Momentum)</p>
+
+      <!-- Date Filter -->
+      <div style="margin:15px 0;">
+        <label for="step8-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
+        <select id="step8-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
+          <option value="">All Dates</option>
+        </select>
+      </div>
+
+      <div class="chart">
+        <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Portfolio Values by Strategy</h3>
+        <div id="strategy-chart"></div>
+      </div>
+
+      <div class="csv-table-container">
+        <div class="loading" id="step8-loading">Loading...</div>
+        <table id="step8-table" style="display:none;">
+          <thead id="step8-thead"></thead>
+          <tbody id="step8-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Strategy Detail Section -->
+      <div id="strategy-detail" style="display:none; margin-top:30px; padding-top:30px; border-top:1px solid #333;">
+        <h3 style="color:#00ff41;font-size:1.1em;margin-bottom:15px;">Strategy Details</h3>
+
+        <label for="strategy-selector" style="color:#ccc; font-size:0.9em;">Select Strategy:</label>
+        <select id="strategy-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:8px; margin:10px 0; font-size:1em; border-radius:4px;">
+          <option value="">Choose a strategy...</option>
+        </select>
+
+        <div id="strategy-info" style="display:none;">
+          <!-- Currency Signals -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Currency Signals</h4>
+            <div id="currency-signals" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px;"></div>
+          </div>
+
+          <!-- Trade Recommendations -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Trade Recommendations</h4>
+            <div id="trade-recommendations"></div>
+          </div>
+
+          <!-- Portfolio Timeline -->
+          <div style="margin-top:20px;">
+            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Portfolio Timeline</h4>
+            <div id="portfolio-timeseries"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- TRADES TAB -->
   <div id="trades" class="tab-content">
     <div class="section">
-      <h2>Trade Calculations (Step 7a) <a href="data/step7a_trades.csv" class="csv-download" download>CSV</a></h2>
+      <h2>Trade Calculations <a href="data/step7_trades.csv" class="csv-download" download>CSV</a></h2>
       <p class="step-header">Proposed trades showing spread costs before portfolio execution</p>
 
       <!-- Date Filter -->
@@ -1474,9 +1533,9 @@
         '4': { x: 300, y: 200, layer: 1 },
         '5': { x: 300, y: 280, layer: 1 },
         '6': { x: 500, y: 150, layer: 2 },
-        '7a': { x: 700, y: 150, layer: 3 },
-        '7b': { x: 900, y: 150, layer: 4 },
-        '8': { x: 1100, y: 150, layer: 5 }
+        '7': { x: 700, y: 150, layer: 3 },
+        '8': { x: 900, y: 150, layer: 4 },
+        '9': { x: 1100, y: 150, layer: 5 }
       };
 
       const nodeRadius = 35;
@@ -1615,7 +1674,7 @@
 
           // Sort steps by ID
           const sortedSteps = Object.keys(steps).sort((a, b) => {
-            const order = ['1', '2', '3', '4', '5', '6', '7a', '7b', '8'];
+            const order = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
             return order.indexOf(a) - order.indexOf(b);
           });
 

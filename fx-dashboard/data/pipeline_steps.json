@@ -84,39 +84,39 @@
       "is_safe_to_clear": true,
       "note": "Modifies signal files in-place (adds realized flag)"
     },
-    "7a": {
-      "id": "7a",
+    "7": {
+      "id": "7",
       "name": "Trade Calculation",
       "script": "scripts/calculate-trades.py",
       "description": "Calculate proposed trades with spread cost analysis",
       "depends_on": ["6"],
       "outputs": {
         "source": [],
-        "exports": ["data/exports/step7a_trades.csv"]
+        "exports": ["data/exports/step7_trades.csv"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true
     },
-    "7b": {
-      "id": "7b",
+    "8": {
+      "id": "8",
       "name": "Portfolio Execution",
       "script": "scripts/execute-strategies.py",
       "description": "Execute trades on portfolios and track values",
-      "depends_on": ["7a"],
+      "depends_on": ["7"],
       "outputs": {
         "source": ["data/portfolios/*.json"],
-        "exports": ["data/exports/step7_strategies.csv", "data/exports/step7_strategies_detail.json"]
+        "exports": ["data/exports/step8_strategies.csv", "data/exports/step8_strategies_detail.json"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": false,
       "warning": "Portfolio state is cumulative - clearing resets all portfolio history!"
     },
-    "8": {
-      "id": "8",
+    "9": {
+      "id": "9",
       "name": "Dashboard Deployment",
       "script": "scripts/deploy-dashboard.sh",
       "description": "Export data and deploy to GitHub Pages",
-      "depends_on": ["1", "2", "3", "4", "5", "6", "7a", "7b"],
+      "depends_on": ["1", "2", "3", "4", "5", "6", "7", "8"],
       "outputs": {
         "source": [],
         "exports": ["All step exports copied to dashboard"]
@@ -130,18 +130,18 @@
     "dependency_rules": [
       "Steps must be run in dependency order",
       "Clearing a step requires clearing all downstream dependencies",
-      "Portfolio state (7b) is cumulative across dates",
+      "Portfolio state (Step 8) is cumulative across dates",
       "LLM-based steps (4, 5) incur API costs when regenerated"
     ],
     "date_filtering": [
       "Most steps support date-specific operations",
-      "Portfolio execution (7b) maintains state across dates",
-      "Deployment (8) always includes all available dates"
+      "Portfolio execution (Step 8) maintains state across dates",
+      "Deployment (Step 9) always includes all available dates"
     ],
     "safety_guidelines": [
       "Always clear downstream before clearing upstream (prevents orphaned data)",
       "Use --dry-run to preview what will be cleared",
-      "Back up portfolio state before clearing Step 7b",
+      "Back up portfolio state before clearing Step 8",
       "News articles (Step 3) may not be re-fetchable for old dates"
     ]
   }
