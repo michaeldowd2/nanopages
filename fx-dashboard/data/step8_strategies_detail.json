@@ -1,6 +1,6 @@
 [
   {
-    "date": "2026-02-26",
+    "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.5-size0.25",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.0_size=0.1",
@@ -107,22 +107,22 @@
       }
     ],
     "portfolio": {
-      "EUR": 8852.78,
-      "USD": 0.0,
+      "EUR": 8213.04,
+      "USD": 254.53,
       "GBP": 0.0,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 614.6,
+      "AUD": 1284.87,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 6231.26,
+      "CNY": 6361.92,
       "MXN": 0.0
     },
-    "current_value": 9991.51
+    "current_value": 9986.78
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.5-size0.5",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.0_size=0.25",
@@ -229,22 +229,22 @@
       }
     ],
     "portfolio": {
-      "EUR": 7131.94,
-      "USD": 0.0,
+      "EUR": 5532.61,
+      "USD": 636.32,
       "GBP": 0.0,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 1536.51,
+      "AUD": 3212.16,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 15578.15,
+      "CNY": 15904.83,
       "MXN": 0.0
     },
-    "current_value": 9978.78
+    "current_value": 9966.94
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.5-size0.75",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.0_size=0.5",
@@ -351,22 +351,22 @@
       }
     ],
     "portfolio": {
-      "EUR": 4263.88,
-      "USD": 0.0,
+      "EUR": 1065.22,
+      "USD": 1272.64,
       "GBP": 0.0,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 3073.02,
+      "AUD": 6424.35,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 31156.31,
+      "CNY": 31809.59,
       "MXN": 0.0
     },
-    "current_value": 9957.55
+    "current_value": 9933.88
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.6-size0.25",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.6_size=0.1",
@@ -463,7 +463,7 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.6-size0.5",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.6_size=0.25",
@@ -560,7 +560,7 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.6-size0.75",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.6_size=0.5",
@@ -657,7 +657,7 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.7-size0.25",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.3_size=0.1",
@@ -739,22 +739,22 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000,
+      "EUR": 9004.2,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 977.57,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 0.0,
+      "CNY": 3246.29,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9992.63
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.7-size0.5",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.3_size=0.25",
@@ -836,22 +836,22 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000,
+      "EUR": 7510.51,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 2443.91,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 0.0,
+      "CNY": 8115.76,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9981.58
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-25",
     "strategy_id": "simple-momentum-conf0.7-size0.75",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.3_size=0.5",
@@ -933,18 +933,18 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000,
+      "EUR": 5021.02,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 4887.83,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 0.0,
+      "CNY": 16231.43,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9963.16
   }
 ]

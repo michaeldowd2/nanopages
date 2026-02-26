@@ -27,9 +27,9 @@
       "step_id": "step7",
       "step_name": "Calculate Trades",
       "date": "2026-02-26",
-      "start_time": "2026-02-26T22:17:14.704160",
-      "end_time": "2026-02-26T22:17:14.725593",
-      "duration": 0.02,
+      "start_time": "2026-02-26T22:27:48.094737",
+      "end_time": "2026-02-26T22:27:48.107700",
+      "duration": 0.01,
       "status": "success",
       "counts": {
         "strategy_combinations": 9,
@@ -41,8 +41,8 @@
         "total_spread_cost": "\u20ac36.09",
         "output_csv": "/workspace/group/fx-portfolio/data/exports/step7_trades.csv"
       },
-      "start_time_display": "2026-02-26 22:17:14",
-      "end_time_display": "2026-02-26 22:17:14",
+      "start_time_display": "2026-02-26 22:27:48",
+      "end_time_display": "2026-02-26 22:27:48",
       "status_icon": "\u2713"
     },
     {
@@ -108,9 +108,9 @@
       "step_id": "step8",
       "step_name": "Execute Trading Strategies",
       "date": "2026-02-26",
-      "start_time": "2026-02-26T22:17:14.759895",
-      "end_time": "2026-02-26T22:17:14.784363",
-      "duration": 0.02,
+      "start_time": "2026-02-26T22:28:01.762431",
+      "end_time": "2026-02-26T22:28:01.787810",
+      "duration": 0.03,
       "status": "success",
       "counts": {
         "strategy_combinations": 9,
@@ -123,8 +123,8 @@
         "output_csv": "/workspace/group/fx-portfolio/data/exports/step8_strategies.csv",
         "output_json": "/workspace/group/fx-portfolio/data/exports/step8_strategies_detail.json"
       },
-      "start_time_display": "2026-02-26 22:17:14",
-      "end_time_display": "2026-02-26 22:17:14",
+      "start_time_display": "2026-02-26 22:28:01",
+      "end_time_display": "2026-02-26 22:28:01",
       "status_icon": "\u2713"
     }
   ]
