@@ -1,7 +1,0 @@
-strategy_id,date,from_currency,to_currency,from_amount_euro,from_amount_base,exchange_rate_mid,exchange_rate_with_spread,to_amount_euro,to_amount_opposite,cost_euro,signal_strength_factor,buy_confidence,sell_confidence
-simple-momentum-conf0.5-size0.25,2026-02-26,EUR,CNY,387.5,387.5,8.10028,8.040338,384.63,3115.63,2.87,0.39,0.21,0.57
-simple-momentum-conf0.5-size0.25,2026-02-26,EUR,AUD,186.11,186.11,1.663477,1.651167,184.73,307.3,1.38,0.19,0.19,0.18
-simple-momentum-conf0.5-size0.5,2026-02-26,EUR,CNY,968.75,968.75,8.10028,8.040338,961.58,7789.08,7.17,0.39,0.21,0.57
-simple-momentum-conf0.5-size0.5,2026-02-26,EUR,AUD,465.28,465.28,1.663477,1.651167,461.83,768.25,3.44,0.19,0.19,0.18
-simple-momentum-conf0.5-size0.75,2026-02-26,EUR,CNY,1937.5,1937.5,8.10028,8.040338,1923.16,15578.15,14.34,0.39,0.21,0.57
-simple-momentum-conf0.5-size0.75,2026-02-26,EUR,AUD,930.56,930.56,1.663477,1.651167,923.67,1536.5,6.89,0.19,0.19,0.18
