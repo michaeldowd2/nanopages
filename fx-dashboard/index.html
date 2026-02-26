@@ -532,54 +532,12 @@
         </select>
       </div>
 
-      <div class="chart">
-        <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Portfolio Values by Strategy</h3>
-        <div id="strategy-chart"></div>
-      </div>
-
       <div class="csv-table-container">
         <div class="loading" id="step7-loading">Loading...</div>
         <table id="step7-table" style="display:none;">
           <thead id="step7-thead"></thead>
           <tbody id="step7-tbody"></tbody>
         </table>
-      </div>
-
-      <!-- Strategy Detail Section -->
-      <div id="strategy-detail" style="display:none; margin-top:30px; padding-top:30px; border-top:1px solid #333;">
-        <h3 style="color:#00ff41;font-size:1.1em;margin-bottom:15px;">Strategy Details</h3>
-
-        <label for="strategy-selector" style="color:#ccc; font-size:0.9em;">Select Strategy:</label>
-        <select id="strategy-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:8px; margin:10px 0; font-size:1em; border-radius:4px;">
-          <option value="">Choose a strategy...</option>
-        </select>
-
-        <div id="strategy-info" style="display:none;">
-          <!-- Currency Signals -->
-          <div style="margin-top:20px;">
-            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Currency Signals</h4>
-            <div id="currency-signals" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px;"></div>
-          </div>
-
-          <!-- Trade Recommendations -->
-          <div style="margin-top:20px;">
-            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Trade Recommendations</h4>
-            <div id="trade-recommendations"></div>
-          </div>
-
-          <!-- Portfolio Breakdown -->
-          <div style="margin-top:20px;">
-            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Portfolio Breakdown</h4>
-            <div id="portfolio-breakdown"></div>
-          </div>
-
-          <!-- Time Series (Future) -->
-          <div style="margin-top:20px;">
-            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Portfolio Value Over Time</h4>
-            <p style="color:#888; font-size:0.9em;">Requires multiple days of data (coming soon)</p>
-            <div id="portfolio-timeseries"></div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -835,7 +793,8 @@
         'step4': 'data/step4_horizons.csv',
         'step5': 'data/step5_signals.csv',
         'step6': 'data/step6_realization.csv',
-        'step7': 'data/step7_strategies.csv'
+        'step7': 'data/step7_trades.csv',
+        'step8': 'data/step8_strategies.csv'
       }[step];
 
       fetch(csvFile)
@@ -1005,7 +964,7 @@
     let strategyDetailData = [];
 
     function loadStrategyDetails() {
-      fetch('data/step7_strategies_detail.json')
+      fetch('data/step8_strategies_detail.json')
         .then(res => res.json())
         .then(data => {
           strategyDetailData = data;
@@ -1314,7 +1273,7 @@
 
     function loadTradesCSV() {
       const step = 'trades';
-      fetch('data/step7a_trades.csv')
+      fetch('data/step7_trades.csv')
         .then(res => res.text())
         .then(text => {
           const { headers, rows } = parseCSV(text);
@@ -1755,7 +1714,7 @@
     }
 
     document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
-    ['step2', 'step3', 'step4', 'step5', 'step6', 'step7'].forEach(loadCSV);
+    ['step2', 'step3', 'step4', 'step5', 'step6', 'step7', 'step8'].forEach(loadCSV);
     loadTradesCSV();
     loadStep1Dates();  // Load Step 1 with date selector
     loadSystemConfig();
