@@ -545,9 +545,9 @@
           const table = document.getElementById(`${step}-table`);
           const loading = document.getElementById(`${step}-loading`);
 
-          // Special rendering for step4 (show only key columns)
+          // Special rendering for step4 (show only key columns, matching step5 order)
           if (step === 'step4') {
-            const keyColumns = ['date', 'estimator_id', 'estimator_type', 'estimator_params', 'url', 'currency', 'title', 'time_horizon', 'horizon_category', 'confidence', 'reasoning'];
+            const keyColumns = ['date', 'estimator_id', 'estimator_type', 'estimator_params', 'currency', 'title', 'url', 'published_at', 'time_horizon', 'horizon_category', 'confidence', 'reasoning'];
             thead.innerHTML = '<tr>' + keyColumns.map(h => `<th>${h}</th>`).join('') + '</tr>';
             tbody.innerHTML = rows.map(row => {
               return '<tr>' + keyColumns.map(h => {
@@ -563,6 +563,8 @@
                   displayValue = value.substring(0, 40) + '...';
                 } else if (h === 'url' && value.length > 50) {
                   displayValue = value.substring(0, 50) + '...';
+                } else if (h === 'published_at' && value.length > 16) {
+                  displayValue = value.substring(0, 16) + '...';
                 }
 
                 // Color code horizons
