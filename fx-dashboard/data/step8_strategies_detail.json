@@ -1,6 +1,6 @@
 [
   {
-    "date": "2026-02-26",
+    "date": "2026-02-24",
     "strategy_id": "simple-momentum-conf0.5-size0.25",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.0_size=0.1",
@@ -17,21 +17,21 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 79,
+    "signals_count": 155,
     "signal_volumes": {
-      "EUR": 12,
-      "USD": 40,
-      "GBP": 2,
-      "JPY": 4,
+      "EUR": 24,
+      "USD": 80,
+      "GBP": 4,
+      "JPY": 8,
       "CHF": 0,
-      "AUD": 4,
-      "CAD": 4,
+      "AUD": 8,
+      "CAD": 8,
       "NOK": 0,
-      "SEK": 2,
-      "CNY": 8,
+      "SEK": 4,
+      "CNY": 16,
       "MXN": 3
     },
-    "unrealized_signals_count": 79,
+    "unrealized_signals_count": 155,
     "aggregate_signals": {
       "EUR": {
         "direction": "neutral",
@@ -42,8 +42,8 @@
         "confidence": 0.12
       },
       "GBP": {
-        "direction": "bullish",
-        "confidence": 0.47
+        "direction": "neutral",
+        "confidence": 0.03
       },
       "JPY": {
         "direction": "bullish",
@@ -78,51 +78,63 @@
         "confidence": 0.0
       }
     },
-    "proposed_trades_count": 2,
-    "executed_trades_count": 2,
+    "proposed_trades_count": 3,
+    "executed_trades_count": 3,
     "executed_trades": [
       {
         "from_currency": "EUR",
-        "to_currency": "AUD",
-        "from_amount": 541.67,
-        "to_amount": 892.51,
-        "pair_rate": 1.659981,
-        "eur_value": 541.67,
-        "spread_cost_eur": 4.0084,
-        "signal_strength_factor": 0.54,
-        "buy_confidence": 0.68,
-        "sell_confidence": 0.4
+        "to_currency": "GBP",
+        "from_amount": 498.91,
+        "to_amount": 432.33,
+        "pair_rate": 0.873002,
+        "eur_value": 498.91,
+        "spread_cost_eur": 3.6919,
+        "signal_strength_factor": 0.5,
+        "buy_confidence": 0.61,
+        "sell_confidence": 0.38
       },
       {
         "from_currency": "EUR",
-        "to_currency": "GBP",
-        "from_amount": 293.5,
-        "to_amount": 253.9,
-        "pair_rate": 0.871527,
-        "eur_value": 293.5,
-        "spread_cost_eur": 2.1719,
-        "signal_strength_factor": 0.29,
-        "buy_confidence": 0.47,
-        "sell_confidence": 0.12
+        "to_currency": "CNY",
+        "from_amount": 334.29,
+        "to_amount": 2696.68,
+        "pair_rate": 8.127018,
+        "eur_value": 334.29,
+        "spread_cost_eur": 2.4737,
+        "signal_strength_factor": 0.33,
+        "buy_confidence": 0.49,
+        "sell_confidence": 0.18
+      },
+      {
+        "from_currency": "EUR",
+        "to_currency": "AUD",
+        "from_amount": 264.96,
+        "to_amount": 438.5,
+        "pair_rate": 1.667303,
+        "eur_value": 264.96,
+        "spread_cost_eur": 1.9607,
+        "signal_strength_factor": 0.26,
+        "buy_confidence": 0.36,
+        "sell_confidence": 0.17
       }
     ],
     "portfolio": {
-      "EUR": 7114.89,
+      "EUR": 8901.84,
       "USD": 0.0,
-      "GBP": 686.23,
+      "GBP": 432.33,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 2224.21,
+      "AUD": 438.5,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 5999.89,
+      "CNY": 2696.68,
       "MXN": 0.0
     },
-    "current_value": 9983.72
+    "current_value": 9991.87
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-24",
     "strategy_id": "simple-momentum-conf0.5-size0.5",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.0_size=0.25",
@@ -139,21 +151,21 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 79,
+    "signals_count": 155,
     "signal_volumes": {
-      "EUR": 12,
-      "USD": 40,
-      "GBP": 2,
-      "JPY": 4,
+      "EUR": 24,
+      "USD": 80,
+      "GBP": 4,
+      "JPY": 8,
       "CHF": 0,
-      "AUD": 4,
-      "CAD": 4,
+      "AUD": 8,
+      "CAD": 8,
       "NOK": 0,
-      "SEK": 2,
-      "CNY": 8,
+      "SEK": 4,
+      "CNY": 16,
       "MXN": 3
     },
-    "unrealized_signals_count": 79,
+    "unrealized_signals_count": 155,
     "aggregate_signals": {
       "EUR": {
         "direction": "neutral",
@@ -164,8 +176,8 @@
         "confidence": 0.12
       },
       "GBP": {
-        "direction": "bullish",
-        "confidence": 0.47
+        "direction": "neutral",
+        "confidence": 0.03
       },
       "JPY": {
         "direction": "bullish",
@@ -200,51 +212,63 @@
         "confidence": 0.0
       }
     },
-    "proposed_trades_count": 2,
-    "executed_trades_count": 2,
+    "proposed_trades_count": 3,
+    "executed_trades_count": 3,
     "executed_trades": [
       {
         "from_currency": "EUR",
-        "to_currency": "AUD",
-        "from_amount": 1354.17,
-        "to_amount": 2231.26,
-        "pair_rate": 1.659981,
-        "eur_value": 1354.17,
-        "spread_cost_eur": 10.0209,
-        "signal_strength_factor": 0.54,
-        "buy_confidence": 0.68,
-        "sell_confidence": 0.4
+        "to_currency": "GBP",
+        "from_amount": 1247.27,
+        "to_amount": 1080.81,
+        "pair_rate": 0.873002,
+        "eur_value": 1247.27,
+        "spread_cost_eur": 9.2298,
+        "signal_strength_factor": 0.5,
+        "buy_confidence": 0.61,
+        "sell_confidence": 0.38
       },
       {
         "from_currency": "EUR",
-        "to_currency": "GBP",
-        "from_amount": 733.75,
-        "to_amount": 634.75,
-        "pair_rate": 0.871527,
-        "eur_value": 733.75,
-        "spread_cost_eur": 5.4298,
-        "signal_strength_factor": 0.29,
-        "buy_confidence": 0.47,
-        "sell_confidence": 0.12
+        "to_currency": "CNY",
+        "from_amount": 835.71,
+        "to_amount": 6741.57,
+        "pair_rate": 8.127018,
+        "eur_value": 835.71,
+        "spread_cost_eur": 6.1843,
+        "signal_strength_factor": 0.33,
+        "buy_confidence": 0.49,
+        "sell_confidence": 0.18
+      },
+      {
+        "from_currency": "EUR",
+        "to_currency": "AUD",
+        "from_amount": 662.41,
+        "to_amount": 1096.27,
+        "pair_rate": 1.667303,
+        "eur_value": 662.41,
+        "spread_cost_eur": 4.9018,
+        "signal_strength_factor": 0.26,
+        "buy_confidence": 0.36,
+        "sell_confidence": 0.17
       }
     ],
     "portfolio": {
-      "EUR": 3732.66,
+      "EUR": 7254.61,
       "USD": 0.0,
-      "GBP": 1715.56,
+      "GBP": 1080.81,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 4095.79,
+      "AUD": 1096.27,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 14530.65,
+      "CNY": 6741.57,
       "MXN": 0.0
     },
-    "current_value": 9964.37
+    "current_value": 9979.68
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-24",
     "strategy_id": "simple-momentum-conf0.5-size0.75",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.0_size=0.5",
@@ -261,21 +285,21 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 79,
+    "signals_count": 155,
     "signal_volumes": {
-      "EUR": 12,
-      "USD": 40,
-      "GBP": 2,
-      "JPY": 4,
+      "EUR": 24,
+      "USD": 80,
+      "GBP": 4,
+      "JPY": 8,
       "CHF": 0,
-      "AUD": 4,
-      "CAD": 4,
+      "AUD": 8,
+      "CAD": 8,
       "NOK": 0,
-      "SEK": 2,
-      "CNY": 8,
+      "SEK": 4,
+      "CNY": 16,
       "MXN": 3
     },
-    "unrealized_signals_count": 79,
+    "unrealized_signals_count": 155,
     "aggregate_signals": {
       "EUR": {
         "direction": "neutral",
@@ -286,8 +310,8 @@
         "confidence": 0.12
       },
       "GBP": {
-        "direction": "bullish",
-        "confidence": 0.47
+        "direction": "neutral",
+        "confidence": 0.03
       },
       "JPY": {
         "direction": "bullish",
@@ -322,39 +346,63 @@
         "confidence": 0.0
       }
     },
-    "proposed_trades_count": 2,
-    "executed_trades_count": 1,
+    "proposed_trades_count": 3,
+    "executed_trades_count": 3,
     "executed_trades": [
       {
         "from_currency": "EUR",
         "to_currency": "GBP",
-        "from_amount": 1467.5,
-        "to_amount": 1269.5,
-        "pair_rate": 0.871527,
-        "eur_value": 1467.5,
-        "spread_cost_eur": 10.8595,
-        "signal_strength_factor": 0.29,
-        "buy_confidence": 0.47,
-        "sell_confidence": 0.12
+        "from_amount": 2494.53,
+        "to_amount": 2161.61,
+        "pair_rate": 0.873002,
+        "eur_value": 2494.53,
+        "spread_cost_eur": 18.4595,
+        "signal_strength_factor": 0.5,
+        "buy_confidence": 0.61,
+        "sell_confidence": 0.38
+      },
+      {
+        "from_currency": "EUR",
+        "to_currency": "CNY",
+        "from_amount": 1671.43,
+        "to_amount": 13483.22,
+        "pair_rate": 8.127018,
+        "eur_value": 1671.43,
+        "spread_cost_eur": 12.3686,
+        "signal_strength_factor": 0.33,
+        "buy_confidence": 0.49,
+        "sell_confidence": 0.18
+      },
+      {
+        "from_currency": "EUR",
+        "to_currency": "AUD",
+        "from_amount": 1324.81,
+        "to_amount": 2192.51,
+        "pair_rate": 1.667303,
+        "eur_value": 1324.81,
+        "spread_cost_eur": 9.8036,
+        "signal_strength_factor": 0.26,
+        "buy_confidence": 0.36,
+        "sell_confidence": 0.17
       }
     ],
     "portfolio": {
-      "EUR": 173.67,
+      "EUR": 4509.23,
       "USD": 0.0,
-      "GBP": 3431.11,
+      "GBP": 2161.61,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 3729.02,
+      "AUD": 2192.51,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 29061.37,
+      "CNY": 13483.22,
       "MXN": 0.0
     },
-    "current_value": 9948.76
+    "current_value": 9959.37
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-24",
     "strategy_id": "simple-momentum-conf0.6-size0.25",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.6_size=0.1",
@@ -371,21 +419,21 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 79,
+    "signals_count": 155,
     "signal_volumes": {
-      "EUR": 12,
-      "USD": 40,
-      "GBP": 2,
-      "JPY": 4,
+      "EUR": 24,
+      "USD": 80,
+      "GBP": 4,
+      "JPY": 8,
       "CHF": 0,
-      "AUD": 4,
-      "CAD": 4,
+      "AUD": 8,
+      "CAD": 8,
       "NOK": 0,
-      "SEK": 2,
-      "CNY": 8,
+      "SEK": 4,
+      "CNY": 16,
       "MXN": 3
     },
-    "unrealized_signals_count": 79,
+    "unrealized_signals_count": 155,
     "aggregate_signals": {
       "EUR": {
         "direction": "neutral",
@@ -396,8 +444,8 @@
         "confidence": 0.12
       },
       "GBP": {
-        "direction": "bullish",
-        "confidence": 0.47
+        "direction": "neutral",
+        "confidence": 0.03
       },
       "JPY": {
         "direction": "bullish",
@@ -436,7 +484,7 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000.0,
+      "EUR": 10000,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
@@ -451,7 +499,7 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-24",
     "strategy_id": "simple-momentum-conf0.6-size0.5",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.6_size=0.25",
@@ -468,21 +516,21 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 79,
+    "signals_count": 155,
     "signal_volumes": {
-      "EUR": 12,
-      "USD": 40,
-      "GBP": 2,
-      "JPY": 4,
+      "EUR": 24,
+      "USD": 80,
+      "GBP": 4,
+      "JPY": 8,
       "CHF": 0,
-      "AUD": 4,
-      "CAD": 4,
+      "AUD": 8,
+      "CAD": 8,
       "NOK": 0,
-      "SEK": 2,
-      "CNY": 8,
+      "SEK": 4,
+      "CNY": 16,
       "MXN": 3
     },
-    "unrealized_signals_count": 79,
+    "unrealized_signals_count": 155,
     "aggregate_signals": {
       "EUR": {
         "direction": "neutral",
@@ -493,8 +541,8 @@
         "confidence": 0.12
       },
       "GBP": {
-        "direction": "bullish",
-        "confidence": 0.47
+        "direction": "neutral",
+        "confidence": 0.03
       },
       "JPY": {
         "direction": "bullish",
@@ -533,7 +581,7 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000.0,
+      "EUR": 10000,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
@@ -548,7 +596,7 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-24",
     "strategy_id": "simple-momentum-conf0.6-size0.75",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.6_size=0.5",
@@ -565,21 +613,21 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 79,
+    "signals_count": 155,
     "signal_volumes": {
-      "EUR": 12,
-      "USD": 40,
-      "GBP": 2,
-      "JPY": 4,
+      "EUR": 24,
+      "USD": 80,
+      "GBP": 4,
+      "JPY": 8,
       "CHF": 0,
-      "AUD": 4,
-      "CAD": 4,
+      "AUD": 8,
+      "CAD": 8,
       "NOK": 0,
-      "SEK": 2,
-      "CNY": 8,
+      "SEK": 4,
+      "CNY": 16,
       "MXN": 3
     },
-    "unrealized_signals_count": 79,
+    "unrealized_signals_count": 155,
     "aggregate_signals": {
       "EUR": {
         "direction": "neutral",
@@ -590,8 +638,8 @@
         "confidence": 0.12
       },
       "GBP": {
-        "direction": "bullish",
-        "confidence": 0.47
+        "direction": "neutral",
+        "confidence": 0.03
       },
       "JPY": {
         "direction": "bullish",
@@ -630,7 +678,7 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000.0,
+      "EUR": 10000,
       "USD": 0.0,
       "GBP": 0.0,
       "JPY": 0.0,
@@ -645,7 +693,7 @@
     "current_value": 10000.0
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-24",
     "strategy_id": "simple-momentum-conf0.7-size0.25",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.3_size=0.1",
@@ -662,21 +710,21 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 79,
+    "signals_count": 155,
     "signal_volumes": {
-      "EUR": 12,
-      "USD": 40,
-      "GBP": 2,
-      "JPY": 4,
+      "EUR": 24,
+      "USD": 80,
+      "GBP": 4,
+      "JPY": 8,
       "CHF": 0,
-      "AUD": 4,
-      "CAD": 4,
+      "AUD": 8,
+      "CAD": 8,
       "NOK": 0,
-      "SEK": 2,
-      "CNY": 8,
+      "SEK": 4,
+      "CNY": 16,
       "MXN": 3
     },
-    "unrealized_signals_count": 79,
+    "unrealized_signals_count": 155,
     "aggregate_signals": {
       "EUR": {
         "direction": "neutral",
@@ -687,8 +735,8 @@
         "confidence": 0.12
       },
       "GBP": {
-        "direction": "bullish",
-        "confidence": 0.47
+        "direction": "neutral",
+        "confidence": 0.03
       },
       "JPY": {
         "direction": "bullish",
@@ -728,34 +776,34 @@
     "executed_trades": [
       {
         "from_currency": "EUR",
-        "to_currency": "AUD",
-        "from_amount": 541.67,
-        "to_amount": 892.51,
-        "pair_rate": 1.659981,
-        "eur_value": 541.67,
-        "spread_cost_eur": 4.0084,
-        "signal_strength_factor": 0.54,
-        "buy_confidence": 0.68,
-        "sell_confidence": 0.4
+        "to_currency": "GBP",
+        "from_amount": 498.91,
+        "to_amount": 432.33,
+        "pair_rate": 0.873002,
+        "eur_value": 498.91,
+        "spread_cost_eur": 3.6919,
+        "signal_strength_factor": 0.5,
+        "buy_confidence": 0.61,
+        "sell_confidence": 0.38
       }
     ],
     "portfolio": {
-      "EUR": 8959.42,
+      "EUR": 9501.09,
       "USD": 0.0,
       "GBP": 432.33,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 892.51,
+      "AUD": 0.0,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
       "CNY": 0.0,
       "MXN": 0.0
     },
-    "current_value": 9993.14
+    "current_value": 9996.31
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-24",
     "strategy_id": "simple-momentum-conf0.7-size0.5",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.3_size=0.25",
@@ -772,21 +820,21 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 79,
+    "signals_count": 155,
     "signal_volumes": {
-      "EUR": 12,
-      "USD": 40,
-      "GBP": 2,
-      "JPY": 4,
+      "EUR": 24,
+      "USD": 80,
+      "GBP": 4,
+      "JPY": 8,
       "CHF": 0,
-      "AUD": 4,
-      "CAD": 4,
+      "AUD": 8,
+      "CAD": 8,
       "NOK": 0,
-      "SEK": 2,
-      "CNY": 8,
+      "SEK": 4,
+      "CNY": 16,
       "MXN": 3
     },
-    "unrealized_signals_count": 79,
+    "unrealized_signals_count": 155,
     "aggregate_signals": {
       "EUR": {
         "direction": "neutral",
@@ -797,8 +845,8 @@
         "confidence": 0.12
       },
       "GBP": {
-        "direction": "bullish",
-        "confidence": 0.47
+        "direction": "neutral",
+        "confidence": 0.03
       },
       "JPY": {
         "direction": "bullish",
@@ -838,34 +886,34 @@
     "executed_trades": [
       {
         "from_currency": "EUR",
-        "to_currency": "AUD",
-        "from_amount": 1354.17,
-        "to_amount": 2231.26,
-        "pair_rate": 1.659981,
-        "eur_value": 1354.17,
-        "spread_cost_eur": 10.0209,
-        "signal_strength_factor": 0.54,
-        "buy_confidence": 0.68,
-        "sell_confidence": 0.4
+        "to_currency": "GBP",
+        "from_amount": 1247.27,
+        "to_amount": 1080.81,
+        "pair_rate": 0.873002,
+        "eur_value": 1247.27,
+        "spread_cost_eur": 9.2298,
+        "signal_strength_factor": 0.5,
+        "buy_confidence": 0.61,
+        "sell_confidence": 0.38
       }
     ],
     "portfolio": {
-      "EUR": 7398.56,
+      "EUR": 8752.73,
       "USD": 0.0,
       "GBP": 1080.81,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 2231.26,
+      "AUD": 0.0,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
       "CNY": 0.0,
       "MXN": 0.0
     },
-    "current_value": 9982.84
+    "current_value": 9990.77
   },
   {
-    "date": "2026-02-26",
+    "date": "2026-02-24",
     "strategy_id": "simple-momentum-conf0.7-size0.75",
     "strategy_name": "simple-momentum",
     "strategy_params": "conf=0.3_size=0.5",
@@ -882,21 +930,21 @@
       "keyword-sentiment-v1.1-standard": 0.5,
       "llm-sentiment-v1-haiku": 1.0
     },
-    "signals_count": 79,
+    "signals_count": 155,
     "signal_volumes": {
-      "EUR": 12,
-      "USD": 40,
-      "GBP": 2,
-      "JPY": 4,
+      "EUR": 24,
+      "USD": 80,
+      "GBP": 4,
+      "JPY": 8,
       "CHF": 0,
-      "AUD": 4,
-      "CAD": 4,
+      "AUD": 8,
+      "CAD": 8,
       "NOK": 0,
-      "SEK": 2,
-      "CNY": 8,
+      "SEK": 4,
+      "CNY": 16,
       "MXN": 3
     },
-    "unrealized_signals_count": 79,
+    "unrealized_signals_count": 155,
     "aggregate_signals": {
       "EUR": {
         "direction": "neutral",
@@ -907,8 +955,8 @@
         "confidence": 0.12
       },
       "GBP": {
-        "direction": "bullish",
-        "confidence": 0.47
+        "direction": "neutral",
+        "confidence": 0.03
       },
       "JPY": {
         "direction": "bullish",
@@ -948,30 +996,30 @@
     "executed_trades": [
       {
         "from_currency": "EUR",
-        "to_currency": "AUD",
-        "from_amount": 2708.33,
-        "to_amount": 4462.51,
-        "pair_rate": 1.659981,
-        "eur_value": 2708.33,
-        "spread_cost_eur": 20.0416,
-        "signal_strength_factor": 0.54,
-        "buy_confidence": 0.68,
-        "sell_confidence": 0.4
+        "to_currency": "GBP",
+        "from_amount": 2494.53,
+        "to_amount": 2161.61,
+        "pair_rate": 0.873002,
+        "eur_value": 2494.53,
+        "spread_cost_eur": 18.4595,
+        "signal_strength_factor": 0.5,
+        "buy_confidence": 0.61,
+        "sell_confidence": 0.38
       }
     ],
     "portfolio": {
-      "EUR": 4797.14,
+      "EUR": 7505.47,
       "USD": 0.0,
       "GBP": 2161.61,
       "JPY": 0.0,
       "CHF": 0.0,
-      "AUD": 4462.51,
+      "AUD": 0.0,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
       "CNY": 0.0,
       "MXN": 0.0
     },
-    "current_value": 9965.68
+    "current_value": 9981.54
   }
 ]
