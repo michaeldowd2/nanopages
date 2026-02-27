@@ -1221,21 +1221,22 @@
             return;
           }
 
+          // Pivot: dates as rows, steps as columns
           let html = '<table style="width:100%; border-collapse:collapse; font-size:0.9em;">';
           html += '<thead><tr style="background:#1a1a1a; border-bottom:2px solid #333;">';
-          html += '<th style="padding:12px; text-align:left; color:#00ff41;">Step</th>';
+          html += '<th style="padding:12px; text-align:left; color:#00ff41;">Date</th>';
 
-          dates.forEach(date => {
-            html += `<th style="padding:12px; text-align:center; color:#00ff41;">${date}</th>`;
+          steps.forEach(step => {
+            html += `<th style="padding:12px; text-align:center; color:#00ff41;">${step.step_name}</th>`;
           });
           html += '</tr></thead><tbody>';
 
-          steps.forEach((step, idx) => {
+          dates.forEach((date, idx) => {
             const bgColor = idx % 2 === 0 ? '#0a0a0a' : '#1a1a1a';
             html += `<tr style="background:${bgColor}; border-bottom:1px solid #222;">`;
-            html += `<td style="padding:10px; color:#ccc;">${step.step_name}</td>`;
+            html += `<td style="padding:10px; color:#ccc; font-weight:bold;">${date}</td>`;
 
-            dates.forEach(date => {
+            steps.forEach(step => {
               const count = step.counts_by_date[date] || 0;
               const color = count > 0 ? '#00ff41' : '#666';
               html += `<td style="padding:10px; text-align:center; color:${color}; font-weight:bold;">${count}</td>`;
