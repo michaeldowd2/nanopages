@@ -815,6 +815,9 @@
 
           dateEl.textContent = `Exchange rates as of: ${fetchedDate}`;
 
+          // Get base currencies from actual matrix data (preserves order from CSV)
+          const baseCurrencies = Object.keys(matrix);
+
           // Generate thead dynamically with Date column
           const theadHtml = `
             <thead>
@@ -829,9 +832,9 @@
           // Generate tbody dynamically with Date column
           const tbodyHtml = `
             <tbody>
-              ${currencies.map((baseCurr, idx) => `
+              ${baseCurrencies.map((baseCurr, idx) => `
                 <tr>
-                  ${idx === 0 ? `<td rowspan="${currencies.length}" style="background:#1a1a1a; position:sticky; left:0; z-index:1; vertical-align:middle; font-weight:bold; color:#00ff41;">${fetchedDate}</td>` : ''}
+                  ${idx === 0 ? `<td rowspan="${baseCurrencies.length}" style="background:#1a1a1a; position:sticky; left:0; z-index:1; vertical-align:middle; font-weight:bold; color:#00ff41;">${fetchedDate}</td>` : ''}
                   <th style="background:#1a1a1a; text-align:left; padding:8px;">${baseCurr}</th>
                   ${currencies.map(quoteCurr => {
                     const rate = matrix[baseCurr] && matrix[baseCurr][quoteCurr];
