@@ -21,9 +21,9 @@
       "step_id": "step5",
       "step_name": "Generate Sentiment Signals (v2)",
       "date": "2026-02-27",
-      "start_time": "2026-02-27T19:26:00.859533",
-      "end_time": "2026-02-27T19:26:50.231089",
-      "duration": 49.37,
+      "start_time": "2026-02-27T19:59:15.428023",
+      "end_time": "2026-02-27T20:00:11.016172",
+      "duration": 55.59,
       "status": "success",
       "counts": {
         "generators_configured": 2,
@@ -34,66 +34,62 @@
       "errors": [],
       "warnings": [],
       "info": {},
-      "start_time_display": "2026-02-27 19:26:00",
-      "end_time_display": "2026-02-27 19:26:50",
+      "start_time_display": "2026-02-27 19:59:15",
+      "end_time_display": "2026-02-27 20:00:11",
       "status_icon": "\u2713"
     },
     {
       "step_id": "step6",
       "step_name": "Check Signal Realization",
       "date": "2026-02-27",
-      "start_time": "2026-02-27T19:26:54.398047",
-      "end_time": "2026-02-27T19:26:54.480291",
-      "duration": 0.08,
+      "start_time": "2026-02-27T20:01:00.431241",
+      "end_time": "2026-02-27T20:01:00.624966",
+      "duration": 0.19,
       "status": "success",
       "counts": {
-        "total_signals": 553,
-        "signals_checked": 553,
-        "signals_with_horizon": 467,
+        "total_signals": 643,
+        "signals_checked": 643,
+        "signals_with_horizon": 643,
         "realized": 0,
         "unrealized": 0
       },
       "errors": [],
       "warnings": [],
       "info": {},
-      "start_time_display": "2026-02-27 19:26:54",
-      "end_time_display": "2026-02-27 19:26:54",
+      "start_time_display": "2026-02-27 20:01:00",
+      "end_time_display": "2026-02-27 20:01:00",
       "status_icon": "\u2713"
     },
     {
       "step_id": "step7",
       "step_name": "Calculate Trades",
       "date": "2026-02-27",
-      "start_time": "2026-02-27T19:26:58.199881",
-      "end_time": "2026-02-27T19:26:58.220401",
+      "start_time": "2026-02-27T20:01:07.714358",
+      "end_time": "2026-02-27T20:01:07.731693",
       "duration": 0.02,
       "status": "success",
       "counts": {
-        "strategy_combinations": 9,
-        "total_trades": 12
+        "strategy_combinations": 9
       },
       "errors": [],
       "warnings": [],
-      "info": {
-        "total_spread_cost": "\u20ac100.44",
-        "output_csv": "/workspace/group/fx-portfolio/data/exports/step7_trades.csv"
-      },
-      "start_time_display": "2026-02-27 19:26:58",
-      "end_time_display": "2026-02-27 19:26:58",
+      "info": {},
+      "start_time_display": "2026-02-27 20:01:07",
+      "end_time_display": "2026-02-27 20:01:07",
       "status_icon": "\u2713"
     },
     {
       "step_id": "step8",
       "step_name": "Execute Trading Strategies",
       "date": "2026-02-27",
-      "start_time": "2026-02-27T19:27:01.766717",
-      "end_time": "2026-02-27T19:27:01.798091",
-      "duration": 0.03,
+      "start_time": "2026-02-27T20:01:07.773798",
+      "end_time": "2026-02-27T20:01:07.796077",
+      "duration": 0.02,
       "status": "success",
       "counts": {
         "strategy_combinations": 9,
         "strategies_executed": 9,
-        "total_trades": 12
+        "total_trades": 0
       },
       "errors": [],
       "warnings": [],
@@ -101,8 +97,28 @@
         "output_csv": "/workspace/group/fx-portfolio/data/exports/step8_strategies.csv",
         "output_json": "/workspace/group/fx-portfolio/data/exports/step8_strategies_detail.json"
       },
-      "start_time_display": "2026-02-27 19:27:01",
-      "end_time_display": "2026-02-27 19:27:01",
+      "start_time_display": "2026-02-27 20:01:07",
+      "end_time_display": "2026-02-27 20:01:07",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step4",
+      "step_name": "Analyze Time Horizons (LLM)",
+      "date": "2026-02-27",
+      "start_time": "2026-02-27T19:57:58.565817",
+      "end_time": "2026-02-27T19:58:57.265539",
+      "duration": 58.7,
+      "status": "success",
+      "counts": {
+        "articles_analyzed": 45,
+        "articles_failed": 0,
+        "total_articles": 45
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {},
+      "start_time_display": "2026-02-27 19:57:58",
+      "end_time_display": "2026-02-27 19:58:57",
       "status_icon": "\u2713"
     }
   ]
