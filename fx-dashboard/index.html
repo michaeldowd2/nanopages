@@ -989,17 +989,55 @@
       loading.textContent = 'Loading...';
       matrixDiv.style.display = 'none';
 
-      const matrixFile = date ? `data/step1_exchange_rates_matrix_${date}.json` : 'data/step1_exchange_rates_matrix.json';
+      // Load from CSV instead of JSON
+      fetch('data/step1_exchange_rates_matrix.csv')
+        .then(res => res.text())
+        .then(csvText => {
+          const lines = csvText.trim().split('\n');
+          const headers = lines[0].split(',');
+          const currencies = headers.slice(2); // Skip 'date' and 'base_currency'
 
-      fetch(matrixFile)
-        .then(res => res.json())
-        .then(data => {
-          const matrix = data.matrix || {};
-          const fetchedDate = data.date || '';
+          // Parse CSV into matrix structure, filtered by date if specified
+          const matrix = {};
+          let fetchedDate = '';
+
+          for (let i = 1; i < lines.length; i++) {
+            const parts = lines[i].split(',');
+            const rowDate = parts[0];
+            const baseCurr = parts[1];
+
+            // Filter by date if specified, otherwise use latest
+            if (!date && i === 1) {
+              fetchedDate = rowDate;
+            } else if (date && rowDate !== date) {
+              continue;
+            } else if (date && rowDate === date && !fetchedDate) {
+              fetchedDate = rowDate;
+            }
+
+            // Only include rows for the selected date (or first date if none specified)
+            if (!date || rowDate === date) {
+              if (!matrix[baseCurr]) {
+                matrix[baseCurr] = {};
+              }
+
+              currencies.forEach((quoteCurr, idx) => {
+                const rate = parseFloat(parts[idx + 2]);
+                matrix[baseCurr][quoteCurr] = rate;
+              });
+            }
+          }
+
+          // If date filter was specified, find the actual date we're showing
+          if (!fetchedDate && date) {
+            fetchedDate = date;
+          } else if (!fetchedDate) {
+            // Get the first date from the data
+            const firstRow = lines[1].split(',');
+            fetchedDate = firstRow[0];
+          }
 
           dateEl.textContent = `Exchange rates as of: ${fetchedDate}`;
-
-          const currencies = Object.keys(matrix).sort();
 
           // Generate thead dynamically
           const theadHtml = `
