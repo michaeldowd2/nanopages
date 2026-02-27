@@ -298,11 +298,20 @@
   <!-- CONFIG TAB -->
   <div id="tracking" class="tab-content">
     <div class="section">
+      <h2>Data Completeness by Date</h2>
+      <p class="step-header">Record counts per step for each data date</p>
+
+      <div id="step-counts-table" style="margin:20px 0; overflow-x:auto;">
+        <p style="color:#888;">Loading data...</p>
+      </div>
+    </div>
+
+    <div class="section">
       <h2>Pipeline Run Tracking</h2>
-      <p class="step-header">Debug view: step durations, errors, and execution logs per day</p>
+      <p class="step-header">Debug view: step durations, errors, and execution logs per run date</p>
 
       <div style="margin:20px 0;">
-        <label for="tracking-date-selector" style="color:#ccc; font-size:0.9em;">Select Date:</label>
+        <label for="tracking-date-selector" style="color:#ccc; font-size:0.9em;">Select Run Date:</label>
         <select id="tracking-date-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:8px; margin:10px 0; font-size:1em; border-radius:4px; width:200px;">
           <option value="">Loading dates...</option>
         </select>
@@ -509,6 +518,10 @@
       event.target.classList.add('active');
       document.getElementById(tabName).classList.add('active');
       if (tabName.startsWith('step')) loadCSV(tabName);
+      if (tabName === 'tracking') {
+        loadStepCountsTable();
+        loadTrackingDates();
+      }
     }
 
     function parseCSV(text) {
@@ -1192,6 +1205,50 @@
         .catch(err => {
           document.getElementById(`${step}-loading`).textContent = 'Error: ' + err.message;
           console.error('Error loading trades CSV:', err);
+        });
+    }
+
+    function loadStepCountsTable() {
+      fetch('data/step_counts_by_date.json')
+        .then(res => res.json())
+        .then(data => {
+          const tableDiv = document.getElementById('step-counts-table');
+          const dates = (data.dates || []).filter(d => !d.startsWith('fx-rates-'));
+          const steps = data.steps || [];
+
+          if (dates.length === 0 || steps.length === 0) {
+            tableDiv.innerHTML = '<p style="color:#888;">No data available</p>';
+            return;
+          }
+
+          let html = '<table style="width:100%; border-collapse:collapse; font-size:0.9em;">';
+          html += '<thead><tr style="background:#1a1a1a; border-bottom:2px solid #333;">';
+          html += '<th style="padding:12px; text-align:left; color:#00ff41;">Step</th>';
+
+          dates.forEach(date => {
+            html += `<th style="padding:12px; text-align:center; color:#00ff41;">${date}</th>`;
+          });
+          html += '</tr></thead><tbody>';
+
+          steps.forEach((step, idx) => {
+            const bgColor = idx % 2 === 0 ? '#0a0a0a' : '#1a1a1a';
+            html += `<tr style="background:${bgColor}; border-bottom:1px solid #222;">`;
+            html += `<td style="padding:10px; color:#ccc;">${step.step_name}</td>`;
+
+            dates.forEach(date => {
+              const count = step.counts_by_date[date] || 0;
+              const color = count > 0 ? '#00ff41' : '#666';
+              html += `<td style="padding:10px; text-align:center; color:${color}; font-weight:bold;">${count}</td>`;
+            });
+            html += '</tr>';
+          });
+
+          html += '</tbody></table>';
+          tableDiv.innerHTML = html;
+        })
+        .catch(err => {
+          document.getElementById('step-counts-table').innerHTML = '<p style="color:#ff4444;">Error loading step counts</p>';
+          console.error('Error loading step counts:', err);
         });
     }
 

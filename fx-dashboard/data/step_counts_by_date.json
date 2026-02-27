@@ -1,0 +1,109 @@
+{
+  "last_updated": 1772224591.8852084,
+  "dates": [
+    "2026-02-24",
+    "2026-02-25",
+    "2026-02-26",
+    "fx-rates-2026-02-24",
+    "fx-rates-2026-02-25",
+    "fx-rates-2026-02-26"
+  ],
+  "steps": [
+    {
+      "step_id": "step1",
+      "step_name": "Exchange Rates",
+      "counts_by_date": {
+        "2026-02-24": 0,
+        "2026-02-25": 0,
+        "2026-02-26": 0,
+        "fx-rates-2026-02-24": 1,
+        "fx-rates-2026-02-25": 1,
+        "fx-rates-2026-02-26": 1
+      }
+    },
+    {
+      "step_id": "step2",
+      "step_name": "Currency Indices",
+      "counts_by_date": {
+        "2026-02-24": 11,
+        "2026-02-25": 11,
+        "2026-02-26": 11,
+        "fx-rates-2026-02-24": 0,
+        "fx-rates-2026-02-25": 0,
+        "fx-rates-2026-02-26": 0
+      }
+    },
+    {
+      "step_id": "step3",
+      "step_name": "News Articles",
+      "counts_by_date": {
+        "2026-02-24": 45,
+        "2026-02-25": 62,
+        "2026-02-26": 45,
+        "fx-rates-2026-02-24": 0,
+        "fx-rates-2026-02-25": 0,
+        "fx-rates-2026-02-26": 0
+      }
+    },
+    {
+      "step_id": "step4",
+      "step_name": "Time Horizon Analysis",
+      "counts_by_date": {
+        "2026-02-24": 45,
+        "2026-02-25": 62,
+        "2026-02-26": 45,
+        "fx-rates-2026-02-24": 0,
+        "fx-rates-2026-02-25": 0,
+        "fx-rates-2026-02-26": 0
+      }
+    },
+    {
+      "step_id": "step5",
+      "step_name": "Sentiment Signals",
+      "counts_by_date": {
+        "2026-02-24": 90,
+        "2026-02-25": 124,
+        "2026-02-26": 90,
+        "fx-rates-2026-02-24": 0,
+        "fx-rates-2026-02-25": 0,
+        "fx-rates-2026-02-26": 0
+      }
+    },
+    {
+      "step_id": "step6",
+      "step_name": "Signal Realization",
+      "counts_by_date": {
+        "2026-02-24": 90,
+        "2026-02-25": 124,
+        "2026-02-26": 90,
+        "fx-rates-2026-02-24": 0,
+        "fx-rates-2026-02-25": 0,
+        "fx-rates-2026-02-26": 0
+      }
+    },
+    {
+      "step_id": "step7",
+      "step_name": "Trades",
+      "counts_by_date": {
+        "2026-02-24": 0,
+        "2026-02-25": 0,
+        "2026-02-26": 0,
+        "fx-rates-2026-02-24": 0,
+        "fx-rates-2026-02-25": 0,
+        "fx-rates-2026-02-26": 0
+      }
+    },
+    {
+      "step_id": "step8",
+      "step_name": "Portfolio Strategies",
+      "counts_by_date": {
+        "2026-02-24": 9,
+        "2026-02-25": 9,
+        "2026-02-26": 9,
+        "fx-rates-2026-02-24": 0,
+        "fx-rates-2026-02-25": 0,
+        "fx-rates-2026-02-26": 0
+      }
+    }
+  ]
+}
