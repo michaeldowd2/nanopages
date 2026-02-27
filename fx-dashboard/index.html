@@ -374,142 +374,6 @@
     </div>
   </div>
 
-      <div class="csv-table-container">
-        <div class="loading" id="step2-loading">Loading...</div>
-        <table id="step2-table" style="display:none;">
-          <thead id="step2-thead"></thead>
-          <tbody id="step2-tbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-      <div class="csv-table-container">
-        <div class="loading" id="step3-loading">Loading...</div>
-        <table id="step3-table" style="display:none;">
-          <thead id="step3-thead"></thead>
-          <tbody id="step3-tbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-      <!-- Horizon Distribution Chart -->
-      <div style="margin: 20px 0;">
-        <h3 style="color:#00ff41; margin-bottom:15px;">Horizon Distribution</h3>
-        <div id="horizon-chart" style="max-width:800px;"></div>
-      </div>
-
-      <!-- Detailed Table -->
-      <div class="csv-table-container">
-        <div class="loading" id="step4-loading">Loading...</div>
-        <div id="step4-summary" style="display:none; margin-bottom:15px;"></div>
-        <table id="step4-table" style="display:none;">
-          <thead id="step4-thead"></thead>
-          <tbody id="step4-tbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-      <!-- Filters -->
-      <div style="margin: 15px 0; padding: 15px; background: #0a0a0a; border-radius: 5px;">
-        <strong style="color:#00ff41;">Filters:</strong>
-        <select id="step5-generator-filter" style="margin-left: 10px; padding: 5px;">
-          <option value="">All Generators</option>
-        </select>
-        <select id="step5-currency-filter" style="margin-left: 10px; padding: 5px;">
-          <option value="">All Currencies</option>
-        </select>
-        <select id="step5-direction-filter" style="margin-left: 10px; padding: 5px;">
-          <option value="">All Directions</option>
-          <option value="bullish">Bullish</option>
-          <option value="bearish">Bearish</option>
-          <option value="neutral">Neutral</option>
-        </select>
-      </div>
-
-      <!-- Signal Distribution Chart -->
-      <div style="margin: 20px 0;">
-        <h3 style="color:#00ff41; margin-bottom:15px;">Signal Distribution by Generator</h3>
-        <div id="step5-chart"></div>
-      </div>
-
-      <div class="csv-table-container">
-        <div class="loading" id="step5-loading">Loading...</div>
-        <table id="step5-table" style="display:none;">
-          <thead id="step5-thead"></thead>
-          <tbody id="step5-tbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-      <div class="csv-table-container">
-        <div class="loading" id="step6-loading">Loading...</div>
-        <table id="step6-table" style="display:none;">
-          <thead id="step6-thead"></thead>
-          <tbody id="step6-tbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-      <div class="csv-table-container">
-        <div class="loading" id="step7-loading">Loading...</div>
-        <table id="step7-table" style="display:none;">
-          <thead id="step7-thead"></thead>
-          <tbody id="step7-tbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-      <div class="chart">
-        <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Portfolio Values by Strategy</h3>
-        <div id="strategy-chart"></div>
-      </div>
-
-      <div class="csv-table-container">
-        <div class="loading" id="step8-loading">Loading...</div>
-        <table id="step8-table" style="display:none;">
-          <thead id="step8-thead"></thead>
-          <tbody id="step8-tbody"></tbody>
-        </table>
-      </div>
-
-      <!-- Strategy Detail Section -->
-      <div id="strategy-detail" style="display:none; margin-top:30px; padding-top:30px; border-top:1px solid #333;">
-        <h3 style="color:#00ff41;font-size:1.1em;margin-bottom:15px;">Strategy Details</h3>
-
-        <label for="strategy-selector" style="color:#ccc; font-size:0.9em;">Select Strategy:</label>
-        <select id="strategy-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:8px; margin:10px 0; font-size:1em; border-radius:4px;">
-          <option value="">Choose a strategy...</option>
-        </select>
-
-        <div id="strategy-info" style="display:none;">
-          <!-- Currency Signals -->
-          <div style="margin-top:20px;">
-            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Currency Signals</h4>
-            <div id="currency-signals" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px;"></div>
-          </div>
-
-          <!-- Trade Recommendations -->
-          <div style="margin-top:20px;">
-            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Trade Recommendations</h4>
-            <div id="trade-recommendations"></div>
-          </div>
-
-          <!-- Portfolio Timeline -->
-          <div style="margin-top:20px;">
-            <h4 style="color:#00ff41; font-size:1em; margin-bottom:10px;">Portfolio Timeline</h4>
-            <div id="portfolio-timeseries"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- TRADES TAB -->
   <script>
     function showTab(tabName) {
@@ -744,7 +608,6 @@
             generateHorizonSummary(rows);
           } else if (step === 'step7' && rows.length > 0) {
             generateStrategyChart(rows);
-            loadStrategyDetails();
           }
         })
         .catch(err => {
@@ -836,113 +699,26 @@
       }).join('');
     }
 
-    let strategyDetailData = [];
-
-    function loadStrategyDetails() {
-      fetch('data/step8_strategies_detail.json')
-        .then(res => res.json())
-        .then(data => {
-          strategyDetailData = data;
-
-          const selector = document.getElementById('strategy-selector');
-          const detailDiv = document.getElementById('strategy-detail');
-
-          // Populate selector
-          selector.innerHTML = '<option value="">Choose a strategy...</option>' +
-            data.map((strat, idx) => {
-              const params = strat.strategy_params.replace(/_/g, ' ');
-              return `<option value="${idx}">${params}</option>`;
-            }).join('');
-
-          // Show detail section
-          detailDiv.style.display = 'block';
-
-          // Add change listener
-          selector.addEventListener('change', (e) => {
-            const idx = e.target.value;
-            if (idx === '') {
-              document.getElementById('strategy-info').style.display = 'none';
-            } else {
-              displayStrategyDetails(strategyDetailData[idx]);
-            }
-          });
-        })
-        .catch(err => {
-          console.error('Error loading strategy details:', err);
-        });
-    }
-
-    function displayStrategyDetails(strat) {
-      const infoDiv = document.getElementById('strategy-info');
-      infoDiv.style.display = 'block';
-
-      // Currency Signals
-      const signalsDiv = document.getElementById('currency-signals');
-      const signals = strat.aggregate_signals || {};
-      signalsDiv.innerHTML = Object.keys(signals).map(curr => {
-        const sig = signals[curr];
-        const dirClass = sig.direction === 'bullish' ? 'bullish' : sig.direction === 'bearish' ? 'bearish' : 'neutral';
-        const dirSymbol = sig.direction === 'bullish' ? '▲' : sig.direction === 'bearish' ? '▼' : '—';
-        return `
-          <div style="padding:10px; background:#1a1a1a; border-left:3px solid ${dirClass === 'bullish' ? '#00ff41' : dirClass === 'bearish' ? '#ff4444' : '#666'}; border-radius:4px;">
-            <div style="font-weight:bold; font-size:1.1em;">${curr}</div>
-            <div class="${dirClass}" style="font-size:0.9em;">${dirSymbol} ${sig.direction}</div>
-            <div style="color:#888; font-size:0.85em;">conf: ${(sig.confidence * 100).toFixed(0)}%</div>
-          </div>
-        `;
-      }).join('');
-
-      // Trade Recommendations
-      const tradesDiv = document.getElementById('trade-recommendations');
-      const trades = strat.executed_trades || [];
-      if (trades.length === 0) {
-        tradesDiv.innerHTML = '<p style="color:#888; font-size:0.9em;">No trades executed (insufficient signal confidence or balance)</p>';
-      } else {
-        tradesDiv.innerHTML = '<table style="width:100%; font-size:0.9em; border-collapse:collapse;">' +
-          '<thead><tr><th>From</th><th>Amount</th><th>To</th><th>Amount</th><th>Rate</th><th>Confidence</th></tr></thead>' +
-          '<tbody>' +
-          trades.map(t => `
-            <tr style="border-bottom:1px solid #333;">
-              <td class="bearish">${t.from_currency}</td>
-              <td>${t.from_amount.toLocaleString()}</td>
-              <td class="bullish">${t.to_currency}</td>
-              <td>${t.to_amount.toLocaleString()}</td>
-              <td>${t.pair_rate ? t.pair_rate.toFixed(4) : 'N/A'}</td>
-              <td>${((t.buy_confidence + t.sell_confidence) / 2 * 100).toFixed(0)}%</td>
-            </tr>
-          `).join('') +
-          '</tbody></table>';
-      }
-
-      // Portfolio Breakdown
-      const portfolioDiv = document.getElementById('portfolio-breakdown');
-      const portfolio = strat.portfolio || {};
-      const totalValue = strat.current_value || 0;
-
-      portfolioDiv.innerHTML = `
-        <div style="margin-bottom:15px;">
-          <span style="color:#00ff41; font-size:1.2em; font-weight:bold;">Total: €${totalValue.toLocaleString()}</span>
-        </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:10px;">
-          ${Object.keys(portfolio).filter(curr => portfolio[curr] > 0).map(curr => `
-            <div style="padding:10px; background:#1a1a1a; border-radius:4px;">
-              <div style="font-weight:bold;">${curr}</div>
-              <div style="color:#00ff41; font-size:0.9em;">${portfolio[curr].toLocaleString()}</div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
 
     let step1AvailableDates = [];
     let step1CurrentDate = null;
 
     function loadStep1Dates() {
-      fetch('data/step1_dates.json')
-        .then(res => res.json())
-        .then(data => {
-          step1AvailableDates = data.dates || [];
-          const latestDate = data.latest_date;
+      // Get dates directly from the CSV file
+      fetch('data/step1_exchange_rates_matrix.csv')
+        .then(res => res.text())
+        .then(csvText => {
+          const lines = csvText.trim().split('\n');
+          const dates = new Set();
+
+          // Skip header and collect unique dates
+          for (let i = 1; i < lines.length; i++) {
+            const parts = lines[i].split(',');
+            dates.add(parts[0]);
+          }
+
+          step1AvailableDates = Array.from(dates).sort().reverse();
+          const latestDate = step1AvailableDates[0];
 
           const selector = document.getElementById('step1-date-selector');
 
@@ -952,8 +728,8 @@
           }
 
           // Populate selector (most recent first)
-          selector.innerHTML = step1AvailableDates.slice().reverse().map(d =>
-            `<option value="${d.date}">${d.date} (${d.pair_count} pairs)</option>`
+          selector.innerHTML = step1AvailableDates.map(d =>
+            `<option value="${d}">${d}</option>`
           ).join('');
 
           // Set default to latest
@@ -1039,22 +815,24 @@
 
           dateEl.textContent = `Exchange rates as of: ${fetchedDate}`;
 
-          // Generate thead dynamically
+          // Generate thead dynamically with Date column
           const theadHtml = `
             <thead>
               <tr>
-                <th style="background:#1a1a1a; position:sticky; left:0; z-index:2;">Base \\ Quote</th>
+                <th style="background:#1a1a1a; position:sticky; left:0; z-index:2;">Date</th>
+                <th style="background:#1a1a1a;">Base \\ Quote</th>
                 ${currencies.map(curr => `<th>${curr}</th>`).join('')}
               </tr>
             </thead>
           `;
 
-          // Generate tbody dynamically
+          // Generate tbody dynamically with Date column
           const tbodyHtml = `
             <tbody>
-              ${currencies.map(baseCurr => `
+              ${currencies.map((baseCurr, idx) => `
                 <tr>
-                  <th style="background:#1a1a1a; position:sticky; left:0; z-index:1; text-align:left; padding:8px;">${baseCurr}</th>
+                  ${idx === 0 ? `<td rowspan="${currencies.length}" style="background:#1a1a1a; position:sticky; left:0; z-index:1; vertical-align:middle; font-weight:bold; color:#00ff41;">${fetchedDate}</td>` : ''}
+                  <th style="background:#1a1a1a; text-align:left; padding:8px;">${baseCurr}</th>
                   ${currencies.map(quoteCurr => {
                     const rate = matrix[baseCurr] && matrix[baseCurr][quoteCurr];
                     const displayRate = rate === 1.0 ? '—' : (rate ? rate.toFixed(4) : 'N/A');
