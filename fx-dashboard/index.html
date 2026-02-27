@@ -547,7 +547,7 @@
 
           // Special rendering for step4 (show only key columns)
           if (step === 'step4') {
-            const keyColumns = ['currency', 'title', 'time_horizon', 'horizon_category', 'confidence', 'reasoning'];
+            const keyColumns = ['date', 'estimator_id', 'currency', 'title', 'time_horizon', 'horizon_category', 'confidence', 'reasoning'];
             thead.innerHTML = '<tr>' + keyColumns.map(h => `<th>${h}</th>`).join('') + '</tr>';
             tbody.innerHTML = rows.map(row => {
               return '<tr>' + keyColumns.map(h => {
