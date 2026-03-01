@@ -453,18 +453,44 @@
       }
 
       // Re-render table with filtered rows
-      if (step === 'step4') {
-        // Special rendering for step4
-        const keyColumns = ['currency', 'title', 'time_horizon', 'horizon_category', 'confidence', 'reasoning'];
+      if (step === 'step2') {
+        // Special rendering for step2 (indices with color-coded pct_change)
+        tbody.innerHTML = filteredRows.map(row => {
+          return '<tr>' + headers.map(h => {
+            let value = row[h];
+            let displayValue = value;
+            let className = '';
+
+            // Color code and format pct_change
+            if (h === 'pct_change' && value && value !== '') {
+              const numValue = parseFloat(value);
+              if (!isNaN(numValue)) {
+                if (numValue > 0) className = 'bullish';  // Green for positive
+                else if (numValue < 0) className = 'bearish';  // Red for negative
+                displayValue = numValue.toFixed(2) + '%';
+              }
+            }
+
+            return `<td class="${className}" title="${value}">${displayValue}</td>`;
+          }).join('') + '</tr>';
+        }).join('');
+      } else if (step === 'step4') {
+        // Special rendering for step4 (show only key columns)
+        const keyColumns = ['date', 'estimator_id', 'currency', 'title', 'url', 'analyzed_at', 'time_horizon', 'horizon_category', 'confidence', 'reasoning'];
         tbody.innerHTML = filteredRows.map(row => {
           return '<tr>' + keyColumns.map(h => {
             let value = row[h] || '';
             let displayValue = value;
 
+            // Truncate long fields
             if (h === 'title' && value.length > 60) {
               displayValue = value.substring(0, 60) + '...';
             } else if (h === 'reasoning' && value.length > 80) {
               displayValue = value.substring(0, 80) + '...';
+            } else if (h === 'url' && value.length > 50) {
+              displayValue = value.substring(0, 50) + '...';
+            } else if (h === 'analyzed_at' && value.length > 16) {
+              displayValue = value.substring(0, 16) + '...';
             }
 
             let className = '';
