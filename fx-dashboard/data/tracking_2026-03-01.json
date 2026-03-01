@@ -85,8 +85,8 @@
       "step_id": "step2",
       "step_name": "Calculate Currency Indices (Geometric Mean)",
       "date": "2026-03-01",
-      "start_time": "2026-03-01T09:16:02.300965",
-      "end_time": "2026-03-01T09:16:02.306663",
+      "start_time": "2026-03-01T13:55:56.885615",
+      "end_time": "2026-03-01T13:55:56.898088",
       "duration": 0.01,
       "status": "success",
       "counts": {
@@ -102,8 +102,8 @@
         "output_csv": "/workspace/group/fx-portfolio/data/exports/step2_indices.csv",
         "output_validation": "/workspace/group/fx-portfolio/data/exports/step2_indices_validation.json"
       },
-      "start_time_display": "2026-03-01 09:16:02",
-      "end_time_display": "2026-03-01 09:16:02",
+      "start_time_display": "2026-03-01 13:55:56",
+      "end_time_display": "2026-03-01 13:55:56",
       "status_icon": "\u2713"
     },
     {
@@ -147,22 +147,22 @@
       "step_id": "step6",
       "step_name": "Check Signal Realization",
       "date": "2026-03-01",
-      "start_time": "2026-03-01T09:16:08.869442",
-      "end_time": "2026-03-01T09:16:09.123362",
-      "duration": 0.25,
+      "start_time": "2026-03-01T13:59:52.928001",
+      "end_time": "2026-03-01T13:59:53.155314",
+      "duration": 0.23,
       "status": "success",
       "counts": {
         "total_signals": 464,
         "signals_checked": 464,
         "signals_with_horizon": 464,
-        "realized": 86,
-        "unrealized": 124
+        "realized": 91,
+        "unrealized": 150
       },
       "errors": [],
       "warnings": [],
       "info": {},
-      "start_time_display": "2026-03-01 09:16:08",
-      "end_time_display": "2026-03-01 09:16:09",
+      "start_time_display": "2026-03-01 13:59:52",
+      "end_time_display": "2026-03-01 13:59:53",
       "status_icon": "\u2713"
     },
     {
