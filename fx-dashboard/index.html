@@ -414,13 +414,13 @@
 
     function populateDateFilter(step, rows) {
       // Extract unique dates from rows and populate the date filter dropdown
-      const dateField = rows[0]?.date ? 'date' : (rows[0]?.timestamp ? 'timestamp' : null);
+      const dateField = rows[0]?.date ? 'date' : (rows[0]?.process_date ? 'process_date' : (rows[0]?.timestamp ? 'timestamp' : null));
       if (!dateField) return;
 
       const dates = [...new Set(rows.map(r => {
         const val = r[dateField];
         // Extract just the date part if it's a timestamp
-        return val.includes('T') ? val.split('T')[0] : val;
+        return val && val.includes('T') ? val.split('T')[0] : val;
       }))].sort().reverse();
 
       const selector = document.getElementById(`${step}-date-filter`);
@@ -446,7 +446,7 @@
       let filteredRows = allRows;
       if (selectedDate) {
         filteredRows = allRows.filter(row => {
-          const dateVal = row.date || row.timestamp || '';
+          const dateVal = row.date || row.process_date || row.timestamp || '';
           const rowDate = dateVal.includes('T') ? dateVal.split('T')[0] : dateVal;
           return rowDate === selectedDate;
         });
