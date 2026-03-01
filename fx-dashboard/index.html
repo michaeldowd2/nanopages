@@ -1498,14 +1498,14 @@
 
       // Generate step tabs
       const stepTabs = Object.keys(config.steps)
-        .filter(id => id !== '9')  // Skip deployment step
+        .filter(id => id !== '10')  // Skip deployment step
         .sort((a, b) => {
-          const order = ['1', '2', '3', '4', '5', '6', '7', '8'];
+          const order = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
           return order.indexOf(a) - order.indexOf(b);
         })
         .map(stepId => {
           const step = config.steps[stepId];
-          const label = stepId === '8' ? `STEP ${stepId}: PORTFOLIOS` : `STEP ${stepId}`;
+          const label = stepId === '9' ? `STEP ${stepId}: PORTFOLIOS` : `STEP ${stepId}`;
           return `<div class="tab" onclick="showTab('step${stepId}')">${label}</div>`;
         })
         .join('');
@@ -1519,9 +1519,9 @@
 
       // Generate content divs for each step
       Object.keys(config.steps)
-        .filter(id => id !== '9')  // Skip deployment step
+        .filter(id => id !== '10')  // Skip deployment step
         .sort((a, b) => {
-          const order = ['1', '2', '3', '4', '5', '6', '7', '8'];
+          const order = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
           return order.indexOf(a) - order.indexOf(b);
         })
         .forEach(stepId => {
@@ -1546,7 +1546,7 @@
                 </div>
                 ` : ''}
 
-                ${stepId === '8' ? generatePortfolioContent(stepId) : generateTableContent(stepId)}
+                ${stepId === '9' ? generatePortfolioContent(stepId) : generateTableContent(stepId)}
               </div>
             </div>
           `;
@@ -1562,8 +1562,9 @@
         '4': 'horizons',
         '5': 'signals',
         '6': 'realization',
-        '7': 'trades',
-        '8': 'strategies'
+        '7': 'aggregated_signals',
+        '8': 'trades',
+        '9': 'strategies'
       };
       return filenames[stepId] || 'data';
     }

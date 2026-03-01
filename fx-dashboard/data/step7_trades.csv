@@ -1,1 +1,0 @@
-date,strategy_id,from_currency,to_currency,from_amount_euro,from_amount_base,exchange_rate_mid,exchange_rate_with_spread,to_amount_euro,to_amount_opposite,cost_euro,signal_strength_factor,buy_confidence,sell_confidence
