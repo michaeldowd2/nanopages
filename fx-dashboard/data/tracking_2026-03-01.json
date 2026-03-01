@@ -47,23 +47,15 @@
       "step_id": "step8",
       "step_name": "Calculate Trades",
       "date": "2026-03-01",
-      "start_time": "2026-03-01T11:54:10.014652",
-      "end_time": "2026-03-01T11:54:10.028612",
-      "duration": 0.01,
-      "status": "success",
-      "counts": {
-        "strategy_combinations": 9,
-        "total_trades": 27,
-        "above_threshold_trades": 15
-      },
+      "start_time": null,
+      "end_time": null,
+      "duration": null,
+      "status": "pending",
+      "counts": {},
       "errors": [],
       "warnings": [],
-      "info": {
-        "output_csv": "/workspace/group/fx-portfolio/data/exports/step8_trades.csv"
-      },
-      "start_time_display": "2026-03-01 11:54:10",
-      "end_time_display": "2026-03-01 11:54:10",
-      "status_icon": "\u2713"
+      "info": {},
+      "status_icon": "\u23f8"
     },
     {
       "step_id": "step1",

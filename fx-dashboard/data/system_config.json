@@ -48,24 +48,32 @@
       "description": "LLM-based sentiment analysis using Claude Haiku (more nuanced than keywords)"
     }
   },
+  "traders": {
+    "combinator-standard": {
+      "id": "combinator-standard",
+      "type": "combinator",
+      "estimator_ids": [
+        "llm-horizon-v1-default"
+      ],
+      "generator_ids": [
+        "keyword-sentiment-v1.1-standard",
+        "llm-sentiment-v1-haiku"
+      ],
+      "generator_weights": {
+        "keyword-sentiment-v1.1-standard": 0.5,
+        "llm-sentiment-v1-haiku": 1.0
+      },
+      "description": "Generates all combinations of bullish/bearish currency pairs"
+    }
+  },
   "strategies": {
     "simple-momentum-conf0.5-size0.25": {
       "id": "simple-momentum-conf0.5-size0.25",
       "type": "simple-momentum",
       "params": {
+        "trader_id": "combinator-standard",
         "confidence_threshold": 0.0,
-        "trade_size_pct": 0.1,
-        "estimator_ids": [
-          "llm-horizon-v1-default"
-        ],
-        "generator_ids": [
-          "keyword-sentiment-v1.1-standard",
-          "llm-sentiment-v1-haiku"
-        ],
-        "generator_weights": {
-          "keyword-sentiment-v1.1-standard": 0.5,
-          "llm-sentiment-v1-haiku": 1.0
-        }
+        "trade_size_pct": 0.1
       },
       "description": "Low confidence (0), conservative size (10% max)"
     },
@@ -75,17 +83,7 @@
       "params": {
         "confidence_threshold": 0.0,
         "trade_size_pct": 0.25,
-        "estimator_ids": [
-          "llm-horizon-v1-default"
-        ],
-        "generator_ids": [
-          "keyword-sentiment-v1.1-standard",
-          "llm-sentiment-v1-haiku"
-        ],
-        "generator_weights": {
-          "keyword-sentiment-v1.1-standard": 0.5,
-          "llm-sentiment-v1-haiku": 1.0
-        }
+        "trader_id": "combinator-standard"
       },
       "description": "Low confidence (0), moderate size (25% max)"
     },
@@ -95,17 +93,7 @@
       "params": {
         "confidence_threshold": 0.0,
         "trade_size_pct": 0.5,
-        "estimator_ids": [
-          "llm-horizon-v1-default"
-        ],
-        "generator_ids": [
-          "keyword-sentiment-v1.1-standard",
-          "llm-sentiment-v1-haiku"
-        ],
-        "generator_weights": {
-          "keyword-sentiment-v1.1-standard": 0.5,
-          "llm-sentiment-v1-haiku": 1.0
-        }
+        "trader_id": "combinator-standard"
       },
       "description": "Low confidence (0), aggressive size (50% max)"
     },
@@ -115,17 +103,7 @@
       "params": {
         "confidence_threshold": 0.6,
         "trade_size_pct": 0.1,
-        "estimator_ids": [
-          "llm-horizon-v1-default"
-        ],
-        "generator_ids": [
-          "keyword-sentiment-v1.1-standard",
-          "llm-sentiment-v1-haiku"
-        ],
-        "generator_weights": {
-          "keyword-sentiment-v1.1-standard": 0.5,
-          "llm-sentiment-v1-haiku": 1.0
-        }
+        "trader_id": "combinator-standard"
       },
       "description": "High confidence (0.6), conservative size (10% max)"
     },
@@ -135,17 +113,7 @@
       "params": {
         "confidence_threshold": 0.6,
         "trade_size_pct": 0.25,
-        "estimator_ids": [
-          "llm-horizon-v1-default"
-        ],
-        "generator_ids": [
-          "keyword-sentiment-v1.1-standard",
-          "llm-sentiment-v1-haiku"
-        ],
-        "generator_weights": {
-          "keyword-sentiment-v1.1-standard": 0.5,
-          "llm-sentiment-v1-haiku": 1.0
-        }
+        "trader_id": "combinator-standard"
       },
       "description": "High confidence (0.6), moderate size (25% max)"
     },
@@ -155,17 +123,7 @@
       "params": {
         "confidence_threshold": 0.6,
         "trade_size_pct": 0.5,
-        "estimator_ids": [
-          "llm-horizon-v1-default"
-        ],
-        "generator_ids": [
-          "keyword-sentiment-v1.1-standard",
-          "llm-sentiment-v1-haiku"
-        ],
-        "generator_weights": {
-          "keyword-sentiment-v1.1-standard": 0.5,
-          "llm-sentiment-v1-haiku": 1.0
-        }
+        "trader_id": "combinator-standard"
       },
       "description": "High confidence (0.6), aggressive size (50% max)"
     },
@@ -175,17 +133,7 @@
       "params": {
         "confidence_threshold": 0.3,
         "trade_size_pct": 0.1,
-        "estimator_ids": [
-          "llm-horizon-v1-default"
-        ],
-        "generator_ids": [
-          "keyword-sentiment-v1.1-standard",
-          "llm-sentiment-v1-haiku"
-        ],
-        "generator_weights": {
-          "keyword-sentiment-v1.1-standard": 0.5,
-          "llm-sentiment-v1-haiku": 1.0
-        }
+        "trader_id": "combinator-standard"
       },
       "description": "Medium confidence (0.3), conservative size (10% max)"
     },
@@ -195,17 +143,7 @@
       "params": {
         "confidence_threshold": 0.3,
         "trade_size_pct": 0.25,
-        "estimator_ids": [
-          "llm-horizon-v1-default"
-        ],
-        "generator_ids": [
-          "keyword-sentiment-v1.1-standard",
-          "llm-sentiment-v1-haiku"
-        ],
-        "generator_weights": {
-          "keyword-sentiment-v1.1-standard": 0.5,
-          "llm-sentiment-v1-haiku": 1.0
-        }
+        "trader_id": "combinator-standard"
       },
       "description": "Medium confidence (0.3), moderate size (25% max)"
     },
@@ -215,17 +153,7 @@
       "params": {
         "confidence_threshold": 0.3,
         "trade_size_pct": 0.5,
-        "estimator_ids": [
-          "llm-horizon-v1-default"
-        ],
-        "generator_ids": [
-          "keyword-sentiment-v1.1-standard",
-          "llm-sentiment-v1-haiku"
-        ],
-        "generator_weights": {
-          "keyword-sentiment-v1.1-standard": 0.5,
-          "llm-sentiment-v1-haiku": 1.0
-        }
+        "trader_id": "combinator-standard"
       },
       "description": "Medium confidence (0.3), aggressive size (50% max)"
     }
