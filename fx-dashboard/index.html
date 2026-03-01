@@ -497,13 +497,13 @@
             else if (value === 'true') className = 'bullish';
             else if (value === 'false') className = 'bearish';
 
-            // Color numeric signal values (column names ending in _signal)
-            if (h.endsWith('_signal') && value) {
+            // Color numeric signal values (column names ending in _signal or aggregate_confidence)
+            if ((h.endsWith('_signal') || h === 'aggregate_confidence') && value) {
               const numVal = parseFloat(value);
               if (!isNaN(numVal)) {
-                if (numVal > 0) className = 'bullish';
-                else if (numVal < 0) className = 'bearish';
-                else className = 'neutral';
+                if (numVal > 0.01) className = 'bullish';  // Positive = green
+                else if (numVal < -0.01) className = 'bearish';  // Negative = red
+                else className = 'neutral';  // Near-zero = gray
               }
             }
 

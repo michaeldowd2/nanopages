@@ -55,7 +55,7 @@
       },
       "AUD": {
         "direction": "bearish",
-        "confidence": 0.3
+        "confidence": -0.3
       },
       "CAD": {
         "direction": "neutral",
@@ -152,7 +152,7 @@
       },
       "AUD": {
         "direction": "bearish",
-        "confidence": 0.3
+        "confidence": -0.3
       },
       "CAD": {
         "direction": "neutral",
@@ -249,7 +249,7 @@
       },
       "AUD": {
         "direction": "bearish",
-        "confidence": 0.3
+        "confidence": -0.3
       },
       "CAD": {
         "direction": "neutral",
@@ -346,7 +346,7 @@
       },
       "AUD": {
         "direction": "bearish",
-        "confidence": 0.3
+        "confidence": -0.3
       },
       "CAD": {
         "direction": "neutral",
@@ -443,7 +443,7 @@
       },
       "AUD": {
         "direction": "bearish",
-        "confidence": 0.3
+        "confidence": -0.3
       },
       "CAD": {
         "direction": "neutral",
@@ -540,7 +540,7 @@
       },
       "AUD": {
         "direction": "bearish",
-        "confidence": 0.3
+        "confidence": -0.3
       },
       "CAD": {
         "direction": "neutral",
@@ -637,7 +637,7 @@
       },
       "AUD": {
         "direction": "bearish",
-        "confidence": 0.3
+        "confidence": -0.3
       },
       "CAD": {
         "direction": "neutral",
@@ -734,7 +734,7 @@
       },
       "AUD": {
         "direction": "bearish",
-        "confidence": 0.3
+        "confidence": -0.3
       },
       "CAD": {
         "direction": "neutral",
@@ -831,7 +831,7 @@
       },
       "AUD": {
         "direction": "bearish",
-        "confidence": 0.3
+        "confidence": -0.3
       },
       "CAD": {
         "direction": "neutral",
