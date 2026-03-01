@@ -82,19 +82,19 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000.0,
+      "EUR": 8911.66,
       "USD": 0.0,
       "GBP": 0.0,
-      "JPY": 0.0,
+      "JPY": 64125.99,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 906.79,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 0.0,
+      "CNY": 1505.84,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9992.65
   },
   {
     "date": "2026-03-01",
@@ -179,19 +179,19 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000.0,
+      "EUR": 7279.16,
       "USD": 0.0,
       "GBP": 0.0,
-      "JPY": 0.0,
+      "JPY": 160315.87,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 2266.95,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 0.0,
+      "CNY": 3764.57,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9981.63
   },
   {
     "date": "2026-03-01",
@@ -276,19 +276,19 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000.0,
+      "EUR": 4558.34,
       "USD": 0.0,
       "GBP": 0.0,
-      "JPY": 0.0,
+      "JPY": 320629.93,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 4533.91,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
-      "CNY": 0.0,
+      "CNY": 7529.06,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9963.27
   },
   {
     "date": "2026-03-01",
@@ -664,19 +664,19 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000.0,
+      "EUR": 9098.33,
       "USD": 0.0,
       "GBP": 0.0,
-      "JPY": 0.0,
+      "JPY": 64125.99,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 906.79,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
       "CNY": 0.0,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9993.34
   },
   {
     "date": "2026-03-01",
@@ -761,19 +761,19 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000.0,
+      "EUR": 7745.83,
       "USD": 0.0,
       "GBP": 0.0,
-      "JPY": 0.0,
+      "JPY": 160315.87,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 2266.95,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
       "CNY": 0.0,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9983.34
   },
   {
     "date": "2026-03-01",
@@ -858,18 +858,18 @@
     "executed_trades_count": 0,
     "executed_trades": [],
     "portfolio": {
-      "EUR": 10000.0,
+      "EUR": 5491.67,
       "USD": 0.0,
       "GBP": 0.0,
-      "JPY": 0.0,
+      "JPY": 320629.93,
       "CHF": 0.0,
-      "AUD": 0.0,
+      "AUD": 4533.91,
       "CAD": 0.0,
       "NOK": 0.0,
       "SEK": 0.0,
       "CNY": 0.0,
       "MXN": 0.0
     },
-    "current_value": 10000.0
+    "current_value": 9966.69
   }
 ]
