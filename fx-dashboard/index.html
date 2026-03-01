@@ -532,8 +532,9 @@
         'step4': 'data/step4_horizons.csv',
         'step5': 'data/step5_signals.csv',
         'step6': 'data/step6_realization.csv',
-        'step7': 'data/step7_trades.csv',
-        'step8': 'data/step8_strategies.csv'
+        'step7': 'data/step7_aggregated_signals.csv',
+        'step8': 'data/step8_trades.csv',
+        'step9': 'data/step9_strategies.csv'
       }[step];
 
       fetch(csvFile)
@@ -973,7 +974,7 @@
 
     function loadTradesCSV() {
       const step = 'trades';
-      fetch('data/step7_trades.csv')
+      fetch('data/step8_trades.csv')
         .then(res => res.text())
         .then(text => {
           const { headers, rows } = parseCSV(text);
