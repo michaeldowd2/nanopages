@@ -77,12 +77,12 @@
       "description": "Check if signals have been realized (predicted events occurred)",
       "depends_on": ["5", "4", "2"],
       "outputs": {
-        "source": ["data/signals/*/*.json"],
+        "source": ["data/signal-realization/*.json"],
         "exports": ["data/exports/step6_realization.csv"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true,
-      "note": "Modifies signal files in-place (adds realized flag)"
+      "note": "Joins signals with horizons and index data; outputs to signal-realization directory"
     },
     "7": {
       "id": "7",
