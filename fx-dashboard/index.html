@@ -546,8 +546,30 @@
           const table = document.getElementById(`${step}-table`);
           const loading = document.getElementById(`${step}-loading`);
 
-          // Special rendering for step4 (show only key columns, matching step5 order)
-          if (step === 'step4') {
+          // Special rendering for step2 (indices with color-coded pct_change)
+          if (step === 'step2') {
+            thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+            tbody.innerHTML = rows.map(row => {
+              return '<tr>' + headers.map(h => {
+                let value = row[h];
+                let displayValue = value;
+                let className = '';
+
+                // Color code and format pct_change
+                if (h === 'pct_change' && value && value !== '') {
+                  const numValue = parseFloat(value);
+                  if (!isNaN(numValue)) {
+                    if (numValue > 0) className = 'bullish';  // Green for positive
+                    else if (numValue < 0) className = 'bearish';  // Red for negative
+                    displayValue = numValue.toFixed(2) + '%';
+                  }
+                }
+
+                return `<td class="${className}" title="${value}">${displayValue}</td>`;
+              }).join('') + '</tr>';
+            }).join('');
+          } else if (step === 'step4') {
+            // Special rendering for step4 (show only key columns, matching step5 order)
             const keyColumns = ['date', 'estimator_id', 'estimator_type', 'estimator_params', 'currency', 'title', 'url', 'published_at', 'time_horizon', 'horizon_category', 'confidence', 'reasoning'];
             thead.innerHTML = '<tr>' + keyColumns.map(h => `<th>${h}</th>`).join('') + '</tr>';
             tbody.innerHTML = rows.map(row => {
