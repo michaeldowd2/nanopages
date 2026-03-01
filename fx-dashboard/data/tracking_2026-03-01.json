@@ -1,0 +1,196 @@
+{
+  "date": "2026-03-01",
+  "steps": [
+    {
+      "step_id": "deploy",
+      "step_name": "Deploy Dashboard",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T08:59:33.175798",
+      "end_time": "2026-03-01T08:59:35.134255",
+      "duration": 1.96,
+      "status": "success",
+      "counts": {},
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "cleared_data": true,
+        "exported_data": true,
+        "copied_to_dashboard": true,
+        "deployed_to_github": true
+      },
+      "start_time_display": "2026-03-01 08:59:33",
+      "end_time_display": "2026-03-01 08:59:35",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step7",
+      "step_name": "Aggregate Signals",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T09:16:09.161878",
+      "end_time": "2026-03-01T09:16:09.162870",
+      "duration": 0.0,
+      "status": "success",
+      "counts": {
+        "unrealized_signals": 12,
+        "aggregated_groups": 6
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_file": "/workspace/group/fx-portfolio/data/exports/step7_aggregated_signals.csv"
+      },
+      "start_time_display": "2026-03-01 09:16:09",
+      "end_time_display": "2026-03-01 09:16:09",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step8",
+      "step_name": "Calculate Trades",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T09:16:09.218362",
+      "end_time": "2026-03-01T09:16:09.220148",
+      "duration": 0.0,
+      "status": "success",
+      "counts": {
+        "strategy_combinations": 9
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {},
+      "start_time_display": "2026-03-01 09:16:09",
+      "end_time_display": "2026-03-01 09:16:09",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step1",
+      "step_name": "Fetch Exchange Rates (All Pairs)",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T09:16:02.182681",
+      "end_time": "2026-03-01T09:16:02.263976",
+      "duration": 0.08,
+      "status": "success",
+      "counts": {
+        "currencies": 11,
+        "total_pairs": 121,
+        "eur_rates_fetched": 11,
+        "pairs_calculated": 121
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "data_source": "github-currency-api",
+        "output_file": "/workspace/group/fx-portfolio/data/prices/fx-rates-2026-03-01.json"
+      },
+      "start_time_display": "2026-03-01 09:16:02",
+      "end_time_display": "2026-03-01 09:16:02",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step2",
+      "step_name": "Calculate Currency Indices (Geometric Mean)",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T09:16:02.300965",
+      "end_time": "2026-03-01T09:16:02.306663",
+      "duration": 0.01,
+      "status": "success",
+      "counts": {
+        "days_loaded": 6,
+        "currencies_calculated": 11,
+        "total_index_points": 66
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "base_date": "2026-02-24",
+        "latest_date": "2026-03-01",
+        "output_csv": "/workspace/group/fx-portfolio/data/exports/step2_indices.csv",
+        "output_validation": "/workspace/group/fx-portfolio/data/exports/step2_indices_validation.json"
+      },
+      "start_time_display": "2026-03-01 09:16:02",
+      "end_time_display": "2026-03-01 09:16:02",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step4",
+      "step_name": "Analyze Time Horizons (LLM)",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T09:16:03.949860",
+      "end_time": "2026-03-01T09:16:03.950635",
+      "duration": 0.0,
+      "status": "success",
+      "counts": {},
+      "errors": [],
+      "warnings": [],
+      "info": {},
+      "start_time_display": "2026-03-01 09:16:03",
+      "end_time_display": "2026-03-01 09:16:03",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step5",
+      "step_name": "Generate Sentiment Signals (v2)",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T09:16:04.022902",
+      "end_time": "2026-03-01T09:16:08.812409",
+      "duration": 4.79,
+      "status": "success",
+      "counts": {
+        "generators_configured": 2,
+        "currencies_to_analyze": 11,
+        "total_signals": 12,
+        "generators_executed": 2
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {},
+      "start_time_display": "2026-03-01 09:16:04",
+      "end_time_display": "2026-03-01 09:16:08",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step6",
+      "step_name": "Check Signal Realization",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T09:16:08.869442",
+      "end_time": "2026-03-01T09:16:09.123362",
+      "duration": 0.25,
+      "status": "success",
+      "counts": {
+        "total_signals": 464,
+        "signals_checked": 464,
+        "signals_with_horizon": 464,
+        "realized": 86,
+        "unrealized": 124
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {},
+      "start_time_display": "2026-03-01 09:16:08",
+      "end_time_display": "2026-03-01 09:16:09",
+      "status_icon": "\u2713"
+    },
+    {
+      "step_id": "step9",
+      "step_name": "Execute Portfolio Strategies",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T09:16:09.271588",
+      "end_time": "2026-03-01T09:16:09.283613",
+      "duration": 0.01,
+      "status": "success",
+      "counts": {
+        "strategy_combinations": 9,
+        "strategies_executed": 9,
+        "total_trades": 0
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_csv": "/workspace/group/fx-portfolio/data/exports/step9_strategies.csv",
+        "output_json": "/workspace/group/fx-portfolio/data/exports/step9_strategies_detail.json"
+      },
+      "start_time_display": "2026-03-01 09:16:09",
+      "end_time_display": "2026-03-01 09:16:09",
+      "status_icon": "\u2713"
+    }
+  ]
+}
