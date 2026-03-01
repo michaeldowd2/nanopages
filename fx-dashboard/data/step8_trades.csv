@@ -1,17 +1,1 @@
 date,trader_id,buy_currency,sell_currency,buy_confidence,sell_confidence,trade_confidence
-2026-02-24,combinator-standard,AUD,CHF,0.3292,-0.7667,0.5479
-2026-02-24,combinator-standard,JPY,CHF,0.3,-0.7667,0.5333
-2026-02-24,combinator-standard,CNY,CHF,0.2667,-0.7667,0.5167
-2026-02-24,combinator-standard,USD,CHF,0.1597,-0.7667,0.4632
-2026-02-24,combinator-standard,AUD,GBP,0.3292,-0.4075,0.3683
-2026-02-24,combinator-standard,JPY,GBP,0.3,-0.4075,0.3538
-2026-02-24,combinator-standard,CNY,GBP,0.2667,-0.4075,0.3371
-2026-02-24,combinator-standard,USD,GBP,0.1597,-0.4075,0.2836
-2026-02-24,combinator-standard,AUD,CAD,0.3292,-0.1067,0.2179
-2026-02-24,combinator-standard,JPY,CAD,0.3,-0.1067,0.2033
-2026-02-24,combinator-standard,CNY,CAD,0.2667,-0.1067,0.1867
-2026-02-24,combinator-standard,AUD,EUR,0.3292,-0.0333,0.1812
-2026-02-24,combinator-standard,JPY,EUR,0.3,-0.0333,0.1667
-2026-02-24,combinator-standard,CNY,EUR,0.2667,-0.0333,0.15
-2026-02-24,combinator-standard,USD,CAD,0.1597,-0.1067,0.1332
-2026-02-24,combinator-standard,USD,EUR,0.1597,-0.0333,0.0965
