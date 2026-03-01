@@ -871,12 +871,44 @@
       const loading = document.getElementById('config-loading');
       const content = document.getElementById('config-content');
 
+      // Helper to render a module section (estimators, generators, traders, strategies)
+      function renderModuleSection(title, icon, modules, renderParams = null) {
+        const count = Object.keys(modules).length;
+        return `
+          <div style="margin-top:25px;">
+            <h3 style="color:#00ff41; font-size:1.1em;">${icon} ${title} (${count})</h3>
+            ${Object.entries(modules).map(([id, item]) => {
+              const params = item.params || {};
+              const paramsHtml = renderParams
+                ? renderParams(params)
+                : Object.entries(params).map(([k, v]) =>
+                    `• ${k}: ${typeof v === 'object' ? JSON.stringify(v) : v}`
+                  ).join('<br>');
+
+              return `
+                <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #00ff41; border-radius:4px;">
+                  <div style="color:#00ff41; font-weight:bold;">${id}</div>
+                  <div style="color:#888; font-size:0.9em; margin-top:5px;">${item.description || ''}</div>
+                  <div style="color:#666; font-size:0.85em; margin-top:8px; font-family:monospace;">
+                    ${item.type ? `Type: ${item.type}<br>` : ''}
+                    ${item.estimator_ids ? `Estimators: ${item.estimator_ids.join(', ')}<br>` : ''}
+                    ${item.generator_ids ? `Generators: ${item.generator_ids.join(', ')}<br>` : ''}
+                    ${item.generator_weights ? `Weights: ${JSON.stringify(item.generator_weights)}<br>` : ''}
+                    ${paramsHtml ? `Parameters:<br>${paramsHtml}` : ''}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
       fetch('data/system_config.json')
         .then(res => res.json())
         .then(config => {
           loading.style.display = 'none';
 
-          // Currencies
+          // Currencies (special case - array not object)
           const currencies = config.currencies || [];
           content.innerHTML = `
             <div style="margin-top:20px;">
@@ -887,78 +919,45 @@
             </div>
           `;
 
-          // Estimators
+          // Render all module sections dynamically
           const estimators = config.horizon_estimators || {};
-          const estCount = Object.keys(estimators).length;
-          content.innerHTML += `
-            <div style="margin-top:25px;">
-              <h3 style="color:#00ff41; font-size:1.1em;">🔮 Horizon Estimators (${estCount})</h3>
-              ${Object.entries(estimators).map(([id, est]) => `
-                <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #00ff41; border-radius:4px;">
-                  <div style="color:#00ff41; font-weight:bold;">${id}</div>
-                  <div style="color:#888; font-size:0.9em; margin-top:5px;">${est.description || ''}</div>
-                  <div style="color:#666; font-size:0.85em; margin-top:8px; font-family:monospace;">
-                    Type: ${est.type}<br>
-                    Parameters:<br>
-                    ${Object.entries(est.params || {}).map(([k, v]) => `• ${k}: ${JSON.stringify(v)}`).join('<br>')}
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          `;
+          if (Object.keys(estimators).length > 0) {
+            content.innerHTML += renderModuleSection('Horizon Estimators', '🔮', estimators);
+          }
 
-          // Generators
           const generators = config.signal_generators || {};
-          const genCount = Object.keys(generators).length;
-          content.innerHTML += `
-            <div style="margin-top:25px;">
-              <h3 style="color:#00ff41; font-size:1.1em;">📈 Signal Generators (${genCount})</h3>
-              ${Object.entries(generators).map(([id, gen]) => `
-                <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #00ff41; border-radius:4px;">
-                  <div style="color:#00ff41; font-weight:bold;">${id}</div>
-                  <div style="color:#888; font-size:0.9em; margin-top:5px;">${gen.description || ''}</div>
-                  <div style="color:#666; font-size:0.85em; margin-top:8px; font-family:monospace;">
-                    Type: ${gen.type}<br>
-                    Parameters:<br>
-                    ${Object.entries(gen.params || {}).map(([k, v]) => `• ${k}: ${JSON.stringify(v)}`).join('<br>')}
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          `;
+          if (Object.keys(generators).length > 0) {
+            content.innerHTML += renderModuleSection('Signal Generators', '📈', generators);
+          }
 
-          // Strategies
+          const traders = config.traders || {};
+          if (Object.keys(traders).length > 0) {
+            content.innerHTML += renderModuleSection('Traders', '🤝', traders);
+          }
+
           const strategies = config.strategies || {};
-          const stratCount = Object.keys(strategies).length;
-          content.innerHTML += `
-            <div style="margin-top:25px;">
-              <h3 style="color:#00ff41; font-size:1.1em;">🎯 Strategies (${stratCount})</h3>
-              ${Object.entries(strategies).map(([id, strat]) => {
-                const params = strat.params || {};
-                return `
-                  <div style="margin-top:10px; padding:12px; background:#0f1229; border-left:3px solid #00ff41; border-radius:4px;">
-                    <div style="color:#00ff41; font-weight:bold;">${id}</div>
-                    <div style="color:#888; font-size:0.9em; margin-top:5px;">${strat.description || ''}</div>
-                    <div style="color:#666; font-size:0.85em; margin-top:8px; font-family:monospace;">
-                      Type: ${strat.type}<br>
-                      Parameters:<br>
-                      • confidence_threshold: ${params.confidence_threshold}<br>
-                      • trade_size_pct: ${params.trade_size_pct}<br>
-                      • aggregation_method: ${params.aggregation_method}<br>
-                      • estimator_ids: ${(params.estimator_ids || []).join(', ')}<br>
-                      • generator_ids: ${(params.generator_ids || []).join(', ')}<br>
-                      • generator_weights: ${params.generator_weights ? JSON.stringify(params.generator_weights) : 'N/A'}
-                    </div>
-                  </div>
-                `;
-              }).join('')}
-            </div>
-          `;
+          if (Object.keys(strategies).length > 0) {
+            content.innerHTML += renderModuleSection('Strategies', '🎯', strategies);
+          }
+
+          const settings = config.pipeline_settings || {};
+          if (Object.keys(settings).length > 0) {
+            content.innerHTML += `
+              <div style="margin-top:25px;">
+                <h3 style="color:#00ff41; font-size:1.1em;">⚙️ Pipeline Settings</h3>
+                <div style="padding:12px; background:#0f1229; border-radius:4px; font-family:monospace; color:#666; font-size:0.85em;">
+                  ${Object.entries(settings).map(([k, v]) =>
+                    `• ${k}: ${typeof v === 'object' ? JSON.stringify(v) : v}`
+                  ).join('<br>')}
+                </div>
+              </div>
+            `;
+          }
 
           // Config file info
           content.innerHTML += `
             <div style="margin-top:25px; padding:15px; background:#1a1e3a; border:1px solid #333; border-radius:4px;">
-              <h3 style="color:#00ff41; font-size:1em; margin-top:0;">⚙️ Configuration File</h3>
+              <h3 style="color:#00ff41; font-size:1em; margin-top:0;">📄 Configuration File</h3>
               <div style="color:#888; font-size:0.9em;">
                 <p>Location: <code style="color:#00ff41;">/workspace/group/fx-portfolio/config/system_config.json</code></p>
                 <p>To modify: Edit the JSON file and redeploy the dashboard</p>
