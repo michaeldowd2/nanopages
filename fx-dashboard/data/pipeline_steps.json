@@ -148,13 +148,13 @@
     ],
     "date_filtering": [
       "Most steps support date-specific operations",
-      "Portfolio execution (Step 8) maintains state across dates",
-      "Deployment (Step 9) always includes all available dates"
+      "Portfolio execution (Step 9) maintains state across dates",
+      "Deployment (Step 10) always includes all available dates"
     ],
     "safety_guidelines": [
       "Always clear downstream before clearing upstream (prevents orphaned data)",
       "Use --dry-run to preview what will be cleared",
-      "Back up portfolio state before clearing Step 8",
+      "Back up portfolio state before clearing Step 9",
       "News articles (Step 3) may not be re-fetchable for old dates"
     ]
   }
