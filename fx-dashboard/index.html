@@ -569,8 +569,8 @@
               }).join('') + '</tr>';
             }).join('');
           } else if (step === 'step4') {
-            // Special rendering for step4 (show only key columns, matching step5 order)
-            const keyColumns = ['date', 'estimator_id', 'estimator_type', 'estimator_params', 'currency', 'title', 'url', 'published_at', 'time_horizon', 'horizon_category', 'confidence', 'reasoning'];
+            // Special rendering for step4 (show only key columns)
+            const keyColumns = ['date', 'estimator_id', 'currency', 'title', 'url', 'analyzed_at', 'time_horizon', 'horizon_category', 'confidence', 'reasoning'];
             thead.innerHTML = '<tr>' + keyColumns.map(h => `<th>${h}</th>`).join('') + '</tr>';
             tbody.innerHTML = rows.map(row => {
               return '<tr>' + keyColumns.map(h => {
@@ -582,11 +582,9 @@
                   displayValue = value.substring(0, 60) + '...';
                 } else if (h === 'reasoning' && value.length > 80) {
                   displayValue = value.substring(0, 80) + '...';
-                } else if (h === 'estimator_params' && value.length > 40) {
-                  displayValue = value.substring(0, 40) + '...';
                 } else if (h === 'url' && value.length > 50) {
                   displayValue = value.substring(0, 50) + '...';
-                } else if (h === 'published_at' && value.length > 16) {
+                } else if (h === 'analyzed_at' && value.length > 16) {
                   displayValue = value.substring(0, 16) + '...';
                 }
 
