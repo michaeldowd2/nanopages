@@ -115,7 +115,7 @@
       "name": "Portfolio Execution",
       "script": "scripts/execute-strategies-step9.py",
       "description": "Execute trades on portfolios and track values",
-      "depends_on": ["8"],
+      "depends_on": ["1", "8"],
       "outputs": {
         "source": ["data/portfolios/*.json"],
         "exports": ["data/exports/step9_strategies.csv", "data/exports/step9_strategies_detail.json"]
