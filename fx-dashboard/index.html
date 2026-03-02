@@ -661,6 +661,8 @@
             generateHorizonSummary(rows);
           } else if (step === 'step7' && rows.length > 0) {
             generateStrategyChart(rows);
+          } else if (step === 'step9' && rows.length > 0) {
+            renderPortfolioHeatmap(rows);
           }
         })
         .catch(err => {
@@ -1504,6 +1506,148 @@
         });
     }
 
+    // Render portfolio performance heatmap
+    function renderPortfolioHeatmap(rows) {
+      const container = document.getElementById('portfolio-heatmap');
+      if (!container) return;
+
+      // Extract unique dates and sort
+      const dates = [...new Set(rows.map(r => r.date))].sort().reverse(); // Latest first
+
+      // Populate date selector
+      const dateSelector = document.getElementById('heatmap-date-selector');
+      if (dateSelector) {
+        dateSelector.innerHTML = dates.map(d =>
+          `<option value="${d}">${d}</option>`
+        ).join('');
+
+        // Set to latest date
+        if (dates.length > 0) {
+          dateSelector.value = dates[0];
+        }
+
+        // Update heatmap when date changes
+        dateSelector.addEventListener('change', function() {
+          updateHeatmap(rows, this.value);
+        });
+      }
+
+      // Initial render with latest date
+      if (dates.length > 0) {
+        updateHeatmap(rows, dates[0]);
+      }
+    }
+
+    function updateHeatmap(allRows, selectedDate) {
+      const container = document.getElementById('portfolio-heatmap');
+      if (!container) return;
+
+      // Filter to selected date
+      const rows = allRows.filter(r => r.date === selectedDate);
+      if (rows.length === 0) {
+        container.innerHTML = '<div style="color:#888;">No data for selected date</div>';
+        return;
+      }
+
+      // Parse strategy parameters to extract confidence threshold and trade size
+      const strategyData = rows.map(row => {
+        // Parse params like "conf=0.5_size=0.25"
+        const params = row.strategy_params;
+        const confMatch = params.match(/conf=([\d.]+)/);
+        const sizeMatch = params.match(/size=([\d.]+)/);
+
+        return {
+          conf: confMatch ? parseFloat(confMatch[1]) : 0,
+          size: sizeMatch ? parseFloat(sizeMatch[1]) : 0,
+          value: parseFloat(row.current_value) || 0,
+          trades: parseInt(row.no_trades_executed) || 0
+        };
+      });
+
+      // Get unique conf and size values, sorted
+      const confLevels = [...new Set(strategyData.map(d => d.conf))].sort((a,b) => a-b);
+      const sizeLevels = [...new Set(strategyData.map(d => d.size))].sort((a,b) => a-b);
+
+      // Create heatmap data structure
+      const heatmapData = {};
+      strategyData.forEach(d => {
+        const key = `${d.conf}_${d.size}`;
+        heatmapData[key] = d;
+      });
+
+      // Find min/max values for color scaling
+      const values = strategyData.map(d => d.value);
+      const minValue = Math.min(...values);
+      const maxValue = Math.max(...values);
+      const range = maxValue - minValue;
+
+      // Generate color from value (green for high, red for low)
+      function getColor(value) {
+        const normalized = (value - minValue) / range;
+        if (normalized > 0.66) return '#00ff41';  // High - bright green
+        if (normalized > 0.33) return '#88aa44';  // Medium - yellow-green
+        return '#ff4444';  // Low - red
+      }
+
+      // Build heatmap HTML
+      let html = '<table style="border-collapse:collapse; margin:0 auto; font-size:0.85em;">';
+
+      // Header row
+      html += '<tr><th style="padding:8px; border:1px solid #333; background:#1a1e3a; color:#00ff41;">Conf \\ Size</th>';
+      sizeLevels.forEach(size => {
+        html += `<th style="padding:8px; border:1px solid #333; background:#1a1e3a; color:#00ff41;">${(size*100).toFixed(0)}%</th>`;
+      });
+      html += '</tr>';
+
+      // Data rows
+      confLevels.forEach(conf => {
+        html += `<tr><th style="padding:8px; border:1px solid #333; background:#1a1e3a; color:#00ff41;">${conf.toFixed(1)}</th>`;
+
+        sizeLevels.forEach(size => {
+          const key = `${conf}_${size}`;
+          const data = heatmapData[key];
+
+          if (data) {
+            const color = getColor(data.value);
+            const textColor = '#0a0e27';  // Dark text for visibility
+            html += `<td style="padding:12px; border:1px solid #333; background:${color}; color:${textColor}; text-align:center; font-weight:bold; cursor:pointer;"
+                         title="Value: €${data.value.toFixed(2)}, Trades: ${data.trades}">
+                       €${data.value.toFixed(0)}<br>
+                       <span style="font-size:0.75em; opacity:0.8;">${data.trades} trades</span>
+                     </td>`;
+          } else {
+            html += '<td style="padding:12px; border:1px solid #333; background:#1a1a1a; color:#555; text-align:center;">-</td>';
+          }
+        });
+
+        html += '</tr>';
+      });
+
+      html += '</table>';
+
+      // Add legend
+      html += `
+        <div style="margin-top:20px; display:flex; align-items:center; justify-content:center; gap:15px; font-size:0.85em;">
+          <span style="color:#888;">Performance:</span>
+          <div style="display:flex; align-items:center; gap:5px;">
+            <div style="width:30px; height:15px; background:#ff4444;"></div>
+            <span style="color:#888;">Low</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:5px;">
+            <div style="width:30px; height:15px; background:#88aa44;"></div>
+            <span style="color:#888;">Medium</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:5px;">
+            <div style="width:30px; height:15px; background:#00ff41;"></div>
+            <span style="color:#888;">High</span>
+          </div>
+          <span style="color:#666; margin-left:10px;">Range: €${minValue.toFixed(0)} - €${maxValue.toFixed(0)}</span>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
     // Initialize dashboard - load config first, then generate tabs and load data
     function initializeDashboard() {
       document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
@@ -1629,6 +1773,21 @@
 
     function generatePortfolioContent(stepId) {
       return `
+        <div class="chart" style="margin-bottom:30px;">
+          <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Strategy Performance Heatmap</h3>
+          <p style="color:#888;font-size:0.85em;margin-bottom:15px;">Latest portfolio values by confidence threshold and trade size</p>
+
+          <!-- Date selector for heatmap -->
+          <div style="margin-bottom:15px;">
+            <label for="heatmap-date-selector" style="color:#ccc; font-size:0.9em;">Date:</label>
+            <select id="heatmap-date-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
+              <option value="">Loading dates...</option>
+            </select>
+          </div>
+
+          <div id="portfolio-heatmap" style="overflow-x:auto;"></div>
+        </div>
+
         <div class="chart">
           <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Portfolio Values by Strategy</h3>
           <div id="strategy-chart"></div>
