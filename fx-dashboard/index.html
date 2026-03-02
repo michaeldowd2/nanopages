@@ -637,12 +637,16 @@
                 else if (value === 'neutral') className = 'neutral';
                 else if (value === 'true') className = 'bullish';
                 else if (value === 'false') className = 'bearish';
-                // Step 7: Color aggregate_confidence by sign (green=positive/bullish, red=negative/bearish)
-                else if (step === 'step7' && h === 'aggregate_confidence') {
+                // Step 7: Color aggregate_confidence and base_confidence by sign
+                else if (step === 'step7' && (h === 'aggregate_confidence' || h === 'base_confidence')) {
                   const numValue = parseFloat(value);
                   if (numValue > 0.01) className = 'bullish';
                   else if (numValue < -0.01) className = 'bearish';
                   else className = 'neutral';
+                }
+                // Step 7: Show penalty_factor with neutral coloring (informational)
+                else if (step === 'step7' && h === 'penalty_factor') {
+                  className = 'neutral';
                 }
                 return `<td class="${className}" title="${value}">${value}</td>`;
               }).join('') + '</tr>';
