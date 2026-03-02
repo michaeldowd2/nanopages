@@ -67,95 +67,95 @@
     }
   },
   "strategies": {
-    "momentum-conf40-size10": {
-      "id": "momentum-conf40-size10",
+    "momentum-conf30-size10": {
+      "id": "momentum-conf30-size10",
       "type": "simple-momentum",
       "params": {
         "trader_id": "combinator-standard",
-        "confidence_threshold": 0.4,
+        "confidence_threshold": 0.3,
         "trade_size_pct": 0.1
       },
-      "description": "Low confidence (40%), conservative size (10% max)"
+      "description": "Low confidence (30%), conservative size (10% max)"
     },
-    "momentum-conf40-size25": {
-      "id": "momentum-conf40-size25",
+    "momentum-conf30-size25": {
+      "id": "momentum-conf30-size25",
       "type": "simple-momentum",
       "params": {
         "trader_id": "combinator-standard",
-        "confidence_threshold": 0.4,
+        "confidence_threshold": 0.3,
         "trade_size_pct": 0.25
       },
-      "description": "Low confidence (40%), moderate size (25% max)"
+      "description": "Low confidence (30%), moderate size (25% max)"
     },
-    "momentum-conf40-size50": {
-      "id": "momentum-conf40-size50",
+    "momentum-conf30-size50": {
+      "id": "momentum-conf30-size50",
       "type": "simple-momentum",
       "params": {
         "trader_id": "combinator-standard",
-        "confidence_threshold": 0.4,
+        "confidence_threshold": 0.3,
         "trade_size_pct": 0.5
       },
-      "description": "Low confidence (40%), aggressive size (50% max)"
+      "description": "Low confidence (30%), aggressive size (50% max)"
     },
-    "momentum-conf60-size10": {
-      "id": "momentum-conf60-size10",
+    "momentum-conf50-size10": {
+      "id": "momentum-conf50-size10",
       "type": "simple-momentum",
       "params": {
         "trader_id": "combinator-standard",
-        "confidence_threshold": 0.6,
+        "confidence_threshold": 0.5,
         "trade_size_pct": 0.1
       },
-      "description": "Medium confidence (60%), conservative size (10% max)"
+      "description": "Medium confidence (50%), conservative size (10% max)"
     },
-    "momentum-conf60-size25": {
-      "id": "momentum-conf60-size25",
+    "momentum-conf50-size25": {
+      "id": "momentum-conf50-size25",
       "type": "simple-momentum",
       "params": {
         "trader_id": "combinator-standard",
-        "confidence_threshold": 0.6,
+        "confidence_threshold": 0.5,
         "trade_size_pct": 0.25
       },
-      "description": "Medium confidence (60%), moderate size (25% max)"
+      "description": "Medium confidence (50%), moderate size (25% max)"
     },
-    "momentum-conf60-size50": {
-      "id": "momentum-conf60-size50",
+    "momentum-conf50-size50": {
+      "id": "momentum-conf50-size50",
       "type": "simple-momentum",
       "params": {
         "trader_id": "combinator-standard",
-        "confidence_threshold": 0.6,
+        "confidence_threshold": 0.5,
         "trade_size_pct": 0.5
       },
-      "description": "Medium confidence (60%), aggressive size (50% max)"
+      "description": "Medium confidence (50%), aggressive size (50% max)"
     },
-    "momentum-conf80-size10": {
-      "id": "momentum-conf80-size10",
+    "momentum-conf70-size10": {
+      "id": "momentum-conf70-size10",
       "type": "simple-momentum",
       "params": {
         "trader_id": "combinator-standard",
-        "confidence_threshold": 0.8,
+        "confidence_threshold": 0.7,
         "trade_size_pct": 0.1
       },
-      "description": "High confidence (80%), conservative size (10% max)"
+      "description": "High confidence (70%), conservative size (10% max)"
     },
-    "momentum-conf80-size25": {
-      "id": "momentum-conf80-size25",
+    "momentum-conf70-size25": {
+      "id": "momentum-conf70-size25",
       "type": "simple-momentum",
       "params": {
         "trader_id": "combinator-standard",
-        "confidence_threshold": 0.8,
+        "confidence_threshold": 0.7,
         "trade_size_pct": 0.25
       },
-      "description": "High confidence (80%), moderate size (25% max)"
+      "description": "High confidence (70%), moderate size (25% max)"
     },
-    "momentum-conf80-size50": {
-      "id": "momentum-conf80-size50",
+    "momentum-conf70-size50": {
+      "id": "momentum-conf70-size50",
       "type": "simple-momentum",
       "params": {
         "trader_id": "combinator-standard",
-        "confidence_threshold": 0.8,
+        "confidence_threshold": 0.7,
         "trade_size_pct": 0.5
       },
-      "description": "High confidence (80%), aggressive size (50% max)"
+      "description": "High confidence (70%), aggressive size (50% max)"
     }
   },
   "pipeline_settings": {
