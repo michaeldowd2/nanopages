@@ -1571,29 +1571,34 @@
         return;
       }
 
-      // Parse strategy parameters to extract confidence threshold and trade size
+      // Parse strategy parameters to extract T (target_trades) and trade size
       const strategyData = rows.map(row => {
-        // Parse params like "conf=0.5_size=0.25"
+        // Parse params like "conf=0.1_T=2_size=0.1" or "conf=0.1_T=all_size=0.1"
         const params = row.strategy_params;
-        const confMatch = params.match(/conf=([\d.]+)/);
+        const tMatch = params.match(/T=([\w]+)/);
         const sizeMatch = params.match(/size=([\d.]+)/);
 
         return {
-          conf: confMatch ? parseFloat(confMatch[1]) : 0,
+          t: tMatch ? tMatch[1] : 'all',  // Can be number or 'all'
           size: sizeMatch ? parseFloat(sizeMatch[1]) : 0,
           value: parseFloat(row.current_value) || 0,
           trades: parseInt(row.no_trades_executed) || 0
         };
       });
 
-      // Get unique conf and size values, sorted
-      const confLevels = [...new Set(strategyData.map(d => d.conf))].sort((a,b) => a-b);
+      // Get unique T and size values, sorted
+      // Sort T values: numbers first (ascending), then 'all'
+      const tLevels = [...new Set(strategyData.map(d => d.t))].sort((a, b) => {
+        if (a === 'all') return 1;
+        if (b === 'all') return -1;
+        return parseInt(a) - parseInt(b);
+      });
       const sizeLevels = [...new Set(strategyData.map(d => d.size))].sort((a,b) => a-b);
 
       // Create heatmap data structure
       const heatmapData = {};
       strategyData.forEach(d => {
-        const key = `${d.conf}_${d.size}`;
+        const key = `${d.t}_${d.size}`;
         heatmapData[key] = d;
       });
 
@@ -1615,18 +1620,18 @@
       let html = '<table style="border-collapse:collapse; margin:0 auto; font-size:0.85em;">';
 
       // Header row
-      html += '<tr><th style="padding:8px; border:1px solid #333; background:#1a1e3a; color:#00ff41;">Conf \\ Size</th>';
+      html += '<tr><th style="padding:8px; border:1px solid #333; background:#1a1e3a; color:#00ff41;">T \\ Size</th>';
       sizeLevels.forEach(size => {
         html += `<th style="padding:8px; border:1px solid #333; background:#1a1e3a; color:#00ff41;">${(size*100).toFixed(0)}%</th>`;
       });
       html += '</tr>';
 
       // Data rows
-      confLevels.forEach(conf => {
-        html += `<tr><th style="padding:8px; border:1px solid #333; background:#1a1e3a; color:#00ff41;">${conf.toFixed(1)}</th>`;
+      tLevels.forEach(t => {
+        html += `<tr><th style="padding:8px; border:1px solid #333; background:#1a1e3a; color:#00ff41;">T=${t}</th>`;
 
         sizeLevels.forEach(size => {
-          const key = `${conf}_${size}`;
+          const key = `${t}_${size}`;
           const data = heatmapData[key];
 
           if (data) {
