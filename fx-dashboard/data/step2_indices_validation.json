@@ -1,7 +1,7 @@
 [
   {
     "currency": "EUR",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 100.1366,
     "pairs_used": [
       {
@@ -81,7 +81,7 @@
   },
   {
     "currency": "USD",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 100.1553,
     "pairs_used": [
       {
@@ -161,7 +161,7 @@
   },
   {
     "currency": "GBP",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 100.6079,
     "pairs_used": [
       {
@@ -241,7 +241,7 @@
   },
   {
     "currency": "JPY",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 101.122,
     "pairs_used": [
       {
@@ -321,7 +321,7 @@
   },
   {
     "currency": "CHF",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 99.2277,
     "pairs_used": [
       {
@@ -401,7 +401,7 @@
   },
   {
     "currency": "AUD",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 99.5993,
     "pairs_used": [
       {
@@ -481,7 +481,7 @@
   },
   {
     "currency": "CAD",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 99.7402,
     "pairs_used": [
       {
@@ -561,7 +561,7 @@
   },
   {
     "currency": "NOK",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 99.5906,
     "pairs_used": [
       {
@@ -641,7 +641,7 @@
   },
   {
     "currency": "SEK",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 100.0093,
     "pairs_used": [
       {
@@ -721,7 +721,7 @@
   },
   {
     "currency": "CNY",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 99.709,
     "pairs_used": [
       {
@@ -801,7 +801,7 @@
   },
   {
     "currency": "MXN",
-    "date": "2026-03-02",
+    "date": "2026-03-03",
     "index": 100.1163,
     "pairs_used": [
       {

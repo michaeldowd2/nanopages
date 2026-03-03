@@ -1,65 +1,65 @@
 {
-  "date": "2026-03-02",
+  "date": "2026-03-03",
   "strategies": [
     {
-      "date": "2026-03-02",
+      "date": "2026-03-03",
       "strategy_id": "momentum-conf30-size10",
       "strategy_name": "simple-momentum",
       "strategy_params": "conf=0.3_size=0.1",
-      "no_trades_executed": 9,
-      "current_value": 1099.17,
-      "EUR": 66.74725667477449,
+      "no_trades_executed": 10,
+      "current_value": 1099.02,
+      "EUR": 60.07454773060174,
       "USD": 57.992428054134514,
-      "GBP": 34.34375567816407,
-      "JPY": 11998.41721063752,
+      "GBP": 30.875534636272096,
+      "JPY": 11636.424963392587,
       "CHF": 133.58108715969098,
-      "AUD": 377.02053372836565,
-      "CAD": 142.87651040502044,
+      "AUD": 385.6589472179226,
+      "CAD": 156.74340145309472,
       "NOK": 1126.978182,
       "SEK": 782.3415575127495,
-      "CNY": 1359.4768980306317,
-      "MXN": 1497.4196393031784
+      "CNY": 1406.6302125134744,
+      "MXN": 1350.9779527632054
     },
     {
-      "date": "2026-03-02",
+      "date": "2026-03-03",
       "strategy_id": "momentum-conf30-size25",
       "strategy_name": "simple-momentum",
       "strategy_params": "conf=0.3_size=0.25",
-      "no_trades_executed": 9,
-      "current_value": 1097.17,
-      "EUR": 34.58995926718275,
+      "no_trades_executed": 10,
+      "current_value": 1097.0,
+      "EUR": 26.388486137378457,
       "USD": 18.388830653570235,
-      "GBP": 7.639168610068514,
-      "JPY": 5948.302249914837,
+      "GBP": 5.810515723666741,
+      "JPY": 5499.65155271501,
       "CHF": 156.84632067663676,
-      "AUD": 587.665569380582,
-      "CAD": 102.18075237119356,
+      "AUD": 596.9972907524376,
+      "CAD": 119.0620336622631,
       "NOK": 1126.978182,
       "SEK": 447.6912560824191,
-      "CNY": 1851.6439973456113,
-      "MXN": 893.4346311106391
+      "CNY": 1905.4138105900688,
+      "MXN": 685.9507493051862
     },
     {
-      "date": "2026-03-02",
+      "date": "2026-03-03",
       "strategy_id": "momentum-conf30-size50",
       "strategy_name": "simple-momentum",
       "strategy_params": "conf=0.3_size=0.5",
-      "no_trades_executed": 9,
-      "current_value": 1095.62,
-      "EUR": 10.106364655884262,
+      "no_trades_executed": 10,
+      "current_value": 1095.53,
+      "EUR": 5.7250666958942285,
       "USD": 2.0962283074765717,
-      "GBP": 0.43156277407292354,
-      "JPY": 1529.9792133342135,
+      "GBP": 0.24286536542327986,
+      "JPY": 1299.1818490027474,
       "CHF": 145.658623868,
-      "AUD": 799.7993122991293,
-      "CAD": 47.881519020876475,
+      "AUD": 804.4565101188391,
+      "CAD": 57.83950543495947,
       "NOK": 1126.978182,
       "SEK": 147.5658272447818,
-      "CNY": 2200.515492089931,
-      "MXN": 329.2814870969154
+      "CNY": 2230.070977013616,
+      "MXN": 189.1708073216642
     },
     {
-      "date": "2026-03-02",
+      "date": "2026-03-03",
       "strategy_id": "momentum-conf50-size10",
       "strategy_name": "simple-momentum",
       "strategy_params": "conf=0.5_size=0.1",
@@ -78,7 +78,7 @@
       "MXN": 1834.3093921638174
     },
     {
-      "date": "2026-03-02",
+      "date": "2026-03-03",
       "strategy_id": "momentum-conf50-size25",
       "strategy_name": "simple-momentum",
       "strategy_params": "conf=0.5_size=0.25",
@@ -97,7 +97,7 @@
       "MXN": 1555.5526560773585
     },
     {
-      "date": "2026-03-02",
+      "date": "2026-03-03",
       "strategy_id": "momentum-conf50-size50",
       "strategy_name": "simple-momentum",
       "strategy_params": "conf=0.5_size=0.5",
@@ -116,7 +116,7 @@
       "MXN": 1141.9841830474345
     },
     {
-      "date": "2026-03-02",
+      "date": "2026-03-03",
       "strategy_id": "momentum-conf70-size10",
       "strategy_name": "simple-momentum",
       "strategy_params": "conf=0.7_size=0.1",
@@ -135,7 +135,7 @@
       "MXN": 2032.903738
     },
     {
-      "date": "2026-03-02",
+      "date": "2026-03-03",
       "strategy_id": "momentum-conf70-size25",
       "strategy_name": "simple-momentum",
       "strategy_params": "conf=0.7_size=0.25",
@@ -154,7 +154,7 @@
       "MXN": 2032.903738
     },
     {
-      "date": "2026-03-02",
+      "date": "2026-03-03",
       "strategy_id": "momentum-conf70-size50",
       "strategy_name": "simple-momentum",
       "strategy_params": "conf=0.7_size=0.5",
