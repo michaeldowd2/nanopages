@@ -1525,6 +1525,9 @@
       // Extract unique dates and sort
       const dates = [...new Set(rows.map(r => r.date))].sort().reverse(); // Latest first
 
+      // Render line chart first
+      renderPortfolioLineChart(rows);
+
       // Populate date selector
       const dateSelector = document.getElementById('heatmap-date-selector');
       if (dateSelector) {
@@ -1659,6 +1662,149 @@
       container.innerHTML = html;
     }
 
+    function renderPortfolioLineChart(rows) {
+      const container = document.getElementById('portfolio-line-chart');
+      if (!container) return;
+
+      // Get unique strategy IDs and dates
+      const strategyIds = [...new Set(rows.map(r => r.strategy_id))].sort();
+      const dates = [...new Set(rows.map(r => r.date))].sort(); // Chronological order
+
+      if (dates.length === 0 || strategyIds.length === 0) {
+        container.innerHTML = '<div style="color:#888;">No data available</div>';
+        return;
+      }
+
+      // Organize data by strategy
+      const strategyData = {};
+      strategyIds.forEach(id => {
+        strategyData[id] = dates.map(date => {
+          const row = rows.find(r => r.strategy_id === id && r.date === date);
+          return row ? parseFloat(row.current_value) : null;
+        });
+      });
+
+      // Find value range for scaling
+      const allValues = Object.values(strategyData).flat().filter(v => v !== null);
+      const minValue = Math.min(...allValues);
+      const maxValue = Math.max(...allValues);
+      const valueRange = maxValue - minValue;
+      const padding = valueRange * 0.1;
+
+      // Chart dimensions
+      const chartHeight = 350;
+      const chartWidth = container.offsetWidth || 800;
+      const marginLeft = 60;
+      const marginRight = 20;
+      const marginTop = 20;
+      const marginBottom = 50;
+      const plotWidth = chartWidth - marginLeft - marginRight;
+      const plotHeight = chartHeight - marginTop - marginBottom;
+
+      // Color palette for strategies
+      const colors = [
+        '#00ff41', '#00ccff', '#ff00ff', '#ffff00', '#ff8800',
+        '#ff0088', '#88ff00', '#0088ff', '#ff0044'
+      ];
+
+      // Helper: scale value to Y coordinate
+      function scaleY(value) {
+        const normalized = (value - (minValue - padding)) / (valueRange + 2 * padding);
+        return plotHeight - (normalized * plotHeight) + marginTop;
+      }
+
+      // Helper: scale date index to X coordinate
+      function scaleX(index) {
+        return marginLeft + (index / (dates.length - 1)) * plotWidth;
+      }
+
+      // Build SVG
+      let svg = `<svg width="${chartWidth}" height="${chartHeight}" style="background:#0a0e27;">`;
+
+      // Y-axis grid lines and labels
+      const ySteps = 5;
+      for (let i = 0; i <= ySteps; i++) {
+        const value = (minValue - padding) + (valueRange + 2 * padding) * (i / ySteps);
+        const y = scaleY(value);
+
+        // Grid line
+        svg += `<line x1="${marginLeft}" y1="${y}" x2="${chartWidth - marginRight}" y2="${y}"
+                     stroke="#333" stroke-width="1" stroke-dasharray="2,2"/>`;
+
+        // Label
+        svg += `<text x="${marginLeft - 10}" y="${y + 4}" fill="#888" text-anchor="end" font-size="11">
+                  €${value.toFixed(0)}
+                </text>`;
+      }
+
+      // X-axis labels (show every nth date to avoid crowding)
+      const labelStep = Math.max(1, Math.floor(dates.length / 7));
+      dates.forEach((date, i) => {
+        if (i % labelStep === 0 || i === dates.length - 1) {
+          const x = scaleX(i);
+          svg += `<text x="${x}" y="${chartHeight - marginBottom + 20}" fill="#888" text-anchor="middle" font-size="10">
+                    ${date.substring(5)}
+                  </text>`;
+        }
+      });
+
+      // Draw lines for each strategy
+      strategyIds.forEach((strategyId, strategyIndex) => {
+        const values = strategyData[strategyId];
+        const color = colors[strategyIndex % colors.length];
+
+        // Build path
+        let pathData = '';
+        let firstPoint = true;
+
+        values.forEach((value, i) => {
+          if (value !== null) {
+            const x = scaleX(i);
+            const y = scaleY(value);
+
+            if (firstPoint) {
+              pathData += `M ${x} ${y}`;
+              firstPoint = false;
+            } else {
+              pathData += ` L ${x} ${y}`;
+            }
+          }
+        });
+
+        if (pathData) {
+          svg += `<path d="${pathData}" stroke="${color}" stroke-width="2" fill="none"/>`;
+
+          // Add dots at each point
+          values.forEach((value, i) => {
+            if (value !== null) {
+              const x = scaleX(i);
+              const y = scaleY(value);
+              svg += `<circle cx="${x}" cy="${y}" r="3" fill="${color}"/>`;
+            }
+          });
+        }
+      });
+
+      svg += '</svg>';
+
+      // Add legend below chart
+      let legend = '<div style="display:flex; flex-wrap:wrap; gap:15px; justify-content:center; margin-top:15px; font-size:0.85em;">';
+      strategyIds.forEach((strategyId, i) => {
+        const color = colors[i % colors.length];
+        // Extract readable name from strategy_id
+        const name = strategyId.replace('momentum-conf', 'C').replace('-size', ' S');
+        legend += `
+          <div style="display:flex; align-items:center; gap:5px;">
+            <div style="width:20px; height:3px; background:${color};"></div>
+            <span style="color:#ccc;">${name}</span>
+          </div>
+        `;
+      });
+      legend += '</div>';
+
+      container.innerHTML = svg + legend;
+    }
+
     // Initialize dashboard - load config first, then generate tabs and load data
     function initializeDashboard() {
       document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
@@ -1785,18 +1931,24 @@
     function generatePortfolioContent(stepId) {
       return `
         <div class="chart" style="margin-bottom:30px;">
+          <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Portfolio Value Over Time</h3>
+          <p style="color:#888;font-size:0.85em;margin-bottom:15px;">Track how each strategy performs over time</p>
+          <div id="portfolio-line-chart" style="position:relative; height:400px; margin-top:20px;"></div>
+        </div>
+
+        <div class="chart" style="margin-bottom:30px;">
           <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Strategy Performance Heatmap</h3>
           <p style="color:#888;font-size:0.85em;margin-bottom:15px;">Latest portfolio values by confidence threshold and trade size</p>
 
-          <!-- Date selector for heatmap -->
-          <div style="margin-bottom:15px;">
-            <label for="heatmap-date-selector" style="color:#ccc; font-size:0.9em;">Date:</label>
+          <div id="portfolio-heatmap" style="overflow-x:auto;"></div>
+
+          <!-- Date selector for heatmap (moved below heatmap) -->
+          <div style="margin-top:15px; text-align:center;">
+            <label for="heatmap-date-selector" style="color:#ccc; font-size:0.9em;">View date:</label>
             <select id="heatmap-date-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
               <option value="">Loading dates...</option>
             </select>
           </div>
-
-          <div id="portfolio-heatmap" style="overflow-x:auto;"></div>
         </div>
 
         <div class="chart">
