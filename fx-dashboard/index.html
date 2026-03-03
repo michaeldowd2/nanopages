@@ -1883,7 +1883,7 @@
                 <h2>Step ${stepId}: ${step.name} <a href="data/step${stepId}_${getDefaultFilename(stepId)}.csv" class="csv-download" download>CSV</a></h2>
                 <p class="step-header">${step.description}</p>
 
-                ${step.supports_date_filter ? `
+                ${step.supports_date_filter && stepId !== '9' ? `
                 <!-- Date Filter -->
                 <div style="margin:15px 0;">
                   <label for="step${stepId}-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
@@ -1940,20 +1940,28 @@
           <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Strategy Performance Heatmap</h3>
           <p style="color:#888;font-size:0.85em;margin-bottom:15px;">Latest portfolio values by confidence threshold and trade size</p>
 
-          <div id="portfolio-heatmap" style="overflow-x:auto;"></div>
-
-          <!-- Date selector for heatmap (moved below heatmap) -->
-          <div style="margin-top:15px; text-align:center;">
+          <!-- Date selector for heatmap (above the grid) -->
+          <div style="margin-bottom:15px; text-align:center;">
             <label for="heatmap-date-selector" style="color:#ccc; font-size:0.9em;">View date:</label>
             <select id="heatmap-date-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
               <option value="">Loading dates...</option>
             </select>
           </div>
+
+          <div id="portfolio-heatmap" style="overflow-x:auto;"></div>
         </div>
 
         <div class="chart">
           <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Portfolio Values by Strategy</h3>
           <div id="strategy-chart"></div>
+        </div>
+
+        <!-- Date Filter moved here, below all charts -->
+        <div style="margin:20px 0; padding-top:20px; border-top:1px solid #333;">
+          <label for="step${stepId}-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
+          <select id="step${stepId}-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
+            <option value="">All Dates</option>
+          </select>
         </div>
 
         <div class="csv-table-container">
