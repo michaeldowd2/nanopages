@@ -56,6 +56,20 @@
       "is_safe_to_clear": true,
       "warning": "Uses LLM API - clearing will incur re-analysis costs"
     },
+    "4.1": {
+      "id": "4.1",
+      "name": "Currency Events",
+      "script": null,
+      "description": "Taxonomy of currency-affecting events with keywords and signal characteristics",
+      "depends_on": [],
+      "outputs": {
+        "source": ["data/events/currency_events.json"],
+        "exports": ["data/exports/step4_1_currency_events.csv", "data/exports/step4_1_currency_events.json"]
+      },
+      "supports_date_filter": false,
+      "is_safe_to_clear": false,
+      "note": "Static reference data - manually curated event taxonomy"
+    },
     "5": {
       "id": "5",
       "name": "Sentiment Signals",
