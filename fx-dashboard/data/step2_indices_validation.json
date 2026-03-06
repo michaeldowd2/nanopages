@@ -1,882 +1,882 @@
 [
   {
     "currency": "EUR",
-    "date": "2026-03-05",
-    "index": 100.4833,
+    "date": "2026-03-06",
+    "index": 100.714,
     "pairs_used": [
       {
         "pair": "USD/EUR",
-        "original_rate": 1.159866,
-        "normalized_rate": 0.8621685608509948,
+        "original_rate": 1.16238,
+        "normalized_rate": 0.8603038593231129,
         "inverted": true
       },
       {
         "pair": "GBP/EUR",
-        "original_rate": 0.869912,
-        "normalized_rate": 1.1495415628247454,
+        "original_rate": 0.86998,
+        "normalized_rate": 1.1494517115335985,
         "inverted": true
       },
       {
         "pair": "JPY/EUR",
-        "original_rate": 182.725486,
-        "normalized_rate": 0.005472690328485431,
+        "original_rate": 182.351,
+        "normalized_rate": 0.005483929345054319,
         "inverted": true
       },
       {
         "pair": "CHF/EUR",
-        "original_rate": 0.906852,
-        "normalized_rate": 1.1027157683944018,
+        "original_rate": 0.906364,
+        "normalized_rate": 1.1033094871376181,
         "inverted": true
       },
       {
         "pair": "AUD/EUR",
-        "original_rate": 1.654396,
-        "normalized_rate": 0.604450204183279,
+        "original_rate": 1.645397,
+        "normalized_rate": 0.6077560613031384,
         "inverted": true
       },
       {
         "pair": "CAD/EUR",
-        "original_rate": 1.587397,
-        "normalized_rate": 0.6299621329761869,
+        "original_rate": 1.586159,
+        "normalized_rate": 0.6304538195729431,
         "inverted": true
       },
       {
         "pair": "NOK/EUR",
-        "original_rate": 11.236542,
-        "normalized_rate": 0.08899535106085128,
+        "original_rate": 11.197363,
+        "normalized_rate": 0.08930674123898637,
         "inverted": true
       },
       {
         "pair": "SEK/EUR",
-        "original_rate": 10.768122,
-        "normalized_rate": 0.09286670414766846,
+        "original_rate": 10.675587,
+        "normalized_rate": 0.0936716641436204,
         "inverted": true
       },
       {
         "pair": "CNY/EUR",
-        "original_rate": 8.027204,
-        "normalized_rate": 0.12457637802652083,
+        "original_rate": 8.009042,
+        "normalized_rate": 0.1248588782528547,
         "inverted": true
       },
       {
         "pair": "MXN/EUR",
-        "original_rate": 20.531107,
-        "normalized_rate": 0.04870657972801954,
+        "original_rate": 20.490846,
+        "normalized_rate": 0.0488022798082617,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      0.8621685608509948,
-      1.1495415628247454,
-      0.005472690328485431,
-      1.1027157683944018,
-      0.604450204183279,
-      0.6299621329761869,
-      0.08899535106085128,
-      0.09286670414766846,
-      0.12457637802652083,
-      0.04870657972801954
+      0.8603038593231129,
+      1.1494517115335985,
+      0.005483929345054319,
+      1.1033094871376181,
+      0.6077560613031384,
+      0.6304538195729431,
+      0.08930674123898637,
+      0.0936716641436204,
+      0.1248588782528547,
+      0.0488022798082617
     ]
   },
   {
     "currency": "USD",
-    "date": "2026-03-05",
-    "index": 98.7509,
+    "date": "2026-03-06",
+    "index": 99.2136,
     "pairs_used": [
       {
         "pair": "EUR/USD",
-        "original_rate": 0.862169,
-        "normalized_rate": 1.1598654092179144,
+        "original_rate": 0.860304,
+        "normalized_rate": 1.1623798099276534,
         "inverted": true
       },
       {
         "pair": "GBP/USD",
-        "original_rate": 0.75001,
-        "normalized_rate": 1.3333155557925895,
+        "original_rate": 0.748447,
+        "normalized_rate": 1.336099950965132,
         "inverted": true
       },
       {
         "pair": "JPY/USD",
-        "original_rate": 157.540184,
-        "normalized_rate": 0.00634758684806411,
+        "original_rate": 156.877317,
+        "normalized_rate": 0.006374407843805743,
         "inverted": true
       },
       {
         "pair": "CHF/USD",
-        "original_rate": 0.78186,
-        "normalized_rate": 1.279001355741437,
+        "original_rate": 0.779748,
+        "normalized_rate": 1.2824656170968056,
         "inverted": true
       },
       {
         "pair": "AUD/USD",
-        "original_rate": 1.426368,
-        "normalized_rate": 0.7010813478709561,
+        "original_rate": 1.415541,
+        "normalized_rate": 0.7064436847820021,
         "inverted": true
       },
       {
         "pair": "CAD/USD",
-        "original_rate": 1.368604,
-        "normalized_rate": 0.7306715456041338,
+        "original_rate": 1.364579,
+        "normalized_rate": 0.7328267546254192,
         "inverted": true
       },
       {
         "pair": "NOK/USD",
-        "original_rate": 9.687794,
-        "normalized_rate": 0.10322267380995095,
+        "original_rate": 9.633137,
+        "normalized_rate": 0.10380834405240993,
         "inverted": true
       },
       {
         "pair": "SEK/USD",
-        "original_rate": 9.283937,
-        "normalized_rate": 0.10771292394595094,
+        "original_rate": 9.184252,
+        "normalized_rate": 0.10888202980493131,
         "inverted": true
       },
       {
         "pair": "CNY/USD",
-        "original_rate": 6.920804,
-        "normalized_rate": 0.1444918827350117,
+        "original_rate": 6.890212,
+        "normalized_rate": 0.14513341534338856,
         "inverted": true
       },
       {
         "pair": "MXN/USD",
-        "original_rate": 17.701277,
-        "normalized_rate": 0.0564930993396691,
+        "original_rate": 17.62836,
+        "normalized_rate": 0.0567267743567751,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      1.1598654092179144,
-      1.3333155557925895,
-      0.00634758684806411,
-      1.279001355741437,
-      0.7010813478709561,
-      0.7306715456041338,
-      0.10322267380995095,
-      0.10771292394595094,
-      0.1444918827350117,
-      0.0564930993396691
+      1.1623798099276534,
+      1.336099950965132,
+      0.006374407843805743,
+      1.2824656170968056,
+      0.7064436847820021,
+      0.7328267546254192,
+      0.10380834405240993,
+      0.10888202980493131,
+      0.14513341534338856,
+      0.0567267743567751
     ]
   },
   {
     "currency": "GBP",
-    "date": "2026-03-05",
-    "index": 100.0922,
+    "date": "2026-03-06",
+    "index": 100.3306,
     "pairs_used": [
       {
         "pair": "EUR/GBP",
-        "original_rate": 1.149542,
-        "normalized_rate": 0.8699116691691126,
+        "original_rate": 1.149452,
+        "normalized_rate": 0.8699797816698741,
         "inverted": true
       },
       {
         "pair": "USD/GBP",
-        "original_rate": 1.333315,
-        "normalized_rate": 0.7500103126417988,
+        "original_rate": 1.3361,
+        "normalized_rate": 0.7484469725319961,
         "inverted": true
       },
       {
         "pair": "JPY/GBP",
-        "original_rate": 210.050644,
-        "normalized_rate": 0.004760756648763238,
+        "original_rate": 209.603718,
+        "normalized_rate": 0.004770907737428589,
         "inverted": true
       },
       {
         "pair": "CHF/GBP",
-        "original_rate": 1.042465,
-        "normalized_rate": 0.9592648194423794,
+        "original_rate": 1.041821,
+        "normalized_rate": 0.9598577874702083,
         "inverted": true
       },
       {
         "pair": "AUD/GBP",
-        "original_rate": 1.901798,
-        "normalized_rate": 0.5258181994091906,
+        "original_rate": 1.891304,
+        "normalized_rate": 0.5287357294226629,
         "inverted": true
       },
       {
         "pair": "CAD/GBP",
-        "original_rate": 1.82478,
-        "normalized_rate": 0.5480112671116518,
+        "original_rate": 1.823214,
+        "normalized_rate": 0.5484819664614248,
         "inverted": true
       },
       {
         "pair": "NOK/GBP",
-        "original_rate": 12.916879,
-        "normalized_rate": 0.07741808218533285,
+        "original_rate": 12.870831,
+        "normalized_rate": 0.07769506102597415,
         "inverted": true
       },
       {
         "pair": "SEK/GBP",
-        "original_rate": 12.37841,
-        "normalized_rate": 0.08078581982661746,
+        "original_rate": 12.271075,
+        "normalized_rate": 0.0814924527802169,
         "inverted": true
       },
       {
         "pair": "CNY/GBP",
-        "original_rate": 9.227609,
-        "normalized_rate": 0.10837043485479284,
+        "original_rate": 9.20601,
+        "normalized_rate": 0.10862469191321757,
         "inverted": true
       },
       {
         "pair": "MXN/GBP",
-        "original_rate": 23.601373,
-        "normalized_rate": 0.04237041633128717,
+        "original_rate": 23.553244,
+        "normalized_rate": 0.042456996581872124,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      0.8699116691691126,
-      0.7500103126417988,
-      0.004760756648763238,
-      0.9592648194423794,
-      0.5258181994091906,
-      0.5480112671116518,
-      0.07741808218533285,
-      0.08078581982661746,
-      0.10837043485479284,
-      0.04237041633128717
+      0.8699797816698741,
+      0.7484469725319961,
+      0.004770907737428589,
+      0.9598577874702083,
+      0.5287357294226629,
+      0.5484819664614248,
+      0.07769506102597415,
+      0.0814924527802169,
+      0.10862469191321757,
+      0.042456996581872124
     ]
   },
   {
     "currency": "JPY",
-    "date": "2026-03-05",
-    "index": 100.5421,
+    "date": "2026-03-06",
+    "index": 100.5491,
     "pairs_used": [
       {
         "pair": "EUR/JPY",
-        "original_rate": 0.005473,
-        "normalized_rate": 182.71514708569342,
+        "original_rate": 0.005484,
+        "normalized_rate": 182.34865061998542,
         "inverted": true
       },
       {
         "pair": "USD/JPY",
-        "original_rate": 0.006348,
-        "normalized_rate": 157.52993068683048,
+        "original_rate": 0.006374,
+        "normalized_rate": 156.88735487919672,
         "inverted": true
       },
       {
         "pair": "GBP/JPY",
-        "original_rate": 0.004761,
-        "normalized_rate": 210.0399075824407,
+        "original_rate": 0.004771,
+        "normalized_rate": 209.59966464053656,
         "inverted": true
       },
       {
         "pair": "CHF/JPY",
-        "original_rate": 0.004963,
-        "normalized_rate": 201.49103364900262,
+        "original_rate": 0.00497,
+        "normalized_rate": 201.2072434607646,
         "inverted": true
       },
       {
         "pair": "AUD/JPY",
-        "original_rate": 0.009054,
-        "normalized_rate": 110.4484205875856,
+        "original_rate": 0.009023,
+        "normalized_rate": 110.8278842956888,
         "inverted": true
       },
       {
         "pair": "CAD/JPY",
-        "original_rate": 0.008687,
-        "normalized_rate": 115.11453896627144,
+        "original_rate": 0.008698,
+        "normalized_rate": 114.96895838123707,
         "inverted": true
       },
       {
         "pair": "NOK/JPY",
-        "original_rate": 0.061494,
-        "normalized_rate": 16.261749113734673,
+        "original_rate": 0.061406,
+        "normalized_rate": 16.28505357782627,
         "inverted": true
       },
       {
         "pair": "SEK/JPY",
-        "original_rate": 0.058931,
-        "normalized_rate": 16.96899764130933,
+        "original_rate": 0.058544,
+        "normalized_rate": 17.081169718502323,
         "inverted": true
       },
       {
         "pair": "CNY/JPY",
-        "original_rate": 0.04393,
-        "normalized_rate": 22.763487366264513,
+        "original_rate": 0.043921,
+        "normalized_rate": 22.768151909109537,
         "inverted": true
       },
       {
         "pair": "MXN/JPY",
-        "original_rate": 0.11236,
-        "normalized_rate": 8.8999644001424,
+        "original_rate": 0.11237,
+        "normalized_rate": 8.899172376968941,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      182.71514708569342,
-      157.52993068683048,
-      210.0399075824407,
-      201.49103364900262,
-      110.4484205875856,
-      115.11453896627144,
-      16.261749113734673,
-      16.96899764130933,
-      22.763487366264513,
-      8.8999644001424
+      182.34865061998542,
+      156.88735487919672,
+      209.59966464053656,
+      201.2072434607646,
+      110.8278842956888,
+      114.96895838123707,
+      16.28505357782627,
+      17.081169718502323,
+      22.768151909109537,
+      8.899172376968941
     ]
   },
   {
     "currency": "CHF",
-    "date": "2026-03-05",
-    "index": 99.6796,
+    "date": "2026-03-06",
+    "index": 99.8493,
     "pairs_used": [
       {
         "pair": "EUR/CHF",
-        "original_rate": 1.102715,
-        "normalized_rate": 0.9068526319130511,
+        "original_rate": 1.10331,
+        "normalized_rate": 0.9063635786859541,
         "inverted": true
       },
       {
         "pair": "USD/CHF",
-        "original_rate": 1.279002,
-        "normalized_rate": 0.7818596061616792,
+        "original_rate": 1.282465,
+        "normalized_rate": 0.7797483751993232,
         "inverted": true
       },
       {
         "pair": "GBP/CHF",
-        "original_rate": 0.959265,
-        "normalized_rate": 1.0424648037820623,
+        "original_rate": 0.959857,
+        "normalized_rate": 1.0418218547137752,
         "inverted": true
       },
       {
         "pair": "JPY/CHF",
-        "original_rate": 201.494168,
-        "normalized_rate": 0.004962922797844948,
+        "original_rate": 201.189664,
+        "normalized_rate": 0.0049704342664442245,
         "inverted": true
       },
       {
         "pair": "AUD/CHF",
-        "original_rate": 1.824327,
-        "normalized_rate": 0.54814734419871,
+        "original_rate": 1.815382,
+        "normalized_rate": 0.5508482512220568,
         "inverted": true
       },
       {
         "pair": "CAD/CHF",
-        "original_rate": 1.750447,
-        "normalized_rate": 0.5712826495175232,
+        "original_rate": 1.750025,
+        "normalized_rate": 0.5714204082798817,
         "inverted": true
       },
       {
         "pair": "NOK/CHF",
-        "original_rate": 12.390706,
-        "normalized_rate": 0.08070565147780925,
+        "original_rate": 12.354161,
+        "normalized_rate": 0.08094438788680186,
         "inverted": true
       },
       {
         "pair": "SEK/CHF",
-        "original_rate": 11.874172,
-        "normalized_rate": 0.08421639841498,
+        "original_rate": 11.778481,
+        "normalized_rate": 0.08490059117130638,
         "inverted": true
       },
       {
         "pair": "CNY/CHF",
-        "original_rate": 8.85172,
-        "normalized_rate": 0.11297239406578607,
+        "original_rate": 8.836456,
+        "normalized_rate": 0.11316754137631647,
         "inverted": true
       },
       {
         "pair": "MXN/CHF",
-        "original_rate": 22.639963,
-        "normalized_rate": 0.0441696834928573,
+        "original_rate": 22.607754,
+        "normalized_rate": 0.044232611519039,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      0.9068526319130511,
-      0.7818596061616792,
-      1.0424648037820623,
-      0.004962922797844948,
-      0.54814734419871,
-      0.5712826495175232,
-      0.08070565147780925,
-      0.08421639841498,
-      0.11297239406578607,
-      0.0441696834928573
+      0.9063635786859541,
+      0.7797483751993232,
+      1.0418218547137752,
+      0.0049704342664442245,
+      0.5508482512220568,
+      0.5714204082798817,
+      0.08094438788680186,
+      0.08490059117130638,
+      0.11316754137631647,
+      0.044232611519039
     ]
   },
   {
     "currency": "AUD",
-    "date": "2026-03-05",
-    "index": 99.628,
+    "date": "2026-03-06",
+    "index": 99.2594,
     "pairs_used": [
       {
         "pair": "EUR/AUD",
-        "original_rate": 0.60445,
-        "normalized_rate": 1.6543965588551575,
+        "original_rate": 0.607756,
+        "normalized_rate": 1.6453971659679214,
         "inverted": true
       },
       {
         "pair": "USD/AUD",
-        "original_rate": 0.701081,
-        "normalized_rate": 1.4263687077527418,
+        "original_rate": 0.706443,
+        "normalized_rate": 1.4155423721375964,
         "inverted": true
       },
       {
         "pair": "GBP/AUD",
-        "original_rate": 0.525818,
-        "normalized_rate": 1.9017987212305398,
+        "original_rate": 0.528736,
+        "normalized_rate": 1.8913030321370212,
         "inverted": true
       },
       {
         "pair": "JPY/AUD",
-        "original_rate": 110.448464,
-        "normalized_rate": 0.009053996441272374,
+        "original_rate": 110.824953,
+        "normalized_rate": 0.009023238656370105,
         "inverted": true
       },
       {
         "pair": "CHF/AUD",
-        "original_rate": 0.548147,
-        "normalized_rate": 1.8243281455521967,
+        "original_rate": 0.550848,
+        "normalized_rate": 1.815382827930754,
         "inverted": true
       },
       {
         "pair": "CAD/AUD",
-        "original_rate": 0.959503,
-        "normalized_rate": 1.0422062255146676,
+        "original_rate": 0.963998,
+        "normalized_rate": 1.0373465505115156,
         "inverted": true
       },
       {
         "pair": "NOK/AUD",
-        "original_rate": 6.791931,
-        "normalized_rate": 0.14723353343842863,
+        "original_rate": 6.805267,
+        "normalized_rate": 0.14694500597845758,
         "inverted": true
       },
       {
         "pair": "SEK/AUD",
-        "original_rate": 6.508794,
-        "normalized_rate": 0.15363829305398205,
+        "original_rate": 6.488155,
+        "normalized_rate": 0.15412702070157078,
         "inverted": true
       },
       {
         "pair": "CNY/AUD",
-        "original_rate": 4.852045,
-        "normalized_rate": 0.20609866561418946,
+        "original_rate": 4.867545,
+        "normalized_rate": 0.20544237392771922,
         "inverted": true
       },
       {
         "pair": "MXN/AUD",
-        "original_rate": 12.410033,
-        "normalized_rate": 0.08057996300251578,
+        "original_rate": 12.453439,
+        "normalized_rate": 0.08029910452847604,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      1.6543965588551575,
-      1.4263687077527418,
-      1.9017987212305398,
-      0.009053996441272374,
-      1.8243281455521967,
-      1.0422062255146676,
-      0.14723353343842863,
-      0.15363829305398205,
-      0.20609866561418946,
-      0.08057996300251578
+      1.6453971659679214,
+      1.4155423721375964,
+      1.8913030321370212,
+      0.009023238656370105,
+      1.815382827930754,
+      1.0373465505115156,
+      0.14694500597845758,
+      0.15412702070157078,
+      0.20544237392771922,
+      0.08029910452847604
     ]
   },
   {
     "currency": "CAD",
-    "date": "2026-03-05",
-    "index": 98.6339,
+    "date": "2026-03-06",
+    "index": 98.7755,
     "pairs_used": [
       {
         "pair": "EUR/CAD",
-        "original_rate": 0.629962,
-        "normalized_rate": 1.5873973350773538,
+        "original_rate": 0.630454,
+        "normalized_rate": 1.5861585460636305,
         "inverted": true
       },
       {
         "pair": "USD/CAD",
-        "original_rate": 0.730672,
-        "normalized_rate": 1.3686031488821249,
+        "original_rate": 0.732827,
+        "normalized_rate": 1.3645785430940727,
         "inverted": true
       },
       {
         "pair": "GBP/CAD",
-        "original_rate": 0.548011,
-        "normalized_rate": 1.824780889434701,
+        "original_rate": 0.548482,
+        "normalized_rate": 1.8232138885141171,
         "inverted": true
       },
       {
         "pair": "JPY/CAD",
-        "original_rate": 115.110123,
-        "normalized_rate": 0.008687333259126132,
+        "original_rate": 114.963868,
+        "normalized_rate": 0.008698385130883035,
         "inverted": true
       },
       {
         "pair": "CHF/CAD",
-        "original_rate": 0.571283,
-        "normalized_rate": 1.7504459260996739,
+        "original_rate": 0.57142,
+        "normalized_rate": 1.7500262503937558,
         "inverted": true
       },
       {
         "pair": "AUD/CAD",
-        "original_rate": 1.042207,
-        "normalized_rate": 0.9595022869737009,
+        "original_rate": 1.037346,
+        "normalized_rate": 0.963998511586298,
         "inverted": true
       },
       {
         "pair": "NOK/CAD",
-        "original_rate": 7.078595,
-        "normalized_rate": 0.14127097255881993,
+        "original_rate": 7.059419,
+        "normalized_rate": 0.14165471691083925,
         "inverted": true
       },
       {
         "pair": "SEK/CAD",
-        "original_rate": 6.783508,
-        "normalized_rate": 0.14741635153964586,
+        "original_rate": 6.730464,
+        "normalized_rate": 0.14857816637901936,
         "inverted": true
       },
       {
         "pair": "CNY/CAD",
-        "original_rate": 5.056834,
-        "normalized_rate": 0.19775219040213698,
+        "original_rate": 5.049331,
+        "normalized_rate": 0.198046038178127,
         "inverted": true
       },
       {
         "pair": "MXN/CAD",
-        "original_rate": 12.933818,
-        "normalized_rate": 0.07731669024567997,
+        "original_rate": 12.918531,
+        "normalized_rate": 0.07740818209129197,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      1.5873973350773538,
-      1.3686031488821249,
-      1.824780889434701,
-      0.008687333259126132,
-      1.7504459260996739,
-      0.9595022869737009,
-      0.14127097255881993,
-      0.14741635153964586,
-      0.19775219040213698,
-      0.07731669024567997
+      1.5861585460636305,
+      1.3645785430940727,
+      1.8232138885141171,
+      0.008698385130883035,
+      1.7500262503937558,
+      0.963998511586298,
+      0.14165471691083925,
+      0.14857816637901936,
+      0.198046038178127,
+      0.07740818209129197
     ]
   },
   {
     "currency": "NOK",
-    "date": "2026-03-05",
-    "index": 100.1573,
+    "date": "2026-03-06",
+    "index": 100.0024,
     "pairs_used": [
       {
         "pair": "EUR/NOK",
-        "original_rate": 0.088995,
-        "normalized_rate": 11.236586325074441,
+        "original_rate": 0.089307,
+        "normalized_rate": 11.197330556395356,
         "inverted": true
       },
       {
         "pair": "USD/NOK",
-        "original_rate": 0.103223,
-        "normalized_rate": 9.68776338606706,
+        "original_rate": 0.103808,
+        "normalized_rate": 9.633168927250308,
         "inverted": true
       },
       {
         "pair": "GBP/NOK",
-        "original_rate": 0.077418,
-        "normalized_rate": 12.916892712289131,
+        "original_rate": 0.077695,
+        "normalized_rate": 12.870841109466504,
         "inverted": true
       },
       {
         "pair": "JPY/NOK",
-        "original_rate": 16.261719,
-        "normalized_rate": 0.061494113875661,
+        "original_rate": 16.285174,
+        "normalized_rate": 0.061405545927848235,
         "inverted": true
       },
       {
         "pair": "CHF/NOK",
-        "original_rate": 0.080706,
-        "normalized_rate": 12.390652491760216,
+        "original_rate": 0.080944,
+        "normalized_rate": 12.354220201620873,
         "inverted": true
       },
       {
         "pair": "AUD/NOK",
-        "original_rate": 0.147234,
-        "normalized_rate": 6.791909477430485,
+        "original_rate": 0.146945,
+        "normalized_rate": 6.8052672768723,
         "inverted": true
       },
       {
         "pair": "CAD/NOK",
-        "original_rate": 0.141271,
-        "normalized_rate": 7.078593625018581,
+        "original_rate": 0.141655,
+        "normalized_rate": 7.05940489216759,
         "inverted": true
       },
       {
         "pair": "SEK/NOK",
-        "original_rate": 0.958313,
-        "normalized_rate": 1.0435004012259044,
+        "original_rate": 0.953402,
+        "normalized_rate": 1.0488755005758328,
         "inverted": true
       },
       {
         "pair": "CNY/NOK",
-        "original_rate": 0.714384,
-        "normalized_rate": 1.3998073865036171,
+        "original_rate": 0.715261,
+        "normalized_rate": 1.398091046485129,
         "inverted": true
       },
       {
         "pair": "MXN/NOK",
-        "original_rate": 1.827173,
-        "normalized_rate": 0.5472935512948145,
+        "original_rate": 1.829971,
+        "normalized_rate": 0.5464567471287797,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      11.236586325074441,
-      9.68776338606706,
-      12.916892712289131,
-      0.061494113875661,
-      12.390652491760216,
-      6.791909477430485,
-      7.078593625018581,
-      1.0435004012259044,
-      1.3998073865036171,
-      0.5472935512948145
+      11.197330556395356,
+      9.633168927250308,
+      12.870841109466504,
+      0.061405545927848235,
+      12.354220201620873,
+      6.8052672768723,
+      7.05940489216759,
+      1.0488755005758328,
+      1.398091046485129,
+      0.5464567471287797
     ]
   },
   {
     "currency": "SEK",
-    "date": "2026-03-05",
-    "index": 101.3689,
+    "date": "2026-03-06",
+    "index": 100.6416,
     "pairs_used": [
       {
         "pair": "EUR/SEK",
-        "original_rate": 0.092867,
-        "normalized_rate": 10.76808769530619,
+        "original_rate": 0.093672,
+        "normalized_rate": 10.675548723204372,
         "inverted": true
       },
       {
         "pair": "USD/SEK",
-        "original_rate": 0.107713,
-        "normalized_rate": 9.283930444793107,
+        "original_rate": 0.108882,
+        "normalized_rate": 9.184254514061093,
         "inverted": true
       },
       {
         "pair": "GBP/SEK",
-        "original_rate": 0.080786,
-        "normalized_rate": 12.378382392988884,
+        "original_rate": 0.081492,
+        "normalized_rate": 12.27114317969862,
         "inverted": true
       },
       {
         "pair": "JPY/SEK",
-        "original_rate": 16.969113,
-        "normalized_rate": 0.058930599377822517,
+        "original_rate": 17.081121,
+        "normalized_rate": 0.058544166978267996,
         "inverted": true
       },
       {
         "pair": "CHF/SEK",
-        "original_rate": 0.084216,
-        "normalized_rate": 11.874228175168614,
+        "original_rate": 0.084901,
+        "normalized_rate": 11.7784242823995,
         "inverted": true
       },
       {
         "pair": "AUD/SEK",
-        "original_rate": 0.153638,
-        "normalized_rate": 6.508806415079603,
+        "original_rate": 0.154127,
+        "normalized_rate": 6.488155871456656,
         "inverted": true
       },
       {
         "pair": "CAD/SEK",
-        "original_rate": 0.147416,
-        "normalized_rate": 6.7835241764801655,
+        "original_rate": 0.148578,
+        "normalized_rate": 6.730471536835871,
         "inverted": true
       },
       {
         "pair": "NOK/SEK",
-        "original_rate": 1.043501,
-        "normalized_rate": 0.958312450107858,
+        "original_rate": 1.048876,
+        "normalized_rate": 0.9534015460359472,
         "inverted": true
       },
       {
         "pair": "CNY/SEK",
-        "original_rate": 0.74546,
-        "normalized_rate": 1.3414535991200065,
+        "original_rate": 0.75022,
+        "normalized_rate": 1.332942336914505,
         "inverted": true
       },
       {
         "pair": "MXN/SEK",
-        "original_rate": 1.906656,
-        "normalized_rate": 0.5244784586207476,
+        "original_rate": 1.919412,
+        "normalized_rate": 0.5209928874051012,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      10.76808769530619,
-      9.283930444793107,
-      12.378382392988884,
-      0.058930599377822517,
-      11.874228175168614,
-      6.508806415079603,
-      6.7835241764801655,
-      0.958312450107858,
-      1.3414535991200065,
-      0.5244784586207476
+      10.675548723204372,
+      9.184254514061093,
+      12.27114317969862,
+      0.058544166978267996,
+      11.7784242823995,
+      6.488155871456656,
+      6.730471536835871,
+      0.9534015460359472,
+      1.332942336914505,
+      0.5209928874051012
     ]
   },
   {
     "currency": "CNY",
-    "date": "2026-03-05",
-    "index": 99.1268,
+    "date": "2026-03-06",
+    "index": 99.1071,
     "pairs_used": [
       {
         "pair": "EUR/CNY",
-        "original_rate": 0.124576,
-        "normalized_rate": 8.027228358592344,
+        "original_rate": 0.124859,
+        "normalized_rate": 8.00903419056696,
         "inverted": true
       },
       {
         "pair": "USD/CNY",
-        "original_rate": 0.144492,
-        "normalized_rate": 6.920798383301498,
+        "original_rate": 0.145133,
+        "normalized_rate": 6.890231718492692,
         "inverted": true
       },
       {
         "pair": "GBP/CNY",
-        "original_rate": 0.10837,
-        "normalized_rate": 9.227646027498386,
+        "original_rate": 0.108625,
+        "normalized_rate": 9.205983889528193,
         "inverted": true
       },
       {
         "pair": "JPY/CNY",
-        "original_rate": 22.763279,
-        "normalized_rate": 0.0439304021182537,
+        "original_rate": 22.76814,
+        "normalized_rate": 0.04392102297333028,
         "inverted": true
       },
       {
         "pair": "CHF/CNY",
-        "original_rate": 0.112972,
-        "normalized_rate": 8.851750876323337,
+        "original_rate": 0.113168,
+        "normalized_rate": 8.836420189452848,
         "inverted": true
       },
       {
         "pair": "AUD/CNY",
-        "original_rate": 0.206099,
-        "normalized_rate": 4.852037127788102,
+        "original_rate": 0.205442,
+        "normalized_rate": 4.867553859483455,
         "inverted": true
       },
       {
         "pair": "CAD/CNY",
-        "original_rate": 0.197752,
-        "normalized_rate": 5.056838868886281,
+        "original_rate": 0.198046,
+        "normalized_rate": 5.049331973379922,
         "inverted": true
       },
       {
         "pair": "NOK/CNY",
-        "original_rate": 1.399808,
-        "normalized_rate": 0.7143836869056328,
+        "original_rate": 1.39809,
+        "normalized_rate": 0.7152615353804118,
         "inverted": true
       },
       {
         "pair": "SEK/CNY",
-        "original_rate": 1.341454,
-        "normalized_rate": 0.7454597772268002,
+        "original_rate": 1.332942,
+        "normalized_rate": 0.7502201896256551,
         "inverted": true
       },
       {
         "pair": "MXN/CNY",
-        "original_rate": 2.557691,
-        "normalized_rate": 0.3909776435073666,
+        "original_rate": 2.558464,
+        "normalized_rate": 0.3908595157094257,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      8.027228358592344,
-      6.920798383301498,
-      9.227646027498386,
-      0.0439304021182537,
-      8.851750876323337,
-      4.852037127788102,
-      5.056838868886281,
-      0.7143836869056328,
-      0.7454597772268002,
-      0.3909776435073666
+      8.00903419056696,
+      6.890231718492692,
+      9.205983889528193,
+      0.04392102297333028,
+      8.836420189452848,
+      4.867553859483455,
+      5.049331973379922,
+      0.7152615353804118,
+      0.7502201896256551,
+      0.3908595157094257
     ]
   },
   {
     "currency": "MXN",
-    "date": "2026-03-05",
-    "index": 101.5827,
+    "date": "2026-03-06",
+    "index": 101.5964,
     "pairs_used": [
       {
         "pair": "EUR/MXN",
-        "original_rate": 0.048707,
-        "normalized_rate": 20.530929845812718,
+        "original_rate": 0.048802,
+        "normalized_rate": 20.49096348510307,
         "inverted": true
       },
       {
         "pair": "USD/MXN",
-        "original_rate": 0.056493,
-        "normalized_rate": 17.70130812667056,
+        "original_rate": 0.056727,
+        "normalized_rate": 17.628289879598782,
         "inverted": true
       },
       {
         "pair": "GBP/MXN",
-        "original_rate": 0.04237,
-        "normalized_rate": 23.601604909133822,
+        "original_rate": 0.042457,
+        "normalized_rate": 23.553242103775585,
         "inverted": true
       },
       {
         "pair": "JPY/MXN",
-        "original_rate": 8.899933,
-        "normalized_rate": 0.11236039642096181,
+        "original_rate": 8.899144,
+        "normalized_rate": 0.11237035831760898,
         "inverted": true
       },
       {
         "pair": "CHF/MXN",
-        "original_rate": 0.04417,
-        "normalized_rate": 22.639800769753226,
+        "original_rate": 0.044233,
+        "normalized_rate": 22.60755544502973,
         "inverted": true
       },
       {
         "pair": "AUD/MXN",
-        "original_rate": 0.08058,
-        "normalized_rate": 12.410027302060065,
+        "original_rate": 0.080299,
+        "normalized_rate": 12.453455211148334,
         "inverted": true
       },
       {
         "pair": "CAD/MXN",
-        "original_rate": 0.077317,
-        "normalized_rate": 12.933766183374937,
+        "original_rate": 0.077408,
+        "normalized_rate": 12.91856138900372,
         "inverted": true
       },
       {
         "pair": "NOK/MXN",
-        "original_rate": 0.547294,
-        "normalized_rate": 1.8271715019715182,
+        "original_rate": 0.546457,
+        "normalized_rate": 1.8299701531868016,
         "inverted": true
       },
       {
         "pair": "SEK/MXN",
-        "original_rate": 0.524478,
-        "normalized_rate": 1.9066576672424773,
+        "original_rate": 0.520993,
+        "normalized_rate": 1.9194115851844458,
         "inverted": true
       },
       {
         "pair": "CNY/MXN",
-        "original_rate": 0.390978,
-        "normalized_rate": 2.557688667904588,
+        "original_rate": 0.39086,
+        "normalized_rate": 2.558460829964693,
         "inverted": true
       }
     ],
     "pairs_count": 10,
     "geometric_mean_inputs": [
-      20.530929845812718,
-      17.70130812667056,
-      23.601604909133822,
-      0.11236039642096181,
-      22.639800769753226,
-      12.410027302060065,
-      12.933766183374937,
-      1.8271715019715182,
-      1.9066576672424773,
-      2.557688667904588
+      20.49096348510307,
+      17.628289879598782,
+      23.553242103775585,
+      0.11237035831760898,
+      22.60755544502973,
+      12.453455211148334,
+      12.91856138900372,
+      1.8299701531868016,
+      1.9194115851844458,
+      2.558460829964693
     ]
   }
 ]
