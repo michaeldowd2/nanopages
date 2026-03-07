@@ -395,29 +395,66 @@ def export_step1_exchange_rates():
     print(f"✓ Step 1: Exported {row_count} exchange rate rows ({len(price_files)} dates)")
     return row_count
 
-def copy_step_outputs():
-    """Copy Step 7, 8, 9 outputs from data/exports to site_data"""
-    import shutil
+def export_step7_aggregated_signals():
+    """Step 7: Aggregated Signals"""
+    src = '/workspace/group/fx-portfolio/data/aggregated-signals/aggregated_signals.csv'
+    dst = '/workspace/group/fx-portfolio/site_data/step7_aggregated_signals.csv'
 
-    files_to_copy = [
-        'step7_aggregated_signals.csv',
-        'step8_trades.csv',
-        'step9_strategies.csv',
-        'step9_strategies_detail.json'
-    ]
+    if not os.path.exists(src):
+        print("⚠️  Step 7: No aggregated signals file found")
+        return 0
 
-    copied = 0
-    for filename in files_to_copy:
-        src = f'/workspace/group/fx-portfolio/data/exports/{filename}'
-        dst = f'/workspace/group/fx-portfolio/site_data/{filename}'
-        if os.path.exists(src):
-            shutil.copy2(src, dst)
-            copied += 1
+    shutil.copy2(src, dst)
 
-    if copied > 0:
-        print(f"✓ Copied {copied} Step 7/8/9 output files to site_data/")
+    # Count rows
+    with open(src, 'r') as f:
+        row_count = sum(1 for line in f) - 1  # Subtract header
 
-    return copied
+    print(f"✓ Step 7: Exported {row_count} aggregated signal records")
+    return row_count
+
+def export_step8_trades():
+    """Step 8: Trade Recommendations"""
+    src = '/workspace/group/fx-portfolio/data/trades/trades.csv'
+    dst = '/workspace/group/fx-portfolio/site_data/step8_trades.csv'
+
+    if not os.path.exists(src):
+        print("⚠️  Step 8: No trades file found")
+        return 0
+
+    shutil.copy2(src, dst)
+
+    # Count rows
+    with open(src, 'r') as f:
+        row_count = sum(1 for line in f) - 1  # Subtract header
+
+    print(f"✓ Step 8: Exported {row_count} trade records")
+    return row_count
+
+def export_step9_strategies():
+    """Step 9: Portfolio Strategies"""
+    src_csv = '/workspace/group/fx-portfolio/data/portfolios/strategies.csv'
+    dst_csv = '/workspace/group/fx-portfolio/site_data/step9_strategies.csv'
+
+    src_json = '/workspace/group/fx-portfolio/data/portfolios/strategies_detail.json'
+    dst_json = '/workspace/group/fx-portfolio/site_data/step9_strategies_detail.json'
+
+    count = 0
+
+    if os.path.exists(src_csv):
+        shutil.copy2(src_csv, dst_csv)
+        with open(src_csv, 'r') as f:
+            count = sum(1 for line in f) - 1  # Subtract header
+    else:
+        print("⚠️  Step 9: No strategies CSV file found")
+
+    if os.path.exists(src_json):
+        shutil.copy2(src_json, dst_json)
+
+    if count > 0:
+        print(f"✓ Step 9: Exported {count} strategy records")
+
+    return count
 
 def main():
     """Export all pipeline data to CSVs"""
@@ -433,11 +470,11 @@ def main():
     stats['step4.1'] = export_step4_1_currency_events()
     stats['step5'] = export_step5_signals()
     stats['step6'] = export_step6_realization()
+    stats['step7'] = export_step7_aggregated_signals()
+    stats['step8'] = export_step8_trades()
+    stats['step9'] = export_step9_strategies()
     stats['pipeline_config'] = export_pipeline_config()
     stats['system_config'] = export_system_config()
-
-    # Copy Step 7, 8, 9 outputs (these scripts write directly to data/exports)
-    copy_step_outputs()
 
     print(f"\n{'='*60}")
     print("Export Complete")

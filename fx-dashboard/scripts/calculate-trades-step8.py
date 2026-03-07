@@ -9,8 +9,8 @@ Trader Types:
 - "combinator": Generates ALL combinations of bullish/bearish currency pairs
 - "cascading": Pairs strongest bull with strongest bear, 2nd with 2nd, etc. (not currently used)
 
-Input: Step 7 aggregated signals (step7_aggregated_signals.csv)
-Output: CSV with trade pairs per trader (buy_currency, sell_currency, trade_confidence, trader_id)
+Input: data/aggregated-signals/aggregated_signals.csv
+Output: data/trades/trades.csv
 """
 
 import json
@@ -57,7 +57,7 @@ def load_aggregated_signals(date_str=None, generator_ids=None, estimator_ids=Non
 
     Returns: (aggregated_signals_by_currency, actual_date_str)
     """
-    step7_csv = '/workspace/group/fx-portfolio/data/exports/step7_aggregated_signals.csv'
+    step7_csv = '/workspace/group/fx-portfolio/data/aggregated-signals/aggregated_signals.csv'
 
     if not os.path.exists(step7_csv):
         aggregated_by_currency = {curr: [] for curr in CURRENCIES}
@@ -180,13 +180,13 @@ def generate_trades_combinator(trader_id, aggregate_signals, date_str):
                 'date': date_str,
                 'buy_currency': buy_currency,
                 'sell_currency': sell_currency,
-                'buy_confidence': round(buy_conf, 4),
-                'sell_confidence': round(sell_conf, 4),
-                'trade_confidence': round(trade_confidence, 4)
+                'buy_signal': round(buy_conf, 4),
+                'sell_signal': round(sell_conf, 4),
+                'trade_signal': round(trade_confidence, 4)
             })
 
     # Sort by signal descending (strongest first)
-    trades = sorted(trades, key=lambda x: x['trade_confidence'], reverse=True)
+    trades = sorted(trades, key=lambda x: x['trade_signal'], reverse=True)
 
     return trades
 
@@ -245,7 +245,7 @@ def main():
     date_str = args.date if args.date else None
 
     # Validate upstream data (Step 7: Aggregated Signals)
-    step7_csv = '/workspace/group/fx-portfolio/data/exports/step7_aggregated_signals.csv'
+    step7_csv = '/workspace/group/fx-portfolio/data/aggregated-signals/aggregated_signals.csv'
     if not os.path.exists(step7_csv):
         logger.error("Step 7 output not found. Run Step 7 (Aggregate Signals) first.")
         logger.fail()
@@ -329,15 +329,15 @@ def main():
         print(f"  Generated trades: {len(trades)}")
 
     # Save to CSV
-    output_dir = '/workspace/group/fx-portfolio/data/exports'
+    output_dir = '/workspace/group/fx-portfolio/data/trades'
     os.makedirs(output_dir, exist_ok=True)
 
-    csv_file = f'{output_dir}/step8_trades.csv'
+    csv_file = f'{output_dir}/trades.csv'
 
     if all_trades:
         fieldnames = [
             'date', 'trader_id', 'buy_currency', 'sell_currency',
-            'buy_confidence', 'sell_confidence', 'trade_confidence'
+            'buy_signal', 'sell_signal', 'trade_signal'
         ]
 
         # Safely handle appending vs overwriting based on dates
@@ -381,7 +381,7 @@ def main():
         with open(csv_file, 'w', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=[
                 'date', 'trader_id', 'buy_currency', 'sell_currency',
-                'buy_confidence', 'sell_confidence', 'trade_confidence'
+                'buy_signal', 'sell_signal', 'trade_signal'
             ])
             writer.writeheader()
 

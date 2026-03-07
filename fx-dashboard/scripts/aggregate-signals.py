@@ -14,7 +14,7 @@ Usage:
     python3 scripts/aggregate-signals.py --date YYYY-MM-DD
 
 Input: Step 6 realization data (data/signal-realization/YYYY-MM-DD.json)
-Output: data/exports/step7_aggregated_signals.csv
+Output: data/aggregated-signals/aggregated_signals.csv
 """
 
 import json
@@ -146,10 +146,10 @@ def save_aggregated_signals(aggregated_signals, date_str):
     """
     import csv
 
-    output_dir = '/workspace/group/fx-portfolio/data/exports'
+    output_dir = '/workspace/group/fx-portfolio/data/aggregated-signals'
     os.makedirs(output_dir, exist_ok=True)
 
-    output_file = f'{output_dir}/step7_aggregated_signals.csv'
+    output_file = f'{output_dir}/aggregated_signals.csv'
 
     fieldnames = [
         'date', 'generator_id', 'estimator_id', 'currency',

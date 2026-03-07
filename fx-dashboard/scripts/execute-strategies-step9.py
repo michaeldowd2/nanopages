@@ -7,16 +7,16 @@ Each strategy maintains its own portfolio state across dates.
 
 New Design:
 - Start with 100 EUR in each currency if no prior portfolio state exists
-- Read trades from Step 8 CSV (buy_currency, sell_currency, trade_confidence, above_threshold)
+- Read trades from Step 8 CSV (buy_currency, sell_currency, trade_signal, above_threshold)
 - Execute trades above threshold in descending order of confidence
 - Apply spreads (0.74%) when converting currencies
 - Track portfolio balances and values over time
 
-Input: data/exports/step8_trades.csv
+Input: data/trades/trades.csv
 Output:
 - data/portfolios/{strategy_id}.json (portfolio states)
-- data/exports/step9_strategies.csv (portfolio summary)
-- data/exports/step9_strategies_detail.json (detailed results)
+- data/portfolios/strategies.csv (portfolio summary)
+- data/portfolios/strategies_detail.json (detailed results)
 """
 
 import json
@@ -66,9 +66,9 @@ def load_trades_from_step8(date_str, trader_id):
     """
     Load proposed trades for a specific date and trader from Step 8 CSV.
 
-    Returns: List of trade dicts, sorted by trade_confidence descending
+    Returns: List of trade dicts, sorted by trade_signal descending
     """
-    csv_file = '/workspace/group/fx-portfolio/data/exports/step8_trades.csv'
+    csv_file = '/workspace/group/fx-portfolio/data/trades/trades.csv'
 
     if not os.path.exists(csv_file):
         return []
@@ -83,11 +83,11 @@ def load_trades_from_step8(date_str, trader_id):
                     'sell_currency': row['sell_currency'],
                     'buy_confidence': float(row['buy_confidence']),
                     'sell_confidence': float(row['sell_confidence']),
-                    'trade_confidence': float(row['trade_confidence'])
+                    'trade_signal': float(row['trade_signal'])
                 })
 
     # Sort by confidence descending (already sorted in Step 8, but just to be sure)
-    trades.sort(key=lambda x: x['trade_confidence'], reverse=True)
+    trades.sort(key=lambda x: x['trade_signal'], reverse=True)
 
     return trades
 
@@ -157,15 +157,15 @@ def execute_trade(trade, all_pairs, eur_rates, portfolio, max_trade_size_pct, co
     Execute a single trade: sell sell_currency, buy buy_currency.
 
     Trade size is calculated as:
-    - portfolio_value * max_trade_size_pct * trade_confidence
+    - portfolio_value * max_trade_size_pct * trade_signal
 
-    Only executes if trade_confidence >= confidence_threshold
+    Only executes if trade_signal >= confidence_threshold
 
     Returns: Dict with execution details or None if failed
     """
     buy_curr = trade['buy_currency']
     sell_curr = trade['sell_currency']
-    trade_conf = trade['trade_confidence']
+    trade_conf = trade['trade_signal']
 
     # Check if trade meets confidence threshold
     if trade_conf < confidence_threshold:
@@ -239,12 +239,12 @@ def execute_trade(trade, all_pairs, eur_rates, portfolio, max_trade_size_pct, co
         'exchange_rate': round(pair_rate, 6),
         'buy_confidence': trade['buy_confidence'],
         'sell_confidence': trade['sell_confidence'],
-        'trade_confidence': trade['trade_confidence']
+        'trade_signal': trade['trade_signal']
     }
 
 # Removed combine_aggregated_signals and load_aggregated_signals_from_step7 functions
 # These were only used for display purposes and were not used in actual trading logic
-# Step 9 now relies solely on Step 8's trade recommendations (trade_confidence)
+# Step 9 now relies solely on Step 8's trade recommendations (trade_signal)
 
 def main():
     """Execute portfolio strategies"""
@@ -335,7 +335,7 @@ def main():
         proposed_trades = load_trades_from_step8(date_str, trader_id)
 
         # Filter trades by confidence threshold
-        qualifying_trades = [t for t in proposed_trades if t['trade_confidence'] >= conf_threshold]
+        qualifying_trades = [t for t in proposed_trades if t['trade_signal'] >= conf_threshold]
 
         # Limit to target number of trades if specified
         if target_trades is not None:
@@ -399,10 +399,10 @@ def main():
         total_trades_executed += len(executed_trades)
 
     # Save results to CSV
-    output_dir = '/workspace/group/fx-portfolio/data/exports'
+    output_dir = '/workspace/group/fx-portfolio/data/portfolios'
     os.makedirs(output_dir, exist_ok=True)
 
-    csv_file = f'{output_dir}/step9_strategies.csv'
+    csv_file = f'{output_dir}/strategies.csv'
 
     # Define fieldnames
     fieldnames = ['date', 'strategy_id', 'strategy_name', 'strategy_params', 'no_trades_executed']
@@ -435,7 +435,7 @@ def main():
             writer.writerows(results)
 
     # Save detailed JSON
-    json_file = f'{output_dir}/step9_strategies_detail.json'
+    json_file = f'{output_dir}/strategies_detail.json'
     with open(json_file, 'w') as f:
         json.dump({
             'date': date_str,
