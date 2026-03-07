@@ -395,6 +395,30 @@ def export_step1_exchange_rates():
     print(f"✓ Step 1: Exported {row_count} exchange rate rows ({len(price_files)} dates)")
     return row_count
 
+def copy_step_outputs():
+    """Copy Step 7, 8, 9 outputs from data/exports to site_data"""
+    import shutil
+
+    files_to_copy = [
+        'step7_aggregated_signals.csv',
+        'step8_trades.csv',
+        'step9_strategies.csv',
+        'step9_strategies_detail.json'
+    ]
+
+    copied = 0
+    for filename in files_to_copy:
+        src = f'/workspace/group/fx-portfolio/data/exports/{filename}'
+        dst = f'/workspace/group/fx-portfolio/site_data/{filename}'
+        if os.path.exists(src):
+            shutil.copy2(src, dst)
+            copied += 1
+
+    if copied > 0:
+        print(f"✓ Copied {copied} Step 7/8/9 output files to site_data/")
+
+    return copied
+
 def main():
     """Export all pipeline data to CSVs"""
     print("="*60)
@@ -411,6 +435,9 @@ def main():
     stats['step6'] = export_step6_realization()
     stats['pipeline_config'] = export_pipeline_config()
     stats['system_config'] = export_system_config()
+
+    # Copy Step 7, 8, 9 outputs (these scripts write directly to data/exports)
+    copy_step_outputs()
 
     print(f"\n{'='*60}")
     print("Export Complete")
