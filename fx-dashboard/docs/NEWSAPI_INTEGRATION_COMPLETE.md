@@ -91,7 +91,7 @@ load_env_file()
 **Location**: `/workspace/project/.env`
 
 ```
-NEWSAPI_APIKEY=dee0e81a27df428f9b6f07a44f4894f2
+NEWSAPI_APIKEY=<your-newsapi-key-here>
 ```
 
 **Lookup order**:
@@ -192,7 +192,7 @@ NEWSAPI_APIKEY=dee0e81a27df428f9b6f07a44f4894f2
    - No changes needed
 
 3. **.env file** (location: `/workspace/project/.env`):
-   - Contains `NEWSAPI_APIKEY=dee0e81a27df428f9b6f07a44f4894f2`
+   - Contains `NEWSAPI_APIKEY=<your-newsapi-key-here>`
    - Loaded automatically by fetch-news.py
 
 ---

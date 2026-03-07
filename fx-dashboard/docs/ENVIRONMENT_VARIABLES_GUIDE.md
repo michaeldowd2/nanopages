@@ -181,7 +181,7 @@ else:
 
 ❌ Never commit API keys to git:
 ```python
-API_KEY = "dee0e81a27df428f9b6f07a44f4894f2"  # NEVER DO THIS!
+API_KEY = "<your-api-key-here>"  # NEVER DO THIS!
 ```
 
 ✅ Always load from environment:

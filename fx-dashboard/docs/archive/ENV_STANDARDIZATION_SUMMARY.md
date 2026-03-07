@@ -164,7 +164,7 @@ GITHUB_TOKEN=github_pat_...
 GITHUB_REPO=https://github.com/michaeldowd2/nanopages
 TELEGRAM_BOT_TOKEN=875513...
 TELEGRAM_ONLY=true
-NEWSAPI_APIKEY=dee0e81a27df428f9b6f07a44f4894f2
+NEWSAPI_APIKEY=<your-newsapi-key-here>
 ANTHROPIC_API_KEY=sk-ant-api03-...
 ```
 
@@ -334,7 +334,7 @@ if not key:
 
 ```python
 # ❌ NEVER DO THIS
-API_KEY = "dee0e81a27df428f9b6f07a44f4894f2"
+API_KEY = "<your-api-key-here>"
 
 # ✅ Always load from environment
 API_KEY = get_newsapi_key()
