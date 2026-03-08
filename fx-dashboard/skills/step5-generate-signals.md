@@ -95,6 +95,39 @@ python3 scripts/generate-sentiment-signals.py
 }
 ```
 
+**Detailed Methodology**:
+
+The script counts occurrences of sentiment keywords in the combined news text:
+
+- **Bullish keywords:** gains, rises, climbs, strengthens, hawkish, rate hike, positive, firm, strong
+- **Bearish keywords:** falls, declines, tumbles, weakens, dovish, rate cut, negative, soft, weak
+- **Neutral keywords:** stable, steady, unchanged, flat, consolidates, mixed, choppy
+
+**Scoring:**
+- Bullish score = bullish_count / total_keywords
+- Bearish score = bearish_count / total_keywords
+- Neutral score = neutral_count / total_keywords
+
+**Direction:** Highest score wins (bullish, bearish, or neutral)
+
+**Confidence:**
+- Derived from the winning score
+- Boosted by 1.5x (capped at 1.0)
+- Higher confidence = clearer sentiment direction
+
+**Strength Levels:**
+- Strong: confidence ≥ 0.70
+- Moderate: 0.40 ≤ confidence < 0.70
+- Weak: confidence < 0.40
+
+**Reasoning Extraction:**
+The script attempts to identify key themes driving sentiment:
+- Monetary policy signals (hawkish/dovish)
+- Currency strength trends (gains/falls)
+- Economic data (positive/weak indicators)
+
+These are included in the `reasoning` field for transparency.
+
 **Keyword Lists**:
 
 Bullish (47 keywords):

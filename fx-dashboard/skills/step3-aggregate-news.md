@@ -35,6 +35,54 @@ python3 scripts/fetch-news.py
 - **Yahoo Finance**: 42 articles, 2% pass rate (low quality)
 - **MarketWatch**: 10 articles, 0% pass rate (low quality)
 
+### Comprehensive Source List
+
+**Currently Working:**
+- ✅ ForexLive (https://www.forexlive.com/feed/news) - Real-time FX news, majors focus
+- ✅ FXStreet (https://www.fxstreet.com/rss/news) - Analysis, forecasts, technical views
+
+**Blocked / Authentication Required:**
+- ❌ Reddit r/forex, r/economics - 403 errors (need workaround)
+- ❌ DailyFX (https://www.dailyfx.com/feeds/market-news) - 403 Forbidden
+- ❌ Bloomberg, Reuters - Paywalled, no free RSS
+
+**To Try / Add:**
+- 📰 **Investing.com** - https://www.investing.com/rss/news.rss (general markets)
+- 📰 **MarketWatch** - https://www.marketwatch.com/rss/ (US markets focus)
+- 📰 **Financial Times** - https://www.ft.com/rss/home/uk (limited free access)
+- 📰 **CNBC** - https://www.cnbc.com/id/100727362/device/rss/rss.html (markets feed)
+- 📰 **Forex Factory** - Check if RSS available
+- 📰 **BabyPips** - https://www.babypips.com/news/feed (FX education/news)
+- 📰 **Action Forex** - http://www.actionforex.com/rss/ (if still active)
+
+**Currency-Specific Sources:**
+- 🇺🇸 **Federal Reserve** - https://www.federalreserve.gov/feeds/press_all.xml
+- 🇬🇧 **Bank of England** - https://www.bankofengland.co.uk/news (check for RSS)
+- 🇯🇵 **Bank of Japan** - https://www.boj.or.jp/en/rss/ (English announcements)
+- 🇨🇭 **SNB** - https://www.snb.ch/en/publications/communication (manual check)
+- 🇪🇺 **ECB** - https://www.ecb.europa.eu/rss/ (press releases)
+- 🇦🇺 **RBA** - https://www.rba.gov.au/rss-feeds/ (monetary policy)
+- 🇨🇦 **Bank of Canada** - https://www.bankofcanada.ca/rss-feeds/
+- 🇨🇳 **PBOC** - http://www.pbc.gov.cn/en/3688006/index.html (check for RSS)
+
+**Alternative Approaches for Reddit/Blogs:**
+- Use Reddit API with authentication (requires API key)
+- Scrape Reddit via web search (e.g., search "site:reddit.com/r/forex JPY" daily)
+- Monitor Twitter/X accounts of FX analysts (requires X API)
+- Parse economist blogs manually (add URLs to sources as discovered)
+
+**Recommended Next Sources to Add:**
+1. Central bank RSS feeds (Federal Reserve, ECB, BoJ) - high quality, official
+2. Investing.com RSS - broad coverage including EM currencies
+3. MarketWatch - US market focus, good for USD
+4. Consider using web search API to find Reddit threads (Google Custom Search API)
+
+**Finding New Sources:**
+When you discover a new valuable source, add it to this list with:
+- URL and format (RSS/web/API)
+- What it covers (currency focus, quality, frequency)
+- Any access restrictions
+
 ### NewsAPI Integration
 
 **Status**: Fully integrated and working

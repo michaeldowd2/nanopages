@@ -355,6 +355,83 @@ ValueError: Invalid horizon: 2months
 
 ---
 
+## Realization Checking (Future Enhancement)
+
+**Not yet implemented** - Phase 2 feature.
+
+After articles are analyzed for time horizon, a second process will:
+
+1. Calculate time elapsed since publication
+2. Load currency index data for the elapsed period
+3. Calculate actual movement (direction + magnitude)
+4. Compare actual vs predicted
+5. Mark article as:
+   - `too_early` - prediction horizon not reached yet
+   - `unrealized` - horizon reached but prediction hasn't materialized
+   - `realized` - prediction came true (direction matched)
+   - `contradicted` - opposite direction occurred
+
+Only `too_early` and `unrealized` articles should be included in signal generation.
+
+---
+
+## Time-Decay Weighting (Future Enhancement)
+
+**Not yet implemented** - Phase 3 feature.
+
+Once realization status is determined, apply time-decay weights:
+
+### Short-term articles (< 3 days)
+- Exponential decay: `weight = 0.5 ^ (days_elapsed / 1.0)`
+- 50% weight after 1 day
+- Rationale: Short-term views become stale quickly
+
+### Medium-term articles (3-14 days)
+- Linear decay: `weight = 1.0 - (days_elapsed / horizon_days)`
+- Gradual decline over prediction period
+- Rationale: Medium-term views relevant for their stated horizon
+
+### Long-term articles (> 14 days)
+- Slow decay: `weight = 0.5 ^ (days_elapsed / 14.0)`
+- 50% weight after 2 weeks
+- Rationale: Macro views stay relevant longer
+
+---
+
+## Future Improvements
+
+### 1. Anthropic API Integration (Already Implemented)
+
+Current implementation uses Claude Haiku via Anthropic API:
+- Standalone script, no orchestrator needed
+- Schedulable via cron
+- Repeatable and testable
+- Cost: ~$0.25 per 1M tokens = ~$0.0001 per article
+- Estimated cost: 60 articles/day × $0.0003 = $0.018/day = $6.57/year
+
+### 2. Batch Processing
+Process multiple articles in single API call to reduce latency and cost:
+- Group 5-10 articles per request
+- Parse JSON array response
+- Reduce API calls by 5-10x
+
+### 3. Caching & Incremental Updates
+- Only analyze new articles (already implemented via `analyzed_urls.json`)
+- Re-analyze if article content changes
+- Periodic cleanup of old analyses (>30 days)
+
+### 4. Enhanced Prediction Extraction
+- Detect multiple timeframes in single article
+- Extract target levels ("USD expected to reach 1.20")
+- Identify conditional predictions ("if Fed cuts, USD will weaken")
+
+### 5. Source Reliability Scoring
+- Track accuracy of predictions by source domain
+- Weight high-accuracy sources more heavily
+- Downweight sources with poor prediction track record
+
+---
+
 ## Notes
 
 - Fully automated LLM-based analysis
