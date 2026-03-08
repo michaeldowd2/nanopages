@@ -1,6 +1,166 @@
 {
-  "version": "2.0",
-  "description": "FX Portfolio Trading Pipeline - Step Dependencies and Configuration",
+  "version": "3.0",
+  "description": "FX Portfolio Trading Pipeline - CSV-based Data Format",
+  "csv_schemas": {
+    "process_1_exchange_rates": {
+      "description": "Exchange rates for all currency pairs",
+      "output_path": "data/prices/{date}.csv",
+      "columns": [
+        {"name": "date", "type": "string", "description": "Trading date YYYY-MM-DD"},
+        {"name": "base_currency", "type": "string", "description": "Base currency (always EUR)"},
+        {"name": "quote_currency", "type": "string", "description": "Quote currency code"},
+        {"name": "rate", "type": "float", "description": "Exchange rate (quote/base)"},
+        {"name": "timestamp", "type": "string", "description": "API fetch timestamp"}
+      ]
+    },
+    "process_2_indices": {
+      "description": "Currency strength indices calculated from exchange rates",
+      "output_path": "data/indices/{date}.csv",
+      "columns": [
+        {"name": "date", "type": "string", "description": "Trading date YYYY-MM-DD"},
+        {"name": "currency", "type": "string", "description": "Currency code"},
+        {"name": "index", "type": "float", "description": "Currency strength index (base 100)"},
+        {"name": "prev_index", "type": "float", "nullable": true, "description": "Previous day index value"},
+        {"name": "daily_change_pct", "type": "float", "nullable": true, "description": "Daily percentage change"},
+        {"name": "base_date", "type": "string", "description": "Index base date (first date in series)"},
+        {"name": "pairs_count", "type": "int", "description": "Number of pairs used in calculation"},
+        {"name": "calculation_method", "type": "string", "description": "Calculation methodology"}
+      ]
+    },
+    "process_3_news": {
+      "description": "News articles aggregated from multiple sources",
+      "output_path": "data/news/{date}.csv",
+      "columns": [
+        {"name": "date", "type": "string", "description": "Article fetch date YYYY-MM-DD"},
+        {"name": "currency", "type": "string", "description": "Currency the article relates to"},
+        {"name": "title", "type": "string", "description": "Article title"},
+        {"name": "url", "type": "string", "description": "Article URL (unique identifier)"},
+        {"name": "snippet", "type": "string", "description": "Article snippet/summary"},
+        {"name": "published_at", "type": "string", "nullable": true, "description": "Publication timestamp"},
+        {"name": "source", "type": "string", "description": "News source name"},
+        {"name": "relevance_score", "type": "float", "description": "Relevance score (0-1)"}
+      ]
+    },
+    "process_4_horizons": {
+      "description": "Time horizon analysis for articles using LLM",
+      "output_path": "data/article-analysis/{date}.csv",
+      "columns": [
+        {"name": "date", "type": "string", "description": "Analysis date YYYY-MM-DD"},
+        {"name": "estimator_id", "type": "string", "description": "Estimator identifier"},
+        {"name": "estimator_type", "type": "string", "description": "Estimator type/version"},
+        {"name": "url", "type": "string", "description": "Article URL"},
+        {"name": "currency", "type": "string", "description": "Currency the article relates to"},
+        {"name": "title", "type": "string", "description": "Article title"},
+        {"name": "source", "type": "string", "description": "News source name"},
+        {"name": "time_horizon", "type": "string", "description": "Time horizon label (1day, 1week, 2week, 1month)"},
+        {"name": "horizon_days", "type": "int", "description": "Horizon in days"},
+        {"name": "valid_to_date", "type": "string", "description": "Date when horizon expires YYYY-MM-DD"},
+        {"name": "confidence", "type": "float", "description": "Confidence score (0-1)"},
+        {"name": "reasoning", "type": "string", "description": "LLM reasoning for horizon assignment"},
+        {"name": "analyzed_at", "type": "string", "description": "Analysis timestamp"}
+      ]
+    },
+    "process_5_signals": {
+      "description": "Sentiment signals generated from news articles",
+      "output_path": "data/signals/{date}.csv",
+      "columns": [
+        {"name": "date", "type": "string", "description": "Signal generation date YYYY-MM-DD"},
+        {"name": "currency", "type": "string", "description": "Currency the signal relates to"},
+        {"name": "generator_id", "type": "string", "description": "Signal generator identifier"},
+        {"name": "generator_type", "type": "string", "description": "Generator type/version"},
+        {"name": "signal_type", "type": "string", "description": "Type of signal (e.g., news-sentiment)"},
+        {"name": "predicted_direction", "type": "string", "description": "Predicted direction (bullish/bearish/neutral)"},
+        {"name": "predicted_magnitude", "type": "string", "nullable": true, "description": "Predicted magnitude (small/medium/large)"},
+        {"name": "confidence", "type": "float", "description": "Signal confidence (0-1)"},
+        {"name": "pair_context", "type": "string", "nullable": true, "description": "Specific currency pair context if applicable"},
+        {"name": "article_url", "type": "string", "description": "Source article URL"},
+        {"name": "article_title", "type": "string", "description": "Source article title"},
+        {"name": "published_at", "type": "string", "nullable": true, "description": "Article publication timestamp"},
+        {"name": "relevance_score", "type": "float", "description": "Article relevance score"},
+        {"name": "reasoning", "type": "string", "description": "Signal reasoning/explanation"},
+        {"name": "timestamp", "type": "string", "description": "Signal generation timestamp"}
+      ]
+    },
+    "process_6_realization": {
+      "description": "Signal realization check against actual currency movements",
+      "output_path": "data/signal-realization/{date}.csv",
+      "columns": [
+        {"name": "process_date", "type": "string", "description": "Realization check date YYYY-MM-DD"},
+        {"name": "article_download_date", "type": "string", "description": "Date article was fetched"},
+        {"name": "url", "type": "string", "description": "Article URL"},
+        {"name": "currency", "type": "string", "description": "Currency code"},
+        {"name": "title", "type": "string", "description": "Article title"},
+        {"name": "generator_id", "type": "string", "description": "Signal generator ID"},
+        {"name": "estimator_id", "type": "string", "description": "Time horizon estimator ID"},
+        {"name": "time_horizon", "type": "string", "description": "Time horizon label"},
+        {"name": "horizon_days", "type": "int", "description": "Horizon in days"},
+        {"name": "valid_to_date", "type": "string", "description": "Horizon expiry date"},
+        {"name": "predicted_direction", "type": "string", "description": "Predicted direction"},
+        {"name": "predicted_magnitude", "type": "string", "nullable": true, "description": "Predicted magnitude"},
+        {"name": "confidence", "type": "float", "description": "Signal confidence"},
+        {"name": "signal", "type": "float", "description": "Numeric signal value"},
+        {"name": "horizon_confidence", "type": "float", "description": "Time horizon confidence"},
+        {"name": "start_index", "type": "float", "description": "Currency index at signal generation"},
+        {"name": "end_index", "type": "float", "description": "Currency index at horizon expiry"},
+        {"name": "actual_pct_change", "type": "float", "description": "Actual percentage change"},
+        {"name": "actual_direction", "type": "string", "description": "Actual direction (bullish/bearish)"},
+        {"name": "realized", "type": "boolean", "description": "Whether signal was realized"},
+        {"name": "realization_status", "type": "string", "description": "Status (realized/contradicted/pending)"}
+      ]
+    },
+    "process_7_aggregated_signals": {
+      "description": "Aggregated unrealized signals by generator/estimator/currency",
+      "output_path": "data/aggregated-signals/{date}.csv",
+      "columns": [
+        {"name": "process_date", "type": "string", "description": "Aggregation date YYYY-MM-DD"},
+        {"name": "currency", "type": "string", "description": "Currency code"},
+        {"name": "generator_type", "type": "string", "description": "Signal generator type"},
+        {"name": "estimator_type", "type": "string", "description": "Time horizon estimator type"},
+        {"name": "time_horizon", "type": "string", "description": "Time horizon category"},
+        {"name": "count", "type": "int", "description": "Number of signals in aggregate"},
+        {"name": "avg_signal", "type": "float", "description": "Average signal strength"},
+        {"name": "avg_confidence", "type": "float", "description": "Average confidence"},
+        {"name": "net_direction", "type": "string", "description": "Net direction (bullish/bearish/neutral)"}
+      ]
+    },
+    "process_8_trades": {
+      "description": "Proposed trades based on aggregated signals",
+      "output_path": "data/trades/{date}.csv",
+      "columns": [
+        {"name": "date", "type": "string", "description": "Trade calculation date YYYY-MM-DD"},
+        {"name": "strategy_id", "type": "string", "description": "Strategy identifier"},
+        {"name": "currency", "type": "string", "description": "Currency to trade"},
+        {"name": "direction", "type": "string", "description": "Trade direction (buy/sell)"},
+        {"name": "signal_strength", "type": "float", "description": "Underlying signal strength"},
+        {"name": "position_size_pct", "type": "float", "description": "Position size as % of portfolio"},
+        {"name": "spread_cost_pct", "type": "float", "description": "Estimated spread cost %"},
+        {"name": "net_signal_after_cost", "type": "float", "description": "Signal strength after costs"},
+        {"name": "recommended_action", "type": "string", "description": "Recommended action (execute/hold)"}
+      ]
+    },
+    "process_9_portfolio": {
+      "description": "Portfolio execution and state tracking",
+      "output_path": "data/portfolios/{date}.csv",
+      "columns": [
+        {"name": "date", "type": "string", "description": "Trading date YYYY-MM-DD"},
+        {"name": "strategy_id", "type": "string", "description": "Strategy identifier"},
+        {"name": "eur_balance", "type": "float", "description": "EUR balance"},
+        {"name": "usd_balance", "type": "float", "description": "USD balance"},
+        {"name": "gbp_balance", "type": "float", "description": "GBP balance"},
+        {"name": "jpy_balance", "type": "float", "description": "JPY balance"},
+        {"name": "aud_balance", "type": "float", "description": "AUD balance"},
+        {"name": "cad_balance", "type": "float", "description": "CAD balance"},
+        {"name": "chf_balance", "type": "float", "description": "CHF balance"},
+        {"name": "cny_balance", "type": "float", "description": "CNY balance"},
+        {"name": "sek_balance", "type": "float", "description": "SEK balance"},
+        {"name": "nok_balance", "type": "float", "description": "NOK balance"},
+        {"name": "mxn_balance", "type": "float", "description": "MXN balance"},
+        {"name": "total_value_eur", "type": "float", "description": "Total portfolio value in EUR"},
+        {"name": "daily_return_pct", "type": "float", "nullable": true, "description": "Daily return percentage"},
+        {"name": "cumulative_return_pct", "type": "float", "description": "Cumulative return from inception"}
+      ]
+    }
+  },
   "steps": {
     "1": {
       "id": "1",
@@ -10,9 +170,10 @@
       "depends_on": [],
       "inputs": [],
       "outputs": {
-        "primary": "data/prices/fx-rates-{date}.json",
-        "patterns": ["data/prices/fx-rates-*.json"]
+        "primary": "data/prices/{date}.csv",
+        "patterns": ["data/prices/*.csv"]
       },
+      "csv_schema": "process_1_exchange_rates",
       "supports_date_filter": true,
       "is_safe_to_clear": true
     },
@@ -23,12 +184,13 @@
       "description": "Calculate synthetic currency strength indices",
       "depends_on": ["1"],
       "inputs": [
-        "data/prices/fx-rates-{date}.json"
+        "data/prices/{date}.csv"
       ],
       "outputs": {
-        "primary": "data/indices/{currency}_index.json",
-        "patterns": ["data/indices/*.json"]
+        "primary": "data/indices/{date}.csv",
+        "patterns": ["data/indices/*.csv"]
       },
+      "csv_schema": "process_2_indices",
       "supports_date_filter": true,
       "is_safe_to_clear": true
     },
@@ -40,9 +202,10 @@
       "depends_on": [],
       "inputs": [],
       "outputs": {
-        "primary": "data/news/{currency}/{date}_{source}.json",
-        "patterns": ["data/news/*/*.json", "data/news/url_index.json"]
+        "primary": "data/news/{date}.csv",
+        "patterns": ["data/news/*.csv"]
       },
+      "csv_schema": "process_3_news",
       "supports_date_filter": true,
       "is_safe_to_clear": true,
       "warning": "Clearing news articles will require re-fetching from external APIs"
@@ -54,12 +217,13 @@
       "description": "Extract time horizons from articles using LLM",
       "depends_on": ["3"],
       "inputs": [
-        "data/news/{currency}/{date}_{source}.json"
+        "data/news/{date}.csv"
       ],
       "outputs": {
-        "primary": "data/article-analysis/{date}.json",
-        "patterns": ["data/article-analysis/*.json"]
+        "primary": "data/article-analysis/{date}.csv",
+        "patterns": ["data/article-analysis/*.csv"]
       },
+      "csv_schema": "process_4_horizons",
       "supports_date_filter": true,
       "is_safe_to_clear": true,
       "warning": "Uses LLM API - clearing will incur re-analysis costs"
@@ -86,12 +250,13 @@
       "description": "Generate sentiment signals using keyword and LLM generators",
       "depends_on": ["3"],
       "inputs": [
-        "data/news/{currency}/{date}_{source}.json"
+        "data/news/{date}.csv"
       ],
       "outputs": {
-        "primary": "data/signals/{currency}/{date}.json",
-        "patterns": ["data/signals/*/*.json"]
+        "primary": "data/signals/{date}.csv",
+        "patterns": ["data/signals/*.csv"]
       },
+      "csv_schema": "process_5_signals",
       "supports_date_filter": true,
       "is_safe_to_clear": true,
       "warning": "Uses LLM API - clearing will incur re-generation costs"
@@ -103,14 +268,15 @@
       "description": "Check if signals have been realized (predicted events occurred)",
       "depends_on": ["5", "4", "2"],
       "inputs": [
-        "data/signals/{currency}/{date}.json",
-        "data/article-analysis/{date}.json",
-        "data/indices/{currency}_index.json"
+        "data/signals/{date}.csv",
+        "data/article-analysis/{date}.csv",
+        "data/indices/{date}.csv"
       ],
       "outputs": {
-        "primary": "data/signal-realization/{date}.json",
-        "patterns": ["data/signal-realization/*.json"]
+        "primary": "data/signal-realization/{date}.csv",
+        "patterns": ["data/signal-realization/*.csv"]
       },
+      "csv_schema": "process_6_realization",
       "supports_date_filter": true,
       "is_safe_to_clear": true,
       "note": "Joins signals with horizons and index data"
@@ -122,12 +288,13 @@
       "description": "Aggregate unrealized signals by generator/estimator/currency",
       "depends_on": ["6"],
       "inputs": [
-        "data/signal-realization/*.json"
+        "data/signal-realization/*.csv"
       ],
       "outputs": {
-        "primary": "data/aggregated-signals/aggregated_signals.csv",
-        "patterns": ["data/aggregated-signals/aggregated_signals.csv"]
+        "primary": "data/aggregated-signals/{date}.csv",
+        "patterns": ["data/aggregated-signals/*.csv"]
       },
+      "csv_schema": "process_7_aggregated_signals",
       "supports_date_filter": true,
       "is_safe_to_clear": true
     },
@@ -138,12 +305,14 @@
       "description": "Calculate proposed trades with spread cost analysis",
       "depends_on": ["7"],
       "inputs": [
-        "data/aggregated-signals/aggregated_signals.csv"
+        "data/aggregated-signals/{date}.csv",
+        "data/prices/{date}.csv"
       ],
       "outputs": {
-        "primary": "data/trades/trades.csv",
-        "patterns": ["data/trades/trades.csv"]
+        "primary": "data/trades/{date}.csv",
+        "patterns": ["data/trades/*.csv"]
       },
+      "csv_schema": "process_8_trades",
       "supports_date_filter": true,
       "is_safe_to_clear": true
     },
@@ -154,14 +323,15 @@
       "description": "Execute trades on portfolios and track values",
       "depends_on": ["1", "8"],
       "inputs": [
-        "data/prices/fx-rates-{date}.json",
-        "data/trades/trades.csv",
-        "data/portfolios/strategies.csv"
+        "data/prices/{date}.csv",
+        "data/trades/{date}.csv",
+        "data/portfolios/{prev_date}.csv"
       ],
       "outputs": {
-        "primary": "data/portfolios/strategies.csv",
-        "patterns": ["data/portfolios/strategies.csv"]
+        "primary": "data/portfolios/{date}.csv",
+        "patterns": ["data/portfolios/*.csv"]
       },
+      "csv_schema": "process_9_portfolio",
       "supports_date_filter": true,
       "is_safe_to_clear": false,
       "warning": "Portfolio state is cumulative - clearing resets all portfolio history!"
@@ -173,12 +343,12 @@
       "description": "Export pipeline data to site_data for dashboard",
       "depends_on": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
       "inputs": [
-        "data/prices/*.json",
-        "data/indices/*.json",
-        "data/news/*/*.json",
-        "data/article-analysis/*.json",
-        "data/signals/*/*.json",
-        "data/signal-realization/*.json",
+        "data/prices/*.csv",
+        "data/indices/*.csv",
+        "data/news/*.csv",
+        "data/article-analysis/*.csv",
+        "data/signals/*.csv",
+        "data/signal-realization/*.csv",
         "data/aggregated-signals/*.csv",
         "data/trades/*.csv",
         "data/portfolios/*.csv"
@@ -199,10 +369,16 @@
       },
       "supports_date_filter": false,
       "is_safe_to_clear": false,
-      "note": "Exports all pipeline data to dashboard format"
+      "note": "Exports last 30 days of each process to dashboard format"
     }
   },
   "notes": {
+    "csv_format": [
+      "All process outputs are CSV files with schemas defined in csv_schemas section",
+      "Each process outputs one CSV file per date at data/{folder}/{date}.csv",
+      "No more per-currency subdirectories - currency is a column in the CSV",
+      "Export process concatenates last 30 days of each process' CSVs"
+    ],
     "dependency_rules": [
       "Steps must be run in dependency order",
       "Clearing a step requires clearing all downstream dependencies",
@@ -211,8 +387,8 @@
     ],
     "date_filtering": [
       "Most steps support date-specific operations",
-      "Portfolio execution (Step 9) maintains state across dates",
-      "Deployment (Step 10) always includes all available dates"
+      "Portfolio execution (Step 9) reads previous date CSV for account state",
+      "Deployment (Step 10) always includes all available dates (last 30 days)"
     ],
     "safety_guidelines": [
       "Always clear downstream before clearing upstream (prevents orphaned data)",
