@@ -1,4 +1,4 @@
-# Skill: step2-generate-indices
+# Skill: calculate-currency-indices
 
 Generate currency strength indices using geometric mean methodology.
 

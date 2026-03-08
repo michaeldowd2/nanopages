@@ -1,4 +1,4 @@
-# Skill: step7-run-strategies
+# Skill: execute-strategies
 
 Execute trading strategies on hypothetical portfolios using unrealized signals.
 

@@ -1,4 +1,4 @@
-# Skill: step3-aggregate-news
+# Skill: fetch-news
 
 Aggregate FX news from RSS feeds and NewsAPI.
 

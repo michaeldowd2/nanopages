@@ -1,4 +1,4 @@
-# Skill: step6-check-realization
+# Skill: check-signal-realization
 
 Check if signal predictions have been realized by comparing against actual currency movements.
 

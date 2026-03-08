@@ -1,4 +1,4 @@
-# Skill: step4-analyze-horizons
+# Skill: analyze-time-horizons
 
 Analyze news articles to estimate time horizons using Claude Haiku.
 

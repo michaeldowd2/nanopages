@@ -1,4 +1,4 @@
-# Skill: step9-export-and-publish
+# Skill: export-and-deploy
 
 Export pipeline data to CSVs and publish dashboard.
 

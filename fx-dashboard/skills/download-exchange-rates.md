@@ -1,4 +1,4 @@
-# Skill: step1-download-eur-pairs
+# Skill: download-exchange-rates
 
 Download EUR-based exchange rates for all tracked currencies using the GitHub Currency API.
 
