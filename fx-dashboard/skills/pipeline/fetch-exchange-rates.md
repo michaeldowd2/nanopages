@@ -16,7 +16,7 @@ Fetch real-time exchange rates from external API. This is the foundation data fo
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/fetch-exchange-rates.py
+python3 scripts/pipeline/fetch-exchange-rates.py
 ```
 
 **Output**: `/data/prices/fx-rates-{date}.json`
@@ -218,7 +218,7 @@ Logs location: `/workspace/group/fx-portfolio/data/logs/YYYY-MM-DD.json`
 After fetching rates, export to CSV for dashboard:
 
 ```bash
-python3 scripts/export-pipeline-data.py
+python3 scripts/utilities/export-pipeline-data.py
 ```
 
 Dashboard file: `site_data/step1_exchange_rates_matrix.csv`
@@ -238,7 +238,7 @@ Dashboard file: `site_data/step1_exchange_rates_matrix.csv`
 After running fetch-exchange-rates:
 ```bash
 # calculate-currency-indices: Calculate currency indices
-python3 scripts/calculate-currency-indices.py
+python3 scripts/pipeline/calculate-currency-indices.py
 
 # Or run full pipeline date
 # (runs all steps for a specific date)
@@ -280,7 +280,7 @@ python3 scripts/calculate-currency-indices.py
 
 ```bash
 # Fetch today's rates
-python3 scripts/fetch-exchange-rates.py
+python3 scripts/pipeline/fetch-exchange-rates.py
 
 # Verify data source
 cat data/logs/$(date +%Y-%m-%d).json | grep data_source
@@ -289,5 +289,5 @@ cat data/logs/$(date +%Y-%m-%d).json | grep data_source
 cat data/prices/fx-rates-$(date +%Y-%m-%d).json
 
 # Export to dashboard
-python3 scripts/export-pipeline-data.py
+python3 scripts/utilities/export-pipeline-data.py
 ```

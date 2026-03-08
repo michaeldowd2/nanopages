@@ -18,13 +18,13 @@ Analyze news articles to create signals with directional predictions. Supports m
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/generate-sentiment-signals.py
+python3 scripts/pipeline/generate-sentiment-signals.py
 ```
 
 ### Run Legacy Single Generator (Keyword Only)
 
 ```bash
-python3 scripts/generate-sentiment-signals.py
+python3 scripts/pipeline/generate-sentiment-signals.py
 ```
 
 **Output**: `/data/signals/{CURRENCY}/{date}.json`
@@ -478,7 +478,7 @@ api_key = get_anthropic_key()
 After running this step:
 ```bash
 # check-signal-realization: Check signal realization
-python3 scripts/check-signal-realization.py
+python3 scripts/pipeline/check-signal-realization.py
 
 # Or run full pipeline
 ```
@@ -489,7 +489,7 @@ python3 scripts/check-signal-realization.py
 
 Check CSV export:
 ```bash
-python3 scripts/export-pipeline-data.py
+python3 scripts/utilities/export-pipeline-data.py
 cat data/exports/step5_signals.csv
 ```
 
@@ -594,7 +594,7 @@ Update `system_config.json`:
 ### analyze-time-horizons: Run
 
 ```bash
-python3 scripts/generate-sentiment-signals.py
+python3 scripts/pipeline/generate-sentiment-signals.py
 ```
 
 All generators will run automatically!

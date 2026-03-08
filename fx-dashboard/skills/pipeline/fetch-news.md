@@ -16,7 +16,7 @@ Fetch and filter news articles relevant to each currency from multiple sources. 
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/fetch-news.py
+python3 scripts/pipeline/fetch-news.py
 ```
 
 **Output**:
@@ -234,14 +234,14 @@ def load_env_file():
 
 **Hourly execution** (maximum freshness):
 ```bash
-0 * * * * cd /workspace/group/fx-portfolio && python3 scripts/fetch-news.py
+0 * * * * cd /workspace/group/fx-portfolio && python3 scripts/pipeline/fetch-news.py
 ```
 - API usage: 48 requests/day (52% of limit)
 - Safety margin: 52 requests spare
 
 **4 times daily** (conservative):
 ```bash
-0 6,12,18,0 * * * cd /workspace/group/fx-portfolio && python3 scripts/fetch-news.py
+0 6,12,18,0 * * * cd /workspace/group/fx-portfolio && python3 scripts/pipeline/fetch-news.py
 ```
 - API usage: 8 requests/day (8% of limit)
 - Safety margin: 92 requests spare
@@ -352,7 +352,7 @@ This ensures:
 After running this step:
 ```bash
 # analyze-time-horizons: Analyze time horizons
-python3 scripts/analyze-time-horizons.py
+python3 scripts/pipeline/analyze-time-horizons.py
 
 # Or run full pipeline
 ```
@@ -363,7 +363,7 @@ python3 scripts/analyze-time-horizons.py
 
 Check CSV export:
 ```bash
-python3 scripts/export-pipeline-data.py
+python3 scripts/utilities/export-pipeline-data.py
 cat data/exports/step3_news.csv
 ```
 

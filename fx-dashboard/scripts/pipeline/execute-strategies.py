@@ -26,8 +26,8 @@ import csv
 from datetime import datetime, timedelta
 
 sys.path.append('/workspace/group/fx-portfolio/scripts')
-from pipeline_logger import PipelineLogger
-from config_loader import get_strategies, get_trader
+from utilities.pipeline_logger import PipelineLogger
+from utilities.config_loader import get_strategies, get_trader
 
 CURRENCIES = ["EUR", "USD", "GBP", "JPY", "CHF", "AUD", "CAD", "NOK", "SEK", "CNY", "MXN"]
 

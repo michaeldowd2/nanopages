@@ -12,7 +12,7 @@ Tag each signal with `realized: true/false` by comparing predicted movements aga
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/check-signal-realization.py
+python3 scripts/pipeline/check-signal-realization.py
 ```
 
 ---
@@ -125,13 +125,13 @@ After running this step:
 
 Check CSV export:
 ```bash
-python3 scripts/export-pipeline-data.py
+python3 scripts/utilities/export-pipeline-data.py
 cat data/exports/step6_realization.csv
 ```
 
 Check status summary:
 ```bash
-python3 scripts/check-signal-realization.py | grep "Realization Status:" -A 10
+python3 scripts/pipeline/check-signal-realization.py | grep "Realization Status:" -A 10
 ```
 
 ## Current Limitation

@@ -26,7 +26,7 @@ import sys
 from datetime import datetime, timedelta
 
 sys.path.append('/workspace/group/fx-portfolio/scripts')
-from pipeline_logger import PipelineLogger
+from utilities.pipeline_logger import PipelineLogger
 
 CURRENCIES = ["EUR", "USD", "GBP", "JPY", "CHF", "AUD", "CAD", "NOK", "SEK", "CNY", "MXN"]
 

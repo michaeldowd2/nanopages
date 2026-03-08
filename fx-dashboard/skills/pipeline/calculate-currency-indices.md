@@ -16,7 +16,7 @@ Calculate currency indices to measure individual currency strength independent o
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/calculate-currency-indices.py
+python3 scripts/pipeline/calculate-currency-indices.py
 ```
 
 **Output**: `/data/indices/{CURRENCY}_index.json`
@@ -226,7 +226,7 @@ Shows exactly how each index was calculated for the latest date:
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/calculate-currency-indices.py
+python3 scripts/pipeline/calculate-currency-indices.py
 ```
 
 **Output**:
@@ -290,7 +290,7 @@ JPY          99.8765     -0.21%       10
 After running this step:
 ```bash
 # fetch-news: Aggregate news
-python3 scripts/fetch-news.py
+python3 scripts/pipeline/fetch-news.py
 
 # Or run full pipeline
 ```
@@ -301,7 +301,7 @@ python3 scripts/fetch-news.py
 
 Check CSV export:
 ```bash
-python3 scripts/export-pipeline-data.py
+python3 scripts/utilities/export-pipeline-data.py
 cat data/exports/step2_indices.csv
 ```
 

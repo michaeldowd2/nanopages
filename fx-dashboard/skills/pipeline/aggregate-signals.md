@@ -16,7 +16,7 @@ Takes individual sentiment signals from multiple generators and aggregates them 
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/aggregate-signals.py --date 2026-03-08
+python3 scripts/pipeline/aggregate-signals.py --date 2026-03-08
 ```
 
 **Input**: `/data/signals/{CURRENCY}/{date}.json` (from generate-sentiment-signals)

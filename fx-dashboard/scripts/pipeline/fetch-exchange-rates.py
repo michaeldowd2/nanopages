@@ -24,8 +24,8 @@ from datetime import datetime
 # Load currencies from config
 import sys
 sys.path.append('/workspace/group/fx-portfolio/scripts')
-from config_loader import get_currencies
-from pipeline_logger import PipelineLogger
+from utilities.config_loader import get_currencies
+from utilities.pipeline_logger import PipelineLogger
 
 # Use urllib.request (standard library - always available)
 import urllib.request

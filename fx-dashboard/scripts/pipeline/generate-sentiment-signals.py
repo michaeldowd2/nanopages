@@ -12,8 +12,8 @@ import urllib.parse
 from datetime import datetime
 
 sys.path.append('/workspace/group/fx-portfolio/scripts')
-from pipeline_logger import PipelineLogger
-from env_loader import get_anthropic_key
+from utilities.pipeline_logger import PipelineLogger
+from utilities.env_loader import get_anthropic_key
 
 # Import keyword-based generator functions from original script
 sys.path.append('/workspace/group/fx-portfolio/scripts')

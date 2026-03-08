@@ -12,7 +12,7 @@ Strategies aggregate currency signals, generate pair trades, and track hypotheti
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/execute-strategies.py --date 2026-03-08
+python3 scripts/pipeline/execute-strategies.py --date 2026-03-08
 ```
 
 ---

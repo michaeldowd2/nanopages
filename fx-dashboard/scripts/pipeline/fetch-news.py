@@ -18,7 +18,7 @@ from email.utils import parsedate_to_datetime
 
 # Add scripts directory to path for imports
 sys.path.append(os.path.dirname(__file__))
-from env_loader import get_newsapi_key
+from utilities.env_loader import get_newsapi_key
 
 # Currency keywords for relevance filtering
 CURRENCY_KEYWORDS = {

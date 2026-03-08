@@ -23,8 +23,8 @@ from datetime import datetime
 from itertools import product
 
 sys.path.append('/workspace/group/fx-portfolio/scripts')
-from pipeline_logger import PipelineLogger
-from config_loader import get_traders
+from utilities.pipeline_logger import PipelineLogger
+from utilities.config_loader import get_traders
 
 CURRENCIES = ["EUR", "USD", "GBP", "JPY", "CHF", "AUD", "CAD", "NOK", "SEK", "CNY", "MXN"]
 

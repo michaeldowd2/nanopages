@@ -16,7 +16,7 @@ Determine how long each article's market impact will last (immediate, short-term
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/analyze-time-horizons.py
+python3 scripts/pipeline/analyze-time-horizons.py
 ```
 
 **Output**: `/data/article-analysis/{url_hash}.json`
@@ -227,7 +227,7 @@ api_key = get_anthropic_key()
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/analyze-time-horizons.py
+python3 scripts/pipeline/analyze-time-horizons.py
 ```
 
 **Output**:
@@ -327,7 +327,7 @@ The 1week horizon dominance (47.4%) makes sense because:
 After analyzing articles:
 ```bash
 # generate-sentiment-signals: Generate sentiment signals
-python3 scripts/generate-sentiment-signals.py
+python3 scripts/pipeline/generate-sentiment-signals.py
 
 # Or run full pipeline
 ```
@@ -338,13 +338,13 @@ python3 scripts/generate-sentiment-signals.py
 
 Check CSV export:
 ```bash
-python3 scripts/export-pipeline-data.py
+python3 scripts/utilities/export-pipeline-data.py
 cat data/exports/step4_horizons.csv
 ```
 
 Check status:
 ```bash
-python3 scripts/analyze-time-horizons.py
+python3 scripts/pipeline/analyze-time-horizons.py
 ```
 
 Count analyzed articles:
