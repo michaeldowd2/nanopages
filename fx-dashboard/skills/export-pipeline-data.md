@@ -1,4 +1,4 @@
-# Skill: export-and-deploy
+# Skill: export-pipeline-data
 
 Export pipeline data to CSVs and publish dashboard.
 

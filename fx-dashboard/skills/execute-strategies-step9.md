@@ -1,4 +1,4 @@
-# Skill: execute-strategies
+# Skill: execute-strategies-step9
 
 Execute trading strategies on hypothetical portfolios using unrealized signals.
 

@@ -1,4 +1,4 @@
-# Skill: generate-sentiment-signals
+# Skill: generate-sentiment-signals-v2
 
 Generate sentiment signals using multiple analyzers (keyword-based and LLM-based).
 
