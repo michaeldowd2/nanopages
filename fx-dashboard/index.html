@@ -347,7 +347,7 @@
   <!-- STEP TABS -->
   <div id="step1" class="tab-content">
     <div class="section">
-      <h2>Step 1: Exchange Rates (All Pairs) <a href="data/step1_exchange_rates_matrix.csv" class="csv-download" download>CSV</a></h2>
+      <h2>Step 1: Exchange Rates (All Pairs) <a href="site_data/step1_exchange_rates_matrix.csv" class="csv-download" download>CSV</a></h2>
       <p class="step-header">All currency pair exchange rates (10×10 matrix)</p>
       <p style="color:#888; font-size:0.9em; margin-bottom:10px;">
         Each cell shows how much COLUMN currency you get for 1 ROW currency.<br>
@@ -553,15 +553,15 @@
       }
 
       const csvFile = {
-        'step2': 'data/step2_indices.csv',
-        'step3': 'data/step3_news.csv',
-        'step4': 'data/step4_horizons.csv',
-        'step4.1': 'data/step4_1_currency_events.csv',
-        'step5': 'data/step5_signals.csv',
-        'step6': 'data/step6_realization.csv',
-        'step7': 'data/step7_aggregated_signals.csv',
-        'step8': 'data/step8_trades.csv',
-        'step9': 'data/step9_strategies.csv'
+        'step2': 'site_data/step2_indices.csv',
+        'step3': 'site_data/step3_news.csv',
+        'step4': 'site_data/step4_horizons.csv',
+        'step4.1': 'site_data/step4_1_currency_events.csv',
+        'step5': 'site_data/step5_signals.csv',
+        'step6': 'site_data/step6_realization.csv',
+        'step7': 'site_data/step7_aggregated_signals.csv',
+        'step8': 'site_data/step8_trades.csv',
+        'step9': 'site_data/step9_strategies.csv'
       }[step];
 
       fetch(csvFile)
@@ -779,7 +779,7 @@
 
     function loadStep1Dates() {
       // Get dates directly from the CSV file
-      fetch('data/step1_exchange_rates_matrix.csv')
+      fetch('site_data/step1_exchange_rates_matrix.csv')
         .then(res => res.text())
         .then(csvText => {
           const lines = csvText.trim().split('\n');
@@ -840,7 +840,7 @@
       matrixDiv.style.display = 'none';
 
       // Load from CSV instead of JSON
-      fetch('data/step1_exchange_rates_matrix.csv')
+      fetch('site_data/step1_exchange_rates_matrix.csv')
         .then(res => res.text())
         .then(csvText => {
           const lines = csvText.trim().split('\n');
@@ -970,7 +970,7 @@
         `;
       }
 
-      fetch('data/system_config.json')
+      fetch('site_data/system_config.json')
         .then(res => res.json())
         .then(config => {
           loading.style.display = 'none';
@@ -1040,7 +1040,7 @@
 
     function loadTradesCSV() {
       const step = 'trades';
-      fetch('data/step8_trades.csv')
+      fetch('site_data/step8_trades.csv')
         .then(res => res.text())
         .then(text => {
           const { headers, rows } = parseCSV(text);
@@ -1101,7 +1101,7 @@
     }
 
     function loadStepCountsTable() {
-      fetch('data/step_counts_by_date.json')
+      fetch('site_data/step_counts_by_date.json')
         .then(res => res.json())
         .then(data => {
           const tableDiv = document.getElementById('step-counts-table');
@@ -1146,7 +1146,7 @@
     }
 
     function loadTrackingDates() {
-      fetch('data/tracking_dates.json')
+      fetch('site_data/tracking_dates.json')
         .then(res => res.json())
         .then(data => {
           const selector = document.getElementById('tracking-date-selector');
@@ -1430,7 +1430,7 @@
     }
 
     function loadPipelineDependencies() {
-      fetch('data/pipeline_steps.json')
+      fetch('site_data/pipeline_steps.json')
         .then(res => res.json())
         .then(config => {
           // Render visual graph
@@ -1823,7 +1823,7 @@
       document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(0,19).replace('T', ' ');
 
       // Load pipeline config and generate tabs dynamically
-      fetch('data/pipeline_steps.json')
+      fetch('site_data/pipeline_steps.json')
         .then(res => res.json())
         .then(config => {
           generateDynamicTabs(config);
@@ -1893,7 +1893,7 @@
           const contentHtml = `
             <div id="step${stepId}" class="tab-content">
               <div class="section">
-                <h2>Step ${stepId}: ${step.name} <a href="data/step${stepId}_${getDefaultFilename(stepId)}.csv" class="csv-download" download>CSV</a></h2>
+                <h2>Step ${stepId}: ${step.name} <a href="site_data/step${stepId}_${getDefaultFilename(stepId)}.csv" class="csv-download" download>CSV</a></h2>
                 <p class="step-header">${step.description}</p>
 
                 ${step.supports_date_filter && stepId !== '9' ? `
