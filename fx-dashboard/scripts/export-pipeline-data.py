@@ -432,12 +432,9 @@ def export_step8_trades():
     return row_count
 
 def export_step9_strategies():
-    """Step 9: Portfolio Strategies"""
+    """Execute Strategies: Portfolio Strategies"""
     src_csv = '/workspace/group/fx-portfolio/data/portfolios/strategies.csv'
     dst_csv = '/workspace/group/fx-portfolio/site_data/step9_strategies.csv'
-
-    src_json = '/workspace/group/fx-portfolio/data/portfolios/strategies_detail.json'
-    dst_json = '/workspace/group/fx-portfolio/site_data/step9_strategies_detail.json'
 
     count = 0
 
@@ -445,14 +442,9 @@ def export_step9_strategies():
         shutil.copy2(src_csv, dst_csv)
         with open(src_csv, 'r') as f:
             count = sum(1 for line in f) - 1  # Subtract header
+        print(f"✓ Execute Strategies: Exported {count} strategy records")
     else:
-        print("⚠️  Step 9: No strategies CSV file found")
-
-    if os.path.exists(src_json):
-        shutil.copy2(src_json, dst_json)
-
-    if count > 0:
-        print(f"✓ Step 9: Exported {count} strategy records")
+        print("⚠️  Execute Strategies: No strategies CSV file found")
 
     return count
 

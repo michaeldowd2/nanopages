@@ -5,18 +5,16 @@ Portfolio Executor (Step 9)
 Reads proposed trades from Step 8 and executes them on strategy portfolios.
 Each strategy maintains its own portfolio state across dates.
 
-New Design:
+Design:
 - Start with 100 EUR in each currency if no prior portfolio state exists
+- Load previous date's portfolio state from CSV to continue
 - Read trades from Step 8 CSV (buy_currency, sell_currency, trade_signal, above_threshold)
 - Execute trades above threshold in descending order of confidence
 - Apply spreads (0.74%) when converting currencies
 - Track portfolio balances and values over time
 
 Input: data/trades/trades.csv
-Output:
-- data/portfolios/{strategy_id}.json (portfolio states)
-- data/portfolios/strategies.csv (portfolio summary)
-- data/portfolios/strategies_detail.json (detailed results)
+Output: data/portfolios/strategies.csv (portfolio summary with balances)
 """
 
 import json
@@ -91,28 +89,58 @@ def load_trades_from_step8(date_str, trader_id):
 
     return trades
 
-def load_portfolio_state(strategy_id):
-    """Load portfolio state from JSON file"""
-    portfolio_dir = '/workspace/group/fx-portfolio/data/portfolios'
-    os.makedirs(portfolio_dir, exist_ok=True)
+def load_previous_portfolio_from_csv(strategy_id, csv_file, current_date):
+    """
+    Load most recent portfolio state for a strategy from CSV.
+    Returns portfolio dict or None if not found.
 
-    portfolio_file = f'{portfolio_dir}/{strategy_id}.json'
+    Args:
+        strategy_id: The strategy to load state for
+        csv_file: Path to strategies.csv
+        current_date: Current date string (YYYY-MM-DD) to find previous entry
 
-    if os.path.exists(portfolio_file):
-        with open(portfolio_file, 'r') as f:
-            return json.load(f)
-    else:
+    Returns:
+        Dict of {currency: balance} or None if no previous state
+    """
+    if not os.path.exists(csv_file):
         return None
 
-def save_portfolio_state(strategy_id, state):
-    """Save portfolio state to JSON file"""
-    portfolio_dir = '/workspace/group/fx-portfolio/data/portfolios'
-    os.makedirs(portfolio_dir, exist_ok=True)
+    try:
+        # Parse current date
+        from datetime import datetime
+        current_dt = datetime.fromisoformat(current_date)
 
-    portfolio_file = f'{portfolio_dir}/{strategy_id}.json'
+        # Read CSV and find most recent row for this strategy before current date
+        with open(csv_file, 'r') as f:
+            reader = csv.DictReader(f)
+            matching_rows = []
 
-    with open(portfolio_file, 'w') as f:
-        json.dump(state, f, indent=2)
+            for row in reader:
+                if row['strategy_id'] == strategy_id:
+                    row_date = datetime.fromisoformat(row['date'])
+                    if row_date < current_dt:
+                        matching_rows.append(row)
+
+            if not matching_rows:
+                return None
+
+            # Sort by date and get most recent
+            matching_rows.sort(key=lambda x: x['date'], reverse=True)
+            most_recent = matching_rows[0]
+
+            # Extract currency balances
+            portfolio = {}
+            for currency in CURRENCIES:
+                if currency in most_recent:
+                    portfolio[currency] = float(most_recent[currency])
+                else:
+                    portfolio[currency] = 0.0
+
+            return portfolio
+
+    except Exception as e:
+        print(f"  Warning: Could not load previous state from CSV: {e}")
+        return None
 
 def initialize_portfolio(eur_rates):
     """
@@ -298,38 +326,19 @@ def main():
             print(f"  target_trades=unlimited (execute all trades above threshold)")
         print(f"  max_trade_size_pct={max_trade_size_pct} (% of portfolio, scaled by signal strength)")
 
-        # Load portfolio state or initialize new one
-        portfolio_state = load_portfolio_state(strategy_id)
+        # Load portfolio state from CSV or initialize new one
+        csv_file = '/workspace/group/fx-portfolio/data/portfolios/strategies.csv'
+        portfolio = load_previous_portfolio_from_csv(strategy_id, csv_file, date_str)
 
-        if portfolio_state is None:
+        if portfolio is None:
             # No prior state - initialize with 100 EUR equivalent in each currency
             # Total starting value = 1100 EUR (100 * 11 currencies)
             print(f"  Initializing new portfolio with {INITIAL_BALANCE_PER_CURRENCY} EUR in each currency (total ~1100 EUR)")
             portfolio = initialize_portfolio(eur_rates)
-            history = []
         else:
-            # Load from previous day's state in history, or use current_portfolio
-            history = portfolio_state.get('history', [])
-
-            # Find the most recent history entry before current date
-            from datetime import datetime
-            current_date = datetime.fromisoformat(date_str)
-            previous_entries = [h for h in history if datetime.fromisoformat(h['date']) < current_date]
-
-            if previous_entries:
-                # Start from the most recent previous day
-                previous_entries.sort(key=lambda x: x['date'])
-                previous_state = previous_entries[-1]
-                portfolio = previous_state['portfolio_snapshot'].copy()
-                print(f"  Loading portfolio from {previous_state['date']} (value: €{previous_state['portfolio_value']:.2f})")
-            else:
-                # No previous day found, use current_portfolio or reinitialize
-                portfolio = portfolio_state.get('current_portfolio', {})
-                if not portfolio or all(v == 0 for v in portfolio.values()):
-                    print(f"  Reinitializing portfolio with {INITIAL_BALANCE_PER_CURRENCY} EUR in each currency")
-                    portfolio = initialize_portfolio(eur_rates)
-                else:
-                    print(f"  Using existing portfolio state")
+            # Calculate previous portfolio value for display
+            prev_value = calculate_portfolio_value(portfolio, eur_rates)
+            print(f"  Loading portfolio from previous date (value: €{prev_value:.2f})")
 
         # Load proposed trades from Step 8 (filtered by trader_id)
         proposed_trades = load_trades_from_step8(date_str, trader_id)
@@ -355,20 +364,6 @@ def main():
 
         print(f"  Portfolio value: €{portfolio_value:.2f}")
         print(f"  Executed trades: {len(executed_trades)}")
-
-        # Save portfolio state
-        new_state = {
-            'strategy_id': strategy_id,
-            'current_portfolio': portfolio,
-            'last_updated': date_str,
-            'history': history + [{
-                'date': date_str,
-                'trades': executed_trades,
-                'portfolio_value': portfolio_value,
-                'portfolio_snapshot': portfolio.copy()
-            }]
-        }
-        save_portfolio_state(strategy_id, new_state)
 
         # Load trader config to get generator/estimator IDs for signal display
         trader_config = get_trader(trader_id)
@@ -434,24 +429,14 @@ def main():
             writer.writeheader()
             writer.writerows(results)
 
-    # Save detailed JSON
-    json_file = f'{output_dir}/strategies_detail.json'
-    with open(json_file, 'w') as f:
-        json.dump({
-            'date': date_str,
-            'strategies': results
-        }, f, indent=2)
-
     logger.add_count('strategy_combinations', len(strategies))
     logger.add_count('strategies_executed', len(results))
     logger.add_count('total_trades', total_trades_executed)
     logger.add_info('output_csv', csv_file)
-    logger.add_info('output_json', json_file)
 
     print(f"\n{'='*60}")
     print(f"✓ Completed {len(results)} strategy runs")
     print(f"CSV: {csv_file}")
-    print(f"JSON: {json_file}")
     print(f"{'='*60}")
 
     logger.success()

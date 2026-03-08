@@ -12,7 +12,7 @@ Strategies aggregate currency signals, generate pair trades, and track hypotheti
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/execute-strategies-step9.py --date 2026-03-08
+python3 scripts/execute-strategies.py --date 2026-03-08
 ```
 
 ---
@@ -21,20 +21,17 @@ python3 scripts/execute-strategies-step9.py --date 2026-03-08
 
 ### Output Files
 
-**Primary Output**: `/data/portfolios/strategies.csv`
+**Single Output**: `/data/portfolios/strategies.csv`
 - Format: CSV
-- Updated: Appended daily
+- Updated: Appended daily (one row per strategy per date)
 - Size: ~2-5 KB per day
+- Contains complete portfolio history and state
 
-**Detailed Output**: `/data/portfolios/strategies_detail.json`
-- Format: JSON
-- Contains full portfolio execution details
-- Size: ~20-50 KB per day
-
-**Portfolio State Files**: `/data/portfolios/{strategy_id}.json`
-- Format: JSON
-- One file per strategy combination
-- Persistent state between runs (tracks balances across dates)
+**Portfolio State Management:**
+- Portfolio state is stored directly in the CSV (currency balance columns)
+- Each run reads the previous date's row to get starting balances
+- First run (no previous data) initializes with 100 EUR equivalent in each currency
+- No separate state files needed - CSV contains all historical data
 
 ### Output Schema (CSV)
 
@@ -104,9 +101,6 @@ This means:
 - €5,000 in EUR, $2,500 in USD, A$1,200 in AUD
 - Total portfolio worth €9,875.50 (lost €124.50 to spreads)
 
-**Detailed JSON**: `/data/portfolios/strategies_detail.json`
-
-Contains full trade history, aggregate signals, proposed vs executed trades.
 
 ## Trade Execution Logic
 
@@ -139,35 +133,22 @@ Pairs generated:
 
 ## Portfolio State Management
 
-Each strategy combination maintains its own portfolio file:
-- `/data/portfolios/simple-momentum_conf=0.5_size=0.25_agg=average.json`
+**How it works:**
+1. Each strategy reads its most recent row from strategies.csv to get starting balances
+2. If no previous row exists (first run), initializes with 100 EUR equivalent in each currency
+3. Executes trades and updates balances
+4. Appends new row to strategies.csv with updated balances
+5. Next day repeats from step 1
 
-**Initial state:**
-```json
-{
-  "portfolio": {
-    "EUR": 10000,
-    "USD": 0,
-    ...
-  },
-  "last_updated": "2026-02-21T14:44:56Z"
-}
-```
+**Initial portfolio (first run):**
+- 100 EUR in EUR
+- 100 EUR equivalent in each other currency (calculated using exchange rates)
+- Example: If EUR/USD = 1.08, then USD balance = 108.00
 
-**After trades:**
-```json
-{
-  "portfolio": {
-    "EUR": 5000,
-    "USD": 2500,
-    "GBP": 1200,
-    ...
-  },
-  "last_updated": "2026-02-22T09:30:00Z"
-}
-```
-
-Portfolio persists between runs - next day's strategy starts with previous day's balances.
+**State persistence:**
+- All portfolio state is in the CSV - no separate files needed
+- Each row contains complete snapshot of portfolio balances
+- Historical performance can be analyzed directly from CSV
 
 ## Dependencies
 
@@ -184,24 +165,7 @@ After running this step:
 
 ## Debugging
 
-Check aggregate signals:
-```bash
-python3 -c "
-import json
-with open('data/portfolios/strategies_detail.json') as f:
-    strat = json.load(f)[0]
-    for curr, sig in strat['aggregate_signals'].items():
-        if sig['confidence'] > 0.3:
-            print(f\"{curr}: {sig['direction']} ({sig['confidence']})\")
-"
-```
-
-Check portfolio state:
-```bash
-cat data/portfolios/simple-momentum_conf=0.5_size=0.25_agg=average.json
-```
-
-View CSV:
+View all strategies:
 ```bash
 column -t -s, data/portfolios/strategies.csv | less -S
 ```
