@@ -6,7 +6,8 @@ Converts: data/article-analysis/{date}.json
 To:       data/article-analysis/{date}.csv
 
 Schema:
-- date, source, url, currency, title, snippet, time_horizon, confidence, reasoning
+- date, source, url, currency, title, estimator_id, time_horizon, horizon_days,
+  valid_to_date, confidence, reasoning
 """
 
 import json
@@ -32,14 +33,16 @@ def convert_to_csv_rows(date, json_data):
 
     Expected JSON format:
     {
+      "estimator_id": "llm-horizon-v1-default",
       "analyses": [
         {
-          "article_url": "...",
-          "article_title": "...",
-          "snippet": "...",
+          "url": "...",
+          "title": "...",
           "currency": "EUR",
-          "source": "newsapi",
-          "time_horizon": "short",
+          "source": "FXStreet",
+          "time_horizon": "1week",
+          "horizon_days": 7,
+          "valid_to_date": "2026-03-03",
           "confidence": 0.85,
           "reasoning": "..."
         }
@@ -47,21 +50,25 @@ def convert_to_csv_rows(date, json_data):
     }
 
     Output CSV format:
-    date, source, url, currency, title, snippet, time_horizon, confidence, reasoning
+    date, source, url, currency, title, estimator_id, time_horizon, horizon_days,
+    valid_to_date, confidence, reasoning
     """
     rows = []
 
     analyses = json_data.get('analyses', [])
+    estimator_id = json_data.get('estimator_id', '')
 
     for analysis in analyses:
         rows.append({
             'date': date,
             'source': analysis.get('source', ''),
-            'url': analysis.get('article_url', ''),
+            'url': analysis.get('url', ''),
             'currency': analysis.get('currency', ''),
-            'title': analysis.get('article_title', ''),
-            'snippet': analysis.get('snippet', ''),
+            'title': analysis.get('title', ''),
+            'estimator_id': estimator_id,
             'time_horizon': analysis.get('time_horizon', ''),
+            'horizon_days': analysis.get('horizon_days', ''),
+            'valid_to_date': analysis.get('valid_to_date', ''),
             'confidence': analysis.get('confidence', ''),
             'reasoning': analysis.get('reasoning', '')
         })
@@ -79,8 +86,8 @@ def write_csv_file(csv_path, rows):
 
     with open(csv_path, 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=[
-            'date', 'source', 'url', 'currency', 'title', 'snippet',
-            'time_horizon', 'confidence', 'reasoning'
+            'date', 'source', 'url', 'currency', 'title', 'estimator_id',
+            'time_horizon', 'horizon_days', 'valid_to_date', 'confidence', 'reasoning'
         ])
         writer.writeheader()
         writer.writerows(rows)
