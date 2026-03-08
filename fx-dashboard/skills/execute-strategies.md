@@ -12,7 +12,7 @@ Strategies aggregate currency signals, generate pair trades, and track hypotheti
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/strategy-simple-momentum.py
+python3 scripts/execute-strategies-step9.py --date 2026-03-08
 ```
 
 ---
@@ -21,20 +21,20 @@ python3 scripts/strategy-simple-momentum.py
 
 ### Output Files
 
-**Primary Output**: `/data/exports/step7_strategies.csv`
+**Primary Output**: `/data/portfolios/strategies.csv`
 - Format: CSV
 - Updated: Appended daily
 - Size: ~2-5 KB per day
 
-**Detailed Output**: `/data/exports/step7_strategies_detail.json`
+**Detailed Output**: `/data/portfolios/strategies_detail.json`
 - Format: JSON
-- Contains full trade history and aggregate signals
+- Contains full portfolio execution details
 - Size: ~20-50 KB per day
 
-**Portfolio State**: `/data/portfolios/{strategy_name}_{params}.json`
+**Portfolio State Files**: `/data/portfolios/{strategy_id}.json`
 - Format: JSON
 - One file per strategy combination
-- Persistent state between runs
+- Persistent state between runs (tracks balances across dates)
 
 ### Output Schema (CSV)
 
@@ -84,7 +84,7 @@ date,strategy_name,strategy_params,executed_trades,EUR,USD,GBP,JPY,CHF,AUD,CAD,N
 
 ## Output
 
-**CSV**: `/data/exports/step7_strategies.csv`
+**CSV**: `/data/portfolios/strategies.csv`
 
 Columns:
 - `date` - Execution date
@@ -104,7 +104,7 @@ This means:
 - €5,000 in EUR, $2,500 in USD, A$1,200 in AUD
 - Total portfolio worth €9,875.50 (lost €124.50 to spreads)
 
-**Detailed JSON**: `/data/exports/step7_strategies_detail.json`
+**Detailed JSON**: `/data/portfolios/strategies_detail.json`
 
 Contains full trade history, aggregate signals, proposed vs executed trades.
 
@@ -188,7 +188,7 @@ Check aggregate signals:
 ```bash
 python3 -c "
 import json
-with open('data/exports/step7_strategies_detail.json') as f:
+with open('data/portfolios/strategies_detail.json') as f:
     strat = json.load(f)[0]
     for curr, sig in strat['aggregate_signals'].items():
         if sig['confidence'] > 0.3:
@@ -203,7 +203,7 @@ cat data/portfolios/simple-momentum_conf=0.5_size=0.25_agg=average.json
 
 View CSV:
 ```bash
-column -t -s, data/exports/step7_strategies.csv | less -S
+column -t -s, data/portfolios/strategies.csv | less -S
 ```
 
 ## Future Strategies
