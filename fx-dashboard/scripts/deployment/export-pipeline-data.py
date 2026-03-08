@@ -477,7 +477,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-    # Export step counts by date
-    import subprocess
-    subprocess.run(['python3', 'scripts/export-step-counts.py'], check=True)

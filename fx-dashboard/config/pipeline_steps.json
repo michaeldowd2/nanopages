@@ -1,16 +1,17 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "description": "FX Portfolio Trading Pipeline - Step Dependencies and Configuration",
   "steps": {
     "1": {
       "id": "1",
       "name": "Exchange Rates",
-      "script": "scripts/fetch-exchange-rates.py",
+      "script": "scripts/pipeline/fetch-exchange-rates.py",
       "description": "Fetch current exchange rates from API",
       "depends_on": [],
+      "inputs": [],
       "outputs": {
-        "source": ["data/prices/fx-rates-*.json"],
-        "exports": ["data/exports/step1_exchange_rates.csv", "data/exports/step1_exchange_rates_matrix*.json", "data/exports/step1_dates.json"]
+        "primary": "data/prices/fx-rates-{date}.json",
+        "patterns": ["data/prices/fx-rates-*.json"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true
@@ -18,12 +19,15 @@
     "2": {
       "id": "2",
       "name": "Currency Indices",
-      "script": "scripts/calculate-currency-indices.py",
+      "script": "scripts/pipeline/calculate-currency-indices.py",
       "description": "Calculate synthetic currency strength indices",
       "depends_on": ["1"],
+      "inputs": [
+        "data/prices/fx-rates-{date}.json"
+      ],
       "outputs": {
-        "source": ["data/indices/*.json"],
-        "exports": ["data/exports/step2_indices.csv"]
+        "primary": "data/indices/{currency}_index.json",
+        "patterns": ["data/indices/*.json"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true
@@ -31,12 +35,13 @@
     "3": {
       "id": "3",
       "name": "News Aggregation",
-      "script": "scripts/fetch-news.py",
+      "script": "scripts/pipeline/fetch-news.py",
       "description": "Fetch and store news articles from various sources",
       "depends_on": [],
+      "inputs": [],
       "outputs": {
-        "source": ["data/news/*/", "data/news/url_index.json"],
-        "exports": ["data/exports/step3_news.csv"]
+        "primary": "data/news/{currency}/{date}_{source}.json",
+        "patterns": ["data/news/*/*.json", "data/news/url_index.json"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true,
@@ -45,12 +50,15 @@
     "4": {
       "id": "4",
       "name": "Time Horizon Analysis",
-      "script": "scripts/analyze-time-horizons-llm.py",
+      "script": "scripts/pipeline/analyze-time-horizons.py",
       "description": "Extract time horizons from articles using LLM",
       "depends_on": ["3"],
+      "inputs": [
+        "data/news/{currency}/{date}_{source}.json"
+      ],
       "outputs": {
-        "source": ["data/article-analysis/*.json"],
-        "exports": ["data/exports/step4_horizons.csv"]
+        "primary": "data/article-analysis/{date}.json",
+        "patterns": ["data/article-analysis/*.json"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true,
@@ -62,9 +70,10 @@
       "script": null,
       "description": "Taxonomy of currency-affecting events with keywords and signal characteristics",
       "depends_on": [],
+      "inputs": [],
       "outputs": {
-        "source": ["data/events/currency_events.json"],
-        "exports": ["data/exports/step4_1_currency_events.csv", "data/exports/step4_1_currency_events.json"]
+        "primary": "data/events/currency_events.json",
+        "patterns": ["data/events/currency_events.json"]
       },
       "supports_date_filter": false,
       "is_safe_to_clear": false,
@@ -73,12 +82,15 @@
     "5": {
       "id": "5",
       "name": "Sentiment Signals",
-      "script": "scripts/generate-sentiment-signals-v2.py",
+      "script": "scripts/pipeline/generate-sentiment-signals.py",
       "description": "Generate sentiment signals using keyword and LLM generators",
       "depends_on": ["3"],
+      "inputs": [
+        "data/news/{currency}/{date}_{source}.json"
+      ],
       "outputs": {
-        "source": ["data/signals/*/*.json"],
-        "exports": ["data/exports/step5_signals.csv"]
+        "primary": "data/signals/{currency}/{date}.json",
+        "patterns": ["data/signals/*/*.json"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true,
@@ -87,26 +99,34 @@
     "6": {
       "id": "6",
       "name": "Signal Realization",
-      "script": "scripts/check-signal-realization.py",
+      "script": "scripts/pipeline/check-signal-realization.py",
       "description": "Check if signals have been realized (predicted events occurred)",
       "depends_on": ["5", "4", "2"],
+      "inputs": [
+        "data/signals/{currency}/{date}.json",
+        "data/article-analysis/{date}.json",
+        "data/indices/{currency}_index.json"
+      ],
       "outputs": {
-        "source": ["data/signal-realization/*.json"],
-        "exports": ["data/exports/step6_realization.csv"]
+        "primary": "data/signal-realization/{date}.json",
+        "patterns": ["data/signal-realization/*.json"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true,
-      "note": "Joins signals with horizons and index data; outputs to signal-realization directory"
+      "note": "Joins signals with horizons and index data"
     },
     "7": {
       "id": "7",
       "name": "Signal Aggregation",
-      "script": "scripts/aggregate-signals.py",
+      "script": "scripts/pipeline/aggregate-signals.py",
       "description": "Aggregate unrealized signals by generator/estimator/currency",
       "depends_on": ["6"],
+      "inputs": [
+        "data/signal-realization/*.json"
+      ],
       "outputs": {
-        "source": [],
-        "exports": ["data/exports/step7_aggregated_signals.csv"]
+        "primary": "data/aggregated-signals/aggregated_signals.csv",
+        "patterns": ["data/aggregated-signals/aggregated_signals.csv"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true
@@ -114,12 +134,15 @@
     "8": {
       "id": "8",
       "name": "Trade Calculation",
-      "script": "scripts/calculate-trades-step8.py",
+      "script": "scripts/pipeline/calculate-trades.py",
       "description": "Calculate proposed trades with spread cost analysis",
       "depends_on": ["7"],
+      "inputs": [
+        "data/aggregated-signals/aggregated_signals.csv"
+      ],
       "outputs": {
-        "source": [],
-        "exports": ["data/exports/step8_trades.csv"]
+        "primary": "data/trades/trades.csv",
+        "patterns": ["data/trades/trades.csv"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true
@@ -127,12 +150,17 @@
     "9": {
       "id": "9",
       "name": "Portfolio Execution",
-      "script": "scripts/execute-strategies-step9.py",
+      "script": "scripts/pipeline/execute-strategies.py",
       "description": "Execute trades on portfolios and track values",
       "depends_on": ["1", "8"],
+      "inputs": [
+        "data/prices/fx-rates-{date}.json",
+        "data/trades/trades.csv",
+        "data/portfolios/strategies.csv"
+      ],
       "outputs": {
-        "source": ["data/portfolios/*.json"],
-        "exports": ["data/exports/step9_strategies.csv", "data/exports/step9_strategies_detail.json"]
+        "primary": "data/portfolios/strategies.csv",
+        "patterns": ["data/portfolios/strategies.csv"]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": false,
@@ -141,16 +169,37 @@
     "10": {
       "id": "10",
       "name": "Dashboard Deployment",
-      "script": "scripts/deploy-dashboard.sh",
-      "description": "Export data and deploy to GitHub Pages",
+      "script": "scripts/deployment/export-pipeline-data.py",
+      "description": "Export pipeline data to site_data for dashboard",
       "depends_on": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      "inputs": [
+        "data/prices/*.json",
+        "data/indices/*.json",
+        "data/news/*/*.json",
+        "data/article-analysis/*.json",
+        "data/signals/*/*.json",
+        "data/signal-realization/*.json",
+        "data/aggregated-signals/*.csv",
+        "data/trades/*.csv",
+        "data/portfolios/*.csv"
+      ],
       "outputs": {
-        "source": [],
-        "exports": ["All step exports copied to dashboard"]
+        "primary": "site_data/",
+        "patterns": [
+          "site_data/step1_*.csv",
+          "site_data/step2_*.csv",
+          "site_data/step3_*.csv",
+          "site_data/step4_*.csv",
+          "site_data/step5_*.csv",
+          "site_data/step6_*.csv",
+          "site_data/step7_*.csv",
+          "site_data/step8_*.csv",
+          "site_data/step9_*.csv"
+        ]
       },
       "supports_date_filter": false,
       "is_safe_to_clear": false,
-      "note": "Deployment step - does not produce local data to clear"
+      "note": "Exports all pipeline data to dashboard format"
     }
   },
   "notes": {
