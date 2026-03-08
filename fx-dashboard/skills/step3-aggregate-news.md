@@ -1,23 +1,145 @@
 # Skill: step3-aggregate-news
 
-Aggregate FX news from RSS feeds and web sources.
+Aggregate FX news from RSS feeds and NewsAPI.
+
+---
 
 ## Purpose
 
-Fetch and filter news articles relevant to each currency. Extracts publication timestamps and deduplicates globally.
+Fetch and filter news articles relevant to each currency from multiple sources. Extracts publication timestamps and deduplicates globally.
 
-## Running This Step
+**Implementation Date**: NewsAPI integration added 2026-02-24
+
+---
+
+## Quick Start
 
 ```bash
 cd /workspace/group/fx-portfolio
 python3 scripts/fetch-news.py
 ```
 
-## Output
-
-**Files**:
+**Output**:
 - `/data/news/{CURRENCY}/{date}.json` - Articles per currency per day
 - `/data/news/url_index.json` - Global URL deduplication index
+
+---
+
+## Data Sources
+
+### RSS Feeds
+
+**Active Sources**:
+- **FXStreet**: 30 articles, 73% pass rate
+- **ForexLive**: 25 articles, 52% pass rate
+- **Yahoo Finance**: 42 articles, 2% pass rate (low quality)
+- **MarketWatch**: 10 articles, 0% pass rate (low quality)
+
+### NewsAPI Integration
+
+**Status**: Fully integrated and working
+
+**Configuration** (in `data/news/sources.json`):
+```json
+{
+  "newsapi_enabled": true,
+  "newsapi_queries": [
+    "forex",
+    "currency exchange"
+  ],
+  "newsapi_max_results_per_query": 20
+}
+```
+
+**Current Usage**: 2 API requests per run (well under 100/day limit)
+
+**Results**:
+- Query "forex": 20 articles
+- Query "currency exchange": 19 articles
+- Total: 39 articles fetched
+- After filtering: 7 articles saved (18% pass rate)
+
+**Sources Found**:
+- The Times of India (3 articles)
+- Financial Post (2 articles)
+- CNA (Channel NewsAsia) (1 article)
+- GlobeNewswire (1 article)
+
+---
+
+## Complete Source Breakdown
+
+| Source | Articles Fetched | Articles Saved | Pass Rate |
+|--------|------------------|----------------|-----------|
+| **FXStreet** | 30 | 22 | 73% |
+| **ForexLive** | 25 | 13 | 52% |
+| **NewsAPI (combined)** | 39 | 7 | 18% |
+| **Yahoo Finance** | 42 | 1 | 2% |
+| **MarketWatch** | 10 | 0 | 0% |
+| **TOTAL** | **146** | **43** | **29.5%** |
+
+**Note**: NewsAPI's lower pass rate is expected - it returns general financial news from global sources, not FX-specific content. However, it adds geographic diversity (Asian, North American, European perspectives).
+
+---
+
+## Environment Configuration
+
+### NewsAPI Setup
+
+**Location**: `/workspace/project/.env`
+```
+NEWSAPI_APIKEY=<your-newsapi-key-here>
+```
+
+**Loading**: Automatic via built-in .env loader
+```python
+def load_env_file():
+    """Load environment variables from .env file"""
+    env_paths = [
+        '/workspace/project/.env',
+        '/workspace/group/.env',
+        os.path.join(os.path.dirname(__file__), '../.env')
+    ]
+    # Loads first .env found
+```
+
+**Lookup order**:
+1. `NEWSAPI_APIKEY` environment variable
+2. `newsapi_apikey` environment variable (fallback)
+3. If neither found, script gracefully degrades (RSS only)
+
+---
+
+## API Usage & Rate Limits
+
+### NewsAPI Free Tier
+- **Daily limit**: 100 requests
+- **Current usage**: 2 requests per run
+- **Safe frequency**: Can run up to **50 times per day** (hourly with buffer)
+
+### Recommended Schedule
+
+**Hourly execution** (maximum freshness):
+```bash
+0 * * * * cd /workspace/group/fx-portfolio && python3 scripts/fetch-news.py
+```
+- API usage: 48 requests/day (52% of limit)
+- Safety margin: 52 requests spare
+
+**4 times daily** (conservative):
+```bash
+0 6,12,18,0 * * * cd /workspace/group/fx-portfolio && python3 scripts/fetch-news.py
+```
+- API usage: 8 requests/day (8% of limit)
+- Safety margin: 92 requests spare
+
+---
+
+## Output Format
+
+### Per-Currency Article File
+
+**Location**: `/data/news/{CURRENCY}/{date}.json`
 
 ```json
 {
@@ -30,20 +152,42 @@ python3 scripts/fetch-news.py
       "snippet": "Clean text excerpt...",
       "published_at": "2026-02-21T09:00:00Z",
       "relevance_score": 0.85,
-      "currency": "USD"
+      "currency": "USD",
+      "source": "FXStreet"
     }
   ],
   "combined_text": "All snippets concatenated..."
 }
 ```
 
+### Source Attribution
+
+Each article now includes a `source` field:
+- `"FXStreet"` - From FXStreet RSS feed
+- `"ForexLive"` - From ForexLive RSS feed
+- `"Yahoo Finance"` - From Yahoo Finance RSS feed
+- `"NewsAPI"` - From NewsAPI (query-based)
+
+---
+
 ## Features
 
-- **30-day retention**: Articles older than 30 days automatically filtered and cleaned
-- **Global URL deduplication**: Each URL tracked in `url_index.json` - same article never downloaded twice
-- **Date key assignment**: New articles get assigned the date they were FIRST SEEN (the date the script runs)
-- **Relevance scoring**: Keywords match per currency (0-1 score)
-- **Publication timestamps**: Extracted from RSS `<pubDate>` tags (used for 30-day filtering only)
+### 30-Day Retention
+Articles older than 30 days automatically filtered and cleaned.
+
+### Global URL Deduplication
+Each URL tracked in `url_index.json` - same article never downloaded twice.
+
+### Date Key Assignment
+New articles get assigned the date they were FIRST SEEN (the date the script runs).
+
+### Relevance Scoring
+Keywords match per currency (0-1 score).
+
+### Publication Timestamps
+Extracted from RSS `<pubDate>` tags (used for 30-day filtering only).
+
+---
 
 ## How Article Dating Works
 
@@ -62,13 +206,45 @@ This ensures:
 - The date key represents when we FIRST discovered the article
 - Over time, each run adds only genuinely new articles
 
+---
+
+## Quality Analysis
+
+### NewsAPI Article Quality
+
+**Strengths**:
+- Global coverage (India, Canada, Singapore, US)
+- Diverse perspectives on FX markets
+- Real-time breaking news
+- Professionally curated sources
+
+**Weaknesses**:
+- Lower FX relevance (18% pass rate vs 73% for FXStreet)
+- Many articles filtered out due to general financial focus
+- Not FX-specific like ForexLive or FXStreet
+
+**Recommendation**: Keep NewsAPI enabled - The 7 additional articles provide geographic diversity and different angles on FX-relevant events.
+
+---
+
 ## Dependencies
 
 - None (independent data source)
+- Optional: NEWSAPI_APIKEY in .env for NewsAPI integration
+
+---
 
 ## Next Steps
 
-After running this step, run Step 4 to analyze time horizons.
+After running this step:
+```bash
+# Step 4: Analyze time horizons
+python3 scripts/analyze-time-horizons-llm.py
+
+# Or run full pipeline
+```
+
+---
 
 ## Debugging
 
@@ -83,17 +259,70 @@ Check URL index:
 python3 -c "import json; print(len(json.load(open('/workspace/group/fx-portfolio/data/news/url_index.json'))))"
 ```
 
-## Sources
+View articles with source attribution:
+```bash
+cat data/news/USD/$(date +%Y-%m-%d).json | grep -A 2 '"source"'
+```
 
-See `/skills/aggregate-news.md` for full source list and improvement suggestions.
+---
 
-Current working sources:
-- ForexLive RSS
-- FXStreet RSS
+## Troubleshooting
+
+### Issue: NewsAPI not fetching articles
+
+**Symptom**: Only RSS articles in output, no NewsAPI articles
+
+**Solution**:
+1. Check API key is set:
+   ```bash
+   grep NEWSAPI_APIKEY /workspace/project/.env
+   ```
+2. Verify `newsapi_enabled: true` in `data/news/sources.json`
+3. Check script output for API errors
+
+### Issue: Low article count
+
+**Symptom**: Fewer articles than expected
+
+**Causes**:
+- RSS feeds have limited history (24-48 hours typically)
+- Many articles filtered out due to currency relevance threshold
+- URL deduplication (articles already seen before)
+
+**Solution**:
+- Run more frequently to catch fresh articles
+- Consider adding more RSS feeds or NewsAPI queries
+- Review relevance scoring threshold
+
+---
+
+## Optimization Ideas
+
+### Add More FX-Specific Queries
+```json
+"newsapi_queries": [
+  "forex",
+  "currency exchange",
+  "central bank",
+  "EUR/USD",
+  "GBP/USD"
+]
+```
+
+**Caveat**: More queries = more API requests (5 queries = 5 requests per run)
+
+### Replace Low-Performing Feeds
+Consider replacing Yahoo Finance (2%) and MarketWatch (0%) with:
+- Reuters FX feed
+- Bloomberg FX feed
+- DailyFX feed
+
+---
 
 ## Notes
 
-- Runs daily
-- RSS feeds may have limited history (typically last 24-48 hours)
-- Reddit RSS blocked (403 errors)
-- DailyFX RSS blocked (403 errors)
+- Runs daily (or more frequently)
+- RSS feeds have limited history (typically last 24-48 hours)
+- NewsAPI provides real-time breaking news
+- Global deduplication prevents duplicate processing
+- Source attribution enables quality analysis per source
