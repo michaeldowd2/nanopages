@@ -125,7 +125,7 @@ After running this step:
 
 Check CSV export:
 ```bash
-python3 scripts/utilities/export-pipeline-data.py
+python3 scripts/deployment/export-pipeline-data.py
 cat data/exports/step6_realization.csv
 ```
 

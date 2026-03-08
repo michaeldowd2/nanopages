@@ -218,7 +218,7 @@ Logs location: `/workspace/group/fx-portfolio/data/logs/YYYY-MM-DD.json`
 After fetching rates, export to CSV for dashboard:
 
 ```bash
-python3 scripts/utilities/export-pipeline-data.py
+python3 scripts/deployment/export-pipeline-data.py
 ```
 
 Dashboard file: `site_data/step1_exchange_rates_matrix.csv`
@@ -289,5 +289,5 @@ cat data/logs/$(date +%Y-%m-%d).json | grep data_source
 cat data/prices/fx-rates-$(date +%Y-%m-%d).json
 
 # Export to dashboard
-python3 scripts/utilities/export-pipeline-data.py
+python3 scripts/deployment/export-pipeline-data.py
 ```

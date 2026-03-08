@@ -14,7 +14,7 @@ Generate CSV exports for the dashboard and publish the entire project (scripts, 
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/utilities/export-pipeline-data.py
+python3 scripts/deployment/export-pipeline-data.py
 ```
 
 ---

@@ -489,7 +489,7 @@ python3 scripts/pipeline/check-signal-realization.py
 
 Check CSV export:
 ```bash
-python3 scripts/utilities/export-pipeline-data.py
+python3 scripts/deployment/export-pipeline-data.py
 cat data/exports/step5_signals.csv
 ```
 
