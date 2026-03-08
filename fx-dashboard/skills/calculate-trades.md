@@ -1,4 +1,4 @@
-# Skill: calculate-trades-step8
+# Skill: calculate-trades
 
 Generate trade recommendations from aggregated signals using a combinator strategy.
 
@@ -19,8 +19,47 @@ cd /workspace/group/fx-portfolio
 python3 scripts/calculate-trades-step8.py --date 2026-03-08
 ```
 
-**Input**: `/data/aggregated-signals/aggregated_signals.csv` (from Step 7)
+**Input**: `/data/aggregated-signals/aggregated_signals.csv` (from aggregate-signals)
 **Output**: `/data/trades/trades.csv`
+
+---
+
+## Expected Output
+
+### Output Files
+
+**Primary Output**: `/data/trades/trades.csv`
+- Format: CSV
+- Updated: Appended daily
+- Size: ~2-5 KB per day
+
+### Output Schema
+
+| Column | Type | Description | Example |
+|--------|------|-------------|---------|
+| date | string | Trading date (YYYY-MM-DD) | 2026-03-08 |
+| trader_id | string | Generator/combinator ID | combinator-standard |
+| buy_currency | string | Currency to buy | USD |
+| sell_currency | string | Currency to sell | JPY |
+| buy_signal | float | Strength of buy signal (0-1) | 0.67 |
+| sell_signal | float | Strength of sell signal (0-1) | 0.54 |
+| trade_signal | float | Combined trade confidence (0-1) | 0.605 |
+
+### Sample Output
+
+```csv
+date,trader_id,buy_currency,sell_currency,buy_signal,sell_signal,trade_signal
+2026-03-08,combinator-standard,USD,JPY,0.67,0.54,0.605
+2026-03-08,combinator-standard,GBP,CHF,0.45,0.38,0.415
+```
+
+### Interpretation
+
+- **trade_signal**: Higher values indicate stronger conviction trades (average of buy and sell signals)
+- **buy_signal**: Positive aggregated signal for the buy currency
+- **sell_signal**: Absolute value of negative aggregated signal for sell currency
+- **Typical range**: 0.3-0.8 (filtered below min_signal_threshold)
+- **Use this data to**: Execute hypothetical trades in execute-strategies
 
 ---
 
@@ -28,7 +67,7 @@ python3 scripts/calculate-trades-step8.py --date 2026-03-08
 
 ### 1. Load Aggregated Signals
 
-Reads the aggregated signals for all currencies from Step 7.
+Reads the aggregated signals for all currencies from aggregate-signals.
 
 ### 2. Identify Bullish and Bearish Currencies
 
@@ -120,7 +159,7 @@ The combinator uses this logic:
 ## Dependencies
 
 **Upstream Steps**:
-- Step 7: `aggregate-signals.py` (provides aggregated signals)
+- aggregate-signals: `aggregate-signals.py` (provides aggregated signals)
 
 **Data Required**:
 - `/data/aggregated-signals/aggregated_signals.csv`
@@ -130,7 +169,7 @@ The combinator uses this logic:
 ## Troubleshooting
 
 **"No trades generated"**:
-- Check Step 7 output - may not have both bullish and bearish signals
+- Check aggregate-signals output - may not have both bullish and bearish signals
 - Lower `min_signal_threshold` in config
 - Verify aggregated signals exist for the date
 
@@ -139,7 +178,7 @@ The combinator uses this logic:
 - Review `min_signal_threshold` setting
 
 **Trade signals seem wrong**:
-- Check aggregated signals in Step 7 output
+- Check aggregated signals in aggregate-signals output
 - Verify buy_signal + sell_signal calculation
 - Review individual currency signals in dashboard
 
@@ -148,6 +187,6 @@ The combinator uses this logic:
 ## Next Steps
 
 After running this step:
-- **Step 9**: Execute trades on portfolio strategies
+- **execute-strategies**: Execute trades on portfolio strategies
 - Review trade recommendations in dashboard
 - Analyze which currency pairs are most frequently recommended

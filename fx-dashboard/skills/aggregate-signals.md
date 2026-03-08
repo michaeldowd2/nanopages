@@ -19,8 +19,46 @@ cd /workspace/group/fx-portfolio
 python3 scripts/aggregate-signals.py --date 2026-03-08
 ```
 
-**Input**: `/data/signals/{CURRENCY}/{date}.json` (from Step 5)
+**Input**: `/data/signals/{CURRENCY}/{date}.json` (from generate-sentiment-signals)
 **Output**: `/data/aggregated-signals/aggregated_signals.csv`
+
+---
+
+## Expected Output
+
+### Output Files
+
+**Primary Output**: `/data/aggregated-signals/aggregated_signals.csv`
+- Format: CSV
+- Updated: Appended daily
+- Size: ~1-2 KB per day
+
+### Output Schema
+
+| Column | Type | Description | Example |
+|--------|------|-------------|---------|
+| date | string | Trading date (YYYY-MM-DD) | 2026-03-08 |
+| currency | string | ISO currency code | USD |
+| aggregated_signal | float | Net signal strength (-1 to +1) | 0.45 |
+| signal_count | integer | Number of signals aggregated | 3 |
+| avg_penalty | float | Average penalty factor applied (0-1) | 0.85 |
+
+### Sample Output
+
+```csv
+date,currency,aggregated_signal,signal_count,avg_penalty
+2026-03-08,USD,0.45,3,0.85
+2026-03-08,GBP,-0.23,2,0.90
+2026-03-08,JPY,0.67,4,0.75
+```
+
+### Interpretation
+
+- **aggregated_signal**: Positive values indicate bullish sentiment, negative values indicate bearish sentiment
+- **signal_count**: More signals = more news coverage and potentially more reliable aggregate
+- **avg_penalty**: Lower penalty means historically more accurate signals (1.0 = no penalty, 0.5 = heavily penalized)
+- **Typical range**: -1.0 to +1.0 (most values fall between -0.8 and +0.8)
+- **Use this data to**: Feed into calculate-trades for trade pair generation
 
 ---
 
@@ -28,7 +66,7 @@ python3 scripts/aggregate-signals.py --date 2026-03-08
 
 ### 1. Load All Signals for Date
 
-Reads all signals generated in Step 5 across all currencies and all generators.
+Reads all signals generated in generate-sentiment-signals across all currencies and all generators.
 
 ### 2. Filter by Realization Status
 
@@ -85,15 +123,15 @@ date,currency,aggregated_signal,signal_count,avg_penalty
 
 ## Configuration
 
-No configuration needed - reads from Step 5 and Step 6 outputs automatically.
+No configuration needed - reads from generate-sentiment-signals and check-signal-realization outputs automatically.
 
 ---
 
 ## Dependencies
 
 **Upstream Steps**:
-- Step 5: `generate-sentiment-signals-v2.py` (provides signals)
-- Step 6: `check-signal-realization.py` (provides penalty factors)
+- generate-sentiment-signals: `generate-sentiment-signals-v2.py` (provides signals)
+- check-signal-realization: `check-signal-realization.py` (provides penalty factors)
 
 **Data Required**:
 - `/data/signals/{currency}/{date}.json`
@@ -104,22 +142,22 @@ No configuration needed - reads from Step 5 and Step 6 outputs automatically.
 ## Troubleshooting
 
 **"No signals found for date"**:
-- Run Step 5 first to generate signals
+- Run generate-sentiment-signals first to generate signals
 - Check that signal files exist in `/data/signals/`
 
 **"All signals filtered out"**:
-- Check Step 6 output - signals may all be realized/contradicted
+- Check check-signal-realization output - signals may all be realized/contradicted
 - Verify realization check is working correctly
 
 **Aggregated signal seems wrong**:
-- Check penalty factors in Step 6 output
+- Check penalty factors in check-signal-realization output
 - Verify signal filtering logic (only unrealized signals)
-- Review individual signals in Step 5 output
+- Review individual signals in generate-sentiment-signals output
 
 ---
 
 ## Next Steps
 
 After running this step:
-- **Step 8**: Calculate trade recommendations from aggregated signals
+- **calculate-trades**: Calculate trade recommendations from aggregated signals
 - Review aggregated signals in dashboard

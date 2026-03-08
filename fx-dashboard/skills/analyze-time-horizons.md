@@ -23,6 +23,61 @@ python3 scripts/analyze-time-horizons-llm.py
 
 ---
 
+## Expected Output
+
+### Output Files
+
+**Primary Output**: `/data/article-analysis/{url_hash}.json` (one file per article)
+- Format: JSON
+- Updated: Created once per article
+- Size: ~1 KB per article
+
+**Tracking File**: `/data/article-analysis/analyzed_urls.json`
+- List of all analyzed URLs to prevent re-analysis
+
+### Output Schema
+
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| estimator_id | string | Analyzer identifier | claude-haiku-horizon-v1.0 |
+| estimator_type | string | Analyzer type | llm-horizon-analysis |
+| url | string | Article URL | https://... |
+| currency | string | Related currency | EUR |
+| title | string | Article title | Bank of England: Cuts on the table |
+| published_at | string | Publication timestamp (ISO) | 2026-02-24T10:30:00Z |
+| analyzed_at | string | Analysis timestamp (ISO) | 2026-02-24T22:05:00Z |
+| time_horizon | string | Horizon category | 1week |
+| horizon_category | string | Human-readable horizon | Near-term (1 week) |
+| confidence | float | Confidence score (0-1) | 0.80 |
+| reasoning | string | Analysis explanation | The article mentions... |
+
+### Sample Output
+
+```json
+{
+  "estimator_id": "claude-haiku-horizon-v1.0",
+  "estimator_type": "llm-horizon-analysis",
+  "url": "https://www.fxstreet.com/news/...",
+  "currency": "GBP",
+  "title": "Bank of England: Cuts on the table",
+  "published_at": "2026-02-24T10:30:00Z",
+  "analyzed_at": "2026-02-24T22:05:00Z",
+  "time_horizon": "1week",
+  "horizon_category": "Near-term (1 week)",
+  "confidence": 0.80,
+  "reasoning": "The article mentions the Bank of England's upcoming policy decision, suggesting a near-term impact on the GBP."
+}
+```
+
+### Interpretation
+
+- **time_horizon**: Used by generate-sentiment-signals to determine when predicted movement should occur
+- **confidence**: Higher confidence (>0.7) indicates clearer temporal signals in the article
+- **Typical distribution**: 1week (47%), 3day (21%), 1day (11%), 2week (13%), 1month (8%)
+- **Use this data to**: Generate time-bound sentiment signals in generate-sentiment-signals
+
+---
+
 ## Time Horizon Categories
 
 The system uses 5 time horizons based on market impact duration:
@@ -262,7 +317,7 @@ The 1week horizon dominance (47.4%) makes sense because:
 
 ## Dependencies
 
-- **Step 3**: Requires news articles
+- **fetch-news**: Requires news articles
 - **Environment**: ANTHROPIC_API_KEY in .env file
 
 ---
@@ -271,7 +326,7 @@ The 1week horizon dominance (47.4%) makes sense because:
 
 After analyzing articles:
 ```bash
-# Step 5: Generate sentiment signals
+# generate-sentiment-signals: Generate sentiment signals
 python3 scripts/generate-sentiment-signals.py
 
 # Or run full pipeline

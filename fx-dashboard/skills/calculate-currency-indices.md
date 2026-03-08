@@ -23,6 +23,74 @@ python3 scripts/calculate-currency-indices.py
 
 ---
 
+## Expected Output
+
+### Output Files
+
+**Primary Output**: `/data/indices/{CURRENCY}_index.json` (one file per currency)
+- Format: JSON
+- Updated: Appended daily
+- Size: ~10-20 KB per currency (30 days of data)
+
+**CSV Export**: `/data/exports/step2_indices.csv`
+- Format: CSV for dashboard visualization
+- Contains all currencies × all dates
+
+### Output Schema
+
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| date | string | Trading date (YYYY-MM-DD) | 2026-02-23 |
+| currency | string | ISO currency code | USD |
+| index | float | Normalized index value (base = 100) | 102.35 |
+| prev_index | float | Previous day's index | 100.00 |
+| daily_change_pct | float | Daily percentage change | 2.35 |
+| base_date | string | Base date for normalization | 2026-02-22 |
+| pairs_count | integer | Number of pairs used in calculation | 10 |
+| calculation_method | string | Method used | geometric_mean |
+
+### Sample Output
+
+```json
+{
+  "currency": "USD",
+  "calculation_method": "geometric_mean",
+  "base_date": "2026-02-22",
+  "data": [
+    {
+      "date": "2026-02-22",
+      "currency": "USD",
+      "index": 100.0,
+      "prev_index": null,
+      "daily_change_pct": null,
+      "base_date": "2026-02-22",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-23",
+      "currency": "USD",
+      "index": 102.35,
+      "prev_index": 100.0,
+      "daily_change_pct": 2.35,
+      "base_date": "2026-02-22",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    }
+  ]
+}
+```
+
+### Interpretation
+
+- **index > 100**: Currency has strengthened since base date
+- **index < 100**: Currency has weakened since base date
+- **daily_change_pct**: Positive = strengthening, negative = weakening
+- **Typical range**: 95-105 over a 30-day period (5% movement)
+- **Use this data to**: Check signal realization by comparing predicted vs actual currency movements
+
+---
+
 ## Methodology: Geometric Mean
 
 ### Why Geometric Mean?
@@ -213,7 +281,7 @@ JPY          99.8765     -0.21%       10
 
 ## Dependencies
 
-- **Step 1**: Requires EUR pair prices
+- **fetch-exchange-rates**: Requires EUR pair prices
 
 ---
 
@@ -221,7 +289,7 @@ JPY          99.8765     -0.21%       10
 
 After running this step:
 ```bash
-# Step 3: Aggregate news
+# fetch-news: Aggregate news
 python3 scripts/fetch-news.py
 
 # Or run full pipeline
@@ -251,10 +319,10 @@ cat data/indices/USD_index.json | grep calculation_method
 
 **Symptom**: `pairs_count` less than 10 for a currency
 
-**Cause**: Missing price data from Step 1
+**Cause**: Missing price data from fetch-exchange-rates
 
 **Solution**:
-- Verify Step 1 ran successfully
+- Verify fetch-exchange-rates ran successfully
 - Check `/data/prices/fx-rates-{date}.json` has all currencies
 
 ### Issue: Index values seem incorrect
@@ -270,7 +338,7 @@ cat data/indices/USD_index.json | grep calculation_method
 
 ## Notes
 
-- Runs daily after Step 1
+- Runs daily after fetch-exchange-rates
 - Needs 7-14 days of history for meaningful realization checks
 - All 11 currencies get indices
 - Significant improvement over simple EUR-based ratios

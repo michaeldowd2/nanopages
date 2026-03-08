@@ -25,6 +25,71 @@ python3 scripts/fetch-news.py
 
 ---
 
+## Expected Output
+
+### Output Files
+
+**Primary Output**: `/data/news/{CURRENCY}/{date}.json` (one file per currency per day)
+- Format: JSON
+- Updated: Created/appended during each run
+- Size: ~5-20 KB per currency per day
+
+**Deduplication Index**: `/data/news/url_index.json`
+- Tracks all seen URLs to prevent duplicates
+- Size: ~50-100 KB (growing over time)
+
+### Output Schema
+
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| currency | string | Currency this file relates to | USD |
+| date | string | Date key (YYYY-MM-DD) | 2026-02-21 |
+| articles | array | List of article objects | [...] |
+| combined_text | string | All snippets concatenated | "Fed signals..." |
+
+**Article Object**:
+
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| title | string | Article headline | Fed signals hawkish shift |
+| url | string | Article URL | https://... |
+| snippet | string | Clean text excerpt | Fed signals... |
+| published_at | string | Publication timestamp (ISO) | 2026-02-21T09:00:00Z |
+| relevance_score | float | Currency relevance (0-1) | 0.85 |
+| currency | string | Related currency | USD |
+| source | string | Source identifier | FXStreet |
+
+### Sample Output
+
+```json
+{
+  "currency": "USD",
+  "date": "2026-02-21",
+  "articles": [
+    {
+      "title": "Fed signals hawkish shift",
+      "url": "https://www.fxstreet.com/news/...",
+      "snippet": "The Federal Reserve indicated a more hawkish stance...",
+      "published_at": "2026-02-21T09:00:00Z",
+      "relevance_score": 0.85,
+      "currency": "USD",
+      "source": "FXStreet"
+    }
+  ],
+  "combined_text": "The Federal Reserve indicated a more hawkish stance..."
+}
+```
+
+### Interpretation
+
+- **relevance_score**: Higher values (>0.7) indicate strong currency relevance
+- **source**: Identifies where article came from (FXStreet, ForexLive, NewsAPI, etc.)
+- **Typical article count**: 5-15 articles per currency per day
+- **combined_text**: Used by generate-sentiment-signals for sentiment analysis
+- **Use this data to**: Analyze time horizons and generate sentiment signals
+
+---
+
 ## Data Sources
 
 ### RSS Feeds
@@ -286,7 +351,7 @@ This ensures:
 
 After running this step:
 ```bash
-# Step 4: Analyze time horizons
+# analyze-time-horizons: Analyze time horizons
 python3 scripts/analyze-time-horizons-llm.py
 
 # Or run full pipeline

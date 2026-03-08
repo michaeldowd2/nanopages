@@ -6,7 +6,9 @@ Export pipeline data to CSVs and publish dashboard.
 
 Generate CSV exports for the dashboard and publish the entire project (scripts, skills, docs, config, site_data, and dashboard HTML) to GitHub Pages.
 
-## Running This Step
+---
+
+## Quick Start
 
 ### Part 1: Export CSVs
 
@@ -15,7 +17,58 @@ cd /workspace/group/fx-portfolio
 python3 scripts/export-pipeline-data.py
 ```
 
-This generates CSV files in `site_data/`:
+---
+
+## Expected Output
+
+### Output Files
+
+All files generated in `site_data/` directory:
+
+**Exchange Rates**:
+- `site_data/step1_exchange_rates_matrix.csv` (~10 KB)
+
+**Currency Indices**:
+- `site_data/step2_indices.csv` (~20 KB)
+
+**News Articles**:
+- `site_data/step3_news.csv` (~100 KB)
+
+**Time Horizons**:
+- `site_data/step4_horizons.csv` (~50 KB)
+- `site_data/step4_1_currency_events.csv` (~30 KB)
+
+**Sentiment Signals**:
+- `site_data/step5_signals.csv` (~150 KB)
+
+**Signal Realization**:
+- `site_data/step6_realization.csv` (~150 KB)
+
+**Aggregated Signals**:
+- `site_data/step7_aggregated_signals.csv` (~5 KB)
+
+**Trades**:
+- `site_data/step8_trades.csv` (~10 KB)
+
+**Strategies**:
+- `site_data/step9_strategies.csv` (~20 KB)
+
+**Configuration**:
+- `site_data/system_config.json` (~5 KB)
+- `site_data/pipeline_steps.json` (~2 KB)
+
+**Total Size**: ~552 KB (compressed to ~100 KB for GitHub)
+
+### Interpretation
+
+- All CSV files are dashboard-ready formats
+- Files are regenerated completely on each run (no appending)
+- Data spans the entire pipeline history (30 days rolling window for most data)
+- **Use this data to**: Power the FX Dashboard visualizations and analysis
+
+---
+
+### Generated CSV files in `site_data/`:
 - `site_data/step1_exchange_rates_matrix.csv`
 - `site_data/step2_indices.csv`
 - `site_data/step3_news.csv`

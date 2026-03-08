@@ -1,4 +1,4 @@
-# Skill: execute-strategies-step9
+# Skill: execute-strategies
 
 Execute trading strategies on hypothetical portfolios using unrealized signals.
 
@@ -6,17 +6,69 @@ Execute trading strategies on hypothetical portfolios using unrealized signals.
 
 Strategies aggregate currency signals, generate pair trades, and track hypothetical account balances over time. Multiple parameter combinations run in parallel to compare performance.
 
-## Running This Step
+---
+
+## Quick Start
 
 ```bash
 cd /workspace/group/fx-portfolio
 python3 scripts/strategy-simple-momentum.py
 ```
 
+---
+
+## Expected Output
+
+### Output Files
+
+**Primary Output**: `/data/exports/step7_strategies.csv`
+- Format: CSV
+- Updated: Appended daily
+- Size: ~2-5 KB per day
+
+**Detailed Output**: `/data/exports/step7_strategies_detail.json`
+- Format: JSON
+- Contains full trade history and aggregate signals
+- Size: ~20-50 KB per day
+
+**Portfolio State**: `/data/portfolios/{strategy_name}_{params}.json`
+- Format: JSON
+- One file per strategy combination
+- Persistent state between runs
+
+### Output Schema (CSV)
+
+| Column | Type | Description | Example |
+|--------|------|-------------|---------|
+| date | string | Execution date (YYYY-MM-DD) | 2026-02-21 |
+| strategy_name | string | Strategy identifier | simple-momentum |
+| strategy_params | string | Parameter combination | conf=0.5_size=0.25_agg=average |
+| executed_trades | integer | Number of trades executed | 2 |
+| EUR, USD, GBP, JPY... | float | Balance in each currency | 5000 |
+| current_value | float | Total portfolio value in EUR | 9875.50 |
+
+### Sample Output
+
+```csv
+date,strategy_name,strategy_params,executed_trades,EUR,USD,GBP,JPY,CHF,AUD,CAD,NOK,SEK,CNY,MXN,current_value
+2026-02-21,simple-momentum,conf=0.5_size=0.25_agg=average,2,5000,2500,0,0,0,1200,0,0,0,0,0,9875.50
+```
+
+### Interpretation
+
+- **executed_trades**: Number of currency pair trades executed that day
+- **current_value**: Total portfolio value in EUR (accounts for all currency holdings)
+- **Currency balances**: Current holdings in each currency (0 = no position)
+- **Value < 10000**: Portfolio has lost money (spreads, bad trades)
+- **Value > 10000**: Portfolio has gained money (successful trades)
+- **Use this data to**: Compare performance across different strategy parameters
+
+---
+
 ## Current Implementation: Simple Momentum Strategy
 
 **Logic:**
-1. Load unrealized signals (realized=false from Step 6)
+1. Load unrealized signals (realized=false from check-signal-realization)
 2. Aggregate multiple signals per currency into composite signal
 3. Rank currencies by signal strength
 4. Pair strongest bullish with strongest bearish
@@ -119,9 +171,9 @@ Portfolio persists between runs - next day's strategy starts with previous day's
 
 ## Dependencies
 
-- **Step 1**: Requires current EUR pair prices
-- **Step 5**: Requires signals
-- **Step 6**: Requires realization status (realized=true/false)
+- **fetch-exchange-rates**: Requires current EUR pair prices
+- **generate-sentiment-signals**: Requires signals
+- **check-signal-realization**: Requires realization status (realized=true/false)
 
 ## Next Steps
 

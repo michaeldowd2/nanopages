@@ -31,6 +31,82 @@ python3 scripts/generate-sentiment-signals.py
 
 ---
 
+## Expected Output
+
+### Output Files
+
+**Primary Output**: `/data/signals/{CURRENCY}/{date}.json` (one file per currency per day)
+- Format: JSON
+- Updated: Created/overwritten on each run
+- Size: ~10-50 KB per currency per day
+- Contains signals from ALL configured generators
+
+### Output Schema
+
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| date | string | Signal date (YYYY-MM-DD) | 2026-02-24 |
+| generator_id | string | Generator identifier | llm-sentiment-v1-haiku |
+| generator_type | string | Generator type | llm-sentiment-v1 |
+| generator_params | object | Generator parameters | {...} |
+| signal_type | string | Always "news-sentiment" | news-sentiment |
+| currency | string | Currency code | USD |
+| predicted_direction | string | Direction prediction | bullish |
+| predicted_magnitude | string | Magnitude estimate | medium |
+| confidence | float | Confidence score (0-1) | 0.7 |
+| article_url | string | Source article URL | https://... |
+| article_title | string | Article headline | Fed signals... |
+| reasoning | string | Analysis explanation | The article contains... |
+
+### Sample Output
+
+```json
+{
+  "currency": "USD",
+  "date": "2026-02-24",
+  "signals": [
+    {
+      "date": "2026-02-24",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {...},
+      "signal_type": "news-sentiment",
+      "currency": "USD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.5,
+      "article_url": "https://...",
+      "article_title": "USD consolidates ahead of data",
+      "reasoning": "USD mixed signals; markets consolidating"
+    },
+    {
+      "date": "2026-02-24",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {...},
+      "signal_type": "news-sentiment",
+      "currency": "USD",
+      "predicted_direction": "bullish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.7,
+      "article_url": "https://...",
+      "article_title": "USD consolidates ahead of data",
+      "reasoning": "The article contains several positive economic indicators..."
+    }
+  ]
+}
+```
+
+### Interpretation
+
+- **predicted_direction**: bullish (currency strengthening), bearish (weakening), neutral (unclear)
+- **confidence**: Higher values (>0.7) indicate stronger signal conviction
+- **Multiple signals per article**: Each generator produces its own signal for comparison
+- **Typical signal count**: 5-15 signals per currency per day (varies by generator count)
+- **Use this data to**: Check realization status and aggregate signals for trading decisions
+
+---
+
 ## Modular Generator System
 
 ### Architecture
@@ -391,8 +467,8 @@ api_key = get_anthropic_key()
 
 ## Dependencies
 
-- **Step 3**: Requires news articles
-- **Step 4**: Optional (uses horizon if available)
+- **fetch-news**: Requires news articles
+- **analyze-time-horizons**: Optional (uses horizon if available)
 - **Environment**: ANTHROPIC_API_KEY in .env (for LLM generator)
 
 ---
@@ -401,7 +477,7 @@ api_key = get_anthropic_key()
 
 After running this step:
 ```bash
-# Step 6: Check signal realization
+# check-signal-realization: Check signal realization
 python3 scripts/check-signal-realization.py
 
 # Or run full pipeline
@@ -496,7 +572,7 @@ elif generator_type == 'my-new-method-v1':  # NEW
     analyze_func = analyze_sentiment_my_new_method
 ```
 
-### Step 3: Add to Config
+### fetch-news: Add to Config
 
 Update `system_config.json`:
 
@@ -515,7 +591,7 @@ Update `system_config.json`:
 }
 ```
 
-### Step 4: Run
+### analyze-time-horizons: Run
 
 ```bash
 python3 scripts/generate-sentiment-signals-v2.py
@@ -556,7 +632,7 @@ All generators will run automatically!
 
 ## Notes
 
-- Runs daily after Step 3 (and optionally Step 4)
+- Runs daily after fetch-news (and optionally analyze-time-horizons)
 - Creates one signal per article per currency per generator
 - Rerunning overwrites previous day's signals
 - Safe to rerun for debugging

@@ -23,6 +23,61 @@ python3 scripts/fetch-exchange-rates.py
 
 ---
 
+## Expected Output
+
+### Output Files
+
+**Primary Output**: `/data/prices/fx-rates-{date}.json`
+- Format: JSON
+- Updated: Created once per day
+- Size: ~5 KB per day
+
+### Output Schema
+
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| timestamp | string | Fetch timestamp (ISO) | 2026-02-23T10:00:00Z |
+| base | string | Base currency (always EUR) | EUR |
+| rates | object | EUR-based rates for all currencies | {"USD": 1.1829, ...} |
+| pairs | object | All cross-currency pairs (11×11=121) | {"EUR/USD": 1.183, ...} |
+
+### Sample Output
+
+```json
+{
+  "timestamp": "2026-02-23T10:00:00Z",
+  "base": "EUR",
+  "rates": {
+    "USD": 1.18290676,
+    "GBP": 0.87451988,
+    "JPY": 182.46884181,
+    "CHF": 0.91263474,
+    "AUD": 1.67173377,
+    "CAD": 1.61632137,
+    "NOK": 11.24769343,
+    "SEK": 10.67358356,
+    "CNY": 8.16992815,
+    "MXN": 20.2907358
+  },
+  "pairs": {
+    "EUR/USD": 1.183,
+    "USD/JPY": 154.32,
+    "GBP/USD": 1.352,
+    "...": "... (121 total pairs)"
+  }
+}
+```
+
+### Interpretation
+
+- **rates**: Direct EUR-based exchange rates (EUR/XXX format)
+- **pairs**: Calculated cross-rates between all currencies (121 total combinations)
+- **Cross-rate calculation**: USD/JPY = (EUR/JPY) ÷ (EUR/USD)
+- **Typical row count**: 1 file per day, 121 currency pairs per file
+- **Use this data to**: Calculate currency indices in calculate-currency-indices
+
+---
+
 ## API Details
 
 ### Source
@@ -172,7 +227,7 @@ Dashboard file: `site_data/step1_exchange_rates_matrix.csv`
 
 ## Dependencies
 
-- None (Step 1 is the starting point)
+- None (fetch-exchange-rates is the starting point)
 - Uses Python standard library only (`urllib.request`, `json`)
 - No external packages needed
 
@@ -180,9 +235,9 @@ Dashboard file: `site_data/step1_exchange_rates_matrix.csv`
 
 ## Next Steps
 
-After running Step 1:
+After running fetch-exchange-rates:
 ```bash
-# Step 2: Calculate currency indices
+# calculate-currency-indices: Calculate currency indices
 python3 scripts/calculate-currency-indices.py
 
 # Or run full pipeline date
