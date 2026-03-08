@@ -1,0 +1,138 @@
+{
+  "currency": "GBP",
+  "calculation_method": "geometric_mean",
+  "note": "Index isolates currency movement using geometric mean of all pairs",
+  "base_date": "2026-02-24",
+  "data": [
+    {
+      "date": "2026-02-24",
+      "currency": "GBP",
+      "index": 100.0,
+      "prev_index": null,
+      "daily_change_pct": null,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-25",
+      "currency": "GBP",
+      "index": 100.0541,
+      "prev_index": 100.0,
+      "daily_change_pct": 0.0541,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-26",
+      "currency": "GBP",
+      "index": 99.8327,
+      "prev_index": 100.0541,
+      "daily_change_pct": -0.2213,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-27",
+      "currency": "GBP",
+      "index": 100.2677,
+      "prev_index": 99.8327,
+      "daily_change_pct": 0.4358,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-28",
+      "currency": "GBP",
+      "index": 100.3799,
+      "prev_index": 100.2677,
+      "daily_change_pct": 0.1119,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-01",
+      "currency": "GBP",
+      "index": 100.3799,
+      "prev_index": 100.3799,
+      "daily_change_pct": -0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-02",
+      "currency": "GBP",
+      "index": 100.6079,
+      "prev_index": 100.3799,
+      "daily_change_pct": 0.2271,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-03",
+      "currency": "GBP",
+      "index": 100.3714,
+      "prev_index": 100.6079,
+      "daily_change_pct": -0.2351,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-04",
+      "currency": "GBP",
+      "index": 100.0922,
+      "prev_index": 100.3714,
+      "daily_change_pct": -0.2782,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-05",
+      "currency": "GBP",
+      "index": 100.0922,
+      "prev_index": 100.0922,
+      "daily_change_pct": -0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-06",
+      "currency": "GBP",
+      "index": 100.3306,
+      "prev_index": 100.0922,
+      "daily_change_pct": 0.2382,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-07",
+      "currency": "GBP",
+      "index": 100.0683,
+      "prev_index": 100.3306,
+      "daily_change_pct": -0.2614,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-08",
+      "currency": "GBP",
+      "index": 99.8409,
+      "prev_index": 100.0683,
+      "daily_change_pct": -0.2273,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    }
+  ]
+}

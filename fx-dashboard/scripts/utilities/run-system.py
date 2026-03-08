@@ -234,11 +234,17 @@ Examples:
   # Run all processes for specific date
   %(prog)s --date 2024-01-15
 
+  # Run all processes for multiple dates
+  %(prog)s --dates 2024-01-15 2024-01-16 2024-01-17
+
   # Run specific processes for today
   %(prog)s --process-ids 1 2 3
 
   # Run specific processes for specific date
   %(prog)s --date 2024-01-15 --process-ids 5 6 7
+
+  # Run specific processes for multiple dates
+  %(prog)s --dates 2024-01-15 2024-01-16 --process-ids 5 6 7
 
   # Include deployment step
   %(prog)s --process-ids 1 2 3 10
@@ -247,9 +253,11 @@ Examples:
 
     parser.add_argument(
         '--date',
+        '--dates',
         type=str,
+        nargs='+',
         default=None,
-        help='Date to process (YYYY-MM-DD format). Default: today'
+        help='Date(s) to process (YYYY-MM-DD format, space-separated). Default: today'
     )
 
     parser.add_argument(
@@ -274,13 +282,18 @@ Examples:
 
     args = parser.parse_args()
 
-    # Determine date
-    date = args.date
-    if date is None:
-        date = datetime.now().strftime('%Y-%m-%d')
-        logger.info(f"Using current date: {date}")
+    # Determine dates to process
+    dates = args.date
+    if dates is None:
+        dates = [datetime.now().strftime('%Y-%m-%d')]
+        logger.info(f"Using current date: {dates[0]}")
     else:
-        logger.info(f"Using specified date: {date}")
+        # Sort dates in ascending order
+        dates = sorted(dates)
+        if len(dates) == 1:
+            logger.info(f"Using specified date: {dates[0]}")
+        else:
+            logger.info(f"Using {len(dates)} dates: {dates[0]} to {dates[-1]}")
 
     # Load configuration
     config = load_pipeline_config()
@@ -303,8 +316,9 @@ Examples:
     logger.info("=" * 60)
     logger.info("EXECUTION PLAN")
     logger.info("=" * 60)
-    logger.info(f"Date: {date}")
-    logger.info(f"Processes to execute: {len(execution_order)}")
+    logger.info(f"Dates: {', '.join(dates)}")
+    logger.info(f"Processes to execute per date: {len(execution_order)}")
+    logger.info(f"Total executions: {len(dates) * len(execution_order)}")
     logger.info("")
 
     steps = config.get('steps', {})
@@ -322,36 +336,69 @@ Examples:
         logger.info("DRY RUN - No processes executed")
         return
 
-    # Execute processes in order
+    # Execute processes for each date
     logger.info("Starting execution...")
     logger.info("")
 
-    success_count = 0
-    failure_count = 0
+    total_success = 0
+    total_failure = 0
+    date_results = {}
 
-    for process_id in execution_order:
-        success = execute_process(config, process_id, date)
-        if success:
-            success_count += 1
-        else:
-            failure_count += 1
-            logger.error(f"Process {process_id} failed - stopping execution")
-            break
+    for date_idx, date in enumerate(dates, 1):
+        if len(dates) > 1:
+            logger.info("")
+            logger.info("=" * 60)
+            logger.info(f"DATE {date_idx}/{len(dates)}: {date}")
+            logger.info("=" * 60)
+
+        success_count = 0
+        failure_count = 0
+
+        for process_id in execution_order:
+            success = execute_process(config, process_id, date)
+            if success:
+                success_count += 1
+            else:
+                failure_count += 1
+                logger.error(f"Process {process_id} failed for date {date} - stopping execution for this date")
+                break
+
+        date_results[date] = {
+            'success': success_count,
+            'failure': failure_count,
+            'total': len(execution_order)
+        }
+
+        total_success += success_count
+        total_failure += failure_count
+
+        # If a date fails, optionally stop or continue to next date
+        if failure_count > 0:
+            logger.warning(f"Date {date} had failures - continuing to next date")
 
     # Summary
     logger.info("")
     logger.info("=" * 60)
     logger.info("EXECUTION SUMMARY")
     logger.info("=" * 60)
-    logger.info(f"Successful: {success_count}")
-    logger.info(f"Failed: {failure_count}")
-    logger.info(f"Total: {len(execution_order)}")
 
-    if failure_count == 0:
+    if len(dates) > 1:
+        logger.info(f"Dates processed: {len(dates)}")
+        logger.info("")
+        for date, results in date_results.items():
+            status = "✓" if results['failure'] == 0 else "✗"
+            logger.info(f"  {status} {date}: {results['success']}/{results['total']} successful")
+        logger.info("")
+
+    logger.info(f"Total successful: {total_success}")
+    logger.info(f"Total failed: {total_failure}")
+    logger.info(f"Total executions: {len(dates) * len(execution_order)}")
+
+    if total_failure == 0:
         logger.info("✓ All processes completed successfully")
         sys.exit(0)
     else:
-        logger.error("✗ Pipeline execution failed")
+        logger.error(f"✗ Pipeline execution had {total_failure} failure(s)")
         sys.exit(1)
 
 

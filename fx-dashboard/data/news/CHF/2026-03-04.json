@@ -1,0 +1,31 @@
+{
+  "currency": "CHF",
+  "date": "2026-03-04",
+  "articles": [
+    {
+      "title": "France February final services PMI 49.6 vs 49.6 prelim",
+      "url": "https://investinglive.com/news/france-february-final-services-pmi-496-vs-496-prelim-20260304/",
+      "snippet": "Prior 48.4Composite PMI 49.9 vs 49.9 prelimPrior 49.1No changes to the initial estimates as France's services sector registers a second successive month of falling business activity. The survey highlights that panelists attributed the decline in output to a mix of harsh weather conditions, project delays and elevated uncertainty.In terms of price dynamics, France is arguably the only major economy in the region to see more benign inflation pressures. So, there's not much to comment on this front",
+      "source": "ForexLive",
+      "relevance_score": 0.33,
+      "currency": "CHF"
+    },
+    {
+      "title": "Switzerland February CPI +0.1% vs -0.1% y/y expected",
+      "url": "https://investinglive.com/news/switzerland-february-cpi-01-vs-01-yy-expected-20260304/",
+      "snippet": "Prior +0.1%Core CPI +0.4% y/yPrior +0.5%Headline annual inflation remains unchanged and continues to border on deflation territory. The bad news for the SNB is that core annual inflation is seen trickling lower to 0.4%. For some context, core annual inflation was still hovering at 0.9% in February 2025. It's a slow descend but one that continues to threaten a return to deflation for the Swiss economy.The bright side is that the US-Iran conflict might help to push up price pressures a little, eve",
+      "source": "ForexLive",
+      "relevance_score": 1.0,
+      "currency": "CHF"
+    },
+    {
+      "title": "CHF: Policy support seen as FX intervention focus \u2013 Nomura",
+      "url": "https://www.fxstreet.com/news/chf-policy-support-seen-as-fx-intervention-focus-nomura-202603040929",
+      "snippet": "Nomura analyzes Swiss inflation and Swiss Franc dynamics, noting that February CPI stayed at 0.1% year-on-year, slightly above its forecast. The bank highlights that CHF strength is lowering imported prices, offsetting some energy risks.",
+      "source": "FXStreet",
+      "relevance_score": 1.0,
+      "currency": "CHF"
+    }
+  ],
+  "combined_text": "[0.33] France February final services PMI 49.6 vs 49.6 prelim\nPrior 48.4Composite PMI 49.9 vs 49.9 prelimPrior 49.1No changes to the initial estimates as France's services sector registers a second successive month of falling business activity. The survey highlights that panelists attributed the decline in output to a mix of harsh weather conditions, project delays and elevated uncertainty.In terms of price dynamics, France is arguably the only major economy in the region to see more benign inflation pressures. So, there's not much to comment on this front\n\n[1.00] Switzerland February CPI +0.1% vs -0.1% y/y expected\nPrior +0.1%Core CPI +0.4% y/yPrior +0.5%Headline annual inflation remains unchanged and continues to border on deflation territory. The bad news for the SNB is that core annual inflation is seen trickling lower to 0.4%. For some context, core annual inflation was still hovering at 0.9% in February 2025. It's a slow descend but one that continues to threaten a return to deflation for the Swiss economy.The bright side is that the US-Iran conflict might help to push up price pressures a little, eve\n\n[1.00] CHF: Policy support seen as FX intervention focus \u2013 Nomura\nNomura analyzes Swiss inflation and Swiss Franc dynamics, noting that February CPI stayed at 0.1% year-on-year, slightly above its forecast. The bank highlights that CHF strength is lowering imported prices, offsetting some energy risks."
+}

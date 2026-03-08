@@ -1,0 +1,98 @@
+{
+  "currency": "GBP",
+  "date": "2026-03-05",
+  "signals": [
+    {
+      "date": "2026-03-05",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "GBP",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://www.fxstreet.com/news/boe-dmp-survey-uk-firms-anticipate-easing-inflation-improved-employment-outlook-202603051025",
+      "article_title": "BoE DMP Survey: UK firms anticipate easing inflation, improved employment outlook",
+      "published_at": null,
+      "relevance_score": 0.67,
+      "reasoning": "GBP mixed signals; markets consolidating",
+      "timestamp": "2026-03-05T12:32:47.204743Z"
+    },
+    {
+      "date": "2026-03-05",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "GBP",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://www.marketwatch.com/story/a-piece-of-hollywood-history-gorgeous-palm-springs-estate-once-owned-by-cary-grant-listed-for-12-7-million-e2a312f5?mod=mw_rss_topstories",
+      "article_title": "A piece of Hollywood history: Gorgeous Palm Springs estate once owned by Cary Grant listed for $12.7 million",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "GBP mixed signals; markets consolidating",
+      "timestamp": "2026-03-05T12:32:47.204841Z"
+    },
+    {
+      "date": "2026-03-05",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "GBP",
+      "predicted_direction": "bullish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.8,
+      "pair_context": null,
+      "article_url": "https://www.fxstreet.com/news/boe-dmp-survey-uk-firms-anticipate-easing-inflation-improved-employment-outlook-202603051025",
+      "article_title": "BoE DMP Survey: UK firms anticipate easing inflation, improved employment outlook",
+      "published_at": null,
+      "relevance_score": 0.67,
+      "reasoning": "The article reports that UK firms anticipate easing inflation and an improved employment outlook, which suggests economic strength and a potentially hawkish stance from the Bank of England, both of which are positive for the British pound.",
+      "timestamp": "2026-03-05T12:33:36.289605Z"
+    },
+    {
+      "date": "2026-03-05",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "GBP",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": "null",
+      "confidence": 0.2,
+      "pair_context": null,
+      "article_url": "https://www.marketwatch.com/story/a-piece-of-hollywood-history-gorgeous-palm-springs-estate-once-owned-by-cary-grant-listed-for-12-7-million-e2a312f5?mod=mw_rss_topstories",
+      "article_title": "A piece of Hollywood history: Gorgeous Palm Springs estate once owned by Cary Grant listed for $12.7 million",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article is about a real estate property once owned by Cary Grant and does not contain any information related to the British Pound or the FX market.",
+      "timestamp": "2026-03-05T12:33:37.343611Z"
+    }
+  ]
+}

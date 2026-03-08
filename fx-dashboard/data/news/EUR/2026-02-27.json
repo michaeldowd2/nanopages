@@ -1,0 +1,79 @@
+{
+  "currency": "EUR",
+  "date": "2026-02-27",
+  "articles": [
+    {
+      "title": "Germany February preliminary CPI +1.9% vs +2.0% y/y expected",
+      "url": "https://investinglive.com/news/germany-february-preliminary-cpi-19-vs-20-yy-expected-20260227/",
+      "snippet": "Prior +2.1%HICP +2.0% vs +2.1% y/y expectedPrior +2.1%Core CPI Y/Y +2.5% vs +2.5% priorWe have slight misses here but that was pretty much expected after the softer German states readings here. Having said that, the core measure matched the prior reading. The data won't change anything for the ECB. The market reaction has been muted given no change to interest rates outlook. This article was written by Giuseppe Dellamotta at investinglive.com.",
+      "published_at": "2026-02-27T22:35:10.230266",
+      "source": "ForexLive",
+      "relevance_score": 0.33,
+      "currency": "EUR"
+    },
+    {
+      "title": "investingLive European markets wrap: Dollar steady, risk trades on edge amid cautious mood",
+      "url": "https://investinglive.com/news/investinglive-european-markets-wrap-dollar-steady-risk-trades-on-edge-amid-cautious-mood-20260227/",
+      "snippet": "Headlines:Gold remains supported amid US-Iran uncertainty, but downside risks linger with NFP nextOil prices remain supported amid US-Iran uncertainty; traders likely to hedge into weekendMajor currencies not up to much as we get into the final stretch of the weekBavaria February CPI +1.9% vs +2.1% y/y priorFrance February preliminary CPI +1.0% vs +0.8% y/y expectedSpain February preliminary CPI +2.3% vs +2.2% y/y expectedFrance Q4 final GDP +0.2% vs +0.2% q/q prelimSwitzerland Q4 GDP +0.1% vs +",
+      "published_at": "2026-02-27T22:35:10.230380",
+      "source": "ForexLive",
+      "relevance_score": 0.67,
+      "currency": "EUR"
+    },
+    {
+      "title": "Spain February preliminary CPI +2.3% vs +2.2% y/y expected",
+      "url": "https://investinglive.com/news/spain-february-preliminary-cpi-23-vs-22-yy-expected-20260227/",
+      "snippet": "Prior +2.3%HICP +2.5% vs +2.3% y/y expectedPrior +2.4%The main thing to watch is core annual inflation and that is seen at 2.7%, a step up from the 2.6% reading in January. The trend for core prices is looking rather dicey for Spain as it is moving upwards since the middle of last year (graph below). And besides Germany, this remains another spot in which price pressures are keeping the ECB on their toes for now.The data here won't be one to compel the ECB to move away from the sidelines any tim",
+      "published_at": "2026-02-27T22:35:10.231120",
+      "source": "ForexLive",
+      "relevance_score": 0.33,
+      "currency": "EUR"
+    },
+    {
+      "title": "What are the main events for today?",
+      "url": "https://investinglive.com/news/what-are-the-main-events-for-today-20260227/",
+      "snippet": "EUROPEAN SESSIONIn the European session, the main highlight is going to be the German inflation data both the state readings and the national CPI. We will also get the French and Spanish inflation figures, but the German data is generally more market-moving because it carries more weight in the Eurozone CPI calculations. The German CPI Y/Y is expected at 2.0% vs 2.1% prior.We also have the French and Swiss Q4 GDP reports, but these will be the final readings, so they won't be market-moving and w",
+      "published_at": "2026-02-27T22:35:10.231369",
+      "source": "ForexLive",
+      "relevance_score": 1.0,
+      "currency": "EUR"
+    },
+    {
+      "title": "Heads up: Germany states' CPI readings due later today",
+      "url": "https://investinglive.com/news/heads-up-germany-states-cpi-readings-due-later-today-20260227/",
+      "snippet": "German inflation remains one of, if not the key sticking point for the ECB in trying to sort out monetary policy setting. Price pressures in Europe's largest economy hasn't dropped off enough to allow for the central bank to take more steps in lowering interest rates further. And late last year, there were still stagflation concerns for the most part.On that final point, a lot of the fears have been allayed in the past two months at least. The German economy has held up well with a notable recov",
+      "published_at": "2026-02-27T22:35:10.231712",
+      "source": "ForexLive",
+      "relevance_score": 1.0,
+      "currency": "EUR"
+    },
+    {
+      "title": "Week Ahead: US Dollar slips on trade uncertainty as NFP, Eurozone HICP loom",
+      "url": "https://www.fxstreet.com/news/week-ahead-us-dollar-slips-on-trade-uncertainty-as-nfp-eurozone-hicp-loom-202602272051",
+      "snippet": "The US Dollar (USD) lost ground this week amid geopolitical uncertainty and the United States (US) trade policy developments after the Supreme Court ruled the Trump administration's tariffs illegal and he responded with a fresh round of levies.",
+      "published_at": "2026-02-27T22:35:10.323023",
+      "source": "FXStreet",
+      "relevance_score": 1.0,
+      "currency": "EUR"
+    },
+    {
+      "title": "EUR/USD steadies as strong US PPI data fails to lift Dollar",
+      "url": "https://www.fxstreet.com/news/eur-usd-steadies-as-strong-us-ppi-data-fails-to-lift-dollar-202602271613",
+      "snippet": "EUR/USD steadies on Friday, extending the range-bound price action that has defined trading so far this week. The Euro (EUR) remains relatively firm after the US Dollar (USD) failed to build on stronger-than-expected US Producer Price Index (PPI) data.",
+      "published_at": "2026-02-27T22:35:10.323300",
+      "source": "FXStreet",
+      "relevance_score": 0.67,
+      "currency": "EUR"
+    },
+    {
+      "title": "EUR/GBP gains amid UK political jitters and dovish BoE bets",
+      "url": "https://www.fxstreet.com/news/eur-gbp-gains-mmid-uk-political-jitters-and-dovish-boe-bets-202602271348",
+      "snippet": "The Euro (EUR) ticks higher against the British Pound (GBP) on Friday, with Sterling under broad pressure as renewed political uncertainty in the United Kingdom (UK) dampens investor sentiment.",
+      "published_at": "2026-02-27T22:35:10.323566",
+      "source": "FXStreet",
+      "relevance_score": 0.67,
+      "currency": "EUR"
+    }
+  ],
+  "combined_text": "[0.33] Germany February preliminary CPI +1.9% vs +2.0% y/y expected\nPrior +2.1%HICP +2.0% vs +2.1% y/y expectedPrior +2.1%Core CPI Y/Y +2.5% vs +2.5% priorWe have slight misses here but that was pretty much expected after the softer German states readings here. Having said that, the core measure matched the prior reading. The data won't change anything for the ECB. The market reaction has been muted given no change to interest rates outlook. This article was written by Giuseppe Dellamotta at investinglive.com.\n\n[0.67] investingLive European markets wrap: Dollar steady, risk trades on edge amid cautious mood\nHeadlines:Gold remains supported amid US-Iran uncertainty, but downside risks linger with NFP nextOil prices remain supported amid US-Iran uncertainty; traders likely to hedge into weekendMajor currencies not up to much as we get into the final stretch of the weekBavaria February CPI +1.9% vs +2.1% y/y priorFrance February preliminary CPI +1.0% vs +0.8% y/y expectedSpain February preliminary CPI +2.3% vs +2.2% y/y expectedFrance Q4 final GDP +0.2% vs +0.2% q/q prelimSwitzerland Q4 GDP +0.1% vs +\n\n[0.33] Spain February preliminary CPI +2.3% vs +2.2% y/y expected\nPrior +2.3%HICP +2.5% vs +2.3% y/y expectedPrior +2.4%The main thing to watch is core annual inflation and that is seen at 2.7%, a step up from the 2.6% reading in January. The trend for core prices is looking rather dicey for Spain as it is moving upwards since the middle of last year (graph below). And besides Germany, this remains another spot in which price pressures are keeping the ECB on their toes for now.The data here won't be one to compel the ECB to move away from the sidelines any tim\n\n[1.00] What are the main events for today?\nEUROPEAN SESSIONIn the European session, the main highlight is going to be the German inflation data both the state readings and the national CPI. We will also get the French and Spanish inflation figures, but the German data is generally more market-moving because it carries more weight in the Eurozone CPI calculations. The German CPI Y/Y is expected at 2.0% vs 2.1% prior.We also have the French and Swiss Q4 GDP reports, but these will be the final readings, so they won't be market-moving and w\n\n[1.00] Heads up: Germany states' CPI readings due later today\nGerman inflation remains one of, if not the key sticking point for the ECB in trying to sort out monetary policy setting. Price pressures in Europe's largest economy hasn't dropped off enough to allow for the central bank to take more steps in lowering interest rates further. And late last year, there were still stagflation concerns for the most part.On that final point, a lot of the fears have been allayed in the past two months at least. The German economy has held up well with a notable recov\n\n[1.00] Week Ahead: US Dollar slips on trade uncertainty as NFP, Eurozone HICP loom\nThe US Dollar (USD) lost ground this week amid geopolitical uncertainty and the United States (US) trade policy developments after the Supreme Court ruled the Trump administration's tariffs illegal and he responded with a fresh round of levies.\n\n[0.67] EUR/USD steadies as strong US PPI data fails to lift Dollar\nEUR/USD steadies on Friday, extending the range-bound price action that has defined trading so far this week. The Euro (EUR) remains relatively firm after the US Dollar (USD) failed to build on stronger-than-expected US Producer Price Index (PPI) data.\n\n[0.67] EUR/GBP gains amid UK political jitters and dovish BoE bets\nThe Euro (EUR) ticks higher against the British Pound (GBP) on Friday, with Sterling under broad pressure as renewed political uncertainty in the United Kingdom (UK) dampens investor sentiment."
+}

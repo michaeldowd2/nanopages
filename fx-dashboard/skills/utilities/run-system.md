@@ -25,11 +25,17 @@ python3 scripts/utilities/run-system.py
 # Run all processes for specific date
 python3 scripts/utilities/run-system.py --date 2024-01-15
 
+# Run all processes for multiple dates
+python3 scripts/utilities/run-system.py --dates 2024-01-15 2024-01-16 2024-01-17
+
 # Run specific processes for today
 python3 scripts/utilities/run-system.py --process-ids 1 2 3
 
 # Run specific processes for specific date
 python3 scripts/utilities/run-system.py --date 2024-01-15 --process-ids 5 6 7
+
+# Run specific processes for multiple dates
+python3 scripts/utilities/run-system.py --dates 2024-01-15 2024-01-16 --process-ids 5 6 7
 
 # Include deployment step
 python3 scripts/utilities/run-system.py --include-deployment
@@ -42,11 +48,13 @@ python3 scripts/utilities/run-system.py --dry-run
 
 ## Parameters
 
-### `--date` (optional)
-- **Format**: YYYY-MM-DD
+### `--date` / `--dates` (optional)
+- **Format**: YYYY-MM-DD (space-separated for multiple dates)
 - **Default**: Today's date
-- **Purpose**: Specify which date to process
-- **Example**: `--date 2024-01-15`
+- **Purpose**: Specify which date(s) to process
+- **Single date**: `--date 2024-01-15`
+- **Multiple dates**: `--dates 2024-01-15 2024-01-16 2024-01-17`
+- **Execution order**: All processes run for first date, then second date, etc.
 
 ### `--process-ids` (optional)
 - **Format**: Space-separated list of process IDs
@@ -99,8 +107,28 @@ When you specify process IDs to run, the script:
 Processes are executed sequentially in dependency order:
 - Date parameter passed to processes that support it
 - Stdout/stderr captured and logged
-- Execution stops on first failure
+- Execution stops on first failure per date
 - Clear success/failure reporting
+
+**Multiple Dates**: When processing multiple dates, the script runs all processes for the first date before moving to the second date:
+
+```
+For each date (in ascending order):
+    For each process (in dependency order):
+        Execute process for this date
+```
+
+**Example**: `--dates 2024-01-15 2024-01-16 --process-ids 5 6 7`
+```
+Date 2024-01-15:
+  Process 5 (date=2024-01-15)
+  Process 6 (date=2024-01-15)
+  Process 7 (date=2024-01-15)
+Date 2024-01-16:
+  Process 5 (date=2024-01-16)
+  Process 6 (date=2024-01-16)
+  Process 7 (date=2024-01-16)
+```
 
 ---
 
@@ -141,6 +169,19 @@ Process a historical date (e.g., missed day):
 ```bash
 python3 scripts/utilities/run-system.py --date 2024-01-10
 ```
+
+### Backfill Multiple Historical Dates
+
+Process multiple historical dates in one run:
+```bash
+# Backfill 3 days
+python3 scripts/utilities/run-system.py --dates 2024-01-10 2024-01-11 2024-01-12
+
+# Backfill specific processes for multiple dates
+python3 scripts/utilities/run-system.py --dates 2024-01-10 2024-01-11 --process-ids 5 6 7 8 9
+```
+
+**Note**: Dates are automatically sorted in ascending order and processes run in order for each date before moving to the next.
 
 ### Regenerate Signals
 
@@ -222,14 +263,32 @@ Command: python3 /workspace/group/fx-portfolio/scripts/pipeline/calculate-curren
 
 ### Execution Summary
 
+**Single Date**:
 ```
 ============================================================
 EXECUTION SUMMARY
 ============================================================
-Successful: 7
-Failed: 0
-Total: 7
+Total successful: 7
+Total failed: 0
+Total executions: 7
 ✓ All processes completed successfully
+```
+
+**Multiple Dates**:
+```
+============================================================
+EXECUTION SUMMARY
+============================================================
+Dates processed: 3
+
+  ✓ 2024-01-15: 3/3 successful
+  ✓ 2024-01-16: 3/3 successful
+  ✗ 2024-01-17: 2/3 successful
+
+Total successful: 8
+Total failed: 1
+Total executions: 9
+✗ Pipeline execution had 1 failure(s)
 ```
 
 ---

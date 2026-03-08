@@ -1,0 +1,144 @@
+{
+  "currency": "AUD",
+  "date": "2026-03-03",
+  "signals": [
+    {
+      "date": "2026-03-03",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://investinglive.com/news/australian-january-building-approvals-72-mm-vs-50-expected-20260303/",
+      "article_title": "Australian January building approvals -7.2% m/m vs +5.0% expected",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "AUD mixed signals; markets consolidating",
+      "timestamp": "2026-03-03T12:33:14.170942Z"
+    },
+    {
+      "date": "2026-03-03",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://www.globenewswire.com/news-release/2026/03/02/3247158/0/en/Belite-Bio-Reports-Preliminary-Unaudited-Fourth-Quarter-and-Full-Year-2025-Financial-Results-and-Provides-a-Corporate-Update.html",
+      "article_title": "Belite Bio Reports Preliminary, Unaudited Fourth Quarter and Full Year 2025 Financial Results and Provides a Corporate Update",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "AUD mixed signals; markets consolidating",
+      "timestamp": "2026-03-03T12:33:14.170996Z"
+    },
+    {
+      "date": "2026-03-03",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://finance.yahoo.com/news/billed-dental-never-got-insurance-120000339.html",
+      "article_title": "I was billed for dental work I never got and my insurance says it\u2019s fraud. But the dentist is threatening collections",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "AUD mixed signals; markets consolidating",
+      "timestamp": "2026-03-03T12:33:14.171025Z"
+    },
+    {
+      "date": "2026-03-03",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "bearish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.8,
+      "pair_context": null,
+      "article_url": "https://investinglive.com/news/australian-january-building-approvals-72-mm-vs-50-expected-20260303/",
+      "article_title": "Australian January building approvals -7.2% m/m vs +5.0% expected",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article reports a sharp two-month drop in Australian building approvals, which is a negative economic indicator. This suggests weaker construction activity and economic growth, which would be bearish for the Australian dollar.",
+      "timestamp": "2026-03-03T12:33:59.633739Z"
+    },
+    {
+      "date": "2026-03-03",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": "null",
+      "confidence": 0.2,
+      "pair_context": null,
+      "article_url": "https://www.globenewswire.com/news-release/2026/03/02/3247158/0/en/Belite-Bio-Reports-Preliminary-Unaudited-Fourth-Quarter-and-Full-Year-2025-Financial-Results-and-Provides-a-Corporate-Update.html",
+      "article_title": "Belite Bio Reports Preliminary, Unaudited Fourth Quarter and Full Year 2025 Financial Results and Provides a Corporate Update",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article is about a company's financial results and does not contain any information related to the Australian dollar or the foreign exchange market.",
+      "timestamp": "2026-03-03T12:34:00.486356Z"
+    },
+    {
+      "date": "2026-03-03",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": "null",
+      "confidence": 0.8,
+      "pair_context": null,
+      "article_url": "https://finance.yahoo.com/news/billed-dental-never-got-insurance-120000339.html",
+      "article_title": "I was billed for dental work I never got and my insurance says it\u2019s fraud. But the dentist is threatening collections",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article discusses a personal issue with dental insurance and does not contain any information related to the Australian dollar or the broader Australian economy.",
+      "timestamp": "2026-03-03T12:34:01.526272Z"
+    }
+  ]
+}

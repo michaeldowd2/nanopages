@@ -1,0 +1,1292 @@
+{
+  "strategy_id": "momentum-T4-size10",
+  "current_portfolio": {
+    "EUR": 62.10859868389226,
+    "USD": 109.77680959664859,
+    "GBP": 69.31541842493813,
+    "JPY": 16718.297174601765,
+    "CHF": 89.63132268133764,
+    "AUD": 239.17073778654282,
+    "CAD": 230.28636015897365,
+    "NOK": 1126.978182,
+    "SEK": 901.2110633495649,
+    "CNY": 995.8449324306443,
+    "MXN": 1624.2881283587515
+  },
+  "last_updated": "2026-03-08",
+  "history": [
+    {
+      "date": "2026-02-24",
+      "trades": [
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "AUD",
+          "sell_amount": 2.2672,
+          "buy_amount": 4.2979,
+          "trade_size_eur": 2.6,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.909851,
+          "buy_confidence": 0.2979,
+          "sell_confidence": -0.2215,
+          "trade_confidence": 0.2597
+        },
+        {
+          "sell_currency": "CAD",
+          "buy_currency": "AUD",
+          "sell_amount": 3.9618,
+          "buy_amount": 4.0613,
+          "trade_size_eur": 2.45,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.032748,
+          "buy_confidence": 0.2979,
+          "sell_confidence": -0.1929,
+          "trade_confidence": 0.2454
+        },
+        {
+          "sell_currency": "CHF",
+          "buy_currency": "AUD",
+          "sell_amount": 2.239,
+          "buy_amount": 4.0563,
+          "trade_size_eur": 2.45,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.825187,
+          "buy_confidence": 0.2979,
+          "sell_confidence": -0.1923,
+          "trade_confidence": 0.2451
+        },
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "CNY",
+          "sell_amount": 1.6888,
+          "buy_amount": 15.6048,
+          "trade_size_eur": 1.93,
+          "cost_eur": 0.01,
+          "exchange_rate": 9.309279,
+          "buy_confidence": 0.1757,
+          "sell_confidence": -0.2215,
+          "trade_confidence": 0.1986
+        }
+      ],
+      "portfolio_value": 1099.93,
+      "portfolio_snapshot": {
+        "EUR": 100.0,
+        "USD": 117.834993,
+        "GBP": 83.34424096746909,
+        "JPY": 18262.630935999998,
+        "CHF": 89.11075201966,
+        "AUD": 179.14585637653298,
+        "CAD": 157.48149800082,
+        "NOK": 1126.978182,
+        "SEK": 1068.2568350000001,
+        "CNY": 828.3065412083339,
+        "MXN": 2032.903738
+      }
+    },
+    {
+      "date": "2026-02-25",
+      "trades": [
+        {
+          "sell_currency": "SEK",
+          "buy_currency": "AUD",
+          "sell_amount": 33.6287,
+          "buy_amount": 5.2168,
+          "trade_size_eur": 3.16,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.156285,
+          "buy_confidence": 0.3561,
+          "sell_confidence": -0.2734,
+          "trade_confidence": 0.3148
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "AUD",
+          "sell_amount": 2.907,
+          "buy_amount": 4.7999,
+          "trade_size_eur": 2.91,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.663477,
+          "buy_confidence": 0.3561,
+          "sell_confidence": -0.2253,
+          "trade_confidence": 0.2907
+        },
+        {
+          "sell_currency": "CAD",
+          "buy_currency": "AUD",
+          "sell_amount": 4.5764,
+          "buy_amount": 4.6822,
+          "trade_size_eur": 2.84,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.030734,
+          "buy_confidence": 0.3561,
+          "sell_confidence": -0.2251,
+          "trade_confidence": 0.2906
+        },
+        {
+          "sell_currency": "USD",
+          "buy_currency": "AUD",
+          "sell_amount": 3.1097,
+          "buy_amount": 4.3561,
+          "trade_size_eur": 2.64,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.41127,
+          "buy_confidence": 0.3561,
+          "sell_confidence": -0.1716,
+          "trade_confidence": 0.2639
+        }
+      ],
+      "portfolio_value": 1101.24,
+      "portfolio_snapshot": {
+        "EUR": 97.093,
+        "USD": 114.72532753473,
+        "GBP": 83.34424096746909,
+        "JPY": 18262.630935999998,
+        "CHF": 89.11075201966,
+        "AUD": 198.20083264377712,
+        "CAD": 152.90508566891617,
+        "NOK": 1126.978182,
+        "SEK": 1034.6281098342001,
+        "CNY": 828.3065412083339,
+        "MXN": 2032.903738
+      }
+    },
+    {
+      "date": "2026-02-26",
+      "trades": [
+        {
+          "sell_currency": "USD",
+          "buy_currency": "AUD",
+          "sell_amount": 4.4135,
+          "buy_amount": 6.1526,
+          "trade_size_eur": 3.73,
+          "cost_eur": 0.03,
+          "exchange_rate": 1.40444,
+          "buy_confidence": 0.471,
+          "sell_confidence": -0.2984,
+          "trade_confidence": 0.3847
+        },
+        {
+          "sell_currency": "SEK",
+          "buy_currency": "AUD",
+          "sell_amount": 38.5089,
+          "buy_amount": 5.9514,
+          "trade_size_eur": 3.61,
+          "cost_eur": 0.03,
+          "exchange_rate": 0.155699,
+          "buy_confidence": 0.471,
+          "sell_confidence": -0.2734,
+          "trade_confidence": 0.3722
+        },
+        {
+          "sell_currency": "USD",
+          "buy_currency": "GBP",
+          "sell_amount": 3.8962,
+          "buy_amount": 2.8517,
+          "trade_size_eur": 3.3,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.737362,
+          "buy_confidence": 0.408,
+          "sell_confidence": -0.2984,
+          "trade_confidence": 0.3532
+        },
+        {
+          "sell_currency": "SEK",
+          "buy_currency": "GBP",
+          "sell_amount": 33.9378,
+          "buy_amount": 2.7537,
+          "trade_size_eur": 3.18,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.081745,
+          "buy_confidence": 0.408,
+          "sell_confidence": -0.2734,
+          "trade_confidence": 0.3407
+        }
+      ],
+      "portfolio_value": 1100.01,
+      "portfolio_snapshot": {
+        "EUR": 97.093,
+        "USD": 106.41562984787349,
+        "GBP": 88.94961640942003,
+        "JPY": 18262.630935999998,
+        "CHF": 89.11075201966,
+        "AUD": 210.3048583723293,
+        "CAD": 152.90508566891617,
+        "NOK": 1126.978182,
+        "SEK": 962.1814686846303,
+        "CNY": 828.3065412083339,
+        "MXN": 2032.903738
+      }
+    },
+    {
+      "date": "2026-02-27",
+      "trades": [
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "AUD",
+          "sell_amount": 3.9778,
+          "buy_amount": 7.4836,
+          "trade_size_eur": 4.55,
+          "cost_eur": 0.03,
+          "exchange_rate": 1.895348,
+          "buy_confidence": 0.3871,
+          "sell_confidence": -0.5073,
+          "trade_confidence": 0.4472
+        },
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "CNY",
+          "sell_amount": 3.1015,
+          "buy_amount": 28.4777,
+          "trade_size_eur": 3.55,
+          "cost_eur": 0.03,
+          "exchange_rate": 9.250462,
+          "buy_confidence": 0.2226,
+          "sell_confidence": -0.5073,
+          "trade_confidence": 0.365
+        },
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "MXN",
+          "sell_amount": 2.3652,
+          "buy_amount": 54.4403,
+          "trade_size_eur": 2.7,
+          "cost_eur": 0.02,
+          "exchange_rate": 23.188459,
+          "buy_confidence": 0.0704,
+          "sell_confidence": -0.5073,
+          "trade_confidence": 0.2889
+        },
+        {
+          "sell_currency": "CHF",
+          "buy_currency": "AUD",
+          "sell_amount": 2.3516,
+          "buy_amount": 4.2414,
+          "trade_size_eur": 2.58,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.81706,
+          "buy_confidence": 0.3871,
+          "sell_confidence": -0.1407,
+          "trade_confidence": 0.2639
+        }
+      ],
+      "portfolio_value": 1100.09,
+      "portfolio_snapshot": {
+        "EUR": 97.093,
+        "USD": 106.41562984787349,
+        "GBP": 79.50508572154551,
+        "JPY": 18262.630935999998,
+        "CHF": 86.75911927386117,
+        "AUD": 222.02987038874215,
+        "CAD": 152.90508566891617,
+        "NOK": 1126.978182,
+        "SEK": 962.1814686846303,
+        "CNY": 856.7842682923815,
+        "MXN": 2087.3439972806727
+      }
+    },
+    {
+      "date": "2026-02-28",
+      "trades": [
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "AUD",
+          "sell_amount": 3.5555,
+          "buy_amount": 6.6852,
+          "trade_size_eur": 4.06,
+          "cost_eur": 0.03,
+          "exchange_rate": 1.89427,
+          "buy_confidence": 0.3871,
+          "sell_confidence": -0.5073,
+          "trade_confidence": 0.4472
+        },
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "CHF",
+          "sell_amount": 2.8595,
+          "buy_amount": 2.9457,
+          "trade_size_eur": 3.27,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.037809,
+          "buy_confidence": 0.2457,
+          "sell_confidence": -0.5073,
+          "trade_confidence": 0.3765
+        },
+        {
+          "sell_currency": "USD",
+          "buy_currency": "AUD",
+          "sell_amount": 3.832,
+          "buy_amount": 5.3417,
+          "trade_size_eur": 3.25,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.404356,
+          "buy_confidence": 0.3871,
+          "sell_confidence": -0.333,
+          "trade_confidence": 0.3601
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "AUD",
+          "sell_amount": 68.7154,
+          "buy_amount": 5.5625,
+          "trade_size_eur": 3.38,
+          "cost_eur": 0.03,
+          "exchange_rate": 0.081554,
+          "buy_confidence": 0.3871,
+          "sell_confidence": -0.2713,
+          "trade_confidence": 0.3292
+        }
+      ],
+      "portfolio_value": 1100.57,
+      "portfolio_snapshot": {
+        "EUR": 97.093,
+        "USD": 102.58360301705156,
+        "GBP": 73.09011515953186,
+        "JPY": 18262.630935999998,
+        "CHF": 89.70477698238524,
+        "AUD": 239.61929625430267,
+        "CAD": 152.90508566891617,
+        "NOK": 1126.978182,
+        "SEK": 962.1814686846303,
+        "CNY": 856.7842682923815,
+        "MXN": 2018.628632890193
+      }
+    },
+    {
+      "date": "2026-03-01",
+      "trades": [
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "AUD",
+          "sell_amount": 3.2145,
+          "buy_amount": 6.0441,
+          "trade_size_eur": 3.67,
+          "cost_eur": 0.03,
+          "exchange_rate": 1.89427,
+          "buy_confidence": 0.3722,
+          "sell_confidence": -0.5073,
+          "trade_confidence": 0.4398
+        },
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "CHF",
+          "sell_amount": 2.6308,
+          "buy_amount": 2.7101,
+          "trade_size_eur": 3.01,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.037809,
+          "buy_confidence": 0.2457,
+          "sell_confidence": -0.5073,
+          "trade_confidence": 0.3765
+        },
+        {
+          "sell_currency": "USD",
+          "buy_currency": "AUD",
+          "sell_amount": 3.415,
+          "buy_amount": 4.7604,
+          "trade_size_eur": 2.89,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.404356,
+          "buy_confidence": 0.3722,
+          "sell_confidence": -0.2935,
+          "trade_confidence": 0.3329
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "AUD",
+          "sell_amount": 64.9595,
+          "buy_amount": 5.2585,
+          "trade_size_eur": 3.2,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.081554,
+          "buy_confidence": 0.3722,
+          "sell_confidence": -0.2713,
+          "trade_confidence": 0.3218
+        }
+      ],
+      "portfolio_value": 1100.47,
+      "portfolio_snapshot": {
+        "EUR": 97.093,
+        "USD": 99.16859487261391,
+        "GBP": 67.24479510697584,
+        "JPY": 18262.630935999998,
+        "CHF": 92.41485821064218,
+        "AUD": 255.68227290576422,
+        "CAD": 152.90508566891617,
+        "NOK": 1126.978182,
+        "SEK": 962.1814686846303,
+        "CNY": 856.7842682923815,
+        "MXN": 1953.6691634837866
+      }
+    },
+    {
+      "date": "2026-03-02",
+      "trades": [
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.7322,
+          "buy_amount": 4.3625,
+          "trade_size_eur": 2.73,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.608622,
+          "buy_confidence": 0.245,
+          "sell_confidence": -0.3177,
+          "trade_confidence": 0.2814
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "AUD",
+          "sell_amount": 2.5553,
+          "buy_amount": 4.2083,
+          "trade_size_eur": 2.56,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.659168,
+          "buy_confidence": 0.2238,
+          "sell_confidence": -0.3177,
+          "trade_confidence": 0.2708
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "CAD",
+          "sell_amount": 50.4242,
+          "buy_amount": 3.9612,
+          "trade_size_eur": 2.48,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.079144,
+          "buy_confidence": 0.245,
+          "sell_confidence": -0.2713,
+          "trade_confidence": 0.2581
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "AUD",
+          "sell_amount": 47.1053,
+          "buy_amount": 3.8168,
+          "trade_size_eur": 2.32,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.081631,
+          "buy_confidence": 0.2238,
+          "sell_confidence": -0.2713,
+          "trade_confidence": 0.2475
+        }
+      ],
+      "portfolio_value": 1100.77,
+      "portfolio_snapshot": {
+        "EUR": 91.80551243530161,
+        "USD": 99.16859487261391,
+        "GBP": 67.24479510697584,
+        "JPY": 18262.630935999998,
+        "CHF": 92.41485821064218,
+        "AUD": 263.7073546642493,
+        "CAD": 161.22887562170004,
+        "NOK": 1126.978182,
+        "SEK": 962.1814686846303,
+        "CNY": 856.7842682923815,
+        "MXN": 1856.1396495555068
+      }
+    },
+    {
+      "date": "2026-03-03",
+      "trades": [
+        {
+          "sell_currency": "JPY",
+          "buy_currency": "CNY",
+          "sell_amount": 792.7808,
+          "buy_amount": 34.4424,
+          "trade_size_eur": 4.31,
+          "cost_eur": 0.03,
+          "exchange_rate": 0.043769,
+          "buy_confidence": 0.45,
+          "sell_confidence": -0.4183,
+          "trade_confidence": 0.4341
+        },
+        {
+          "sell_currency": "JPY",
+          "buy_currency": "CAD",
+          "sell_amount": 751.553,
+          "buy_amount": 6.4827,
+          "trade_size_eur": 4.09,
+          "cost_eur": 0.03,
+          "exchange_rate": 0.00869,
+          "buy_confidence": 0.4422,
+          "sell_confidence": -0.4183,
+          "trade_confidence": 0.4302
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CNY",
+          "sell_amount": 3.798,
+          "buy_amount": 30.3464,
+          "trade_size_eur": 3.8,
+          "cost_eur": 0.03,
+          "exchange_rate": 8.049691,
+          "buy_confidence": 0.45,
+          "sell_confidence": -0.3774,
+          "trade_confidence": 0.4137
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 3.6065,
+          "buy_amount": 5.7212,
+          "trade_size_eur": 3.61,
+          "cost_eur": 0.03,
+          "exchange_rate": 1.598161,
+          "buy_confidence": 0.4422,
+          "sell_confidence": -0.3774,
+          "trade_confidence": 0.4098
+        }
+      ],
+      "portfolio_value": 1104.0,
+      "portfolio_snapshot": {
+        "EUR": 84.4009702824009,
+        "USD": 99.16859487261391,
+        "GBP": 67.24479510697584,
+        "JPY": 16718.297174601765,
+        "CHF": 92.41485821064218,
+        "AUD": 263.7073546642493,
+        "CAD": 173.43273348855942,
+        "NOK": 1126.978182,
+        "SEK": 962.1814686846303,
+        "CNY": 921.5731579635085,
+        "MXN": 1856.1396495555068
+      }
+    },
+    {
+      "date": "2026-03-04",
+      "trades": [
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "CAD",
+          "sell_amount": 2.4006,
+          "buy_amount": 4.3652,
+          "trade_size_eur": 2.75,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.831897,
+          "buy_confidence": 0.3465,
+          "sell_confidence": -0.3675,
+          "trade_confidence": 0.357
+        },
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "AUD",
+          "sell_amount": 2.1723,
+          "buy_amount": 4.0697,
+          "trade_size_eur": 2.49,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.887426,
+          "buy_confidence": 0.3025,
+          "sell_confidence": -0.3675,
+          "trade_confidence": 0.335
+        },
+        {
+          "sell_currency": "JPY",
+          "buy_currency": "CAD",
+          "sell_amount": 558.2239,
+          "buy_amount": 4.8151,
+          "trade_size_eur": 3.04,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.00869,
+          "buy_confidence": 0.3465,
+          "sell_confidence": -0.3213,
+          "trade_confidence": 0.3339
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.7557,
+          "buy_amount": 4.3714,
+          "trade_size_eur": 2.76,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.598161,
+          "buy_confidence": 0.3465,
+          "sell_confidence": -0.3066,
+          "trade_confidence": 0.3265
+        }
+      ],
+      "portfolio_value": 1103.92,
+      "portfolio_snapshot": {
+        "EUR": 81.64527860268052,
+        "USD": 99.16859487261391,
+        "GBP": 62.6718766982813,
+        "JPY": 16160.073231941811,
+        "CHF": 92.41485821064218,
+        "AUD": 267.7770308291956,
+        "CAD": 186.98443204971727,
+        "NOK": 1126.978182,
+        "SEK": 962.1814686846303,
+        "CNY": 921.5731579635085,
+        "MXN": 1856.1396495555068
+      }
+    },
+    {
+      "date": "2026-03-04",
+      "trades": [
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "USD",
+          "sell_amount": 3.0908,
+          "buy_amount": 3.5583,
+          "trade_size_eur": 3.09,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.159866,
+          "buy_confidence": 0.4089,
+          "sell_confidence": -0.3235,
+          "trade_confidence": 0.3662
+        },
+        {
+          "sell_currency": "SEK",
+          "buy_currency": "USD",
+          "sell_amount": 32.8296,
+          "buy_amount": 3.51,
+          "trade_size_eur": 3.05,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.107713,
+          "buy_confidence": 0.4089,
+          "sell_confidence": -0.2734,
+          "trade_confidence": 0.3412
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "USD",
+          "sell_amount": 63.1273,
+          "buy_amount": 3.5399,
+          "trade_size_eur": 3.07,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.056493,
+          "buy_confidence": 0.4089,
+          "sell_confidence": -0.2713,
+          "trade_confidence": 0.3401
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.7239,
+          "buy_amount": 4.2919,
+          "trade_size_eur": 2.72,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.587397,
+          "buy_confidence": 0.3465,
+          "sell_confidence": -0.3235,
+          "trade_confidence": 0.335
+        }
+      ],
+      "portfolio_value": 1104.03,
+      "portfolio_snapshot": {
+        "EUR": 78.5863148245123,
+        "USD": 109.77680959664859,
+        "GBP": 67.24479510697584,
+        "JPY": 16718.297174601765,
+        "CHF": 92.41485821064218,
+        "AUD": 263.7073546642493,
+        "CAD": 177.72463451619754,
+        "NOK": 1126.978182,
+        "SEK": 929.3518369731107,
+        "CNY": 921.5731579635085,
+        "MXN": 1793.012340074124
+      }
+    },
+    {
+      "date": "2026-03-05",
+      "trades": [
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.7301,
+          "buy_amount": 4.3017,
+          "trade_size_eur": 2.73,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.587397,
+          "buy_confidence": 0.4017,
+          "sell_confidence": -0.2932,
+          "trade_confidence": 0.3474
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "CAD",
+          "sell_amount": 60.3349,
+          "buy_amount": 4.6304,
+          "trade_size_eur": 2.94,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.077317,
+          "buy_confidence": 0.4017,
+          "sell_confidence": -0.2713,
+          "trade_confidence": 0.3365
+        },
+        {
+          "sell_currency": "SEK",
+          "buy_currency": "CAD",
+          "sell_amount": 28.1408,
+          "buy_amount": 4.1177,
+          "trade_size_eur": 2.61,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.147416,
+          "buy_confidence": 0.4017,
+          "sell_confidence": -0.2039,
+          "trade_confidence": 0.3028
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CNY",
+          "sell_amount": 2.24,
+          "buy_amount": 17.8482,
+          "trade_size_eur": 2.24,
+          "cost_eur": 0.02,
+          "exchange_rate": 8.027204,
+          "buy_confidence": 0.2974,
+          "sell_confidence": -0.2932,
+          "trade_confidence": 0.2953
+        }
+      ],
+      "portfolio_value": 1103.95,
+      "portfolio_snapshot": {
+        "EUR": 73.61619188641981,
+        "USD": 109.77680959664859,
+        "GBP": 67.24479510697584,
+        "JPY": 16718.297174601765,
+        "CHF": 92.41485821064218,
+        "AUD": 263.7073546642493,
+        "CAD": 190.77439185705444,
+        "NOK": 1126.978182,
+        "SEK": 901.2110633495649,
+        "CNY": 939.4213097723814,
+        "MXN": 1732.6774748306298
+      }
+    },
+    {
+      "date": "2026-03-05",
+      "trades": [
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.7065,
+          "buy_amount": 4.2645,
+          "trade_size_eur": 2.71,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.587397,
+          "buy_confidence": 0.4017,
+          "sell_confidence": -0.2872,
+          "trade_confidence": 0.3444
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "CAD",
+          "sell_amount": 60.3349,
+          "buy_amount": 4.6304,
+          "trade_size_eur": 2.94,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.077317,
+          "buy_confidence": 0.4017,
+          "sell_confidence": -0.2713,
+          "trade_confidence": 0.3365
+        },
+        {
+          "sell_currency": "SEK",
+          "buy_currency": "CAD",
+          "sell_amount": 28.1408,
+          "buy_amount": 4.1177,
+          "trade_size_eur": 2.61,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.147416,
+          "buy_confidence": 0.4017,
+          "sell_confidence": -0.2039,
+          "trade_confidence": 0.3028
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CNY",
+          "sell_amount": 2.218,
+          "buy_amount": 17.6723,
+          "trade_size_eur": 2.22,
+          "cost_eur": 0.02,
+          "exchange_rate": 8.027204,
+          "buy_confidence": 0.2974,
+          "sell_confidence": -0.2872,
+          "trade_confidence": 0.2923
+        }
+      ],
+      "portfolio_value": 1103.95,
+      "portfolio_snapshot": {
+        "EUR": 73.66183552534672,
+        "USD": 109.77680959664859,
+        "GBP": 67.24479510697584,
+        "JPY": 16718.297174601765,
+        "CHF": 92.41485821064218,
+        "AUD": 263.7073546642493,
+        "CAD": 190.73724449278689,
+        "NOK": 1126.978182,
+        "SEK": 901.2110633495649,
+        "CNY": 939.245478338546,
+        "MXN": 1732.6774748306298
+      }
+    },
+    {
+      "date": "2026-03-06",
+      "trades": [
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 3.0938,
+          "buy_amount": 4.8709,
+          "trade_size_eur": 3.09,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.586159,
+          "buy_confidence": 0.4422,
+          "sell_confidence": -0.3979,
+          "trade_confidence": 0.42
+        },
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "CAD",
+          "sell_amount": 2.6474,
+          "buy_amount": 4.7911,
+          "trade_size_eur": 3.04,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.823214,
+          "buy_confidence": 0.4422,
+          "sell_confidence": -0.3453,
+          "trade_confidence": 0.3937
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "CAD",
+          "sell_amount": 67.5917,
+          "buy_amount": 5.1934,
+          "trade_size_eur": 3.3,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.077408,
+          "buy_confidence": 0.4422,
+          "sell_confidence": -0.3379,
+          "trade_confidence": 0.3901
+        },
+        {
+          "sell_currency": "CHF",
+          "buy_currency": "CAD",
+          "sell_amount": 3.5506,
+          "buy_amount": 6.1676,
+          "trade_size_eur": 3.92,
+          "cost_eur": 0.03,
+          "exchange_rate": 1.750025,
+          "buy_confidence": 0.4422,
+          "sell_confidence": -0.3263,
+          "trade_confidence": 0.3842
+        }
+      ],
+      "portfolio_value": 1106.36,
+      "portfolio_snapshot": {
+        "EUR": 70.56803843328215,
+        "USD": 109.77680959664859,
+        "GBP": 64.59736752361421,
+        "JPY": 16718.297174601765,
+        "CHF": 88.86427935818931,
+        "AUD": 263.7073546642493,
+        "CAD": 211.7603387320649,
+        "NOK": 1126.978182,
+        "SEK": 901.2110633495649,
+        "CNY": 939.245478338546,
+        "MXN": 1665.0857265374868
+      }
+    },
+    {
+      "date": "2026-03-06",
+      "trades": [
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.6688,
+          "buy_amount": 4.2018,
+          "trade_size_eur": 2.67,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.586159,
+          "buy_confidence": 0.3465,
+          "sell_confidence": -0.3781,
+          "trade_confidence": 0.3623
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "AUD",
+          "sell_amount": 2.5281,
+          "buy_amount": 4.1289,
+          "trade_size_eur": 2.53,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.645397,
+          "buy_confidence": 0.334,
+          "sell_confidence": -0.3781,
+          "trade_confidence": 0.3561
+        },
+        {
+          "sell_currency": "GBP",
+          "buy_currency": "CAD",
+          "sell_amount": 2.326,
+          "buy_amount": 4.2094,
+          "trade_size_eur": 2.67,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.823214,
+          "buy_confidence": 0.3465,
+          "sell_confidence": -0.3453,
+          "trade_confidence": 0.3459
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "CAD",
+          "sell_amount": 59.2922,
+          "buy_amount": 4.5557,
+          "trade_size_eur": 2.89,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.077408,
+          "buy_confidence": 0.3465,
+          "sell_confidence": -0.3379,
+          "trade_confidence": 0.3422
+        }
+      ],
+      "portfolio_value": 1106.38,
+      "portfolio_snapshot": {
+        "EUR": 68.46500410040738,
+        "USD": 109.77680959664859,
+        "GBP": 64.91879764422555,
+        "JPY": 16718.297174601765,
+        "CHF": 92.41485821064218,
+        "AUD": 267.8362406047021,
+        "CAD": 203.70414845247055,
+        "NOK": 1126.978182,
+        "SEK": 901.2110633495649,
+        "CNY": 939.245478338546,
+        "MXN": 1673.3852516419256
+      }
+    },
+    {
+      "date": "2026-03-07",
+      "trades": [
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.234,
+          "buy_amount": 3.5191,
+          "trade_size_eur": 2.23,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.586982,
+          "buy_confidence": 0.4319,
+          "sell_confidence": -0.2207,
+          "trade_confidence": 0.3263
+        },
+        {
+          "sell_currency": "CHF",
+          "buy_currency": "CAD",
+          "sell_amount": 2.7835,
+          "buy_amount": 4.8362,
+          "trade_size_eur": 3.07,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.750396,
+          "buy_confidence": 0.4319,
+          "sell_confidence": -0.1705,
+          "trade_confidence": 0.3012
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "CAD",
+          "sell_amount": 49.0971,
+          "buy_amount": 3.766,
+          "trade_size_eur": 2.39,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.077277,
+          "buy_confidence": 0.4319,
+          "sell_confidence": -0.155,
+          "trade_confidence": 0.2934
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CNY",
+          "sell_amount": 1.6988,
+          "buy_amount": 13.524,
+          "trade_size_eur": 1.7,
+          "cost_eur": 0.01,
+          "exchange_rate": 8.02017,
+          "buy_confidence": 0.2923,
+          "sell_confidence": -0.2207,
+          "trade_confidence": 0.2565
+        }
+      ],
+      "portfolio_value": 1104.58,
+      "portfolio_snapshot": {
+        "EUR": 64.53216609703502,
+        "USD": 109.77680959664859,
+        "GBP": 64.91879764422555,
+        "JPY": 16718.297174601765,
+        "CHF": 89.63132268133764,
+        "AUD": 267.8362406047021,
+        "CAD": 215.82548822913614,
+        "NOK": 1126.978182,
+        "SEK": 901.2110633495649,
+        "CNY": 952.7695189953338,
+        "MXN": 1624.2881283587515
+      }
+    },
+    {
+      "date": "2026-03-07",
+      "trades": [
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.2169,
+          "buy_amount": 3.4921,
+          "trade_size_eur": 2.22,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.586982,
+          "buy_confidence": 0.4319,
+          "sell_confidence": -0.2158,
+          "trade_confidence": 0.3238
+        },
+        {
+          "sell_currency": "CHF",
+          "buy_currency": "CAD",
+          "sell_amount": 2.7835,
+          "buy_amount": 4.8362,
+          "trade_size_eur": 3.07,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.750396,
+          "buy_confidence": 0.4319,
+          "sell_confidence": -0.1705,
+          "trade_confidence": 0.3012
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "CAD",
+          "sell_amount": 49.0971,
+          "buy_amount": 3.766,
+          "trade_size_eur": 2.39,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.077277,
+          "buy_confidence": 0.4319,
+          "sell_confidence": -0.155,
+          "trade_confidence": 0.2934
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CNY",
+          "sell_amount": 1.6754,
+          "buy_amount": 13.3377,
+          "trade_size_eur": 1.68,
+          "cost_eur": 0.01,
+          "exchange_rate": 8.02017,
+          "buy_confidence": 0.29,
+          "sell_confidence": -0.2158,
+          "trade_confidence": 0.2529
+        }
+      ],
+      "portfolio_value": 1104.58,
+      "portfolio_snapshot": {
+        "EUR": 64.57269263483767,
+        "USD": 109.77680959664859,
+        "GBP": 64.91879764422555,
+        "JPY": 16718.297174601765,
+        "CHF": 89.63132268133764,
+        "AUD": 267.8362406047021,
+        "CAD": 215.79852605440072,
+        "NOK": 1126.978182,
+        "SEK": 901.2110633495649,
+        "CNY": 952.5831538987788,
+        "MXN": 1624.2881283587515
+      }
+    },
+    {
+      "date": "2026-03-07",
+      "trades": [
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.2169,
+          "buy_amount": 3.4921,
+          "trade_size_eur": 2.22,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.586982,
+          "buy_confidence": 0.4319,
+          "sell_confidence": -0.2158,
+          "trade_confidence": 0.3238
+        },
+        {
+          "sell_currency": "CHF",
+          "buy_currency": "CAD",
+          "sell_amount": 2.7835,
+          "buy_amount": 4.8362,
+          "trade_size_eur": 3.07,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.750396,
+          "buy_confidence": 0.4319,
+          "sell_confidence": -0.1705,
+          "trade_confidence": 0.3012
+        },
+        {
+          "sell_currency": "MXN",
+          "buy_currency": "CAD",
+          "sell_amount": 49.0971,
+          "buy_amount": 3.766,
+          "trade_size_eur": 2.39,
+          "cost_eur": 0.02,
+          "exchange_rate": 0.077277,
+          "buy_confidence": 0.4319,
+          "sell_confidence": -0.155,
+          "trade_confidence": 0.2934
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CNY",
+          "sell_amount": 1.6754,
+          "buy_amount": 13.3377,
+          "trade_size_eur": 1.68,
+          "cost_eur": 0.01,
+          "exchange_rate": 8.02017,
+          "buy_confidence": 0.29,
+          "sell_confidence": -0.2158,
+          "trade_confidence": 0.2529
+        }
+      ],
+      "portfolio_value": 1104.58,
+      "portfolio_snapshot": {
+        "EUR": 64.57269263483767,
+        "USD": 109.77680959664859,
+        "GBP": 64.91879764422555,
+        "JPY": 16718.297174601765,
+        "CHF": 89.63132268133764,
+        "AUD": 267.8362406047021,
+        "CAD": 215.79852605440072,
+        "NOK": 1126.978182,
+        "SEK": 901.2110633495649,
+        "CNY": 952.5831538987788,
+        "MXN": 1624.2881283587515
+      }
+    },
+    {
+      "date": "2026-03-08",
+      "trades": [
+        {
+          "sell_currency": "AUD",
+          "buy_currency": "CAD",
+          "sell_amount": 11.2331,
+          "buy_amount": 10.6333,
+          "trade_size_eur": 6.8,
+          "cost_eur": 0.05,
+          "exchange_rate": 0.953662,
+          "buy_confidence": 0.397,
+          "sell_confidence": -0.4417,
+          "trade_signal": 0.4194
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.4641,
+          "buy_amount": 3.8546,
+          "trade_size_eur": 2.46,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.575958,
+          "buy_confidence": 0.397,
+          "sell_confidence": -0.3662,
+          "trade_signal": 0.3816
+        },
+        {
+          "sell_currency": "AUD",
+          "buy_currency": "CNY",
+          "sell_amount": 8.9785,
+          "buy_amount": 43.2618,
+          "trade_size_eur": 5.43,
+          "cost_eur": 0.04,
+          "exchange_rate": 4.854272,
+          "buy_confidence": 0.2581,
+          "sell_confidence": -0.4417,
+          "trade_signal": 0.3499
+        },
+        {
+          "sell_currency": "AUD",
+          "buy_currency": "GBP",
+          "sell_amount": 8.4539,
+          "buy_amount": 4.3966,
+          "trade_size_eur": 5.12,
+          "cost_eur": 0.04,
+          "exchange_rate": 0.523947,
+          "buy_confidence": 0.2412,
+          "sell_confidence": -0.4417,
+          "trade_signal": 0.3414
+        }
+      ],
+      "portfolio_value": 1106.54,
+      "portfolio_snapshot": {
+        "EUR": 62.10859868389226,
+        "USD": 109.77680959664859,
+        "GBP": 69.31541842493813,
+        "JPY": 16718.297174601765,
+        "CHF": 89.63132268133764,
+        "AUD": 239.17073778654282,
+        "CAD": 230.28636015897365,
+        "NOK": 1126.978182,
+        "SEK": 901.2110633495649,
+        "CNY": 995.8449324306443,
+        "MXN": 1624.2881283587515
+      }
+    },
+    {
+      "date": "2026-03-08",
+      "trades": [
+        {
+          "sell_currency": "AUD",
+          "buy_currency": "CAD",
+          "sell_amount": 11.2331,
+          "buy_amount": 10.6333,
+          "trade_size_eur": 6.8,
+          "cost_eur": 0.05,
+          "exchange_rate": 0.953662,
+          "buy_confidence": 0.397,
+          "sell_confidence": -0.4417,
+          "trade_signal": 0.4194
+        },
+        {
+          "sell_currency": "EUR",
+          "buy_currency": "CAD",
+          "sell_amount": 2.4641,
+          "buy_amount": 3.8546,
+          "trade_size_eur": 2.46,
+          "cost_eur": 0.02,
+          "exchange_rate": 1.575958,
+          "buy_confidence": 0.397,
+          "sell_confidence": -0.3662,
+          "trade_signal": 0.3816
+        },
+        {
+          "sell_currency": "AUD",
+          "buy_currency": "CNY",
+          "sell_amount": 8.9785,
+          "buy_amount": 43.2618,
+          "trade_size_eur": 5.43,
+          "cost_eur": 0.04,
+          "exchange_rate": 4.854272,
+          "buy_confidence": 0.2581,
+          "sell_confidence": -0.4417,
+          "trade_signal": 0.3499
+        },
+        {
+          "sell_currency": "AUD",
+          "buy_currency": "GBP",
+          "sell_amount": 8.4539,
+          "buy_amount": 4.3966,
+          "trade_size_eur": 5.12,
+          "cost_eur": 0.04,
+          "exchange_rate": 0.523947,
+          "buy_confidence": 0.2412,
+          "sell_confidence": -0.4417,
+          "trade_signal": 0.3414
+        }
+      ],
+      "portfolio_value": 1106.54,
+      "portfolio_snapshot": {
+        "EUR": 62.10859868389226,
+        "USD": 109.77680959664859,
+        "GBP": 69.31541842493813,
+        "JPY": 16718.297174601765,
+        "CHF": 89.63132268133764,
+        "AUD": 239.17073778654282,
+        "CAD": 230.28636015897365,
+        "NOK": 1126.978182,
+        "SEK": 901.2110633495649,
+        "CNY": 995.8449324306443,
+        "MXN": 1624.2881283587515
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "currency": "CHF",
+  "date": "2026-03-02",
+  "articles": [
+    {
+      "title": "France February final manufacturing PMI 50.1 vs 49.9 prelim",
+      "url": "https://investinglive.com/news/france-february-final-manufacturing-pmi-501-vs-499-prelim-20260302/",
+      "snippet": "Prior 51.2The final estimate is a slight nudge up to the initial reading, so it at least sees back-to-back months of increase in French manufacturing activity at the start of 2026. That being said, the February reading is rather marginal as production expanded in the absence of new order growth. On the price front, inflationary pressures picked up across France's manufacturing sector as higher prices for metals and metal products drove a quicker rise in input costs.HCOB notes that:\"The French ma",
+      "source": "ForexLive",
+      "relevance_score": 0.33,
+      "currency": "CHF"
+    },
+    {
+      "title": "Switzerland February manufacturing PMI 47.4 vs 50.0 expected",
+      "url": "https://investinglive.com/news/switzerland-february-manufacturing-pmi-474-vs-500-expected-20260302/",
+      "snippet": "Prior 48.8Hopes for a recovery in the Swiss industry were dashed with this being another contractionary reading in February. This marks a 38th straight month that Switzerland's manufacturing sector recorded below the 50-point growth threshold. Of note, production slumped back lower with new orders also softening once again. The details:It reaffirms that the environment for the Swiss industry remains challenging. The only positive is that the Swiss economy relies much more on the services sector.",
+      "source": "ForexLive",
+      "relevance_score": 0.67,
+      "currency": "CHF"
+    }
+  ],
+  "combined_text": "[0.33] France February final manufacturing PMI 50.1 vs 49.9 prelim\nPrior 51.2The final estimate is a slight nudge up to the initial reading, so it at least sees back-to-back months of increase in French manufacturing activity at the start of 2026. That being said, the February reading is rather marginal as production expanded in the absence of new order growth. On the price front, inflationary pressures picked up across France's manufacturing sector as higher prices for metals and metal products drove a quicker rise in input costs.HCOB notes that:\"The French ma\n\n[0.67] Switzerland February manufacturing PMI 47.4 vs 50.0 expected\nPrior 48.8Hopes for a recovery in the Swiss industry were dashed with this being another contractionary reading in February. This marks a 38th straight month that Switzerland's manufacturing sector recorded below the 50-point growth threshold. Of note, production slumped back lower with new orders also softening once again. The details:It reaffirms that the environment for the Swiss industry remains challenging. The only positive is that the Swiss economy relies much more on the services sector."
+}

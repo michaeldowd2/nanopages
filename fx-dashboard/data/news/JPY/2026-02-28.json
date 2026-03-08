@@ -1,0 +1,16 @@
+{
+  "currency": "JPY",
+  "date": "2026-02-28",
+  "articles": [
+    {
+      "title": "Why yen stablecoins are key to Japan\u2019s crypto ambitions",
+      "url": "https://cointelegraph.com/news/yen-stablecoins-japan-crypto-ambitions",
+      "snippet": "Japan\u2019s regulators and conglomerates are working to bring one of the world\u2019s key funding currencies into DeFi, but retail activity remains muted.",
+      "published_at": "2026-02-27T18:00:00+00:00",
+      "source": "NewsAPI (Cointelegraph)",
+      "relevance_score": 0.33,
+      "currency": "JPY"
+    }
+  ],
+  "combined_text": "[0.33] Why yen stablecoins are key to Japan\u2019s crypto ambitions\nJapan\u2019s regulators and conglomerates are working to bring one of the world\u2019s key funding currencies into DeFi, but retail activity remains muted."
+}

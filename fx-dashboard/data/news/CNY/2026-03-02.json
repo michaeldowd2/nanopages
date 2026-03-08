@@ -1,0 +1,23 @@
+{
+  "currency": "CNY",
+  "date": "2026-03-02",
+  "articles": [
+    {
+      "title": "US: Trumpism, energy leverage and China \u2013 Rabobank",
+      "url": "https://www.fxstreet.com/news/us-trumpism-energy-leverage-and-china-rabobank-202603021407",
+      "snippet": "Rabobank links the Iran strikes to a broader US \u2018Grand Macro Strategy\u2019 under Trumpism, aimed at controlling key raw materials and energy flows that China relies on.",
+      "source": "FXStreet",
+      "relevance_score": 0.33,
+      "currency": "CNY"
+    },
+    {
+      "title": "Why are gold and silver prices increasing now, and will gold touch $6,000 and silver $200 soon? Precious metals rise, current prices, analysts insights and market outlook explained. Here's what should investors do now",
+      "url": "https://economictimes.indiatimes.com/news/international/us/why-are-gold-and-silver-prices-increasing-now-and-will-gold-touch-6000-and-silver-200-soon-precious-metals-rise-current-prices-analysts-insights-and-market-outlook-explained-heres-what-should-investors-do-now/articleshow/128883276.cms",
+      "snippet": "Gold and silver prices are rising as tensions between Israel and Iran escalate. Analysts see safe-haven demand driving metals higher. Gold nears $5,300, silver approaches $93. Experts expect further gains if conflict escalates. U.S. inflation data and Chinese\u2026",
+      "source": "NewsAPI (The Times of India)",
+      "relevance_score": 0.33,
+      "currency": "CNY"
+    }
+  ],
+  "combined_text": "[0.33] US: Trumpism, energy leverage and China \u2013 Rabobank\nRabobank links the Iran strikes to a broader US \u2018Grand Macro Strategy\u2019 under Trumpism, aimed at controlling key raw materials and energy flows that China relies on.\n\n[0.33] Why are gold and silver prices increasing now, and will gold touch $6,000 and silver $200 soon? Precious metals rise, current prices, analysts insights and market outlook explained. Here's what should investors do now\nGold and silver prices are rising as tensions between Israel and Iran escalate. Analysts see safe-haven demand driving metals higher. Gold nears $5,300, silver approaches $93. Experts expect further gains if conflict escalates. U.S. inflation data and Chinese\u2026"
+}

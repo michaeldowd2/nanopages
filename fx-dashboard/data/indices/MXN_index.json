@@ -1,0 +1,138 @@
+{
+  "currency": "MXN",
+  "calculation_method": "geometric_mean",
+  "note": "Index isolates currency movement using geometric mean of all pairs",
+  "base_date": "2026-02-24",
+  "data": [
+    {
+      "date": "2026-02-24",
+      "currency": "MXN",
+      "index": 100.0,
+      "prev_index": null,
+      "daily_change_pct": null,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-25",
+      "currency": "MXN",
+      "index": 99.6758,
+      "prev_index": 100.0,
+      "daily_change_pct": -0.3242,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-26",
+      "currency": "MXN",
+      "index": 99.8492,
+      "prev_index": 99.6758,
+      "daily_change_pct": 0.174,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-27",
+      "currency": "MXN",
+      "index": 99.8044,
+      "prev_index": 99.8492,
+      "daily_change_pct": -0.0448,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-28",
+      "currency": "MXN",
+      "index": 100.0993,
+      "prev_index": 99.8044,
+      "daily_change_pct": 0.2955,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-01",
+      "currency": "MXN",
+      "index": 100.0993,
+      "prev_index": 100.0993,
+      "daily_change_pct": 0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-02",
+      "currency": "MXN",
+      "index": 100.1163,
+      "prev_index": 100.0993,
+      "daily_change_pct": 0.017,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-03",
+      "currency": "MXN",
+      "index": 99.9612,
+      "prev_index": 100.1163,
+      "daily_change_pct": -0.155,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-04",
+      "currency": "MXN",
+      "index": 101.5827,
+      "prev_index": 99.9612,
+      "daily_change_pct": 1.6222,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-05",
+      "currency": "MXN",
+      "index": 101.5827,
+      "prev_index": 101.5827,
+      "daily_change_pct": 0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-06",
+      "currency": "MXN",
+      "index": 101.5964,
+      "prev_index": 101.5827,
+      "daily_change_pct": 0.0135,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-07",
+      "currency": "MXN",
+      "index": 101.6863,
+      "prev_index": 101.5964,
+      "daily_change_pct": 0.0885,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-08",
+      "currency": "MXN",
+      "index": 102.6086,
+      "prev_index": 101.6863,
+      "daily_change_pct": 0.907,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    }
+  ]
+}

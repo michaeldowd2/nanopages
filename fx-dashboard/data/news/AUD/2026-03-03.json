@@ -1,0 +1,31 @@
+{
+  "currency": "AUD",
+  "date": "2026-03-03",
+  "articles": [
+    {
+      "title": "Australian January building approvals -7.2% m/m vs +5.0% expected",
+      "url": "https://investinglive.com/news/australian-january-building-approvals-72-mm-vs-50-expected-20260303/",
+      "snippet": "Expected was +5.0% (some at 5.5%)Prior was -14.9%Private house approvals +1.1% vs +0.4% priorBuilding approvals +8.7% y/y vs +13.3% priorThis is a sharp two-month drop in construction activity but think of it more as a normalization. Australian dwelling approvals were characterised by significant monthly volatility through 2025, driven almost entirely by the multi-unit segment. The headline seasonally adjusted series swung from +12.0% in September to -6.4% in October, then surged 15.2% in Novemb",
+      "source": "ForexLive",
+      "relevance_score": 0.33,
+      "currency": "AUD"
+    },
+    {
+      "title": "Belite Bio Reports Preliminary, Unaudited Fourth Quarter and Full Year 2025 Financial Results and Provides a Corporate Update",
+      "url": "https://www.globenewswire.com/news-release/2026/03/02/3247158/0/en/Belite-Bio-Reports-Preliminary-Unaudited-Fourth-Quarter-and-Full-Year-2025-Financial-Results-and-Provides-a-Corporate-Update.html",
+      "snippet": "SAN DIEGO, March 02, 2026 (GLOBE NEWSWIRE) -- Belite Bio, Inc (NASDAQ: BLTE) (\u201cBelite Bio\u201d or the \u201cCompany\u201d), a clinical-stage drug development company focused on advancing novel therapeutics targeting degenerative retinal diseases that have significant unmet\u2026",
+      "source": "NewsAPI (GlobeNewswire)",
+      "relevance_score": 0.33,
+      "currency": "AUD"
+    },
+    {
+      "title": "I was billed for dental work I never got and my insurance says it\u2019s fraud. But the dentist is threatening collections",
+      "url": "https://finance.yahoo.com/news/billed-dental-never-got-insurance-120000339.html",
+      "snippet": "",
+      "source": "Yahoo Finance",
+      "relevance_score": 0.33,
+      "currency": "AUD"
+    }
+  ],
+  "combined_text": "[0.33] Australian January building approvals -7.2% m/m vs +5.0% expected\nExpected was +5.0% (some at 5.5%)Prior was -14.9%Private house approvals +1.1% vs +0.4% priorBuilding approvals +8.7% y/y vs +13.3% priorThis is a sharp two-month drop in construction activity but think of it more as a normalization. Australian dwelling approvals were characterised by significant monthly volatility through 2025, driven almost entirely by the multi-unit segment. The headline seasonally adjusted series swung from +12.0% in September to -6.4% in October, then surged 15.2% in Novemb\n\n[0.33] Belite Bio Reports Preliminary, Unaudited Fourth Quarter and Full Year 2025 Financial Results and Provides a Corporate Update\nSAN DIEGO, March 02, 2026 (GLOBE NEWSWIRE) -- Belite Bio, Inc (NASDAQ: BLTE) (\u201cBelite Bio\u201d or the \u201cCompany\u201d), a clinical-stage drug development company focused on advancing novel therapeutics targeting degenerative retinal diseases that have significant unmet\u2026\n\n[0.33] I was billed for dental work I never got and my insurance says it\u2019s fraud. But the dentist is threatening collections\n"
+}

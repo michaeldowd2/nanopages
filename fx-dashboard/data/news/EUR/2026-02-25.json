@@ -1,0 +1,88 @@
+{
+  "currency": "EUR",
+  "date": "2026-02-25",
+  "articles": [
+    {
+      "title": "investingLive European FX news wrap: JPY extends losses, RBA Bullock signals patience",
+      "url": "https://investinglive.com/news/investinglive-european-fx-news-wrap-jpy-extends-losses-rba-bullock-signals-patience-20260225/",
+      "snippet": "Japanese Yen extends losses as Takaichi's opposition to rate hikes weighs on the currencyRenewed uncertainty around tariffs weighs on the Indian Rupee amid Trump threatsEurozone January final CPI +1.7% vs +1.7% y/y prelimThe Australian dollar weakens as RBA's Bullock signals patience on judging policyGold's momentum wanes as focus turns to US-Iran talks and NFP report next weekEx-BoJ Governor Kuroda urges tighter policy; warns Takaichi stimulus could fuel inflationGermany Q4 final GDP 0.3% vs 0.",
+      "published_at": "2026-02-25T21:09:02.319181",
+      "source": "ForexLive",
+      "relevance_score": 1.0,
+      "currency": "EUR"
+    },
+    {
+      "title": "Eurozone January final CPI +1.7% vs +1.7% y/y prelim",
+      "url": "https://investinglive.com/news/eurozone-january-final-cpi-17-vs-17-yy-prelim-20260225/",
+      "snippet": "Prior +2.0%Core CPI +2.2% vs +2.2% y/y prelimPrior +2.3%No changes to the preliminary estimates. Compared with December 2025, annual inflation fell in twenty-three Member States, remained stable in one and rose in three.In January 2026, the highest contribution to the annual euro area inflation rate came from services (+1.45%), followed by food, alcohol & tobacco (+0.51%), non-energy industrial goods (+0.09%) and energy (-0.39%).ECB policymakers have been repeating they are in a \"good place\" on ",
+      "published_at": "2026-02-25T21:09:02.319472",
+      "source": "ForexLive",
+      "relevance_score": 1.0,
+      "currency": "EUR"
+    },
+    {
+      "title": "Germany Q4 final GDP 0.3% vs 0.3% q/q prelim",
+      "url": "https://investinglive.com/news/germany-q4-final-gdp-03-vs-03-qq-prelim-20260225/",
+      "snippet": "Prior 0.0%GDP Y/Y 0.4% vs 0.4% preliminaryPrior 0.3%No changes to the preliminary estimates. The German economy has been recovering gradually due to the expansionary fiscal policies and the ECB rate cuts. The momentum should hold in the first quarter given the strong data we had so far, unless there is a major slump in March. Economists expect the economy to grow about 1.0% in 2026, up from just 0.3% in 2025. This article was written by Giuseppe Dellamotta at investinglive.com.",
+      "published_at": "2026-02-25T21:09:02.319590",
+      "source": "ForexLive",
+      "relevance_score": 0.33,
+      "currency": "EUR"
+    },
+    {
+      "title": "What are the main events for today?",
+      "url": "https://investinglive.com/news/what-are-the-main-events-for-today-20260225/",
+      "snippet": "EUROPEAN SESSIONIn the European session, the only highlights are the final German Q4 GDP and the final Eurozone CPI report. The preliminary German Q4 GDP report beat expectations showing a 0.3% Q/Q growth. The preliminary Eurozone CPI figures saw headline CPI Y/Y coming at 1.7%, while the core CPI Y/Y printed at 2.2%. The final reports are rarely market-moving as traders react mostly to new information and especially the one that changes expectations. Today's data isn't going to change anything ",
+      "published_at": "2026-02-25T21:09:02.319652",
+      "source": "ForexLive",
+      "relevance_score": 1.0,
+      "currency": "EUR"
+    },
+    {
+      "title": "EUR/USD recovers as Greenback fails to sustain upside momentum",
+      "url": "https://www.fxstreet.com/news/eur-usd-recovers-as-greenback-fails-to-sustain-upside-momentum-202602251617",
+      "snippet": "EUR/USD regains traction on Wednesday as the US Dollar\u2019s (USD) upside momentum fades, allowing the Euro (EUR) to trim its earlier intraday losses. At the time of writing, EUR/USD is trading around 1.1805, rebounding from the daily low near 1.1771.",
+      "published_at": "2026-02-25T21:09:02.413257",
+      "source": "FXStreet",
+      "relevance_score": 0.67,
+      "currency": "EUR"
+    },
+    {
+      "title": "Eurozone: Household lending faces modest tightening \u2013 BNP Paribas",
+      "url": "https://www.fxstreet.com/news/eurozone-household-lending-faces-modest-tightening-bnp-paribas-202602251506",
+      "snippet": "BNP Paribas, citing the ECB Bank Lending Survey, notes that Eurozone banks plan a somewhat stronger tightening of credit standards for households than for corporations in 2026, mainly due to higher regulatory capital and liquidity requirements under CRR3 and the output floor.",
+      "published_at": "2026-02-25T21:09:02.413373",
+      "source": "FXStreet",
+      "relevance_score": 1.0,
+      "currency": "EUR"
+    },
+    {
+      "title": "EUR/GBP slips as softer Eurozone inflation weighs on the Euro",
+      "url": "https://www.fxstreet.com/news/eur-gbp-slips-as-softer-eurozone-inflation-weighs-on-the-euro-202602251430",
+      "snippet": "The Euro (EUR) edges lower against the British Pound (GBP) on Wednesday as investors digest fresh Eurozone inflation figures and Germany\u2019s fourth-quarter Gross Domestic Product (GDP) data.",
+      "published_at": "2026-02-25T21:09:02.413447",
+      "source": "FXStreet",
+      "relevance_score": 1.0,
+      "currency": "EUR"
+    },
+    {
+      "title": "EU-US trade deal: Waiting for tariff clarity \u2013 Standard Chartered",
+      "url": "https://www.fxstreet.com/news/eu-us-trade-deal-waiting-for-tariff-clarity-standard-chartered-202602251309",
+      "snippet": "Standard Chartered economist Christopher Graham notes that the European Parliament has paused ratification of the EU-US trade deal as it seeks clarity on new US tariffs.",
+      "published_at": "2026-02-25T21:09:02.413804",
+      "source": "FXStreet",
+      "relevance_score": 0.67,
+      "currency": "EUR"
+    },
+    {
+      "title": "Eurozone: Softer inflation underpins Euro rates outlook \u2013 BNY",
+      "url": "https://www.fxstreet.com/news/eurozone-softer-inflation-underpins-euro-rates-outlook-bny-202602251241",
+      "snippet": "BNY\u2019s Head of Markets Macro Strategy Bob Savage highlights that Eurozone January inflation eased to 1.7% year-on-year, with EU inflation at 2.0%. Services remain the main positive contribution, while energy drags.",
+      "published_at": "2026-02-25T21:09:02.413882",
+      "source": "FXStreet",
+      "relevance_score": 1.0,
+      "currency": "EUR"
+    }
+  ],
+  "combined_text": "[1.00] investingLive European FX news wrap: JPY extends losses, RBA Bullock signals patience\nJapanese Yen extends losses as Takaichi's opposition to rate hikes weighs on the currencyRenewed uncertainty around tariffs weighs on the Indian Rupee amid Trump threatsEurozone January final CPI +1.7% vs +1.7% y/y prelimThe Australian dollar weakens as RBA's Bullock signals patience on judging policyGold's momentum wanes as focus turns to US-Iran talks and NFP report next weekEx-BoJ Governor Kuroda urges tighter policy; warns Takaichi stimulus could fuel inflationGermany Q4 final GDP 0.3% vs 0.\n\n[1.00] Eurozone January final CPI +1.7% vs +1.7% y/y prelim\nPrior +2.0%Core CPI +2.2% vs +2.2% y/y prelimPrior +2.3%No changes to the preliminary estimates. Compared with December 2025, annual inflation fell in twenty-three Member States, remained stable in one and rose in three.In January 2026, the highest contribution to the annual euro area inflation rate came from services (+1.45%), followed by food, alcohol & tobacco (+0.51%), non-energy industrial goods (+0.09%) and energy (-0.39%).ECB policymakers have been repeating they are in a \"good place\" on \n\n[0.33] Germany Q4 final GDP 0.3% vs 0.3% q/q prelim\nPrior 0.0%GDP Y/Y 0.4% vs 0.4% preliminaryPrior 0.3%No changes to the preliminary estimates. The German economy has been recovering gradually due to the expansionary fiscal policies and the ECB rate cuts. The momentum should hold in the first quarter given the strong data we had so far, unless there is a major slump in March. Economists expect the economy to grow about 1.0% in 2026, up from just 0.3% in 2025. This article was written by Giuseppe Dellamotta at investinglive.com.\n\n[1.00] What are the main events for today?\nEUROPEAN SESSIONIn the European session, the only highlights are the final German Q4 GDP and the final Eurozone CPI report. The preliminary German Q4 GDP report beat expectations showing a 0.3% Q/Q growth. The preliminary Eurozone CPI figures saw headline CPI Y/Y coming at 1.7%, while the core CPI Y/Y printed at 2.2%. The final reports are rarely market-moving as traders react mostly to new information and especially the one that changes expectations. Today's data isn't going to change anything \n\n[0.67] EUR/USD recovers as Greenback fails to sustain upside momentum\nEUR/USD regains traction on Wednesday as the US Dollar\u2019s (USD) upside momentum fades, allowing the Euro (EUR) to trim its earlier intraday losses. At the time of writing, EUR/USD is trading around 1.1805, rebounding from the daily low near 1.1771.\n\n[1.00] Eurozone: Household lending faces modest tightening \u2013 BNP Paribas\nBNP Paribas, citing the ECB Bank Lending Survey, notes that Eurozone banks plan a somewhat stronger tightening of credit standards for households than for corporations in 2026, mainly due to higher regulatory capital and liquidity requirements under CRR3 and the output floor.\n\n[1.00] EUR/GBP slips as softer Eurozone inflation weighs on the Euro\nThe Euro (EUR) edges lower against the British Pound (GBP) on Wednesday as investors digest fresh Eurozone inflation figures and Germany\u2019s fourth-quarter Gross Domestic Product (GDP) data.\n\n[0.67] EU-US trade deal: Waiting for tariff clarity \u2013 Standard Chartered\nStandard Chartered economist Christopher Graham notes that the European Parliament has paused ratification of the EU-US trade deal as it seeks clarity on new US tariffs.\n\n[1.00] Eurozone: Softer inflation underpins Euro rates outlook \u2013 BNY\nBNY\u2019s Head of Markets Macro Strategy Bob Savage highlights that Eurozone January inflation eased to 1.7% year-on-year, with EU inflation at 2.0%. Services remain the main positive contribution, while energy drags."
+}

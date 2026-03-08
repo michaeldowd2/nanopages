@@ -1,0 +1,82 @@
+{
+  "currency": "MXN",
+  "date": "2026-02-24",
+  "signals": [
+    {
+      "date": "2026-02-24",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "MXN",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://finance.yahoo.com/news/chipotle-mexican-grill-stock-analyst-124210963.html",
+      "article_title": "Chipotle Mexican Grill Stock: Analyst Estimates & Ratings",
+      "published_at": "2026-02-24T21:41:54.429865",
+      "relevance_score": 0.33,
+      "reasoning": "MXN mixed signals; markets consolidating",
+      "timestamp": "2026-02-27T20:28:52.555556Z",
+      "estimator_id": "llm-horizon-v1-default",
+      "estimator_type": "llm-horizon-estimator-v1",
+      "time_horizon": "1week",
+      "horizon_category": "Near-term (1 week)",
+      "realized": false,
+      "realization_status": "unrealized",
+      "actual_movement": {
+        "direction": "neutral",
+        "magnitude": "+0.00%",
+        "pct_change": 0.0,
+        "index": 100.0,
+        "prev_index": null,
+        "days_elapsed": 5
+      },
+      "realization_check_timestamp": "2026-03-01T13:59:53.047745Z"
+    },
+    {
+      "date": "2026-02-24",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "MXN",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": "null",
+      "confidence": 0.2,
+      "pair_context": null,
+      "article_url": "https://finance.yahoo.com/news/chipotle-mexican-grill-stock-analyst-124210963.html",
+      "article_title": "Chipotle Mexican Grill Stock: Analyst Estimates & Ratings",
+      "published_at": "2026-02-24T21:41:54.429865",
+      "relevance_score": 0.33,
+      "reasoning": "The article is about Chipotle Mexican Grill stock and does not contain any information about the Mexican peso (MXN) or the FX market.",
+      "timestamp": "2026-02-27T20:29:53.379147Z",
+      "estimator_id": "llm-horizon-v1-default",
+      "estimator_type": "llm-horizon-estimator-v1",
+      "time_horizon": "1week",
+      "horizon_category": "Near-term (1 week)",
+      "realized": false,
+      "realization_status": "unrealized",
+      "actual_movement": {
+        "direction": "neutral",
+        "magnitude": "+0.00%",
+        "pct_change": 0.0,
+        "index": 100.0,
+        "prev_index": null,
+        "days_elapsed": 5
+      },
+      "realization_check_timestamp": "2026-03-01T13:59:53.047986Z"
+    }
+  ]
+}

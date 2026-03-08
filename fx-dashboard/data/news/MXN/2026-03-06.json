@@ -1,0 +1,23 @@
+{
+  "currency": "MXN",
+  "date": "2026-03-06",
+  "articles": [
+    {
+      "title": "LINK FOREX Research Head David Whitcombe Quietly Funds Measles Patients in Mexico",
+      "url": "https://www.globenewswire.com/news-release/2026/03/05/3249978/0/en/LINK-FOREX-Research-Head-David-Whitcombe-Quietly-Funds-Measles-Patients-in-Mexico.html",
+      "snippet": "London, United Kingdom, March 05, 2026 (GLOBE NEWSWIRE) -- Amid a recent surge in measles cases in parts of Mexico, some families are facing the dual pressures of strained healthcare resources and rising treatment costs. For some low-income families, continue\u2026",
+      "source": "NewsAPI (GlobeNewswire)",
+      "relevance_score": 0.33,
+      "currency": "MXN"
+    },
+    {
+      "title": "Pan American Silver Discovers New High-Grade Veins at the La Colorada Mine",
+      "url": "https://financialpost.com/pmn/business-wire-news-releases-pmn/pan-american-silver-discovers-new-high-grade-veins-at-the-la-colorada-mine",
+      "snippet": "VANCOUVER, British Columbia \u2014 Pan American Silver Corp. (NYSE: PAAS) (TSX: PAAS) (\u201cPan American\u201d or the \u201cCompany\u201d) reports new drill results from the southeastern and eastern Candelaria zones of the La Colorada mine in Zacatecas, Mexico. Exploration drilling \u2026",
+      "source": "NewsAPI (Financial Post)",
+      "relevance_score": 0.33,
+      "currency": "MXN"
+    }
+  ],
+  "combined_text": "[0.33] LINK FOREX Research Head David Whitcombe Quietly Funds Measles Patients in Mexico\nLondon, United Kingdom, March 05, 2026 (GLOBE NEWSWIRE) -- Amid a recent surge in measles cases in parts of Mexico, some families are facing the dual pressures of strained healthcare resources and rising treatment costs. For some low-income families, continue\u2026\n\n[0.33] Pan American Silver Discovers New High-Grade Veins at the La Colorada Mine\nVANCOUVER, British Columbia \u2014 Pan American Silver Corp. (NYSE: PAAS) (TSX: PAAS) (\u201cPan American\u201d or the \u201cCompany\u201d) reports new drill results from the southeastern and eastern Candelaria zones of the La Colorada mine in Zacatecas, Mexico. Exploration drilling \u2026"
+}

@@ -1,0 +1,144 @@
+{
+  "currency": "AUD",
+  "date": "2026-03-07",
+  "signals": [
+    {
+      "date": "2026-03-07",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://finance.yahoo.com/news/est-e-lauder-companies-moves-102136485.html",
+      "article_title": "Est\u00e9e Lauder Companies moves to fully acquire Forest Essentials",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "AUD mixed signals; markets consolidating",
+      "timestamp": "2026-03-07T12:32:59.300247Z"
+    },
+    {
+      "date": "2026-03-07",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://deeshaa.org/2026/03/06/bitcoin-the-brilliant-ponzi-scheme/",
+      "article_title": "Bitcoin, the Brilliant Ponzi Scheme",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "AUD mixed signals; markets consolidating",
+      "timestamp": "2026-03-07T12:32:59.300292Z"
+    },
+    {
+      "date": "2026-03-07",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://www.ozbargain.com.au/node/950744",
+      "article_title": "Gooloo A3 Jump Starter 3000A with Air Compressor US$47.58 (~A$68.15) AU Stock Delivered @ GOOLOO Global Warehouse AliExpress",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "AUD mixed signals; markets consolidating",
+      "timestamp": "2026-03-07T12:32:59.300339Z"
+    },
+    {
+      "date": "2026-03-07",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": "null",
+      "confidence": 0.2,
+      "pair_context": null,
+      "article_url": "https://finance.yahoo.com/news/est-e-lauder-companies-moves-102136485.html",
+      "article_title": "Est\u00e9e Lauder Companies moves to fully acquire Forest Essentials",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article is about Est\u00e9e Lauder Companies acquiring Forest Essentials, which is not directly related to the Australian dollar (AUD) or the foreign exchange (FX) market.",
+      "timestamp": "2026-03-07T12:33:42.013343Z"
+    },
+    {
+      "date": "2026-03-07",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": "null",
+      "confidence": 0.7,
+      "pair_context": null,
+      "article_url": "https://deeshaa.org/2026/03/06/bitcoin-the-brilliant-ponzi-scheme/",
+      "article_title": "Bitcoin, the Brilliant Ponzi Scheme",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article discusses Bitcoin and Ponzi schemes, which are not directly related to the Australian dollar (AUD). There are no mentions of the AUD or any factors that would impact its valuation, so the sentiment for the AUD is neutral.",
+      "timestamp": "2026-03-07T12:33:43.180491Z"
+    },
+    {
+      "date": "2026-03-07",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "AUD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": "null",
+      "confidence": 0.7,
+      "pair_context": null,
+      "article_url": "https://www.ozbargain.com.au/node/950744",
+      "article_title": "Gooloo A3 Jump Starter 3000A with Air Compressor US$47.58 (~A$68.15) AU Stock Delivered @ GOOLOO Global Warehouse AliExpress",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article discusses a product deal for a Gooloo jump starter and air compressor, which does not contain any information directly related to the Australian dollar (AUD) or the Australian economy. Therefore, the sentiment for AUD is neutral.",
+      "timestamp": "2026-03-07T12:33:44.613167Z"
+    }
+  ]
+}

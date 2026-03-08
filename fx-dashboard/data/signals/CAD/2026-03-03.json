@@ -1,0 +1,52 @@
+{
+  "currency": "CAD",
+  "date": "2026-03-03",
+  "signals": [
+    {
+      "date": "2026-03-03",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "CAD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://www.fairobserver.com/economics/japan-2026-steering-a-reawakened-economic-giant-through-the-narrow-strait/",
+      "article_title": "Japan 2026: Steering a Reawakened Economic Giant Through the Narrow Strait",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "CAD mixed signals; markets consolidating",
+      "timestamp": "2026-03-03T12:33:14.171120Z"
+    },
+    {
+      "date": "2026-03-03",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "CAD",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": "null",
+      "confidence": 0.5,
+      "pair_context": null,
+      "article_url": "https://www.fairobserver.com/economics/japan-2026-steering-a-reawakened-economic-giant-through-the-narrow-strait/",
+      "article_title": "Japan 2026: Steering a Reawakened Economic Giant Through the Narrow Strait",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article is focused on the Japanese economy and does not mention the Canadian dollar or any factors that would directly impact the CAD. Therefore, the sentiment for the CAD is neutral.",
+      "timestamp": "2026-03-03T12:34:06.644213Z"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "currency": "AUD",
+  "date": "2026-02-28",
+  "articles": [
+    {
+      "title": "The Est\u00e9e Lauder Companies Inc. (EL): A\u00a0Bull\u00a0Case Theory",
+      "url": "https://finance.yahoo.com/news/est-e-lauder-companies-inc-194903189.html",
+      "snippet": "",
+      "published_at": "2026-02-28T20:26:17.058230",
+      "source": "Yahoo Finance",
+      "relevance_score": 0.33,
+      "currency": "AUD"
+    },
+    {
+      "title": "Saudi Arabia Prepaid Card and Digital Wallet Market Intelligence Report 2026: stc bank and Urpay Intensify Competition Through Apple Pay/Mada Integration and Card-Linked Stored-Value Strategies",
+      "url": "https://www.globenewswire.com/news-release/2026/02/27/3246397/28124/en/Saudi-Arabia-Prepaid-Card-and-Digital-Wallet-Market-Intelligence-Report-2026-stc-bank-and-Urpay-Intensify-Competition-Through-Apple-Pay-Mada-Integration-and-Card-Linked-Stored-Valu.html",
+      "snippet": "Key opportunities in Saudi Arabia's prepaid card and digital wallet market include enhancing wallet-native features for Mada acceptance and e-commerce integration, leveraging national e-payment infrastructure for seamless cross-border transactions, focusing o\u2026",
+      "published_at": "2026-02-27T11:24:00+00:00",
+      "source": "NewsAPI (GlobeNewswire)",
+      "relevance_score": 0.33,
+      "currency": "AUD"
+    },
+    {
+      "title": "United Kingdom Prepaid Card and Digital Wallet Intelligence Report 2026: An $82.73 Billion Market by 2030, Primed for Growth Due to Increased Contactless Adoption and Digital-first Financial Solutions",
+      "url": "https://www.globenewswire.com/news-release/2026/02/27/3246365/28124/en/United-Kingdom-Prepaid-Card-and-Digital-Wallet-Intelligence-Report-2026-An-82-73-Billion-Market-by-2030-Primed-for-Growth-Due-to-Increased-Contactless-Adoption-and-Digital-first-Fi.html",
+      "snippet": "The UK prepaid card and digital wallet market is primed for growth due to increased contactless adoption and digital-first financial solutions. Key opportunities include enhancing fraud controls with evolving FCA regulations, scaling prepaid solutions for und\u2026",
+      "published_at": "2026-02-27T10:19:00+00:00",
+      "source": "NewsAPI (GlobeNewswire)",
+      "relevance_score": 0.33,
+      "currency": "AUD"
+    },
+    {
+      "title": "BEYOND THE SCAFFOLDING: Years of Pain, Patience, And The Audacity That Built Banana Island\u2019s Tallest Tower Lucrezia By Sujimoto",
+      "url": "https://punchng.com/beyond-the-scaffolding-years-of-pain-patience-and-the-audacity-that-built-banana-islands-tallest-tower-lucrezia-by-sujimoto/",
+      "snippet": "Discover the story behind Lucrezia Banana Island, the tallest tower built by Sujimoto. A testament to endurance, luxury, and setting a new standard. Read More: https://punchng.com/beyond-the-scaffolding-years-of-pain-patience-and-the-audacity-that-built-bana\u2026",
+      "published_at": "2026-02-27T09:56:38+00:00",
+      "source": "NewsAPI (The Punch)",
+      "relevance_score": 0.33,
+      "currency": "AUD"
+    }
+  ],
+  "combined_text": "[0.33] The Est\u00e9e Lauder Companies Inc. (EL): A\u00a0Bull\u00a0Case Theory\n\n\n[0.33] Saudi Arabia Prepaid Card and Digital Wallet Market Intelligence Report 2026: stc bank and Urpay Intensify Competition Through Apple Pay/Mada Integration and Card-Linked Stored-Value Strategies\nKey opportunities in Saudi Arabia's prepaid card and digital wallet market include enhancing wallet-native features for Mada acceptance and e-commerce integration, leveraging national e-payment infrastructure for seamless cross-border transactions, focusing o\u2026\n\n[0.33] United Kingdom Prepaid Card and Digital Wallet Intelligence Report 2026: An $82.73 Billion Market by 2030, Primed for Growth Due to Increased Contactless Adoption and Digital-first Financial Solutions\nThe UK prepaid card and digital wallet market is primed for growth due to increased contactless adoption and digital-first financial solutions. Key opportunities include enhancing fraud controls with evolving FCA regulations, scaling prepaid solutions for und\u2026\n\n[0.33] BEYOND THE SCAFFOLDING: Years of Pain, Patience, And The Audacity That Built Banana Island\u2019s Tallest Tower Lucrezia By Sujimoto\nDiscover the story behind Lucrezia Banana Island, the tallest tower built by Sujimoto. A testament to endurance, luxury, and setting a new standard. Read More: https://punchng.com/beyond-the-scaffolding-years-of-pain-patience-and-the-audacity-that-built-bana\u2026"
+}

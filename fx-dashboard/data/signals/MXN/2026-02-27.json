@@ -1,0 +1,82 @@
+{
+  "currency": "MXN",
+  "date": "2026-02-27",
+  "signals": [
+    {
+      "date": "2026-02-27",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "MXN",
+      "predicted_direction": "bearish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.9,
+      "pair_context": null,
+      "article_url": "https://www.fxstreet.com/news/mxn-policy-easing-signals-and-resilient-currency-societe-generale-202602271514",
+      "article_title": "MXN: Policy easing signals and resilient currency \u2013 Societe Generale",
+      "published_at": "2026-02-27T22:35:10.323364",
+      "relevance_score": 1.0,
+      "reasoning": "MXN showing weakness with 3 negative indicators",
+      "timestamp": "2026-02-27T22:36:29.766429Z",
+      "estimator_id": "llm-horizon-v1-default",
+      "estimator_type": "llm-horizon-estimator-v1",
+      "time_horizon": "1week",
+      "horizon_category": "Near-term (1 week)",
+      "realized": false,
+      "realization_status": "unrealized",
+      "actual_movement": {
+        "direction": "neutral",
+        "magnitude": "-0.04%",
+        "pct_change": -0.04,
+        "index": 99.8,
+        "prev_index": 99.85,
+        "days_elapsed": 2
+      },
+      "realization_check_timestamp": "2026-03-01T13:59:53.048796Z"
+    },
+    {
+      "date": "2026-02-27",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "MXN",
+      "predicted_direction": "bullish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.8,
+      "pair_context": null,
+      "article_url": "https://www.fxstreet.com/news/mxn-policy-easing-signals-and-resilient-currency-societe-generale-202602271514",
+      "article_title": "MXN: Policy easing signals and resilient currency \u2013 Societe Generale",
+      "published_at": "2026-02-27T22:35:10.323364",
+      "relevance_score": 1.0,
+      "reasoning": "The article suggests that the Mexican central bank (Banxico) has room to resume rate cuts, which is a dovish signal and typically bearish for the currency. However, the article also notes that the Mexican peso has been resilient, which implies strength in the currency. Overall, the article appears to have a bullish sentiment for the MXN.",
+      "timestamp": "2026-02-27T22:37:34.113209Z",
+      "estimator_id": "llm-horizon-v1-default",
+      "estimator_type": "llm-horizon-estimator-v1",
+      "time_horizon": "1week",
+      "horizon_category": "Near-term (1 week)",
+      "realized": false,
+      "realization_status": "unrealized",
+      "actual_movement": {
+        "direction": "neutral",
+        "magnitude": "-0.04%",
+        "pct_change": -0.04,
+        "index": 99.8,
+        "prev_index": 99.85,
+        "days_elapsed": 2
+      },
+      "realization_check_timestamp": "2026-03-01T13:59:53.049335Z"
+    }
+  ]
+}
