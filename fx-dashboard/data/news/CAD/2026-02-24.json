@@ -1,0 +1,25 @@
+{
+  "currency": "CAD",
+  "date": "2026-02-24",
+  "articles": [
+    {
+      "title": "CNY: PBoC on hold as Yuan firms \u2013 BNY",
+      "url": "https://www.fxstreet.com/news/cny-pboc-on-hold-as-yuan-firms-bny-202602241907",
+      "snippet": "BNY\u2019s Head of Markets Macro Strategy Bob Savage notes that the People\u2019s Bank of China kept its 1-year and 5-year LPR unchanged at 3% and 3.5%, balancing growth support and currency stability. Despite weak GDP and persistent deflationary pressures, authorities are focusing on services consumption.",
+      "published_at": "2026-02-24T21:41:53.809090",
+      "source": "FXStreet",
+      "relevance_score": 0.33,
+      "currency": "CAD"
+    },
+    {
+      "title": "Want $1 Million in Retirement? Invest $100,000 in These 3 Stocks and Wait a Decade.",
+      "url": "https://finance.yahoo.com/news/want-1-million-retirement-invest-133100586.html",
+      "snippet": "",
+      "published_at": "2026-02-24T21:51:03.224520",
+      "source": "Yahoo Finance",
+      "relevance_score": 0.33,
+      "currency": "CAD"
+    }
+  ],
+  "combined_text": "[0.33] CNY: PBoC on hold as Yuan firms \u2013 BNY\nBNY\u2019s Head of Markets Macro Strategy Bob Savage notes that the People\u2019s Bank of China kept its 1-year and 5-year LPR unchanged at 3% and 3.5%, balancing growth support and currency stability. Despite weak GDP and persistent deflationary pressures, authorities are focusing on services consumption.\n\n[0.33] Want $1 Million in Retirement? Invest $100,000 in These 3 Stocks and Wait a Decade.\n"
+}

@@ -1,0 +1,138 @@
+{
+  "currency": "EUR",
+  "calculation_method": "geometric_mean",
+  "note": "Index isolates currency movement using geometric mean of all pairs",
+  "base_date": "2026-02-24",
+  "data": [
+    {
+      "date": "2026-02-24",
+      "currency": "EUR",
+      "index": 100.0,
+      "prev_index": null,
+      "daily_change_pct": null,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-25",
+      "currency": "EUR",
+      "index": 100.1381,
+      "prev_index": 100.0,
+      "daily_change_pct": 0.1381,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-26",
+      "currency": "EUR",
+      "index": 100.0186,
+      "prev_index": 100.1381,
+      "daily_change_pct": -0.1194,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-27",
+      "currency": "EUR",
+      "index": 100.0351,
+      "prev_index": 100.0186,
+      "daily_change_pct": 0.0165,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-28",
+      "currency": "EUR",
+      "index": 100.0974,
+      "prev_index": 100.0351,
+      "daily_change_pct": 0.0623,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-01",
+      "currency": "EUR",
+      "index": 100.0974,
+      "prev_index": 100.0974,
+      "daily_change_pct": -0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-02",
+      "currency": "EUR",
+      "index": 100.1366,
+      "prev_index": 100.0974,
+      "daily_change_pct": 0.0392,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-03",
+      "currency": "EUR",
+      "index": 100.4465,
+      "prev_index": 100.1366,
+      "daily_change_pct": 0.3095,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-04",
+      "currency": "EUR",
+      "index": 100.4833,
+      "prev_index": 100.4465,
+      "daily_change_pct": 0.0367,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-05",
+      "currency": "EUR",
+      "index": 100.4833,
+      "prev_index": 100.4833,
+      "daily_change_pct": 0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-06",
+      "currency": "EUR",
+      "index": 100.714,
+      "prev_index": 100.4833,
+      "daily_change_pct": 0.2296,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-07",
+      "currency": "EUR",
+      "index": 100.5571,
+      "prev_index": 100.714,
+      "daily_change_pct": -0.1558,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-08",
+      "currency": "EUR",
+      "index": 100.7496,
+      "prev_index": 100.5571,
+      "daily_change_pct": 0.1914,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    }
+  ]
+}

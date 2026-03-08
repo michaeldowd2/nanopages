@@ -1,0 +1,82 @@
+{
+  "currency": "GBP",
+  "date": "2026-02-26",
+  "signals": [
+    {
+      "date": "2026-02-26",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "GBP",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": null,
+      "confidence": 0.3,
+      "pair_context": null,
+      "article_url": "https://www.fxstreet.com/news/boe-stronger-data-versus-easing-path-standard-chartered-202602261459",
+      "article_title": "BoE: Stronger data versus easing path \u2013 Standard Chartered",
+      "published_at": "2026-02-26T22:53:50.166546",
+      "relevance_score": 0.67,
+      "reasoning": "GBP mixed signals; markets consolidating",
+      "timestamp": "2026-02-27T20:27:15.203832Z",
+      "estimator_id": "llm-horizon-v1-default",
+      "estimator_type": "llm-horizon-estimator-v1",
+      "time_horizon": "1week",
+      "horizon_category": "Near-term (1 week)",
+      "realized": false,
+      "realization_status": "contradicted",
+      "actual_movement": {
+        "direction": "bearish",
+        "magnitude": "-0.22%",
+        "pct_change": -0.22,
+        "index": 99.83,
+        "prev_index": 100.05,
+        "days_elapsed": 3
+      },
+      "realization_check_timestamp": "2026-03-01T13:59:53.036478Z"
+    },
+    {
+      "date": "2026-02-26",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "GBP",
+      "predicted_direction": "bullish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.8,
+      "pair_context": null,
+      "article_url": "https://www.fxstreet.com/news/boe-stronger-data-versus-easing-path-standard-chartered-202602261459",
+      "article_title": "BoE: Stronger data versus easing path \u2013 Standard Chartered",
+      "published_at": "2026-02-26T22:53:50.166546",
+      "relevance_score": 0.67,
+      "reasoning": "The article suggests that stronger UK economic data in early 2026 could lead the Bank of England to cut interest rates more slowly, which would be positive for the British pound.",
+      "timestamp": "2026-02-27T20:27:51.096343Z",
+      "estimator_id": "llm-horizon-v1-default",
+      "estimator_type": "llm-horizon-estimator-v1",
+      "time_horizon": "1week",
+      "horizon_category": "Near-term (1 week)",
+      "realized": false,
+      "realization_status": "contradicted",
+      "actual_movement": {
+        "direction": "bearish",
+        "magnitude": "-0.22%",
+        "pct_change": -0.22,
+        "index": 99.83,
+        "prev_index": 100.05,
+        "days_elapsed": 3
+      },
+      "realization_check_timestamp": "2026-03-01T13:59:53.036997Z"
+    }
+  ]
+}

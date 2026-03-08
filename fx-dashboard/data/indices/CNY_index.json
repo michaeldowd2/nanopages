@@ -1,0 +1,138 @@
+{
+  "currency": "CNY",
+  "calculation_method": "geometric_mean",
+  "note": "Index isolates currency movement using geometric mean of all pairs",
+  "base_date": "2026-02-24",
+  "data": [
+    {
+      "date": "2026-02-24",
+      "currency": "CNY",
+      "index": 100.0,
+      "prev_index": null,
+      "daily_change_pct": null,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-25",
+      "currency": "CNY",
+      "index": 99.7758,
+      "prev_index": 100.0,
+      "daily_change_pct": -0.2242,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-26",
+      "currency": "CNY",
+      "index": 99.5324,
+      "prev_index": 99.7758,
+      "daily_change_pct": -0.2439,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-27",
+      "currency": "CNY",
+      "index": 99.5712,
+      "prev_index": 99.5324,
+      "daily_change_pct": 0.039,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-28",
+      "currency": "CNY",
+      "index": 99.6853,
+      "prev_index": 99.5712,
+      "daily_change_pct": 0.1145,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-01",
+      "currency": "CNY",
+      "index": 99.6853,
+      "prev_index": 99.6853,
+      "daily_change_pct": -0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-02",
+      "currency": "CNY",
+      "index": 99.709,
+      "prev_index": 99.6853,
+      "daily_change_pct": 0.0238,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-03",
+      "currency": "CNY",
+      "index": 99.3958,
+      "prev_index": 99.709,
+      "daily_change_pct": -0.3141,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-04",
+      "currency": "CNY",
+      "index": 99.1268,
+      "prev_index": 99.3958,
+      "daily_change_pct": -0.2706,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-05",
+      "currency": "CNY",
+      "index": 99.1268,
+      "prev_index": 99.1268,
+      "daily_change_pct": 0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-06",
+      "currency": "CNY",
+      "index": 99.1071,
+      "prev_index": 99.1268,
+      "daily_change_pct": -0.0199,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-07",
+      "currency": "CNY",
+      "index": 99.1039,
+      "prev_index": 99.1071,
+      "daily_change_pct": -0.0033,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-08",
+      "currency": "CNY",
+      "index": 99.3164,
+      "prev_index": 99.1039,
+      "daily_change_pct": 0.2144,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    }
+  ]
+}

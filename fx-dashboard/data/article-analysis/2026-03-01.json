@@ -1,0 +1,79 @@
+{
+  "date": "2026-03-01",
+  "estimator_id": "llm-horizon-v1-default",
+  "estimator_type": "llm-horizon-estimator-v1",
+  "estimator_params": {
+    "model": "claude-3-haiku-20240307",
+    "temperature": 0.3,
+    "max_tokens": 500
+  },
+  "analyzed_at": "2026-03-01T19:34:51.832328",
+  "analyses": [
+    {
+      "url": "https://economictimes.indiatimes.com/markets/stocks/news/new-era-of-trade-volatility-what-the-courts-decision-and-trumps-tariff-pivot-mean-for-commodities/articleshow/128875195.cms",
+      "currency": "USD",
+      "title": "New era of trade volatility: What the court\u2019s decision and Trump\u2019s tariff pivot mean for commodities",
+      "source": "NewsAPI (The Times of India)",
+      "time_horizon": "2week",
+      "horizon_days": 14,
+      "valid_to_date": "2026-03-15",
+      "confidence": 0.8,
+      "reasoning": "The article discusses a Supreme Court ruling and Trump's tariff pivot, which are medium-term geopolitical developments that are likely to impact global trade dynamics and commodity markets over the next 2 weeks."
+    },
+    {
+      "url": "https://economictimes.indiatimes.com/markets/forex/us-dollar-heads-for-first-monthly-gain-since-october/articleshow/128874916.cms",
+      "currency": "USD",
+      "title": "US dollar heads for first monthly gain since October",
+      "source": "NewsAPI (The Times of India)",
+      "time_horizon": "1week",
+      "horizon_days": 7,
+      "valid_to_date": "2026-03-08",
+      "confidence": 0.8,
+      "reasoning": "The article mentions 'first monthly gain since October', indicating a near-term impact on the USD. The discussion of economic data releases and central bank policy also suggests a 1-week time horizon for the market impact."
+    },
+    {
+      "url": "https://finance.yahoo.com/news/enlight-renewable-enlt-reports-record-035751706.html",
+      "currency": "EUR",
+      "title": "Enlight Renewable (ENLT) Reports Record Q4 and Full-Year 2025 Results, Market Share Expands in European Storage Sector",
+      "source": "Yahoo Finance",
+      "time_horizon": "1month",
+      "horizon_days": 30,
+      "valid_to_date": "2026-03-31",
+      "confidence": 0.8,
+      "reasoning": "The article discusses Enlight Renewable's record Q4 and full-year 2025 results, as well as its expanding market share in the European storage sector. This suggests a longer-term trend and structural changes in the renewable energy market, which would have a medium to longer-term impact on the EUR currency."
+    },
+    {
+      "url": "https://english.khabarhub.com/2026/28/536950/",
+      "currency": "EUR",
+      "title": "Foreign currency exchange rates fixed for today",
+      "source": "NewsAPI (Khabarhub.com)",
+      "time_horizon": "1day",
+      "horizon_days": 1,
+      "valid_to_date": "2026-03-02",
+      "confidence": 0.8,
+      "reasoning": "The article is discussing the daily foreign exchange rates set by the central bank, indicating an immediate, intraday market impact."
+    },
+    {
+      "url": "https://finance.yahoo.com/news/keurig-dr-pepper-kdp-gets-043739403.html",
+      "currency": "EUR",
+      "title": "Keurig Dr Pepper (KDP) Gets Price Target Increase to $32 from Barclays",
+      "source": "Yahoo Finance",
+      "time_horizon": "1day",
+      "horizon_days": 1,
+      "valid_to_date": "2026-03-02",
+      "confidence": 0.8,
+      "reasoning": "The article discusses a price target increase for Keurig Dr Pepper (KDP) stock, which is an immediate market-moving event that is likely to have a short-term impact on the stock price."
+    },
+    {
+      "url": "https://www.globenewswire.com/news-release/2026/02/27/3246821/0/en/AS-Silvano-Fashion-Group-Consolidated-Interim-Financial-Report-for-Q4-and-12m-of-2025-unaudited.html",
+      "currency": "AUD",
+      "title": "AS Silvano Fashion Group Consolidated Interim Financial Report for Q4 and 12m of 2025 (unaudited)",
+      "source": "NewsAPI (GlobeNewswire)",
+      "time_horizon": "1month",
+      "horizon_days": 30,
+      "valid_to_date": "2026-03-31",
+      "confidence": 0.8,
+      "reasoning": "The article discusses the consolidated interim financial report for Q4 and 12m of 2025, which indicates a longer-term structural trend rather than an immediate or short-term market impact. The focus on annual financial results suggests a longer-term time horizon of up to 1 month."
+    }
+  ]
+}

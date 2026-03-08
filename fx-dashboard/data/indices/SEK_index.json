@@ -1,0 +1,138 @@
+{
+  "currency": "SEK",
+  "calculation_method": "geometric_mean",
+  "note": "Index isolates currency movement using geometric mean of all pairs",
+  "base_date": "2026-02-24",
+  "data": [
+    {
+      "date": "2026-02-24",
+      "currency": "SEK",
+      "index": 100.0,
+      "prev_index": null,
+      "daily_change_pct": null,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-25",
+      "currency": "SEK",
+      "index": 99.739,
+      "prev_index": 100.0,
+      "daily_change_pct": -0.261,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-26",
+      "currency": "SEK",
+      "index": 99.8015,
+      "prev_index": 99.739,
+      "daily_change_pct": 0.0626,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-27",
+      "currency": "SEK",
+      "index": 100.0502,
+      "prev_index": 99.8015,
+      "daily_change_pct": 0.2492,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-28",
+      "currency": "SEK",
+      "index": 99.881,
+      "prev_index": 100.0502,
+      "daily_change_pct": -0.1692,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-01",
+      "currency": "SEK",
+      "index": 99.881,
+      "prev_index": 99.881,
+      "daily_change_pct": -0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-02",
+      "currency": "SEK",
+      "index": 100.0093,
+      "prev_index": 99.881,
+      "daily_change_pct": 0.1284,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-03",
+      "currency": "SEK",
+      "index": 100.7823,
+      "prev_index": 100.0093,
+      "daily_change_pct": 0.7729,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-04",
+      "currency": "SEK",
+      "index": 101.3689,
+      "prev_index": 100.7823,
+      "daily_change_pct": 0.5821,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-05",
+      "currency": "SEK",
+      "index": 101.3689,
+      "prev_index": 101.3689,
+      "daily_change_pct": 0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-06",
+      "currency": "SEK",
+      "index": 100.6416,
+      "prev_index": 101.3689,
+      "daily_change_pct": -0.7175,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-07",
+      "currency": "SEK",
+      "index": 100.8089,
+      "prev_index": 100.6416,
+      "daily_change_pct": 0.1662,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-08",
+      "currency": "SEK",
+      "index": 100.5928,
+      "prev_index": 100.8089,
+      "daily_change_pct": -0.2143,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    }
+  ]
+}

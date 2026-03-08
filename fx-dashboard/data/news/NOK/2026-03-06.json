@@ -1,0 +1,15 @@
+{
+  "currency": "NOK",
+  "date": "2026-03-06",
+  "articles": [
+    {
+      "title": "Strong fourth quarter results and record-high production",
+      "url": "https://www.globenewswire.com/news-release/2026/03/05/3249855/0/en/Strong-fourth-quarter-results-and-record-high-production.html",
+      "snippet": "(Oslo, Norway, 5 March 2026) \u2013 Statkraft delivered strong underlying results in the fourth quarter of 2025, driven by higher Nordic power prices and record-high production. For the full year, production exceeded 70 TWh for the first time, while continued cost\u2026",
+      "source": "NewsAPI (GlobeNewswire)",
+      "relevance_score": 0.33,
+      "currency": "NOK"
+    }
+  ],
+  "combined_text": "[0.33] Strong fourth quarter results and record-high production\n(Oslo, Norway, 5 March 2026) \u2013 Statkraft delivered strong underlying results in the fourth quarter of 2025, driven by higher Nordic power prices and record-high production. For the full year, production exceeded 70 TWh for the first time, while continued cost\u2026"
+}

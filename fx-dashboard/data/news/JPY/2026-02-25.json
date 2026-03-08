@@ -1,0 +1,34 @@
+{
+  "currency": "JPY",
+  "date": "2026-02-25",
+  "articles": [
+    {
+      "title": "investingLive Asia-Pacific FX news wrap: Nikkei record high, Australian CPI high & sticky",
+      "url": "https://investinglive.com/news/investinglive-asia-pacific-fx-news-wrap-nikkei-record-high-australian-cpi-high-sticky-20260225/",
+      "snippet": "Trump says Iran advancing missile, nuclear programs despite negotiationsJapan govmt nominates new BOJ board members as rate-hike path comes into focusSOTU Trump: Says tariffs stay despite Supreme Court loss, pivots to new global levyNikkei hits record high as AI fears fade and yen weakensOil holds near seven-month highs ahead of US-Iran Geneva talks, EIA data awaitedAdvance excerpts of Trump's speech show its lacklusterJapan services inflation holds at 2.6%, keeping BOJ hike bias intactPBOC sets",
+      "published_at": "2026-02-25T21:09:02.319762",
+      "source": "ForexLive",
+      "relevance_score": 0.67,
+      "currency": "JPY"
+    },
+    {
+      "title": "JPY: Reflationist BoJ picks flag downside risks \u2013 MUFG",
+      "url": "https://www.fxstreet.com/news/jpy-reflationist-boj-picks-flag-downside-risks-mufg-202602251345",
+      "snippet": "MUFG\u2019s Head of Research Derek Halpenny highlights renewed Japanese Yen underperformance as Prime Minister Takaichi nominates reflationist-leaning academics Toichiro Asada and Ayano Sato to the BoJ policy board.",
+      "published_at": "2026-02-25T21:09:02.413746",
+      "source": "FXStreet",
+      "relevance_score": 1.0,
+      "currency": "JPY"
+    },
+    {
+      "title": "AUD/JPY Price Forecast: Skyrockets past 111.00 on hot Aussie CPI",
+      "url": "https://www.fxstreet.com/news/aud-jpy-price-forecast-skyrockets-past-11100-on-hot-aussie-cpi-202602252222",
+      "snippet": "The AUD/JPY rallies over 1.20% on Wednesday, after an inflation report in Australia prompted investors to price additional rate hikes by the Reserve Bank of Australia (RBA). At the time of writing, the cross trades at 111.38.",
+      "published_at": "2026-02-25T22:52:34.883072",
+      "source": "FXStreet",
+      "relevance_score": 0.5,
+      "currency": "JPY"
+    }
+  ],
+  "combined_text": "[0.67] investingLive Asia-Pacific FX news wrap: Nikkei record high, Australian CPI high & sticky\nTrump says Iran advancing missile, nuclear programs despite negotiationsJapan govmt nominates new BOJ board members as rate-hike path comes into focusSOTU Trump: Says tariffs stay despite Supreme Court loss, pivots to new global levyNikkei hits record high as AI fears fade and yen weakensOil holds near seven-month highs ahead of US-Iran Geneva talks, EIA data awaitedAdvance excerpts of Trump's speech show its lacklusterJapan services inflation holds at 2.6%, keeping BOJ hike bias intactPBOC sets\n\n[1.00] JPY: Reflationist BoJ picks flag downside risks \u2013 MUFG\nMUFG\u2019s Head of Research Derek Halpenny highlights renewed Japanese Yen underperformance as Prime Minister Takaichi nominates reflationist-leaning academics Toichiro Asada and Ayano Sato to the BoJ policy board.\n\n[0.50] AUD/JPY Price Forecast: Skyrockets past 111.00 on hot Aussie CPI\nThe AUD/JPY rallies over 1.20% on Wednesday, after an inflation report in Australia prompted investors to price additional rate hikes by the Reserve Bank of Australia (RBA). At the time of writing, the cross trades at 111.38."
+}

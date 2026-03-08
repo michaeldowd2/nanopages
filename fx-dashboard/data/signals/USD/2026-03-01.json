@@ -1,0 +1,146 @@
+{
+  "currency": "USD",
+  "date": "2026-03-01",
+  "signals": [
+    {
+      "date": "2026-03-01",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "USD",
+      "predicted_direction": "bearish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.9,
+      "pair_context": null,
+      "article_url": "https://economictimes.indiatimes.com/markets/stocks/news/new-era-of-trade-volatility-what-the-courts-decision-and-trumps-tariff-pivot-mean-for-commodities/articleshow/128875195.cms",
+      "article_title": "New era of trade volatility: What the court\u2019s decision and Trump\u2019s tariff pivot mean for commodities",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "USD showing weakness with 3 negative indicators",
+      "timestamp": "2026-03-01T09:16:04.024566Z",
+      "estimator_id": "llm-horizon-v1-default",
+      "estimator_type": "llm-horizon-estimator-v1",
+      "time_horizon": "2week",
+      "horizon_category": "Medium-term (2 weeks)",
+      "realized": false,
+      "realization_status": "too_early",
+      "actual_movement": {
+        "days_elapsed": 0,
+        "horizon_days": null,
+        "note": "Same day as publication - no movement yet"
+      },
+      "realization_check_timestamp": null
+    },
+    {
+      "date": "2026-03-01",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "USD",
+      "predicted_direction": "bullish",
+      "predicted_magnitude": "small",
+      "confidence": 0.9,
+      "pair_context": null,
+      "article_url": "https://economictimes.indiatimes.com/markets/forex/us-dollar-heads-for-first-monthly-gain-since-october/articleshow/128874916.cms",
+      "article_title": "US dollar heads for first monthly gain since October",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "USD showing strength with 1 positive indicators",
+      "timestamp": "2026-03-01T09:16:04.024641Z",
+      "estimator_id": "llm-horizon-v1-default",
+      "estimator_type": "llm-horizon-estimator-v1",
+      "time_horizon": "1week",
+      "horizon_category": "Near-term (1 week)",
+      "realized": false,
+      "realization_status": "too_early",
+      "actual_movement": {
+        "days_elapsed": 0,
+        "horizon_days": null,
+        "note": "Same day as publication - no movement yet"
+      },
+      "realization_check_timestamp": null
+    },
+    {
+      "date": "2026-03-01",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "USD",
+      "predicted_direction": "bearish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.8,
+      "pair_context": null,
+      "article_url": "https://economictimes.indiatimes.com/markets/stocks/news/new-era-of-trade-volatility-what-the-courts-decision-and-trumps-tariff-pivot-mean-for-commodities/articleshow/128875195.cms",
+      "article_title": "New era of trade volatility: What the court\u2019s decision and Trump\u2019s tariff pivot mean for commodities",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article mentions that the Supreme Court's decision to block Trump's tariffs under IEEPA and his swift 15% global levy revived uncertainty, which pressured the dollar. This suggests a bearish sentiment for the USD.",
+      "timestamp": "2026-03-01T09:16:08.432099Z",
+      "estimator_id": "llm-horizon-v1-default",
+      "estimator_type": "llm-horizon-estimator-v1",
+      "time_horizon": "2week",
+      "horizon_category": "Medium-term (2 weeks)",
+      "realized": false,
+      "realization_status": "too_early",
+      "actual_movement": {
+        "days_elapsed": 0,
+        "horizon_days": null,
+        "note": "Same day as publication - no movement yet"
+      },
+      "realization_check_timestamp": null
+    },
+    {
+      "date": "2026-03-01",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "USD",
+      "predicted_direction": "bullish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.8,
+      "pair_context": null,
+      "article_url": "https://economictimes.indiatimes.com/markets/forex/us-dollar-heads-for-first-monthly-gain-since-october/articleshow/128874916.cms",
+      "article_title": "US dollar heads for first monthly gain since October",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article indicates that the US dollar is poised for its first monthly gain since October, suggesting a bullish sentiment for the USD. The initial boost from hotter-than-expected producer price data, despite a midday retreat, points to an overall positive outlook for the US dollar.",
+      "timestamp": "2026-03-01T09:16:09.577585Z",
+      "estimator_id": "llm-horizon-v1-default",
+      "estimator_type": "llm-horizon-estimator-v1",
+      "time_horizon": "1week",
+      "horizon_category": "Near-term (1 week)",
+      "realized": false,
+      "realization_status": "too_early",
+      "actual_movement": {
+        "days_elapsed": 0,
+        "horizon_days": null,
+        "note": "Same day as publication - no movement yet"
+      },
+      "realization_check_timestamp": null
+    }
+  ]
+}

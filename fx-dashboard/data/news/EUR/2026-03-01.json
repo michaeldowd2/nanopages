@@ -1,0 +1,31 @@
+{
+  "currency": "EUR",
+  "date": "2026-03-01",
+  "articles": [
+    {
+      "title": "Enlight Renewable (ENLT) Reports Record Q4 and Full-Year 2025 Results, Market Share Expands in European Storage Sector",
+      "url": "https://finance.yahoo.com/news/enlight-renewable-enlt-reports-record-035751706.html",
+      "snippet": "",
+      "source": "Yahoo Finance",
+      "relevance_score": 0.67,
+      "currency": "EUR"
+    },
+    {
+      "title": "Foreign currency exchange rates fixed for today",
+      "url": "https://english.khabarhub.com/2026/28/536950/",
+      "snippet": "KATHMANDU: Nepal Rastra Bank (NRB) has set the foreign currency exchange rates for today. According to the central bank, the buying rate of one US dollar stands at Rs 145.27, while the selling rate is Rs 145.87. The buying rate of one euro is Rs 171.47 and th\u2026",
+      "source": "NewsAPI (Khabarhub.com)",
+      "relevance_score": 0.67,
+      "currency": "EUR"
+    },
+    {
+      "title": "Keurig Dr Pepper (KDP) Gets Price Target Increase to $32 from Barclays",
+      "url": "https://finance.yahoo.com/news/keurig-dr-pepper-kdp-gets-043739403.html",
+      "snippet": "",
+      "source": "Yahoo Finance",
+      "relevance_score": 0.33,
+      "currency": "EUR"
+    }
+  ],
+  "combined_text": "[0.67] Enlight Renewable (ENLT) Reports Record Q4 and Full-Year 2025 Results, Market Share Expands in European Storage Sector\n\n\n[0.67] Foreign currency exchange rates fixed for today\nKATHMANDU: Nepal Rastra Bank (NRB) has set the foreign currency exchange rates for today. According to the central bank, the buying rate of one US dollar stands at Rs 145.27, while the selling rate is Rs 145.87. The buying rate of one euro is Rs 171.47 and th\u2026\n\n[0.33] Keurig Dr Pepper (KDP) Gets Price Target Increase to $32 from Barclays\n"
+}

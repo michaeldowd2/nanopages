@@ -1,0 +1,31 @@
+{
+  "currency": "GBP",
+  "date": "2026-03-02",
+  "articles": [
+    {
+      "title": "GBP/JPY Price Forecast: Bullish engulfing pattern puts 211.00 in play",
+      "url": "https://www.fxstreet.com/news/gbp-jpy-price-forecast-bullish-engulfing-pattern-puts-21100-in-play-202603022023",
+      "snippet": "GBP/JPY rises during the North American session on Monday, up by 0.24% after recovering from hitting daily lows of 209.10 amid risk aversion spurred by the Middle East conflict between the US and Iran. At the time of writing, the cross-pair trades at 210.98, about to overcome the 211.00 hurdle.",
+      "source": "FXStreet",
+      "relevance_score": 0.5,
+      "currency": "GBP"
+    },
+    {
+      "title": "GBP: Politics drag but macro supports \u2013 OCBC",
+      "url": "https://www.fxstreet.com/news/gbp-politics-drag-but-macro-supports-ocbc-202603021503",
+      "snippet": "OCBC strategists Sim Moh Siong and Christopher Wong note that UK political risks, including Labour\u2019s by\u2011election defeat and potential leadership challenge, continue to weigh on Pound sentiment.",
+      "source": "FXStreet",
+      "relevance_score": 0.67,
+      "currency": "GBP"
+    },
+    {
+      "title": "GBP/JPY Price Forecast: Technical structure turns constructive above 210.00",
+      "url": "https://www.fxstreet.com/news/gbp-jpy-price-forecast-technical-structure-turns-constructive-above-21000-202603021310",
+      "snippet": "GBP/JPY rebounds sharply on Monday after a bearish gap-down open, as heightened volatility sweeps across the FX market following joint US-Israeli strikes on Iran over the weekend.",
+      "source": "FXStreet",
+      "relevance_score": 0.5,
+      "currency": "GBP"
+    }
+  ],
+  "combined_text": "[0.50] GBP/JPY Price Forecast: Bullish engulfing pattern puts 211.00 in play\nGBP/JPY rises during the North American session on Monday, up by 0.24% after recovering from hitting daily lows of 209.10 amid risk aversion spurred by the Middle East conflict between the US and Iran. At the time of writing, the cross-pair trades at 210.98, about to overcome the 211.00 hurdle.\n\n[0.67] GBP: Politics drag but macro supports \u2013 OCBC\nOCBC strategists Sim Moh Siong and Christopher Wong note that UK political risks, including Labour\u2019s by\u2011election defeat and potential leadership challenge, continue to weigh on Pound sentiment.\n\n[0.50] GBP/JPY Price Forecast: Technical structure turns constructive above 210.00\nGBP/JPY rebounds sharply on Monday after a bearish gap-down open, as heightened volatility sweeps across the FX market following joint US-Israeli strikes on Iran over the weekend."
+}

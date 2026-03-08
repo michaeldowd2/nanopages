@@ -1,0 +1,15 @@
+{
+  "currency": "CAD",
+  "date": "2026-03-04",
+  "articles": [
+    {
+      "title": "Yuan Rallies Most in 10 Months as PBOC Strengthens Fix Into NPC",
+      "url": "https://financialpost.com/pmn/business-pmn/yuan-rallies-most-in-10-months-as-pboc-strengthens-fix-into-npc",
+      "snippet": "The yuan rallied after the People\u2019s Bank of China signaled its comfort with the currency\u2019s appreciation via its daily reference rate, ahead of the National People\u2019s Congress.",
+      "source": "NewsAPI (Financial Post)",
+      "relevance_score": 0.33,
+      "currency": "CAD"
+    }
+  ],
+  "combined_text": "[0.33] Yuan Rallies Most in 10 Months as PBOC Strengthens Fix Into NPC\nThe yuan rallied after the People\u2019s Bank of China signaled its comfort with the currency\u2019s appreciation via its daily reference rate, ahead of the National People\u2019s Congress."
+}

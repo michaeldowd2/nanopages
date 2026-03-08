@@ -1,0 +1,47 @@
+{
+  "currency": "USD",
+  "date": "2026-03-08",
+  "articles": [
+    {
+      "title": "HELOC and home equity loan rates Saturday, March 7, 2026: Absorbing a Fed rate pause",
+      "url": "https://finance.yahoo.com/personal-finance/mortgages/article/heloc-home-equity-loan-interest-rates-today-saturday-march-7-2026-110039970.html",
+      "snippet": "",
+      "source": "Yahoo Finance",
+      "relevance_score": 0.33,
+      "currency": "USD"
+    },
+    {
+      "title": "Marvell Technology (MRVL) Rockets 18% on Billion-Dollar Profitability",
+      "url": "https://finance.yahoo.com/news/marvell-technology-mrvl-rockets-18-063326248.html",
+      "snippet": "",
+      "source": "Yahoo Finance",
+      "relevance_score": 0.33,
+      "currency": "USD"
+    },
+    {
+      "title": "Two-Sided Risks Come into View for the Economy - Forex Factory",
+      "url": "https://slashdot.org/firehose.pl?op=view&amp;id=180923102",
+      "snippet": "Two-Sided Risks Come into View for the EconomyForex Factory There's an inflation wave coming. How worried should we be?BBC The Inflation Outlook Doesn\u2019t Look GoodCarson Group ABA Economists See U.S. Economy Growing Through 2027\u2014But Inflation Staying Above Fed\u2026",
+      "source": "NewsAPI (Slashdot.org)",
+      "relevance_score": 0.33,
+      "currency": "USD"
+    },
+    {
+      "title": "West Asia conflict: Rupee ends week 77 paise weaker",
+      "url": "https://www.thehindubusinessline.com/markets/forex/west-asia-conflict-rupee-ends-the-week-77-paise-weaker/article70712615.ece",
+      "snippet": "Rupee weakens 77 paise amid West Asia conflict and rising oil prices, closing at 91.74 per US dollar.",
+      "source": "NewsAPI (BusinessLine)",
+      "relevance_score": 0.33,
+      "currency": "USD"
+    },
+    {
+      "title": "West Asia conflict: Rupee ends the week 77 paise weaker",
+      "url": "https://www.thehindubusinessline.com/money-and-banking/west-asia-conflict-rupee-ends-the-week-77-paise-weaker/article70712615.ece",
+      "snippet": "Rupee weakens 77 paise amid West Asia conflict and rising oil prices, closing at 91.74 per US dollar.",
+      "source": "NewsAPI (BusinessLine)",
+      "relevance_score": 0.33,
+      "currency": "USD"
+    }
+  ],
+  "combined_text": "[0.33] HELOC and home equity loan rates Saturday, March 7, 2026: Absorbing a Fed rate pause\n\n\n[0.33] Marvell Technology (MRVL) Rockets 18% on Billion-Dollar Profitability\n\n\n[0.33] Two-Sided Risks Come into View for the Economy - Forex Factory\nTwo-Sided Risks Come into View for the EconomyForex Factory There's an inflation wave coming. How worried should we be?BBC The Inflation Outlook Doesn\u2019t Look GoodCarson Group ABA Economists See U.S. Economy Growing Through 2027\u2014But Inflation Staying Above Fed\u2026\n\n[0.33] West Asia conflict: Rupee ends week 77 paise weaker\nRupee weakens 77 paise amid West Asia conflict and rising oil prices, closing at 91.74 per US dollar.\n\n[0.33] West Asia conflict: Rupee ends the week 77 paise weaker\nRupee weakens 77 paise amid West Asia conflict and rising oil prices, closing at 91.74 per US dollar."
+}

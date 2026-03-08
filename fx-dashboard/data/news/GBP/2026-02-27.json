@@ -1,0 +1,25 @@
+{
+  "currency": "GBP",
+  "date": "2026-02-27",
+  "articles": [
+    {
+      "title": "UK consumer confidence falls to three-month low and car production drops 8%",
+      "url": "https://investinglive.com/news/uk-consumer-confidence-falls-to-three-month-low-and-car-production-drops-8-20260227/",
+      "snippet": "UK confidence slips as unemployment rises and car output weakens, clouding the early-year growth outlook.Summary:UK consumer confidence fell to -19 in February, a three-month lowUnemployment rose to 5.2%, highest since early 2021Car production dropped 8.2% y/y in January; exports down 10.1%Commercial vehicle output plunged 68.6% amid restructuringSavings rate remains elevated; 2026 car output seen rebounding to ~790k unitsBritain\u2019s consumer and industrial outlook showed fresh signs of strain in ",
+      "published_at": "2026-02-27T22:35:10.232240",
+      "source": "ForexLive",
+      "relevance_score": 0.33,
+      "currency": "GBP"
+    },
+    {
+      "title": "Turkey and BP Reshape the Balance of Power in Northern Iraq",
+      "url": "https://oilprice.com/Energy/Energy-General/Turkey-and-BPs-Kirkuk-Alliance-Signals-a-Major-Shift-in-Iraqs-EastWest-Balanc.html",
+      "snippet": "The recent announcement that Turkey\u2019s state-owned TPAO has signed a wide-ranging oil and gas cooperation agreement with Great Britain\u2019s BP marks a potentially significant shift in the strategic landscape of northern Iraq. The new framework \u2014 covering field de\u2026",
+      "published_at": "2026-02-26T00:00:00+00:00",
+      "source": "NewsAPI (OilPrice.com)",
+      "relevance_score": 0.33,
+      "currency": "GBP"
+    }
+  ],
+  "combined_text": "[0.33] UK consumer confidence falls to three-month low and car production drops 8%\nUK confidence slips as unemployment rises and car output weakens, clouding the early-year growth outlook.Summary:UK consumer confidence fell to -19 in February, a three-month lowUnemployment rose to 5.2%, highest since early 2021Car production dropped 8.2% y/y in January; exports down 10.1%Commercial vehicle output plunged 68.6% amid restructuringSavings rate remains elevated; 2026 car output seen rebounding to ~790k unitsBritain\u2019s consumer and industrial outlook showed fresh signs of strain in \n\n[0.33] Turkey and BP Reshape the Balance of Power in Northern Iraq\nThe recent announcement that Turkey\u2019s state-owned TPAO has signed a wide-ranging oil and gas cooperation agreement with Great Britain\u2019s BP marks a potentially significant shift in the strategic landscape of northern Iraq. The new framework \u2014 covering field de\u2026"
+}

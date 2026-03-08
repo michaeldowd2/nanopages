@@ -1,0 +1,90 @@
+{
+  "date": "2026-03-08",
+  "estimator_id": "llm-horizon-v1-default",
+  "estimator_type": "llm-horizon-estimator-v1",
+  "estimator_params": {
+    "model": "claude-3-haiku-20240307",
+    "temperature": 0.3,
+    "max_tokens": 500
+  },
+  "analyzed_at": "2026-03-08T12:01:01.152924",
+  "analyses": [
+    {
+      "url": "https://cointelegraph.com/news/canada-first-tokenized-bond",
+      "currency": "CAD",
+      "title": "Bank of Canada pilot issues country\u2019s first tokenized bond",
+      "source": "NewsAPI (Cointelegraph)",
+      "time_horizon": "2week",
+      "horizon_days": 14,
+      "valid_to_date": "2026-03-22",
+      "confidence": 0.8,
+      "reasoning": "The article discusses a pilot project by the Bank of Canada to test distributed ledger technology for bond issuance, trading, and settlement. This is a medium-term development that could impact the Canadian bond and FX markets over the coming weeks as the results of the pilot are analyzed and any potential policy changes are considered."
+    },
+    {
+      "url": "https://finance.yahoo.com/personal-finance/mortgages/article/heloc-home-equity-loan-interest-rates-today-saturday-march-7-2026-110039970.html",
+      "currency": "USD",
+      "title": "HELOC and home equity loan rates Saturday, March 7, 2026: Absorbing a Fed rate pause",
+      "source": "Yahoo Finance",
+      "time_horizon": "1week",
+      "horizon_days": 7,
+      "valid_to_date": "2026-03-15",
+      "confidence": 0.8,
+      "reasoning": "The article discusses the impact of a Fed rate pause, which is a near-term central bank policy decision that would typically have a 1-week market impact horizon."
+    },
+    {
+      "url": "https://finance.yahoo.com/news/marvell-technology-mrvl-rockets-18-063326248.html",
+      "currency": "USD",
+      "title": "Marvell Technology (MRVL) Rockets 18% on Billion-Dollar Profitability",
+      "source": "Yahoo Finance",
+      "time_horizon": "1day",
+      "horizon_days": 1,
+      "valid_to_date": "2026-03-09",
+      "confidence": 0.9,
+      "reasoning": "The article mentions a significant 18% price jump in Marvell Technology's stock, indicating an immediate market reaction. This is a typical intraday move driven by the earnings announcement, suggesting a short-term, 1-day impact."
+    },
+    {
+      "url": "https://slashdot.org/firehose.pl?op=view&amp;id=180923102",
+      "currency": "USD",
+      "title": "Two-Sided Risks Come into View for the Economy - Forex Factory",
+      "source": "NewsAPI (Slashdot.org)",
+      "time_horizon": "1month",
+      "horizon_days": 30,
+      "valid_to_date": "2026-04-07",
+      "confidence": 0.8,
+      "reasoning": "The article discusses broader economic trends and risks around inflation, suggesting a longer-term market impact beyond immediate or short-term reactions."
+    },
+    {
+      "url": "https://www.thehindubusinessline.com/markets/forex/west-asia-conflict-rupee-ends-the-week-77-paise-weaker/article70712615.ece",
+      "currency": "USD",
+      "title": "West Asia conflict: Rupee ends week 77 paise weaker",
+      "source": "NewsAPI (BusinessLine)",
+      "time_horizon": "3day",
+      "horizon_days": 3,
+      "valid_to_date": "2026-03-11",
+      "confidence": 0.8,
+      "reasoning": "The article mentions the rupee weakening 77 paise against the US dollar amid the West Asia conflict and rising oil prices, which are short-term market drivers. The time horizon is likely to be in the 2-3 day range as the impact of geopolitical tensions and commodity price movements are typically felt in the short-term."
+    },
+    {
+      "url": "https://www.thehindubusinessline.com/money-and-banking/west-asia-conflict-rupee-ends-the-week-77-paise-weaker/article70712615.ece",
+      "currency": "USD",
+      "title": "West Asia conflict: Rupee ends the week 77 paise weaker",
+      "source": "NewsAPI (BusinessLine)",
+      "time_horizon": "3day",
+      "horizon_days": 3,
+      "valid_to_date": "2026-03-11",
+      "confidence": 0.8,
+      "reasoning": "The article mentions the rupee weakening 77 paise against the US dollar due to the West Asia conflict and rising oil prices, which are short-term market drivers. The time horizon is likely to be in the 2-3 day range before other factors start to influence the currency pair."
+    },
+    {
+      "url": "https://whatjapanthinks.com/avolin-neris-review/",
+      "currency": "AUD",
+      "title": "Avolin Neris Review: Trusted Trading System or Fraud? Results Exposed",
+      "source": "NewsAPI (Whatjapanthinks.com)",
+      "time_horizon": "1week",
+      "horizon_days": 7,
+      "valid_to_date": "2026-03-15",
+      "confidence": 0.8,
+      "reasoning": "The article discusses a newly developed crypto trading system, which suggests a near-term market impact as investors evaluate the platform. The temporal keywords like 'next week' and the focus on the trading system's features indicate a 1-week time horizon for the primary market reaction."
+    }
+  ]
+}

@@ -9,8 +9,7 @@
         {"name": "date", "type": "string", "description": "Trading date YYYY-MM-DD"},
         {"name": "base_currency", "type": "string", "description": "Base currency (always EUR)"},
         {"name": "quote_currency", "type": "string", "description": "Quote currency code"},
-        {"name": "rate", "type": "float", "description": "Exchange rate (quote/base)"},
-        {"name": "timestamp", "type": "string", "description": "API fetch timestamp"}
+        {"name": "rate", "type": "float", "description": "Exchange rate (quote/base)"}
       ]
     },
     "process_2_indices": {
@@ -63,8 +62,7 @@
         {"name": "url", "type": "string", "description": "Source article URL"},
         {"name": "currency", "type": "string", "description": "Currency the signal relates to"},
         {"name": "title", "type": "string", "description": "Source article title"},
-        {"name": "generator_type", "type": "string", "description": "Generator type/version"},
-        {"name": "signal_type", "type": "string", "description": "Type of signal (e.g., news-sentiment)"},
+        {"name": "generator_id", "type": "string", "description": "Signal generator identifier"},
         {"name": "predicted_direction", "type": "string", "description": "Predicted direction (bullish/bearish/neutral)"},
         {"name": "predicted_magnitude", "type": "string", "nullable": true, "description": "Predicted magnitude (small/medium/large)"},
         {"name": "confidence", "type": "float", "description": "Signal confidence (0-1)"},

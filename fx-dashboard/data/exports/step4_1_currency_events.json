@@ -1,0 +1,1015 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-03-03",
+  "description": "Comprehensive taxonomy of currency-affecting events for FX trading systems",
+  "events": [
+    {
+      "event_id": "cb_rate_hike_announced",
+      "event_name": "Central Bank Rate Hike Announced",
+      "category": "Monetary Policy",
+      "signal_direction": "bullish",
+      "signal_strength": "strong",
+      "time_horizon": "1day",
+      "confidence_impact": 0.85,
+      "keywords": [
+        "rate hike",
+        "interest rate increase",
+        "policy tightening",
+        "raised rates",
+        "basis points increase",
+        "hawkish decision",
+        "rate raised"
+      ],
+      "description": "Central bank announces an increase in key interest rates, typically bullish for currency"
+    },
+    {
+      "event_id": "cb_rate_cut_announced",
+      "event_name": "Central Bank Rate Cut Announced",
+      "category": "Monetary Policy",
+      "signal_direction": "bearish",
+      "signal_strength": "strong",
+      "time_horizon": "1day",
+      "confidence_impact": 0.85,
+      "keywords": [
+        "rate cut",
+        "interest rate decrease",
+        "policy easing",
+        "cut rates",
+        "basis points decrease",
+        "dovish decision",
+        "rate lowered",
+        "monetary easing"
+      ],
+      "description": "Central bank announces a decrease in key interest rates, typically bearish for currency"
+    },
+    {
+      "event_id": "cb_rate_hold_hawkish",
+      "event_name": "Central Bank Holds Rates with Hawkish Stance",
+      "category": "Monetary Policy",
+      "signal_direction": "bullish",
+      "signal_strength": "moderate",
+      "time_horizon": "3day",
+      "confidence_impact": 0.65,
+      "keywords": [
+        "rates unchanged",
+        "held rates",
+        "hawkish hold",
+        "future tightening",
+        "inflation vigilance",
+        "ready to act",
+        "higher for longer"
+      ],
+      "description": "Central bank maintains current rates but signals potential future increases"
+    },
+    {
+      "event_id": "cb_rate_hold_dovish",
+      "event_name": "Central Bank Holds Rates with Dovish Stance",
+      "category": "Monetary Policy",
+      "signal_direction": "bearish",
+      "signal_strength": "moderate",
+      "time_horizon": "3day",
+      "confidence_impact": 0.65,
+      "keywords": [
+        "rates unchanged",
+        "held rates",
+        "dovish hold",
+        "future easing",
+        "dovish guidance",
+        "monitoring data",
+        "ready to cut"
+      ],
+      "description": "Central bank maintains current rates but signals potential future decreases"
+    },
+    {
+      "event_id": "cb_governor_hawkish_speech",
+      "event_name": "Central Bank Governor Hawkish Speech",
+      "category": "Monetary Policy",
+      "signal_direction": "bullish",
+      "signal_strength": "moderate",
+      "time_horizon": "1day",
+      "confidence_impact": 0.55,
+      "keywords": [
+        "hawkish comments",
+        "inflation concerns",
+        "tightening needed",
+        "vigilant on prices",
+        "upside risks",
+        "prepared to tighten"
+      ],
+      "description": "Central bank official makes hawkish comments about future policy direction"
+    },
+    {
+      "event_id": "cb_governor_dovish_speech",
+      "event_name": "Central Bank Governor Dovish Speech",
+      "category": "Monetary Policy",
+      "signal_direction": "bearish",
+      "signal_strength": "moderate",
+      "time_horizon": "1day",
+      "confidence_impact": 0.55,
+      "keywords": [
+        "dovish comments",
+        "growth concerns",
+        "easing warranted",
+        "downside risks",
+        "supportive policy",
+        "prepared to ease"
+      ],
+      "description": "Central bank official makes dovish comments about future policy direction"
+    },
+    {
+      "event_id": "cb_forward_guidance_shift",
+      "event_name": "Central Bank Forward Guidance Shift",
+      "category": "Monetary Policy",
+      "signal_direction": "neutral",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.70,
+      "keywords": [
+        "forward guidance",
+        "policy outlook",
+        "rate path",
+        "future trajectory",
+        "guidance changed",
+        "revised expectations"
+      ],
+      "description": "Central bank changes its communication about future policy direction"
+    },
+    {
+      "event_id": "inflation_beats_expectations",
+      "event_name": "Inflation Above Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bullish",
+      "signal_strength": "strong",
+      "time_horizon": "1day",
+      "confidence_impact": 0.80,
+      "keywords": [
+        "CPI above",
+        "inflation rises",
+        "price pressures",
+        "core CPI",
+        "HICP above",
+        "inflation accelerates",
+        "hotter than expected"
+      ],
+      "description": "Consumer price inflation comes in higher than market expectations, suggesting potential rate hikes"
+    },
+    {
+      "event_id": "inflation_misses_expectations",
+      "event_name": "Inflation Below Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bearish",
+      "signal_strength": "strong",
+      "time_horizon": "1day",
+      "confidence_impact": 0.80,
+      "keywords": [
+        "CPI below",
+        "inflation falls",
+        "price pressures ease",
+        "disinflation",
+        "HICP below",
+        "inflation decelerates",
+        "cooler than expected"
+      ],
+      "description": "Consumer price inflation comes in lower than market expectations, suggesting potential rate cuts"
+    },
+    {
+      "event_id": "gdp_growth_beats",
+      "event_name": "GDP Growth Above Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bullish",
+      "signal_strength": "moderate",
+      "time_horizon": "3day",
+      "confidence_impact": 0.75,
+      "keywords": [
+        "GDP above",
+        "growth beats",
+        "economic expansion",
+        "stronger growth",
+        "GDP accelerates",
+        "economy expands"
+      ],
+      "description": "GDP growth exceeds forecasts, indicating strong economic performance"
+    },
+    {
+      "event_id": "gdp_growth_misses",
+      "event_name": "GDP Growth Below Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bearish",
+      "signal_strength": "moderate",
+      "time_horizon": "3day",
+      "confidence_impact": 0.75,
+      "keywords": [
+        "GDP below",
+        "growth disappoints",
+        "economic contraction",
+        "weaker growth",
+        "GDP contracts",
+        "economy shrinks",
+        "negative growth"
+      ],
+      "description": "GDP growth falls short of forecasts, indicating weak economic performance"
+    },
+    {
+      "event_id": "employment_beats",
+      "event_name": "Employment Data Above Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bullish",
+      "signal_strength": "moderate",
+      "time_horizon": "1day",
+      "confidence_impact": 0.70,
+      "keywords": [
+        "jobs beat",
+        "employment rises",
+        "NFP above",
+        "payrolls beat",
+        "unemployment falls",
+        "jobless rate drops",
+        "strong labor market"
+      ],
+      "description": "Employment figures exceed expectations, suggesting strong labor market"
+    },
+    {
+      "event_id": "employment_misses",
+      "event_name": "Employment Data Below Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bearish",
+      "signal_strength": "moderate",
+      "time_horizon": "1day",
+      "confidence_impact": 0.70,
+      "keywords": [
+        "jobs miss",
+        "employment falls",
+        "NFP below",
+        "payrolls disappoint",
+        "unemployment rises",
+        "jobless rate increases",
+        "weak labor market"
+      ],
+      "description": "Employment figures fall short of expectations, suggesting weak labor market"
+    },
+    {
+      "event_id": "pmi_manufacturing_beats",
+      "event_name": "Manufacturing PMI Above Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bullish",
+      "signal_strength": "weak",
+      "time_horizon": "1day",
+      "confidence_impact": 0.50,
+      "keywords": [
+        "PMI above",
+        "manufacturing expansion",
+        "factory activity rises",
+        "ISM manufacturing",
+        "production increases"
+      ],
+      "description": "Manufacturing PMI exceeds forecasts, indicating sector expansion"
+    },
+    {
+      "event_id": "pmi_manufacturing_misses",
+      "event_name": "Manufacturing PMI Below Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bearish",
+      "signal_strength": "weak",
+      "time_horizon": "1day",
+      "confidence_impact": 0.50,
+      "keywords": [
+        "PMI below",
+        "manufacturing contraction",
+        "factory activity falls",
+        "ISM manufacturing drops",
+        "production declines"
+      ],
+      "description": "Manufacturing PMI falls short of forecasts, indicating sector contraction"
+    },
+    {
+      "event_id": "pmi_services_beats",
+      "event_name": "Services PMI Above Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bullish",
+      "signal_strength": "weak",
+      "time_horizon": "1day",
+      "confidence_impact": 0.50,
+      "keywords": [
+        "services PMI above",
+        "services expansion",
+        "ISM services",
+        "services activity rises"
+      ],
+      "description": "Services PMI exceeds forecasts, indicating sector expansion"
+    },
+    {
+      "event_id": "pmi_services_misses",
+      "event_name": "Services PMI Below Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bearish",
+      "signal_strength": "weak",
+      "time_horizon": "1day",
+      "confidence_impact": 0.50,
+      "keywords": [
+        "services PMI below",
+        "services contraction",
+        "ISM services drops",
+        "services activity falls"
+      ],
+      "description": "Services PMI falls short of forecasts, indicating sector contraction"
+    },
+    {
+      "event_id": "retail_sales_beats",
+      "event_name": "Retail Sales Above Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bullish",
+      "signal_strength": "weak",
+      "time_horizon": "1day",
+      "confidence_impact": 0.55,
+      "keywords": [
+        "retail sales beat",
+        "consumer spending rises",
+        "sales increase",
+        "stronger consumption"
+      ],
+      "description": "Retail sales exceed forecasts, indicating strong consumer demand"
+    },
+    {
+      "event_id": "retail_sales_misses",
+      "event_name": "Retail Sales Below Expectations",
+      "category": "Economic Indicator",
+      "signal_direction": "bearish",
+      "signal_strength": "weak",
+      "time_horizon": "1day",
+      "confidence_impact": 0.55,
+      "keywords": [
+        "retail sales miss",
+        "consumer spending falls",
+        "sales decline",
+        "weaker consumption"
+      ],
+      "description": "Retail sales fall short of forecasts, indicating weak consumer demand"
+    },
+    {
+      "event_id": "trade_balance_improvement",
+      "event_name": "Trade Balance Improvement",
+      "category": "Economic Indicator",
+      "signal_direction": "bullish",
+      "signal_strength": "weak",
+      "time_horizon": "3day",
+      "confidence_impact": 0.45,
+      "keywords": [
+        "trade surplus widens",
+        "exports rise",
+        "deficit narrows",
+        "trade balance improves",
+        "current account surplus"
+      ],
+      "description": "Trade balance shows improvement, indicating stronger external position"
+    },
+    {
+      "event_id": "trade_balance_deterioration",
+      "event_name": "Trade Balance Deterioration",
+      "category": "Economic Indicator",
+      "signal_direction": "bearish",
+      "signal_strength": "weak",
+      "time_horizon": "3day",
+      "confidence_impact": 0.45,
+      "keywords": [
+        "trade deficit widens",
+        "exports fall",
+        "surplus narrows",
+        "trade balance worsens",
+        "current account deficit"
+      ],
+      "description": "Trade balance shows deterioration, indicating weaker external position"
+    },
+    {
+      "event_id": "geopolitical_crisis_safe_haven",
+      "event_name": "Geopolitical Crisis Benefiting Safe Haven",
+      "category": "Geopolitical Event",
+      "signal_direction": "bullish",
+      "signal_strength": "strong",
+      "time_horizon": "1day",
+      "confidence_impact": 0.75,
+      "keywords": [
+        "safe-haven demand",
+        "risk aversion",
+        "geopolitical tensions",
+        "military conflict",
+        "war escalates",
+        "flight to safety",
+        "safe-haven flows"
+      ],
+      "description": "Geopolitical crisis drives safe-haven flows to USD, JPY, CHF"
+    },
+    {
+      "event_id": "geopolitical_crisis_commodity_currency",
+      "event_name": "Geopolitical Crisis Harming Risk Currencies",
+      "category": "Geopolitical Event",
+      "signal_direction": "bearish",
+      "signal_strength": "strong",
+      "time_horizon": "1day",
+      "confidence_impact": 0.75,
+      "keywords": [
+        "risk-off",
+        "risk aversion",
+        "commodity currencies fall",
+        "AUD weakens",
+        "CAD weakens",
+        "emerging markets sell-off"
+      ],
+      "description": "Geopolitical crisis drives capital away from risk-sensitive currencies"
+    },
+    {
+      "event_id": "oil_price_surge",
+      "event_name": "Oil Price Surge",
+      "category": "Commodity Market",
+      "signal_direction": "bullish",
+      "signal_strength": "moderate",
+      "time_horizon": "1day",
+      "confidence_impact": 0.60,
+      "keywords": [
+        "oil prices surge",
+        "crude rallies",
+        "energy shock",
+        "oil supply disruption",
+        "WTI rises",
+        "Brent climbs"
+      ],
+      "description": "Sharp increase in oil prices, typically bullish for CAD, NOK, bearish for importers"
+    },
+    {
+      "event_id": "oil_price_collapse",
+      "event_name": "Oil Price Collapse",
+      "category": "Commodity Market",
+      "signal_direction": "bearish",
+      "signal_strength": "moderate",
+      "time_horizon": "1day",
+      "confidence_impact": 0.60,
+      "keywords": [
+        "oil prices crash",
+        "crude plunges",
+        "energy prices fall",
+        "oil glut",
+        "WTI falls",
+        "Brent drops"
+      ],
+      "description": "Sharp decrease in oil prices, typically bearish for CAD, NOK, bullish for importers"
+    },
+    {
+      "event_id": "gold_surge_usd_weakness",
+      "event_name": "Gold Surge Indicating USD Weakness",
+      "category": "Commodity Market",
+      "signal_direction": "bearish",
+      "signal_strength": "weak",
+      "time_horizon": "3day",
+      "confidence_impact": 0.40,
+      "keywords": [
+        "gold rallies",
+        "XAU/USD rises",
+        "precious metals gain",
+        "gold safe-haven bid"
+      ],
+      "description": "Gold price increase, often negatively correlated with USD strength"
+    },
+    {
+      "event_id": "tariff_announcement_imposed",
+      "event_name": "Tariff Announcement Imposed",
+      "category": "Trade Policy",
+      "signal_direction": "neutral",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.65,
+      "keywords": [
+        "tariffs imposed",
+        "import duties",
+        "trade barriers",
+        "reciprocal tariffs",
+        "tariff hike",
+        "customs duties"
+      ],
+      "description": "New tariffs announced, can be bullish (inflation) or bearish (growth) depending on context"
+    },
+    {
+      "event_id": "tariff_removal_announcement",
+      "event_name": "Tariff Removal or Reduction",
+      "category": "Trade Policy",
+      "signal_direction": "bullish",
+      "signal_strength": "weak",
+      "time_horizon": "1week",
+      "confidence_impact": 0.50,
+      "keywords": [
+        "tariffs removed",
+        "trade barriers lifted",
+        "tariff reduction",
+        "duties eliminated"
+      ],
+      "description": "Tariff removal or reduction, generally positive for affected currencies"
+    },
+    {
+      "event_id": "trade_deal_signed",
+      "event_name": "Trade Deal Signed",
+      "category": "Trade Policy",
+      "signal_direction": "bullish",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.70,
+      "keywords": [
+        "trade agreement",
+        "free trade deal",
+        "bilateral agreement",
+        "trade pact signed",
+        "FTA signed"
+      ],
+      "description": "Trade agreement signed between countries, typically positive for involved currencies"
+    },
+    {
+      "event_id": "trade_war_escalation",
+      "event_name": "Trade War Escalation",
+      "category": "Trade Policy",
+      "signal_direction": "bearish",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.65,
+      "keywords": [
+        "trade war",
+        "retaliation",
+        "tit-for-tat tariffs",
+        "trade tensions escalate",
+        "protectionism"
+      ],
+      "description": "Escalation in trade tensions between countries, typically negative for involved currencies"
+    },
+    {
+      "event_id": "government_collapse",
+      "event_name": "Government Collapse or Political Crisis",
+      "category": "Political Event",
+      "signal_direction": "bearish",
+      "signal_strength": "strong",
+      "time_horizon": "1week",
+      "confidence_impact": 0.80,
+      "keywords": [
+        "government falls",
+        "coalition collapse",
+        "political crisis",
+        "snap election",
+        "no confidence vote",
+        "political instability"
+      ],
+      "description": "Major political instability or government collapse, typically very bearish"
+    },
+    {
+      "event_id": "election_result_pro_business",
+      "event_name": "Pro-Business Election Result",
+      "category": "Political Event",
+      "signal_direction": "bullish",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.65,
+      "keywords": [
+        "pro-business victory",
+        "market-friendly result",
+        "reform mandate",
+        "centrist victory"
+      ],
+      "description": "Election result favoring market-friendly policies, typically bullish"
+    },
+    {
+      "event_id": "election_result_uncertainty",
+      "event_name": "Election Result Creating Uncertainty",
+      "category": "Political Event",
+      "signal_direction": "bearish",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.60,
+      "keywords": [
+        "hung parliament",
+        "coalition uncertainty",
+        "contested election",
+        "political deadlock"
+      ],
+      "description": "Election result creating political uncertainty, typically bearish"
+    },
+    {
+      "event_id": "fiscal_stimulus_announced",
+      "event_name": "Major Fiscal Stimulus Announced",
+      "category": "Fiscal Policy",
+      "signal_direction": "bullish",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.70,
+      "keywords": [
+        "fiscal stimulus",
+        "government spending",
+        "infrastructure package",
+        "fiscal expansion",
+        "stimulus plan"
+      ],
+      "description": "Large fiscal stimulus package announced, typically bullish for currency"
+    },
+    {
+      "event_id": "austerity_measures_announced",
+      "event_name": "Austerity Measures Announced",
+      "category": "Fiscal Policy",
+      "signal_direction": "bearish",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.65,
+      "keywords": [
+        "austerity",
+        "spending cuts",
+        "fiscal tightening",
+        "budget cuts",
+        "fiscal consolidation"
+      ],
+      "description": "Government announces spending cuts or austerity, typically bearish short-term"
+    },
+    {
+      "event_id": "sovereign_debt_downgrade",
+      "event_name": "Sovereign Credit Rating Downgrade",
+      "category": "Credit Event",
+      "signal_direction": "bearish",
+      "signal_strength": "strong",
+      "time_horizon": "1week",
+      "confidence_impact": 0.85,
+      "keywords": [
+        "credit downgrade",
+        "rating cut",
+        "Moody's downgrade",
+        "S&P downgrade",
+        "Fitch downgrade",
+        "sovereign downgrade"
+      ],
+      "description": "Credit rating agency downgrades sovereign debt, very bearish signal"
+    },
+    {
+      "event_id": "sovereign_debt_upgrade",
+      "event_name": "Sovereign Credit Rating Upgrade",
+      "category": "Credit Event",
+      "signal_direction": "bullish",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.70,
+      "keywords": [
+        "credit upgrade",
+        "rating raised",
+        "Moody's upgrade",
+        "S&P upgrade",
+        "Fitch upgrade",
+        "sovereign upgrade"
+      ],
+      "description": "Credit rating agency upgrades sovereign debt, bullish signal"
+    },
+    {
+      "event_id": "central_bank_intervention_buy",
+      "event_name": "Central Bank Currency Intervention (Buying)",
+      "category": "Central Bank Action",
+      "signal_direction": "bullish",
+      "signal_strength": "strong",
+      "time_horizon": "1day",
+      "confidence_impact": 0.80,
+      "keywords": [
+        "FX intervention",
+        "currency intervention",
+        "central bank buying",
+        "support for currency",
+        "defending currency"
+      ],
+      "description": "Central bank intervenes to support currency by buying it, strong bullish signal"
+    },
+    {
+      "event_id": "central_bank_intervention_sell",
+      "event_name": "Central Bank Currency Intervention (Selling)",
+      "category": "Central Bank Action",
+      "signal_direction": "bearish",
+      "signal_strength": "strong",
+      "time_horizon": "1day",
+      "confidence_impact": 0.80,
+      "keywords": [
+        "FX intervention sell",
+        "currency intervention sell",
+        "central bank selling",
+        "curbing strength",
+        "weakening currency"
+      ],
+      "description": "Central bank intervenes to weaken currency by selling it, strong bearish signal"
+    },
+    {
+      "event_id": "qe_announced",
+      "event_name": "Quantitative Easing Program Announced",
+      "category": "Monetary Policy",
+      "signal_direction": "bearish",
+      "signal_strength": "strong",
+      "time_horizon": "1week",
+      "confidence_impact": 0.85,
+      "keywords": [
+        "QE announced",
+        "asset purchases",
+        "quantitative easing",
+        "bond buying program",
+        "balance sheet expansion"
+      ],
+      "description": "Central bank announces QE program, typically very bearish for currency"
+    },
+    {
+      "event_id": "qt_announced",
+      "event_name": "Quantitative Tightening Announced",
+      "category": "Monetary Policy",
+      "signal_direction": "bullish",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.70,
+      "keywords": [
+        "QT announced",
+        "balance sheet reduction",
+        "quantitative tightening",
+        "tapering",
+        "asset sales"
+      ],
+      "description": "Central bank announces QT or balance sheet reduction, typically bullish"
+    },
+    {
+      "event_id": "market_sentiment_risk_on",
+      "event_name": "Market Risk-On Sentiment",
+      "category": "Market Sentiment",
+      "signal_direction": "neutral",
+      "signal_strength": "weak",
+      "time_horizon": "1day",
+      "confidence_impact": 0.40,
+      "keywords": [
+        "risk-on",
+        "risk appetite",
+        "equity rally",
+        "VIX falls",
+        "risk assets rise"
+      ],
+      "description": "Broad market risk-on sentiment, positive for high-yielding and commodity currencies"
+    },
+    {
+      "event_id": "market_sentiment_risk_off",
+      "event_name": "Market Risk-Off Sentiment",
+      "category": "Market Sentiment",
+      "signal_direction": "neutral",
+      "signal_strength": "weak",
+      "time_horizon": "1day",
+      "confidence_impact": 0.40,
+      "keywords": [
+        "risk-off",
+        "risk aversion",
+        "equity selloff",
+        "VIX spikes",
+        "safe-haven bid"
+      ],
+      "description": "Broad market risk-off sentiment, positive for safe-haven currencies"
+    },
+    {
+      "event_id": "energy_supply_disruption",
+      "event_name": "Energy Supply Disruption",
+      "category": "Supply Shock",
+      "signal_direction": "neutral",
+      "signal_strength": "strong",
+      "time_horizon": "3day",
+      "confidence_impact": 0.75,
+      "keywords": [
+        "energy shock",
+        "supply disruption",
+        "Strait of Hormuz",
+        "pipeline shutdown",
+        "LNG shortage",
+        "natural gas crisis"
+      ],
+      "description": "Major energy supply disruption, bearish for energy importers, bullish for exporters"
+    },
+    {
+      "event_id": "natural_disaster_impact",
+      "event_name": "Major Natural Disaster Economic Impact",
+      "category": "Natural Event",
+      "signal_direction": "bearish",
+      "signal_strength": "moderate",
+      "time_horizon": "1week",
+      "confidence_impact": 0.60,
+      "keywords": [
+        "earthquake",
+        "tsunami",
+        "hurricane",
+        "natural disaster",
+        "catastrophic damage"
+      ],
+      "description": "Major natural disaster affecting economic activity, typically bearish"
+    },
+    {
+      "event_id": "banking_crisis",
+      "event_name": "Banking Sector Crisis",
+      "category": "Financial Crisis",
+      "signal_direction": "bearish",
+      "signal_strength": "strong",
+      "time_horizon": "2week",
+      "confidence_impact": 0.90,
+      "keywords": [
+        "bank failure",
+        "banking crisis",
+        "credit crunch",
+        "financial stability concerns",
+        "bank run"
+      ],
+      "description": "Banking sector crisis or major bank failure, very bearish signal"
+    },
+    {
+      "event_id": "corporate_earnings_strong",
+      "event_name": "Strong Corporate Earnings Season",
+      "category": "Market Sentiment",
+      "signal_direction": "bullish",
+      "signal_strength": "weak",
+      "time_horizon": "1week",
+      "confidence_impact": 0.35,
+      "keywords": [
+        "earnings beat",
+        "strong profits",
+        "corporate earnings rise",
+        "earnings season positive"
+      ],
+      "description": "Broad corporate earnings strength, mildly bullish for currency"
+    },
+    {
+      "event_id": "corporate_earnings_weak",
+      "event_name": "Weak Corporate Earnings Season",
+      "category": "Market Sentiment",
+      "signal_direction": "bearish",
+      "signal_strength": "weak",
+      "time_horizon": "1week",
+      "confidence_impact": 0.35,
+      "keywords": [
+        "earnings miss",
+        "weak profits",
+        "corporate earnings fall",
+        "earnings season negative"
+      ],
+      "description": "Broad corporate earnings weakness, mildly bearish for currency"
+    },
+    {
+      "event_id": "consumer_confidence_surge",
+      "event_name": "Consumer Confidence Surge",
+      "category": "Economic Indicator",
+      "signal_direction": "bullish",
+      "signal_strength": "weak",
+      "time_horizon": "3day",
+      "confidence_impact": 0.45,
+      "keywords": [
+        "consumer confidence rises",
+        "sentiment improves",
+        "confidence index beats",
+        "optimism increases"
+      ],
+      "description": "Consumer confidence index rises significantly, mildly bullish"
+    },
+    {
+      "event_id": "consumer_confidence_plunge",
+      "event_name": "Consumer Confidence Plunge",
+      "category": "Economic Indicator",
+      "signal_direction": "bearish",
+      "signal_strength": "weak",
+      "time_horizon": "3day",
+      "confidence_impact": 0.45,
+      "keywords": [
+        "consumer confidence falls",
+        "sentiment deteriorates",
+        "confidence index misses",
+        "pessimism increases"
+      ],
+      "description": "Consumer confidence index falls significantly, mildly bearish"
+    },
+    {
+      "event_id": "housing_data_strong",
+      "event_name": "Strong Housing Market Data",
+      "category": "Economic Indicator",
+      "signal_direction": "bullish",
+      "signal_strength": "weak",
+      "time_horizon": "3day",
+      "confidence_impact": 0.40,
+      "keywords": [
+        "housing starts rise",
+        "home sales beat",
+        "building permits increase",
+        "property market strengthens"
+      ],
+      "description": "Housing market indicators exceed expectations, mildly bullish"
+    },
+    {
+      "event_id": "housing_data_weak",
+      "event_name": "Weak Housing Market Data",
+      "category": "Economic Indicator",
+      "signal_direction": "bearish",
+      "signal_strength": "weak",
+      "time_horizon": "3day",
+      "confidence_impact": 0.40,
+      "keywords": [
+        "housing starts fall",
+        "home sales miss",
+        "building permits decline",
+        "property market weakens"
+      ],
+      "description": "Housing market indicators fall short of expectations, mildly bearish"
+    },
+    {
+      "event_id": "unexpected_data_revision",
+      "event_name": "Major Economic Data Revision",
+      "category": "Economic Indicator",
+      "signal_direction": "neutral",
+      "signal_strength": "moderate",
+      "time_horizon": "1day",
+      "confidence_impact": 0.55,
+      "keywords": [
+        "data revision",
+        "revised higher",
+        "revised lower",
+        "upward revision",
+        "downward revision"
+      ],
+      "description": "Significant revision to previously reported economic data"
+    }
+  ],
+  "categories": {
+    "Monetary Policy": {
+      "description": "Central bank decisions and communications regarding interest rates, QE/QT, and policy stance",
+      "typical_impact": "high",
+      "typical_horizon": "1day to 1week"
+    },
+    "Economic Indicator": {
+      "description": "Scheduled releases of key economic data including inflation, GDP, employment, PMIs, etc.",
+      "typical_impact": "moderate to high",
+      "typical_horizon": "1day to 3day"
+    },
+    "Geopolitical Event": {
+      "description": "Military conflicts, diplomatic crises, and international tensions",
+      "typical_impact": "high",
+      "typical_horizon": "1day to 2week"
+    },
+    "Trade Policy": {
+      "description": "Tariffs, trade agreements, and trade war developments",
+      "typical_impact": "moderate to high",
+      "typical_horizon": "3day to 1month"
+    },
+    "Political Event": {
+      "description": "Elections, government changes, and domestic political developments",
+      "typical_impact": "moderate to high",
+      "typical_horizon": "1week to 1month"
+    },
+    "Fiscal Policy": {
+      "description": "Government spending, taxation, and budget decisions",
+      "typical_impact": "moderate",
+      "typical_horizon": "1week to 1month"
+    },
+    "Credit Event": {
+      "description": "Sovereign credit rating changes and debt concerns",
+      "typical_impact": "high",
+      "typical_horizon": "1week to 1month"
+    },
+    "Central Bank Action": {
+      "description": "Direct FX intervention and unconventional policy tools",
+      "typical_impact": "very high",
+      "typical_horizon": "1day to 3day"
+    },
+    "Commodity Market": {
+      "description": "Major commodity price movements affecting currency correlations",
+      "typical_impact": "moderate",
+      "typical_horizon": "1day to 1week"
+    },
+    "Supply Shock": {
+      "description": "Disruptions to critical supply chains, especially energy",
+      "typical_impact": "high",
+      "typical_horizon": "3day to 2week"
+    },
+    "Market Sentiment": {
+      "description": "Broad risk-on/risk-off shifts and market psychology",
+      "typical_impact": "low to moderate",
+      "typical_horizon": "1day to 3day"
+    },
+    "Financial Crisis": {
+      "description": "Banking sector problems and systemic financial risks",
+      "typical_impact": "very high",
+      "typical_horizon": "1week to 1month"
+    },
+    "Natural Event": {
+      "description": "Natural disasters with significant economic impact",
+      "typical_impact": "moderate",
+      "typical_horizon": "1week to 1month"
+    }
+  },
+  "signal_strength_definitions": {
+    "strong": "High confidence in directional impact, typically 0.7-0.9 confidence",
+    "moderate": "Medium confidence in directional impact, typically 0.5-0.7 confidence",
+    "weak": "Lower confidence in directional impact, typically 0.3-0.5 confidence"
+  },
+  "time_horizon_definitions": {
+    "1day": "Impact typically realized within 24 hours",
+    "3day": "Impact typically realized within 3 days",
+    "1week": "Impact typically realized within 1 week",
+    "2week": "Impact typically realized within 2 weeks",
+    "1month": "Impact typically realized within 1 month"
+  },
+  "notes": [
+    "Signal direction (bullish/bearish/neutral) is relative to the currency in question",
+    "For safe-haven currencies (USD, JPY, CHF), geopolitical crises are typically bullish",
+    "For commodity currencies (CAD, NOK, AUD), commodity price movements have stronger correlations",
+    "For EUR, ECB policy and Eurozone economic data are primary drivers",
+    "Actual impact depends on market positioning and expectations going into the event",
+    "Multiple events occurring simultaneously can amplify or offset each other",
+    "Event classification should consider both the headline and the context/expectations"
+  ]
+}

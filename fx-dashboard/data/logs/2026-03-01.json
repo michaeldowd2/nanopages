@@ -1,0 +1,166 @@
+{
+  "date": "2026-03-01",
+  "steps": [
+    {
+      "step_id": "deploy",
+      "step_name": "Deploy Dashboard",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T08:59:33.175798",
+      "end_time": "2026-03-01T08:59:35.134255",
+      "duration": 1.96,
+      "status": "success",
+      "counts": {},
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "cleared_data": true,
+        "exported_data": true,
+        "copied_to_dashboard": true,
+        "deployed_to_github": true
+      }
+    },
+    {
+      "step_id": "step7",
+      "step_name": "Aggregate Signals",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T19:35:15.077570",
+      "end_time": "2026-03-01T19:35:15.082874",
+      "duration": 0.01,
+      "status": "success",
+      "counts": {
+        "unrealized_signals": 164,
+        "aggregated_groups": 18
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_file": "/workspace/group/fx-portfolio/data/exports/step7_aggregated_signals.csv"
+      }
+    },
+    {
+      "step_id": "step8",
+      "step_name": "Calculate Trades",
+      "date": "2026-03-01",
+      "start_time": null,
+      "end_time": null,
+      "duration": null,
+      "status": "pending",
+      "counts": {},
+      "errors": [],
+      "warnings": [],
+      "info": {}
+    },
+    {
+      "step_id": "step1",
+      "step_name": "Fetch Exchange Rates (All Pairs)",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T09:16:02.182681",
+      "end_time": "2026-03-01T09:16:02.263976",
+      "duration": 0.08,
+      "status": "success",
+      "counts": {
+        "currencies": 11,
+        "total_pairs": 121,
+        "eur_rates_fetched": 11,
+        "pairs_calculated": 121
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "data_source": "github-currency-api",
+        "output_file": "/workspace/group/fx-portfolio/data/prices/fx-rates-2026-03-01.json"
+      }
+    },
+    {
+      "step_id": "step2",
+      "step_name": "Calculate Currency Indices (Geometric Mean)",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T13:55:56.885615",
+      "end_time": "2026-03-01T13:55:56.898088",
+      "duration": 0.01,
+      "status": "success",
+      "counts": {
+        "days_loaded": 6,
+        "currencies_calculated": 11,
+        "total_index_points": 66
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "base_date": "2026-02-24",
+        "latest_date": "2026-03-01",
+        "output_csv": "/workspace/group/fx-portfolio/data/exports/step2_indices.csv",
+        "output_validation": "/workspace/group/fx-portfolio/data/exports/step2_indices_validation.json"
+      }
+    },
+    {
+      "step_id": "step4",
+      "step_name": "Analyze Time Horizons (LLM)",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T19:34:55.703528",
+      "end_time": "2026-03-01T19:34:55.704342",
+      "duration": 0.0,
+      "status": "success",
+      "counts": {},
+      "errors": [],
+      "warnings": [],
+      "info": {}
+    },
+    {
+      "step_id": "step5",
+      "step_name": "Generate Sentiment Signals (v2)",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T09:16:04.022902",
+      "end_time": "2026-03-01T09:16:08.812409",
+      "duration": 4.79,
+      "status": "success",
+      "counts": {
+        "generators_configured": 2,
+        "currencies_to_analyze": 11,
+        "total_signals": 12,
+        "generators_executed": 2
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {}
+    },
+    {
+      "step_id": "step6",
+      "step_name": "Check Signal Realization",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T19:35:14.959958",
+      "end_time": "2026-03-01T19:35:15.035044",
+      "duration": 0.08,
+      "status": "success",
+      "counts": {
+        "total_records": 209,
+        "realized": 45,
+        "unrealized": 93,
+        "contradicted": 71
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {}
+    },
+    {
+      "step_id": "step9",
+      "step_name": "Execute Portfolio Strategies",
+      "date": "2026-03-01",
+      "start_time": "2026-03-01T11:04:20.091592",
+      "end_time": "2026-03-01T11:04:20.101771",
+      "duration": 0.01,
+      "status": "success",
+      "counts": {
+        "strategy_combinations": 9,
+        "strategies_executed": 9,
+        "total_trades": 0
+      },
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_csv": "/workspace/group/fx-portfolio/data/exports/step9_strategies.csv",
+        "output_json": "/workspace/group/fx-portfolio/data/exports/step9_strategies_detail.json"
+      }
+    }
+  ]
+}

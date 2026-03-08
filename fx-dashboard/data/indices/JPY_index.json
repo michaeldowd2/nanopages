@@ -1,0 +1,138 @@
+{
+  "currency": "JPY",
+  "calculation_method": "geometric_mean",
+  "note": "Index isolates currency movement using geometric mean of all pairs",
+  "base_date": "2026-02-24",
+  "data": [
+    {
+      "date": "2026-02-24",
+      "currency": "JPY",
+      "index": 100.0,
+      "prev_index": null,
+      "daily_change_pct": null,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-25",
+      "currency": "JPY",
+      "index": 100.5908,
+      "prev_index": 100.0,
+      "daily_change_pct": 0.5908,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-26",
+      "currency": "JPY",
+      "index": 101.0245,
+      "prev_index": 100.5908,
+      "daily_change_pct": 0.4312,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-27",
+      "currency": "JPY",
+      "index": 100.7582,
+      "prev_index": 101.0245,
+      "daily_change_pct": -0.2636,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-02-28",
+      "currency": "JPY",
+      "index": 101.0657,
+      "prev_index": 100.7582,
+      "daily_change_pct": 0.3052,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-01",
+      "currency": "JPY",
+      "index": 101.0657,
+      "prev_index": 101.0657,
+      "daily_change_pct": 0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-02",
+      "currency": "JPY",
+      "index": 101.122,
+      "prev_index": 101.0657,
+      "daily_change_pct": 0.0557,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-03",
+      "currency": "JPY",
+      "index": 101.2264,
+      "prev_index": 101.122,
+      "daily_change_pct": 0.1032,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-04",
+      "currency": "JPY",
+      "index": 100.5421,
+      "prev_index": 101.2264,
+      "daily_change_pct": -0.676,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-05",
+      "currency": "JPY",
+      "index": 100.5421,
+      "prev_index": 100.5421,
+      "daily_change_pct": -0.0,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-06",
+      "currency": "JPY",
+      "index": 100.5491,
+      "prev_index": 100.5421,
+      "daily_change_pct": 0.0069,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-07",
+      "currency": "JPY",
+      "index": 100.7828,
+      "prev_index": 100.5491,
+      "daily_change_pct": 0.2324,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    },
+    {
+      "date": "2026-03-08",
+      "currency": "JPY",
+      "index": 101.134,
+      "prev_index": 100.7828,
+      "daily_change_pct": 0.3485,
+      "base_date": "2026-02-24",
+      "pairs_count": 10,
+      "calculation_method": "geometric_mean"
+    }
+  ]
+}

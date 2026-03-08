@@ -1,0 +1,15 @@
+{
+  "currency": "JPY",
+  "date": "2026-03-02",
+  "articles": [
+    {
+      "title": "Yen\u2019s Purchasing Power Falls to One-Third Over 30 Years",
+      "url": "https://newsonjapan.com/article/148511.php",
+      "snippet": "As price hikes spread from fast food to daily necessities and households grapple with rising living costs, the steady depreciation of the yen has emerged as a central driver of inflation, with multiple indicators showing that the currency\u2019s purchasing power h\u2026",
+      "source": "NewsAPI (Newsonjapan.com)",
+      "relevance_score": 0.33,
+      "currency": "JPY"
+    }
+  ],
+  "combined_text": "[0.33] Yen\u2019s Purchasing Power Falls to One-Third Over 30 Years\nAs price hikes spread from fast food to daily necessities and households grapple with rising living costs, the steady depreciation of the yen has emerged as a central driver of inflation, with multiple indicators showing that the currency\u2019s purchasing power h\u2026"
+}

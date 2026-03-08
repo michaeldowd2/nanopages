@@ -1,0 +1,31 @@
+{
+  "currency": "AUD",
+  "date": "2026-03-02",
+  "articles": [
+    {
+      "title": "Saudi Aramco's Ras Tanura refinery forced to shut down after reported drone attack",
+      "url": "https://investinglive.com/news/saudi-aramcos-ras-tanura-refinery-forced-to-shut-down-after-reported-drone-attack-20260302/",
+      "snippet": "A Reuters source is reporting that Saudi Aramco's Ras Tanura refinery, which is the largest oil refinery in the Middle East, was hit by a drone attack and forced to shut down as a precautionary measure. The source did note that the \"situation is under control\" though.However, the strike continues to highlight the kind of disruption that is hitting the oil market at the open. It's not just all about the Strait of Hormuz. There's tension and fears all over the region and oil refineries and tankers",
+      "source": "ForexLive",
+      "relevance_score": 0.33,
+      "currency": "AUD"
+    },
+    {
+      "title": "Quantum AI Investment Review: Trusted Trading System or Fraud? Results Exposed",
+      "url": "https://whatjapanthinks.com/quantum-ai-investment-review/",
+      "snippet": "Quantum AI Investment emerges as a newly launched online trading program designed to streamline and strengthen the overall trading experience for individuals interested in cryptocurrency markets. The platform states that it uses advanced technologies such as \u2026",
+      "source": "NewsAPI (Whatjapanthinks.com)",
+      "relevance_score": 0.33,
+      "currency": "AUD"
+    },
+    {
+      "title": "Apexspire Tayren Review: Trusted Trading System or Fraud? Results Exposed",
+      "url": "https://whatjapanthinks.com/apexspire-tayren-review/",
+      "snippet": "Apexspire Tayren presents itself as a freshly created digital asset trading solution developed to smooth and upgrade the overall user experience for individuals interested in crypto traders. The platform puts forward that it uses modern methods such as AI and\u2026",
+      "source": "NewsAPI (Whatjapanthinks.com)",
+      "relevance_score": 0.33,
+      "currency": "AUD"
+    }
+  ],
+  "combined_text": "[0.33] Saudi Aramco's Ras Tanura refinery forced to shut down after reported drone attack\nA Reuters source is reporting that Saudi Aramco's Ras Tanura refinery, which is the largest oil refinery in the Middle East, was hit by a drone attack and forced to shut down as a precautionary measure. The source did note that the \"situation is under control\" though.However, the strike continues to highlight the kind of disruption that is hitting the oil market at the open. It's not just all about the Strait of Hormuz. There's tension and fears all over the region and oil refineries and tankers\n\n[0.33] Quantum AI Investment Review: Trusted Trading System or Fraud? Results Exposed\nQuantum AI Investment emerges as a newly launched online trading program designed to streamline and strengthen the overall trading experience for individuals interested in cryptocurrency markets. The platform states that it uses advanced technologies such as \u2026\n\n[0.33] Apexspire Tayren Review: Trusted Trading System or Fraud? Results Exposed\nApexspire Tayren presents itself as a freshly created digital asset trading solution developed to smooth and upgrade the overall user experience for individuals interested in crypto traders. The platform puts forward that it uses modern methods such as AI and\u2026"
+}

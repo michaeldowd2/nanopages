@@ -1,0 +1,144 @@
+{
+  "currency": "CHF",
+  "date": "2026-03-04",
+  "signals": [
+    {
+      "date": "2026-03-04",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "CHF",
+      "predicted_direction": "bearish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.9,
+      "pair_context": null,
+      "article_url": "https://investinglive.com/news/france-february-final-services-pmi-496-vs-496-prelim-20260304/",
+      "article_title": "France February final services PMI 49.6 vs 49.6 prelim",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "CHF showing weakness with 3 negative indicators",
+      "timestamp": "2026-03-04T12:33:59.646119Z"
+    },
+    {
+      "date": "2026-03-04",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "CHF",
+      "predicted_direction": "bearish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.9,
+      "pair_context": null,
+      "article_url": "https://investinglive.com/news/switzerland-february-cpi-01-vs-01-yy-expected-20260304/",
+      "article_title": "Switzerland February CPI +0.1% vs -0.1% y/y expected",
+      "published_at": null,
+      "relevance_score": 1.0,
+      "reasoning": "CHF showing weakness with 3 negative indicators",
+      "timestamp": "2026-03-04T12:33:59.646196Z"
+    },
+    {
+      "date": "2026-03-04",
+      "generator_id": "keyword-sentiment-v1.1-standard",
+      "generator_type": "keyword-sentiment-v1.1",
+      "generator_params": {
+        "keyword_set": "standard",
+        "negation_enabled": true,
+        "confidence_boost": 1.5,
+        "min_keyword_count": 1,
+        "magnitude_estimation": true
+      },
+      "signal_type": "news-sentiment",
+      "currency": "CHF",
+      "predicted_direction": "bearish",
+      "predicted_magnitude": "small",
+      "confidence": 0.75,
+      "pair_context": null,
+      "article_url": "https://www.fxstreet.com/news/chf-policy-support-seen-as-fx-intervention-focus-nomura-202603040929",
+      "article_title": "CHF: Policy support seen as FX intervention focus \u2013 Nomura",
+      "published_at": null,
+      "relevance_score": 1.0,
+      "reasoning": "CHF showing weakness with 2 negative indicators",
+      "timestamp": "2026-03-04T12:33:59.646242Z"
+    },
+    {
+      "date": "2026-03-04",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "CHF",
+      "predicted_direction": "neutral",
+      "predicted_magnitude": "small",
+      "confidence": 0.7,
+      "pair_context": null,
+      "article_url": "https://investinglive.com/news/france-february-final-services-pmi-496-vs-496-prelim-20260304/",
+      "article_title": "France February final services PMI 49.6 vs 49.6 prelim",
+      "published_at": null,
+      "relevance_score": 0.33,
+      "reasoning": "The article does not contain any information directly related to the Swiss franc (CHF). It discusses the French services PMI, which is not a major driver of the CHF. The article also mentions that France is seeing more benign inflation pressures, which could be slightly positive for the CHF, but the impact is expected to be small.",
+      "timestamp": "2026-03-04T12:34:52.052766Z"
+    },
+    {
+      "date": "2026-03-04",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "CHF",
+      "predicted_direction": "bearish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.8,
+      "pair_context": null,
+      "article_url": "https://investinglive.com/news/switzerland-february-cpi-01-vs-01-yy-expected-20260304/",
+      "article_title": "Switzerland February CPI +0.1% vs -0.1% y/y expected",
+      "published_at": null,
+      "relevance_score": 1.0,
+      "reasoning": "The article indicates that headline annual inflation in Switzerland remains unchanged and continues to border on deflation territory, while core annual inflation is seen trickling lower. This suggests economic weakness and dovishness from the Swiss National Bank, which is bearish for the Swiss franc.",
+      "timestamp": "2026-03-04T12:34:53.075894Z"
+    },
+    {
+      "date": "2026-03-04",
+      "generator_id": "llm-sentiment-v1-haiku",
+      "generator_type": "llm-sentiment-v1",
+      "generator_params": {
+        "model": "claude-3-haiku-20240307",
+        "temperature": 0.3,
+        "max_tokens": 300
+      },
+      "signal_type": "news-sentiment",
+      "currency": "CHF",
+      "predicted_direction": "bullish",
+      "predicted_magnitude": "medium",
+      "confidence": 0.8,
+      "pair_context": null,
+      "article_url": "https://www.fxstreet.com/news/chf-policy-support-seen-as-fx-intervention-focus-nomura-202603040929",
+      "article_title": "CHF: Policy support seen as FX intervention focus \u2013 Nomura",
+      "published_at": null,
+      "relevance_score": 1.0,
+      "reasoning": "The article suggests that CHF strength is lowering imported prices, which offsets some energy risks. This indicates a positive sentiment for the Swiss franc, as the central bank's policy support and the currency's strength are seen as favorable factors.",
+      "timestamp": "2026-03-04T12:34:54.223309Z"
+    }
+  ]
+}
