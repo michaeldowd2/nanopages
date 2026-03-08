@@ -352,7 +352,7 @@ This ensures:
 After running this step:
 ```bash
 # analyze-time-horizons: Analyze time horizons
-python3 scripts/analyze-time-horizons-llm.py
+python3 scripts/analyze-time-horizons.py
 
 # Or run full pipeline
 ```

@@ -130,7 +130,7 @@ No configuration needed - reads from generate-sentiment-signals and check-signal
 ## Dependencies
 
 **Upstream Steps**:
-- generate-sentiment-signals: `generate-sentiment-signals-v2.py` (provides signals)
+- generate-sentiment-signals: `generate-sentiment-signals.py` (provides signals)
 - check-signal-realization: `check-signal-realization.py` (provides penalty factors)
 
 **Data Required**:

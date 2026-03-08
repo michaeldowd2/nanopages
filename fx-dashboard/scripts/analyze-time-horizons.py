@@ -266,7 +266,7 @@ def main():
     # Date is required
     if not args.date:
         print("❌ Error: --date parameter is required")
-        print("   Usage: python3 analyze-time-horizons-llm.py --date 2026-02-24")
+        print("   Usage: python3 analyze-time-horizons.py --date 2026-02-24")
         sys.exit(1)
 
     date_str = args.date

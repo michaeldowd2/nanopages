@@ -16,7 +16,7 @@ Determine how long each article's market impact will last (immediate, short-term
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/analyze-time-horizons-llm.py
+python3 scripts/analyze-time-horizons.py
 ```
 
 **Output**: `/data/article-analysis/{url_hash}.json`
@@ -227,7 +227,7 @@ api_key = get_anthropic_key()
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/analyze-time-horizons-llm.py
+python3 scripts/analyze-time-horizons.py
 ```
 
 **Output**:
@@ -344,7 +344,7 @@ cat data/exports/step4_horizons.csv
 
 Check status:
 ```bash
-python3 scripts/analyze-time-horizons-llm.py
+python3 scripts/analyze-time-horizons.py
 ```
 
 Count analyzed articles:

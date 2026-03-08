@@ -16,7 +16,7 @@ Analyzes aggregated currency signals and generates specific trade pairs (buy cur
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/calculate-trades-step8.py --date 2026-03-08
+python3 scripts/calculate-trades.py --date 2026-03-08
 ```
 
 **Input**: `/data/aggregated-signals/aggregated_signals.csv` (from aggregate-signals)

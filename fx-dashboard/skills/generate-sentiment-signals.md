@@ -18,7 +18,7 @@ Analyze news articles to create signals with directional predictions. Supports m
 
 ```bash
 cd /workspace/group/fx-portfolio
-python3 scripts/generate-sentiment-signals-v2.py
+python3 scripts/generate-sentiment-signals.py
 ```
 
 ### Run Legacy Single Generator (Keyword Only)
@@ -540,7 +540,7 @@ for gen_id, data in stats.items():
 
 ### Step 1: Create Generator Function
 
-Add to `generate-sentiment-signals-v2.py`:
+Add to `generate-sentiment-signals.py`:
 
 ```python
 def analyze_sentiment_my_new_method(combined_text, currency, params):
@@ -594,7 +594,7 @@ Update `system_config.json`:
 ### analyze-time-horizons: Run
 
 ```bash
-python3 scripts/generate-sentiment-signals-v2.py
+python3 scripts/generate-sentiment-signals.py
 ```
 
 All generators will run automatically!
