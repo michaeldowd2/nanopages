@@ -1,6 +1,6 @@
-# Skill: analyze-time-horizons-llm
+# Skill: analyze-time-horizons
 
-Analyze news articles to estimate time horizons using Claude Haiku.
+Analyze news articles to estimate time horizons.
 
 ---
 
