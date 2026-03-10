@@ -341,6 +341,15 @@ def main(date_str=None):
                         signal_direction = invert_direction(direction)
                         reasoning = f"{pair_context}: Inverse signal for quote currency - {reasoning}"
 
+                # Calculate signal value (confidence × magnitude_weight)
+                magnitude_multipliers = {
+                    'small': 0.4,
+                    'medium': 0.7,
+                    'large': 1.4
+                }
+                magnitude_weight = magnitude_multipliers.get(predicted_magnitude, 0.7) if predicted_magnitude else 0.7
+                signal_value = round(confidence * magnitude_weight, 4)
+
                 # Build CSV row
                 signal = {
                     'date': date_str,
@@ -353,7 +362,8 @@ def main(date_str=None):
                     'predicted_magnitude': predicted_magnitude if predicted_magnitude else None,
                     'confidence': confidence,
                     'pair_context': pair_context if pair_context else None,
-                    'reasoning': reasoning
+                    'reasoning': reasoning,
+                    'signal': signal_value
                 }
 
                 generator_signals.append(signal)

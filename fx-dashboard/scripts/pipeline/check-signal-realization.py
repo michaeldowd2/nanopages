@@ -164,6 +164,7 @@ def load_signals_from_all_dates(process_date_str):
                     'predicted_direction': predicted_direction,
                     'predicted_magnitude': row.get('predicted_magnitude'),
                     'confidence': float(row.get('confidence', 0)),
+                    'signal': float(row.get('signal', 0)),  # Load signal from Process 5
                     'reasoning': row.get('reasoning', '')
                 }
                 total_loaded += 1
@@ -325,20 +326,7 @@ def main(date_str=None):
                 movement['pct_change']
             )
 
-            # Calculate magnitude-weighted signal
-            magnitude_multipliers = {
-                'small': 0.4,
-                'medium': 0.7,
-                'large': 1.4
-            }
-            magnitude = signal['predicted_magnitude']
-            confidence = signal['confidence']
-            magnitude_weight = magnitude_multipliers.get(magnitude, 0.7) if magnitude else 0.7
-
-            # Signal = confidence * magnitude_weight
-            signal_value = confidence * magnitude_weight
-
-            # Build CSV row
+            # Build CSV row (signal is now loaded from Process 5)
             csv_rows.append({
                 'date': date_str,
                 'source': signal['source'],
@@ -354,7 +342,7 @@ def main(date_str=None):
                 'predicted_direction': signal['predicted_direction'],
                 'predicted_magnitude': signal['predicted_magnitude'] if signal['predicted_magnitude'] else None,
                 'confidence': signal['confidence'],
-                'signal': round(signal_value, 4),
+                'signal': signal['signal'],  # Simply use signal from Process 5
                 'start_index': movement['start_index'],
                 'end_index': movement['end_index'],
                 'actual_pct_change': movement['pct_change'],
