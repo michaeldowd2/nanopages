@@ -364,16 +364,6 @@
           "name": "aggregate_signal",
           "type": "float",
           "description": "Final signal after penalty (base \u00d7 penalty)"
-        },
-        {
-          "name": "avg_confidence",
-          "type": "float",
-          "description": "Average confidence"
-        },
-        {
-          "name": "net_direction",
-          "type": "string",
-          "description": "Net direction (bullish/bearish/neutral)"
         }
       ]
     },
