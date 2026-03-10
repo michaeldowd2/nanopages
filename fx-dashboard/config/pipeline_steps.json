@@ -13,15 +13,12 @@
       ]
     },
     "process_2_indices": {
-      "description": "Currency strength indices calculated from exchange rates",
+      "description": "Currency strength indices calculated using percent-change method (base 100)",
       "output_path": "data/indices/{date}.csv",
       "columns": [
         {"name": "date", "type": "string", "description": "Trading date YYYY-MM-DD"},
         {"name": "currency", "type": "string", "description": "Currency code"},
-        {"name": "index", "type": "float", "description": "Currency strength index (base 100)"},
-        {"name": "prev_index", "type": "float", "nullable": true, "description": "Previous day index value"},
-        {"name": "daily_change_pct", "type": "float", "nullable": true, "description": "Daily percentage change"},
-        {"name": "base_date", "type": "string", "description": "Index base date (first date in series)"}
+        {"name": "index", "type": "float", "description": "Currency strength index (base date = 100, calculated via percent changes from base)"}
       ]
     },
     "process_3_news": {
@@ -130,20 +127,20 @@
       "columns": [
         {"name": "date", "type": "string", "description": "Trading date YYYY-MM-DD"},
         {"name": "strategy_id", "type": "string", "description": "Strategy identifier"},
-        {"name": "eur_balance", "type": "float", "description": "EUR balance"},
-        {"name": "usd_balance", "type": "float", "description": "USD balance"},
-        {"name": "gbp_balance", "type": "float", "description": "GBP balance"},
-        {"name": "jpy_balance", "type": "float", "description": "JPY balance"},
-        {"name": "aud_balance", "type": "float", "description": "AUD balance"},
-        {"name": "cad_balance", "type": "float", "description": "CAD balance"},
-        {"name": "chf_balance", "type": "float", "description": "CHF balance"},
-        {"name": "cny_balance", "type": "float", "description": "CNY balance"},
-        {"name": "sek_balance", "type": "float", "description": "SEK balance"},
-        {"name": "nok_balance", "type": "float", "description": "NOK balance"},
-        {"name": "mxn_balance", "type": "float", "description": "MXN balance"},
-        {"name": "total_value_eur", "type": "float", "description": "Total portfolio value in EUR"},
-        {"name": "daily_return_pct", "type": "float", "nullable": true, "description": "Daily return percentage"},
-        {"name": "cumulative_return_pct", "type": "float", "description": "Cumulative return from inception"}
+        {"name": "trader_id", "type": "string", "description": "Trader identifier"},
+        {"name": "trades_executed", "type": "int", "description": "Number of trades executed"},
+        {"name": "portfolio_value", "type": "float", "description": "Total portfolio value in EUR"},
+        {"name": "EUR", "type": "float", "description": "EUR balance"},
+        {"name": "USD", "type": "float", "description": "USD balance"},
+        {"name": "GBP", "type": "float", "description": "GBP balance"},
+        {"name": "JPY", "type": "float", "description": "JPY balance"},
+        {"name": "CHF", "type": "float", "description": "CHF balance"},
+        {"name": "AUD", "type": "float", "description": "AUD balance"},
+        {"name": "CAD", "type": "float", "description": "CAD balance"},
+        {"name": "NOK", "type": "float", "description": "NOK balance"},
+        {"name": "SEK", "type": "float", "description": "SEK balance"},
+        {"name": "CNY", "type": "float", "description": "CNY balance"},
+        {"name": "MXN", "type": "float", "description": "MXN balance"}
       ]
     }
   },

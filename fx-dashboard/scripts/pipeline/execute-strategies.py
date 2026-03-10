@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Portfolio Executor (Step 9)
+Step 9: Portfolio Executor
 
 Reads proposed trades from Step 8 and executes them on strategy portfolios.
 Each strategy maintains its own portfolio state across dates.
@@ -8,28 +8,32 @@ Each strategy maintains its own portfolio state across dates.
 Design:
 - Start with 100 EUR in each currency if no prior portfolio state exists
 - Load previous date's portfolio state from CSV to continue
-- Read trades from Step 8 CSV (buy_currency, sell_currency, trade_signal, above_threshold)
+- Read trades from Step 8 CSV (buy_currency, sell_currency, trade_signal)
 - Execute trades above threshold in descending order of confidence
 - Apply spreads (0.74%) when converting currencies
 - Track portfolio balances and values over time
 
-Input: data/trades/trades.csv
-Output: data/portfolios/strategies.csv (portfolio summary with balances)
+Reads from Processes 1 and 8 CSVs, writes to Process 9 CSV.
+
+Input:
+- data/trades/{date}.csv (from Process 8)
+- data/prices/{date}.csv (from Process 1)
+- data/portfolios/{date}.csv (from previous run of Process 9)
+
+Output: data/portfolios/{date}.csv
 """
 
-import json
 import os
-import glob
 import sys
 import argparse
-import csv
 from datetime import datetime, timedelta
 
 sys.path.append('/workspace/group/fx-portfolio/scripts')
 from utilities.pipeline_logger import PipelineLogger
-from utilities.config_loader import get_strategies, get_trader
+from utilities.csv_helper import read_csv, write_csv, csv_exists, get_previous_date
+from utilities.config_loader import get_strategies, get_trader, get_currencies
 
-CURRENCIES = ["EUR", "USD", "GBP", "JPY", "CHF", "AUD", "CAD", "NOK", "SEK", "CNY", "MXN"]
+CURRENCIES = get_currencies()
 
 REVOLUT_SPREADS = {
     'default': 0.0074  # 0.74% total
@@ -37,110 +41,63 @@ REVOLUT_SPREADS = {
 
 INITIAL_BALANCE_PER_CURRENCY = 100.0  # EUR equivalent in each currency
 
-def load_latest_prices(date_str=None):
-    """Load exchange rates from Step 1 for a specific date"""
-    if date_str:
-        price_file = f'/workspace/group/fx-portfolio/data/prices/fx-rates-{date_str}.json'
-        if os.path.exists(price_file):
-            with open(price_file, 'r') as f:
-                data = json.load(f)
-                eur_rates = data.get('eur_base_rates', data.get('rates', {}))
-                all_pairs = data.get('all_pairs', {})
-                return eur_rates, all_pairs
 
-    # Load most recent if no date specified or date not found
-    price_files = sorted(glob.glob('/workspace/group/fx-portfolio/data/prices/fx-rates-*.json'))
+def load_exchange_rates(date_str):
+    """Load exchange rates from Process 1 for a specific date"""
+    try:
+        rates_rows = read_csv('process_1_exchange_rates', date=date_str, validate=False)
 
-    if not price_files:
-        return None, None
+        # Build eur_rates dict (EUR/XXX rates)
+        eur_rates = {}
+        for row in rates_rows:
+            if row['base_currency'] == 'EUR':
+                eur_rates[row['quote_currency']] = float(row['rate'])
 
-    with open(price_files[-1], 'r') as f:
-        data = json.load(f)
-        eur_rates = data.get('eur_base_rates', data.get('rates', {}))
-        all_pairs = data.get('all_pairs', {})
+        # Build all_pairs dict (all currency pairs)
+        all_pairs = {}
+        for row in rates_rows:
+            base = row['base_currency']
+            quote = row['quote_currency']
+            rate = float(row['rate'])
+
+            if base not in all_pairs:
+                all_pairs[base] = {}
+            all_pairs[base][quote] = rate
+
         return eur_rates, all_pairs
 
-def load_trades_from_step8(date_str, trader_id):
+    except FileNotFoundError:
+        return None, None
+
+
+def load_previous_portfolio(strategy_id, prev_date):
     """
-    Load proposed trades for a specific date and trader from Step 8 CSV.
+    Load most recent portfolio state for a strategy from previous date CSV.
 
-    Returns: List of trade dicts, sorted by trade_signal descending
+    Returns: Dict of {currency: balance} or None if not found
     """
-    csv_file = '/workspace/group/fx-portfolio/data/trades/trades.csv'
-
-    if not os.path.exists(csv_file):
-        return []
-
-    trades = []
-    with open(csv_file, 'r') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if row['date'] == date_str and row['trader_id'] == trader_id:
-                trades.append({
-                    'buy_currency': row['buy_currency'],
-                    'sell_currency': row['sell_currency'],
-                    'buy_confidence': float(row['buy_signal']),
-                    'sell_confidence': float(row['sell_signal']),
-                    'trade_signal': float(row['trade_signal'])
-                })
-
-    # Sort by confidence descending (already sorted in Step 8, but just to be sure)
-    trades.sort(key=lambda x: x['trade_signal'], reverse=True)
-
-    return trades
-
-def load_previous_portfolio_from_csv(strategy_id, csv_file, current_date):
-    """
-    Load most recent portfolio state for a strategy from CSV.
-    Returns portfolio dict or None if not found.
-
-    Args:
-        strategy_id: The strategy to load state for
-        csv_file: Path to strategies.csv
-        current_date: Current date string (YYYY-MM-DD) to find previous entry
-
-    Returns:
-        Dict of {currency: balance} or None if no previous state
-    """
-    if not os.path.exists(csv_file):
+    if not prev_date:
         return None
 
     try:
-        # Parse current date
-        from datetime import datetime
-        current_dt = datetime.fromisoformat(current_date)
+        rows = read_csv('process_9_portfolio', date=prev_date, validate=False)
 
-        # Read CSV and find most recent row for this strategy before current date
-        with open(csv_file, 'r') as f:
-            reader = csv.DictReader(f)
-            matching_rows = []
+        # Find row for this strategy
+        for row in rows:
+            if row['strategy_id'] == strategy_id:
+                portfolio = {}
+                for currency in CURRENCIES:
+                    if currency in row:
+                        portfolio[currency] = float(row[currency])
+                    else:
+                        portfolio[currency] = 0.0
+                return portfolio
 
-            for row in reader:
-                if row['strategy_id'] == strategy_id:
-                    row_date = datetime.fromisoformat(row['date'])
-                    if row_date < current_dt:
-                        matching_rows.append(row)
-
-            if not matching_rows:
-                return None
-
-            # Sort by date and get most recent
-            matching_rows.sort(key=lambda x: x['date'], reverse=True)
-            most_recent = matching_rows[0]
-
-            # Extract currency balances
-            portfolio = {}
-            for currency in CURRENCIES:
-                if currency in most_recent:
-                    portfolio[currency] = float(most_recent[currency])
-                else:
-                    portfolio[currency] = 0.0
-
-            return portfolio
-
-    except Exception as e:
-        print(f"  Warning: Could not load previous state from CSV: {e}")
         return None
+
+    except FileNotFoundError:
+        return None
+
 
 def initialize_portfolio(eur_rates):
     """
@@ -163,6 +120,7 @@ def initialize_portfolio(eur_rates):
 
     return portfolio
 
+
 def calculate_portfolio_value(portfolio, eur_rates):
     """Calculate total portfolio value in EUR"""
     total_eur = 0.0
@@ -180,6 +138,7 @@ def calculate_portfolio_value(portfolio, eur_rates):
 
     return round(total_eur, 2)
 
+
 def execute_trade(trade, all_pairs, eur_rates, portfolio, max_trade_size_pct, confidence_threshold):
     """
     Execute a single trade: sell sell_currency, buy buy_currency.
@@ -193,10 +152,10 @@ def execute_trade(trade, all_pairs, eur_rates, portfolio, max_trade_size_pct, co
     """
     buy_curr = trade['buy_currency']
     sell_curr = trade['sell_currency']
-    trade_conf = trade['trade_signal']
+    trade_signal = trade['trade_signal']
 
     # Check if trade meets confidence threshold
-    if trade_conf < confidence_threshold:
+    if trade_signal < confidence_threshold:
         return None
 
     # Check available balance in sell_currency (converted to EUR)
@@ -214,10 +173,9 @@ def execute_trade(trade, all_pairs, eur_rates, portfolio, max_trade_size_pct, co
         sell_balance_eur = sell_balance / sell_rate
 
     # Calculate target trade size as a percentage of the SELL CURRENCY balance
-    # This prevents draining currencies to zero (exponential decay)
-    target_trade_size_eur = sell_balance_eur * max_trade_size_pct * trade_conf
+    target_trade_size_eur = sell_balance_eur * max_trade_size_pct * trade_signal
 
-    # The actual trade size is the target (no need for min() since it's already based on balance)
+    # The actual trade size is the target
     actual_trade_size_eur = target_trade_size_eur
 
     # Convert EUR trade size to sell_currency amount
@@ -265,187 +223,167 @@ def execute_trade(trade, all_pairs, eur_rates, portfolio, max_trade_size_pct, co
         'trade_size_eur': round(actual_trade_size_eur, 2),
         'cost_eur': round(cost_eur, 2),
         'exchange_rate': round(pair_rate, 6),
-        'buy_confidence': trade['buy_confidence'],
-        'sell_confidence': trade['sell_confidence'],
+        'buy_signal': trade['buy_signal'],
+        'sell_signal': trade['sell_signal'],
         'trade_signal': trade['trade_signal']
     }
 
-# Removed combine_aggregated_signals and load_aggregated_signals_from_step7 functions
-# These were only used for display purposes and were not used in actual trading logic
-# Step 9 now relies solely on Step 8's trade recommendations (trade_signal)
 
-def main():
+def main(date_str=None):
     """Execute portfolio strategies"""
-    parser = argparse.ArgumentParser(description='Execute portfolio strategies (Step 9)')
-    parser.add_argument('--date', required=True, help='Date to process (YYYY-MM-DD)')
-    args = parser.parse_args()
+
+    if date_str is None:
+        date_str = datetime.now().strftime('%Y-%m-%d')
 
     logger = PipelineLogger('step9', 'Execute Portfolio Strategies')
     logger.start()
 
-    date_str = args.date
+    try:
+        print("="*60)
+        print("Portfolio Executor - CSV Output")
+        print("="*60)
+        print(f"\nProcessing date: {date_str}")
 
-    print(f"{'='*60}")
-    print("Execute Portfolio Strategies")
-    print(f"{'='*60}")
-    print(f"Using data date: {date_str}\n")
+        # Load exchange rates from Process 1
+        print(f"\n1. Loading exchange rates from Process 1...")
+        eur_rates, all_pairs = load_exchange_rates(date_str)
+        if not eur_rates or not all_pairs:
+            print(f"   ✗ No exchange rates found for {date_str}")
+            print(f"   Step 1 (Fetch Exchange Rates) must be run first")
+            logger.error(f"Missing upstream data: process_1_exchange_rates for {date_str}")
+            logger.fail()
+            return
 
-    # Validate upstream data (Step 8)
-    step8_csv = '/workspace/group/fx-portfolio/data/exports/step8_trades.csv'
-    if not os.path.exists(step8_csv):
-        logger.error("Step 8 output not found. Run Step 8 (Calculate Trades) first.")
+        print(f"   ✓ Loaded {len(eur_rates)} EUR rates and {sum(len(v) for v in all_pairs.values())} total pairs")
+
+        # Load trades from Process 8
+        print(f"\n2. Loading trades from Process 8...")
+        try:
+            trades_rows = read_csv('process_8_trades', date=date_str, validate=False)
+            print(f"   ✓ Loaded {len(trades_rows)} proposed trades")
+            logger.add_count('trades_loaded', len(trades_rows))
+        except FileNotFoundError:
+            print(f"   ✗ No trades found for {date_str}")
+            print(f"   Step 8 (Calculate Trades) must be run first")
+            logger.error(f"Missing upstream data: process_8_trades for {date_str}")
+            logger.fail()
+            return
+
+        # Load strategies
+        strategies = get_strategies()
+        print(f"\n3. Executing {len(strategies)} strategies...")
+        logger.add_count('strategy_count', len(strategies))
+
+        # Get previous date for loading portfolio state
+        prev_date = get_previous_date(date_str)
+
+        results = []
+        total_trades_executed = 0
+
+        for i, (strategy_id, strategy_config) in enumerate(strategies.items(), 1):
+            params = strategy_config.get('params', {})
+            trader_id = params.get('trader_id', 'combinator-standard')
+            conf_threshold = params.get('confidence_threshold', 0.5)
+            max_trade_size_pct = params.get('trade_size_pct', 0.1)
+            target_trades = params.get('target_trades', None)
+
+            print(f"\n   [{i}/{len(strategies)}] Strategy: {strategy_id}")
+            print(f"      Trader: {trader_id}")
+            print(f"      Confidence threshold: {conf_threshold}")
+            print(f"      Target trades: {target_trades if target_trades else 'unlimited'}")
+            print(f"      Max trade size: {max_trade_size_pct * 100}% of balance")
+
+            # Load portfolio state from previous date or initialize
+            portfolio = load_previous_portfolio(strategy_id, prev_date)
+
+            if portfolio is None:
+                print(f"      Initializing new portfolio with {INITIAL_BALANCE_PER_CURRENCY} EUR per currency")
+                portfolio = initialize_portfolio(eur_rates)
+            else:
+                prev_value = calculate_portfolio_value(portfolio, eur_rates)
+                print(f"      Loaded portfolio from {prev_date} (value: €{prev_value:.2f})")
+
+            # Filter trades for this trader
+            trader_trades = [
+                {
+                    'buy_currency': row['buy_currency'],
+                    'sell_currency': row['sell_currency'],
+                    'buy_signal': float(row['buy_signal']),
+                    'sell_signal': float(row['sell_signal']),
+                    'trade_signal': float(row['trade_signal'])
+                }
+                for row in trades_rows if row['trader_id'] == trader_id
+            ]
+
+            # Sort by trade_signal descending
+            trader_trades.sort(key=lambda x: x['trade_signal'], reverse=True)
+
+            # Filter by confidence threshold
+            qualifying_trades = [t for t in trader_trades if t['trade_signal'] >= conf_threshold]
+
+            # Limit to target number
+            if target_trades is not None:
+                trades_to_execute = qualifying_trades[:target_trades]
+            else:
+                trades_to_execute = qualifying_trades
+
+            # Execute trades
+            executed_trades = []
+            for trade in trades_to_execute:
+                execution = execute_trade(trade, all_pairs, eur_rates, portfolio, max_trade_size_pct, conf_threshold)
+                if execution:
+                    executed_trades.append(execution)
+
+            # Calculate portfolio value
+            portfolio_value = calculate_portfolio_value(portfolio, eur_rates)
+
+            print(f"      Portfolio value: €{portfolio_value:.2f}")
+            print(f"      Executed trades: {len(executed_trades)}")
+
+            # Build result record
+            result = {
+                'date': date_str,
+                'strategy_id': strategy_id,
+                'trader_id': trader_id,
+                'trades_executed': len(executed_trades),
+                'portfolio_value': portfolio_value
+            }
+
+            # Add currency balances
+            for curr in CURRENCIES:
+                result[curr] = round(portfolio.get(curr, 0.0), 4)
+
+            results.append(result)
+            total_trades_executed += len(executed_trades)
+
+        logger.add_count('total_trades_executed', total_trades_executed)
+
+        # Write to CSV
+        print(f"\n4. Saving to CSV...")
+        csv_path = write_csv(results, 'process_9_portfolio', date=date_str)
+        print(f"   ✓ Saved {len(results)} portfolio states to {csv_path}")
+        logger.add_info('output_file', str(csv_path))
+
+        # Summary
+        print(f"\n{'='*60}")
+        print(f"✓ Portfolio Execution Complete")
+        print(f"{'='*60}")
+        print(f"  Strategies executed: {len(results)}")
+        print(f"  Total trades: {total_trades_executed}")
+
+        logger.success()
+
+    except Exception as e:
+        logger.error(f"Failed to execute strategies: {e}")
         logger.fail()
-        sys.exit(1)
+        raise
+    finally:
+        logger.finish()
 
-    # Load exchange rates
-    eur_rates, all_pairs = load_latest_prices(date_str)
-    if not eur_rates or not all_pairs:
-        logger.error(f"No price data available for {date_str}")
-        logger.fail()
-        sys.exit(1)
-
-    # Load strategies
-    strategies = get_strategies()
-
-    results = []
-    total_trades_executed = 0
-
-    for strategy_id, strategy_config in strategies.items():
-        params = strategy_config.get('params', {})
-        trader_id = params.get('trader_id', 'combinator-standard')
-        conf_threshold = params.get('confidence_threshold', 0.5)
-        max_trade_size_pct = params.get('trade_size_pct', 0.1)
-        target_trades = params.get('target_trades', None)  # None means unlimited
-
-        print(f"[{strategy_id}]")
-        print(f"  trader_id={trader_id}")
-        print(f"  conf_threshold={conf_threshold} (trades must be above this)")
-        if target_trades:
-            print(f"  target_trades={target_trades} (execute top {target_trades} trades above threshold)")
-        else:
-            print(f"  target_trades=unlimited (execute all trades above threshold)")
-        print(f"  max_trade_size_pct={max_trade_size_pct} (% of portfolio, scaled by signal strength)")
-
-        # Load portfolio state from CSV or initialize new one
-        csv_file = '/workspace/group/fx-portfolio/data/portfolios/strategies.csv'
-        portfolio = load_previous_portfolio_from_csv(strategy_id, csv_file, date_str)
-
-        if portfolio is None:
-            # No prior state - initialize with 100 EUR equivalent in each currency
-            # Total starting value = 1100 EUR (100 * 11 currencies)
-            print(f"  Initializing new portfolio with {INITIAL_BALANCE_PER_CURRENCY} EUR in each currency (total ~1100 EUR)")
-            portfolio = initialize_portfolio(eur_rates)
-        else:
-            # Calculate previous portfolio value for display
-            prev_value = calculate_portfolio_value(portfolio, eur_rates)
-            print(f"  Loading portfolio from previous date (value: €{prev_value:.2f})")
-
-        # Load proposed trades from Step 8 (filtered by trader_id)
-        proposed_trades = load_trades_from_step8(date_str, trader_id)
-
-        # Filter trades by confidence threshold
-        qualifying_trades = [t for t in proposed_trades if t['trade_signal'] >= conf_threshold]
-
-        # Limit to target number of trades if specified
-        if target_trades is not None:
-            trades_to_execute = qualifying_trades[:target_trades]
-        else:
-            trades_to_execute = qualifying_trades
-
-        # Execute selected trades
-        executed_trades = []
-        for trade in trades_to_execute:
-            execution = execute_trade(trade, all_pairs, eur_rates, portfolio, max_trade_size_pct, conf_threshold)
-            if execution:
-                executed_trades.append(execution)
-
-        # Calculate portfolio value after trades
-        portfolio_value = calculate_portfolio_value(portfolio, eur_rates)
-
-        print(f"  Portfolio value: €{portfolio_value:.2f}")
-        print(f"  Executed trades: {len(executed_trades)}")
-
-        # Load trader config to get generator/estimator IDs for signal display
-        trader_config = get_trader(trader_id)
-        if trader_config:
-            trader_estimator_ids = trader_config.get('estimator_ids', [])
-            trader_generator_ids = trader_config.get('generator_ids', [])
-            trader_generator_weights = trader_config.get('generator_weights', {})
-        else:
-            trader_estimator_ids = []
-            trader_generator_ids = []
-            trader_generator_weights = {}
-
-        # Build result record
-        result = {
-            'date': date_str,
-            'strategy_id': strategy_id,
-            'strategy_name': strategy_config.get('type', 'unknown'),
-            'strategy_params': f"conf={conf_threshold}_T={target_trades if target_trades else 'all'}_size={max_trade_size_pct}",
-            'no_trades_executed': len(executed_trades),
-            'current_value': portfolio_value
-        }
-
-        # Add portfolio balance columns
-        for curr in CURRENCIES:
-            result[curr] = portfolio.get(curr, 0.0)
-
-        results.append(result)
-        total_trades_executed += len(executed_trades)
-
-    # Save results to CSV
-    output_dir = '/workspace/group/fx-portfolio/data/portfolios'
-    os.makedirs(output_dir, exist_ok=True)
-
-    csv_file = f'{output_dir}/strategies.csv'
-
-    # Define fieldnames
-    fieldnames = ['date', 'strategy_id', 'strategy_name', 'strategy_params', 'no_trades_executed']
-    # Add balance columns
-    for curr in CURRENCIES:
-        fieldnames.append(curr)
-    fieldnames.append('current_value')
-
-    # Read existing data and merge
-    file_exists = os.path.exists(csv_file)
-
-    if file_exists:
-        with open(csv_file, 'r') as f:
-            reader = csv.DictReader(f)
-            existing_rows = list(reader)
-
-        # Filter out rows for current date
-        other_date_rows = [row for row in existing_rows if row.get('date') != date_str]
-
-        # Write all data
-        with open(csv_file, 'w', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(other_date_rows)
-            writer.writerows(results)
-    else:
-        with open(csv_file, 'w', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(results)
-
-    logger.add_count('strategy_combinations', len(strategies))
-    logger.add_count('strategies_executed', len(results))
-    logger.add_count('total_trades', total_trades_executed)
-    logger.add_info('output_csv', csv_file)
-
-    print(f"\n{'='*60}")
-    print(f"✓ Completed {len(results)} strategy runs")
-    print(f"CSV: {csv_file}")
-    print(f"{'='*60}")
-
-    logger.success()
 
 if __name__ == '__main__':
-    try:
-        main()
-    except Exception as e:
-        print(f"ERROR: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description='Execute portfolio strategies')
+    parser.add_argument('--date', type=str, help='Date to process (YYYY-MM-DD), defaults to today')
+    args = parser.parse_args()
+
+    main(date_str=args.date)

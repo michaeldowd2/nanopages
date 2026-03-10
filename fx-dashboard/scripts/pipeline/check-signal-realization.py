@@ -1,47 +1,60 @@
 #!/usr/bin/env python3
 """
-Signal Realization Checker - Refactored
+Step 6: Signal Realization Checker
 
 Joins horizon analysis and sentiment signals for all articles still within their validity window.
 For a given processing date, includes articles from up to 30 days prior that have valid_to_date >= processing_date.
 
-Process:
-1. Load all horizon estimator outputs from past 30 days
-2. Filter to records with valid_to_date >= current processing date (exclude expired articles)
-3. Load sentiment generator outputs from past 30 days
-4. Filter to exclude neutral signals (only bullish/bearish signals are included)
-5. Join on article URL and date
-6. Track article_download_date (when article was first seen)
-7. Get starting index value (currency index on article_download_date)
-8. Get current index value (currency index on processing_date)
-9. Calculate % change from start to current
-10. Compare predicted sentiment to actual movement to determine realization
-11. Save all results with the current processing_date
+Reads from CSV outputs of Processes 2, 4, and 5. Writes to Process 6 CSV output.
+
+Input:
+- data/indices/{date}.csv (from Process 2)
+- data/article-analysis/{date}.csv (from Process 4, past 30 days)
+- data/signals/{date}.csv (from Process 5, past 30 days)
+
+Output: data/signal-realization/{date}.csv
 """
 
 import json
 import os
-import glob
 import sys
+import argparse
+import glob
 from datetime import datetime, timedelta
 
 sys.path.append('/workspace/group/fx-portfolio/scripts')
 from utilities.pipeline_logger import PipelineLogger
+from utilities.csv_helper import read_csv, write_csv, csv_exists
+from utilities.config_loader import get_currencies
 
-CURRENCIES = ["EUR", "USD", "GBP", "JPY", "CHF", "AUD", "CAD", "NOK", "SEK", "CNY", "MXN"]
+CURRENCIES = get_currencies()
 
 
-def load_currency_index(currency):
-    """Load currency index data"""
-    index_file = f'/workspace/group/fx-portfolio/data/indices/{currency}_index.json'
+def load_currency_indices_multi_date(start_date, end_date):
+    """
+    Load currency indices for multiple dates
 
-    if not os.path.exists(index_file):
-        return None
+    Returns: dict keyed by (currency, date) -> index_value
+    """
+    indices = {}
+    current_date = datetime.fromisoformat(start_date)
+    end = datetime.fromisoformat(end_date)
 
-    with open(index_file, 'r') as f:
-        data = json.load(f)
-        # Convert to dict keyed by date for easy lookup
-        return {item['date']: item for item in data['data']}
+    while current_date <= end:
+        date_str = current_date.strftime('%Y-%m-%d')
+
+        try:
+            rows = read_csv('process_2_indices', date=date_str, validate=False)
+            for row in rows:
+                currency = row['currency']
+                index_value = float(row['index'])
+                indices[(currency, date_str)] = index_value
+        except FileNotFoundError:
+            pass  # Skip missing dates
+
+        current_date += timedelta(days=1)
+
+    return indices
 
 
 def load_horizon_analyses_in_window(process_date_str):
@@ -51,46 +64,24 @@ def load_horizon_analyses_in_window(process_date_str):
 
     Returns: dict keyed by (url, estimator_id, article_download_date) -> horizon_data
     """
-    analysis_dir = '/workspace/group/fx-portfolio/data/article-analysis'
     process_date = datetime.fromisoformat(process_date_str)
     lookback_date = process_date - timedelta(days=30)
 
     horizon_analyses = {}
 
-    if not os.path.exists(analysis_dir):
-        return horizon_analyses
+    print(f"\n1. Loading horizon analyses from {lookback_date.strftime('%Y-%m-%d')} to {process_date_str}...")
 
-    print(f"\nLoading horizon analyses from {lookback_date.strftime('%Y-%m-%d')} to {process_date_str}...")
+    current_date = lookback_date
+    total_loaded = 0
 
-    for filename in sorted(os.listdir(analysis_dir)):
-        if not filename.endswith('.json'):
-            continue
-
-        # Extract date from filename
-        try:
-            file_date_str = filename.replace('.json', '')
-            file_date = datetime.fromisoformat(file_date_str)
-        except:
-            continue  # Skip non-date files
-
-        # Skip files outside lookback window
-        if file_date < lookback_date or file_date > process_date:
-            continue
-
-        filepath = os.path.join(analysis_dir, filename)
+    while current_date <= process_date:
+        date_str = current_date.strftime('%Y-%m-%d')
 
         try:
-            with open(filepath, 'r') as f:
-                data = json.load(f)
+            rows = read_csv('process_4_horizons', date=date_str, validate=False)
 
-            if 'analyses' not in data:
-                continue
-
-            article_download_date = data.get('date', file_date_str)
-            estimator_id = data.get('estimator_id', '')
-
-            for analysis in data.get('analyses', []):
-                valid_to_date_str = analysis.get('valid_to_date', '')
+            for row in rows:
+                valid_to_date_str = row.get('valid_to_date', '')
 
                 if not valid_to_date_str:
                     continue
@@ -100,31 +91,36 @@ def load_horizon_analyses_in_window(process_date_str):
                 if valid_to_date < process_date:
                     continue  # Expired
 
-                url = analysis.get('url', '')
-                key = (url, estimator_id, article_download_date)
+                url = row.get('url', '')
+                estimator_id = row.get('estimator_id', '')
+                key = (url, estimator_id, date_str)
 
-                # Store with article download date
                 horizon_analyses[key] = {
                     'url': url,
                     'estimator_id': estimator_id,
-                    'currency': analysis.get('currency', ''),
-                    'article_download_date': article_download_date,
-                    'time_horizon': analysis.get('time_horizon', ''),
-                    'horizon_days': analysis.get('horizon_days', 0),
+                    'currency': row.get('currency', ''),
+                    'title': row.get('title', ''),
+                    'source': row.get('source', ''),
+                    'article_download_date': date_str,
+                    'time_horizon': row.get('time_horizon', ''),
+                    'horizon_days': int(row.get('horizon_days', 0)),
                     'valid_to_date': valid_to_date_str,
-                    'horizon_confidence': analysis.get('confidence', 0)
+                    'horizon_confidence': float(row.get('confidence', 0))
                 }
+                total_loaded += 1
 
-        except Exception as e:
-            print(f"  Error reading {filepath}: {e}")
+        except FileNotFoundError:
+            pass  # Skip missing dates
 
-    print(f"  ✓ Loaded {len(horizon_analyses)} valid horizon analyses")
+        current_date += timedelta(days=1)
+
+    print(f"   ✓ Loaded {total_loaded} valid horizon analyses from {len(horizon_analyses)} unique articles")
     return horizon_analyses
 
 
 def load_signals_from_all_dates(process_date_str):
     """
-    Load all signals from the past 30 days
+    Load all signals from the past 30 days (excluding neutral signals)
 
     Returns: dict keyed by (url, generator_id, signal_download_date) -> signal_data
     """
@@ -133,90 +129,68 @@ def load_signals_from_all_dates(process_date_str):
 
     signals = {}
 
-    print(f"\nLoading signals from {lookback_date.strftime('%Y-%m-%d')} to {process_date_str}...")
+    print(f"\n2. Loading signals from {lookback_date.strftime('%Y-%m-%d')} to {process_date_str}...")
 
-    for currency in CURRENCIES:
-        signal_dir = f'/workspace/group/fx-portfolio/data/signals/{currency}'
+    current_date = lookback_date
+    total_loaded = 0
 
-        if not os.path.exists(signal_dir):
-            continue
+    while current_date <= process_date:
+        date_str = current_date.strftime('%Y-%m-%d')
 
-        for filename in os.listdir(signal_dir):
-            if not filename.endswith('.json'):
-                continue
+        try:
+            rows = read_csv('process_5_signals', date=date_str, validate=False)
 
-            # Extract date from filename
-            try:
-                file_date_str = filename.replace('.json', '')
-                file_date = datetime.fromisoformat(file_date_str)
-            except:
-                continue
+            for row in rows:
+                url = row.get('url', '')
+                generator_id = row.get('generator_id', '')
+                predicted_direction = row.get('predicted_direction', '')
 
-            # Skip files outside lookback window
-            if file_date < lookback_date or file_date > process_date:
-                continue
+                if not url or not generator_id:
+                    continue
 
-            filepath = os.path.join(signal_dir, filename)
+                # Skip neutral signals - we only care about bullish/bearish
+                if predicted_direction == 'neutral':
+                    continue
 
-            try:
-                with open(filepath, 'r') as f:
-                    data = json.load(f)
+                key = (url, generator_id, date_str)
 
-                signal_download_date = data.get('date', file_date_str)
+                signals[key] = {
+                    'url': url,
+                    'generator_id': generator_id,
+                    'currency': row.get('currency', ''),
+                    'article_download_date': date_str,
+                    'title': row.get('title', ''),
+                    'source': row.get('source', ''),
+                    'predicted_direction': predicted_direction,
+                    'predicted_magnitude': row.get('predicted_magnitude'),
+                    'confidence': float(row.get('confidence', 0)),
+                    'reasoning': row.get('reasoning', '')
+                }
+                total_loaded += 1
 
-                for signal in data.get('signals', []):
-                    url = signal.get('article_url', '')
-                    generator_id = signal.get('generator_id', '')
-                    predicted_direction = signal.get('predicted_direction', '')
+        except FileNotFoundError:
+            pass  # Skip missing dates
 
-                    if not url or not generator_id:
-                        continue
+        current_date += timedelta(days=1)
 
-                    # Skip neutral signals - we only care about bullish/bearish
-                    if predicted_direction == 'neutral':
-                        continue
-
-                    key = (url, generator_id, signal_download_date)
-
-                    # Store with signal download date
-                    signals[key] = {
-                        'url': url,
-                        'generator_id': generator_id,
-                        'currency': data.get('currency', ''),
-                        'article_download_date': signal_download_date,
-                        'predicted_direction': signal.get('predicted_direction', ''),
-                        'predicted_magnitude': signal.get('predicted_magnitude', ''),
-                        'confidence': signal.get('confidence', 0),
-                        'article_title': signal.get('article_title', ''),
-                        'reasoning': signal.get('reasoning', '')
-                    }
-
-            except Exception as e:
-                print(f"  Error reading {filepath}: {e}")
-
-    print(f"  ✓ Loaded {len(signals)} signals")
+    print(f"   ✓ Loaded {total_loaded} signals (excluding neutral)")
     return signals
 
 
-def calculate_index_movement(currency, start_date_str, end_date_str, index_data):
+def calculate_index_movement(currency, start_date_str, end_date_str, indices):
     """
     Calculate currency index movement from start_date to end_date
 
-    Returns: {
-        'start_index': float,
-        'end_index': float,
-        'pct_change': float,
-        'direction': str  # bullish/bearish/neutral
-    }
+    Returns: dict with start_index, end_index, pct_change, direction
     """
-    if not index_data:
+    start_key = (currency, start_date_str)
+    end_key = (currency, end_date_str)
+
+    if start_key not in indices or end_key not in indices:
         return None
 
-    if start_date_str not in index_data or end_date_str not in index_data:
-        return None
-
-    start_index = index_data[start_date_str]['index']
-    end_index = index_data[end_date_str]['index']
+    start_index = indices[start_key]
+    end_index = indices[end_key]
 
     # Calculate percentage change
     pct_change = ((end_index - start_index) / start_index) * 100
@@ -248,16 +222,13 @@ def check_realization(predicted_direction, actual_direction, predicted_magnitude
 
     # Check magnitude if specified
     magnitude_sufficient = True
-    if predicted_magnitude and predicted_magnitude != 'unclear':
+    if predicted_magnitude and predicted_magnitude not in ['unclear', None]:
         try:
-            # Extract number from string like "0.5%" or "small"
-            if '%' in predicted_magnitude:
-                predicted_mag = float(predicted_magnitude.replace('%', '').replace('+', '').replace('-', ''))
-                actual_mag = abs(actual_pct_change)
-                # Actual should be at least 50% of predicted
-                magnitude_sufficient = actual_mag >= (predicted_mag * 0.5)
+            # For magnitude keywords (small/medium/large), just check direction
+            # We could add thresholds here if needed
+            pass
         except:
-            pass  # If parsing fails, ignore magnitude check
+            pass
 
     # Determine status
     if direction_matches and magnitude_sufficient:
@@ -270,60 +241,53 @@ def check_realization(predicted_direction, actual_direction, predicted_magnitude
         return False, 'contradicted'
 
 
-def main():
-    """Main function - refactored signal realization"""
-    import argparse
+def main(date_str=None):
+    """Main function - signal realization checker"""
 
-    parser = argparse.ArgumentParser(description='Check signal realization')
-    parser.add_argument('--date', help='Date to process (YYYY-MM-DD). Required.')
-    args = parser.parse_args()
-
-    if not args.date:
-        print("❌ Error: --date parameter is required")
-        print("   Usage: python3 check-signal-realization.py --date 2026-02-24")
-        sys.exit(1)
-
-    process_date_str = args.date
+    if date_str is None:
+        date_str = datetime.now().strftime('%Y-%m-%d')
 
     logger = PipelineLogger('step6', 'Check Signal Realization')
     logger.start()
 
     try:
         print("="*60)
-        print("Signal Realization Checker - Refactored")
+        print("Signal Realization Checker - CSV Output")
         print("="*60)
-        print(f"Processing date: {process_date_str}")
+        print(f"\nProcessing date: {date_str}")
 
-        # Load currency indices
+        # Calculate date range for loading indices (30 days back)
+        process_date = datetime.fromisoformat(date_str)
+        lookback_date = process_date - timedelta(days=30)
+        lookback_str = lookback_date.strftime('%Y-%m-%d')
+
+        # Load currency indices for the full window
         print(f"\n{'='*60}")
         print("Loading Currency Indices")
         print(f"{'='*60}")
+        print(f"   Loading indices from {lookback_str} to {date_str}...")
 
-        indices = {}
-        for currency in CURRENCIES:
-            index_data = load_currency_index(currency)
-            if index_data:
-                indices[currency] = index_data
-                print(f"  ✓ {currency}: {len(index_data)} days")
-            else:
-                print(f"  ✗ {currency}: No index data")
+        indices = load_currency_indices_multi_date(lookback_str, date_str)
+        print(f"   ✓ Loaded {len(indices)} index data points")
+        logger.add_count('indices_loaded', len(indices))
 
         # Load horizon analyses (valid for this date)
-        horizon_analyses = load_horizon_analyses_in_window(process_date_str)
+        horizon_analyses = load_horizon_analyses_in_window(date_str)
+        logger.add_count('horizons_loaded', len(horizon_analyses))
 
-        # Load signals (from past 30 days)
-        signals = load_signals_from_all_dates(process_date_str)
+        # Load signals (from past 30 days, excluding neutral)
+        signals = load_signals_from_all_dates(date_str)
+        logger.add_count('signals_loaded', len(signals))
 
-        # Join horizon and signals on (URL, estimator_id, generator_id)
+        # Join horizon and signals
         print(f"\n{'='*60}")
         print("Joining Horizons and Signals")
         print(f"{'='*60}")
 
-        joined_records = []
+        csv_rows = []
 
         for (url, generator_id, signal_date), signal in signals.items():
-            # Try to find matching horizon analysis
-            # We need to match on URL and date (the date both were generated)
+            # Try to find matching horizon analysis (same URL and date)
             matching_horizons = [
                 (key, horizon) for key, horizon in horizon_analyses.items()
                 if key[0] == url and key[2] == signal_date  # Match on URL and date
@@ -332,26 +296,22 @@ def main():
             if not matching_horizons:
                 continue  # No horizon data for this signal
 
-            # Use the first matching horizon (there should only be one per URL/estimator/date)
+            # Use the first matching horizon
             (horizon_url, estimator_id, horizon_date), horizon = matching_horizons[0]
 
             # Verify currency matches
             if signal['currency'] != horizon['currency']:
                 continue
 
-            # Use the article_download_date from the signal (they should match)
             article_download_date = signal['article_download_date']
             currency = signal['currency']
 
             # Get index movement from download_date to process_date
-            if currency not in indices:
-                continue
-
             movement = calculate_index_movement(
                 currency,
                 article_download_date,
-                process_date_str,
-                indices[currency]
+                date_str,
+                indices
             )
 
             if not movement:
@@ -373,61 +333,48 @@ def main():
             }
             magnitude = signal['predicted_magnitude']
             confidence = signal['confidence']
-            magnitude_weight = magnitude_multipliers.get(magnitude, 0.7)
+            magnitude_weight = magnitude_multipliers.get(magnitude, 0.7) if magnitude else 0.7
 
             # Signal = confidence * magnitude_weight
             signal_value = confidence * magnitude_weight
 
-            # Build joined record
-            record = {
-                'process_date': process_date_str,
-                'article_download_date': article_download_date,
+            # Build CSV row
+            csv_rows.append({
+                'date': date_str,
+                'source': signal['source'],
                 'url': url,
                 'currency': currency,
-                'title': signal['article_title'],
+                'title': signal['title'],
+                'article_download_date': article_download_date,
                 'generator_id': generator_id,
                 'estimator_id': estimator_id,
                 'time_horizon': horizon['time_horizon'],
                 'horizon_days': horizon['horizon_days'],
                 'valid_to_date': horizon['valid_to_date'],
                 'predicted_direction': signal['predicted_direction'],
-                'predicted_magnitude': signal['predicted_magnitude'],
+                'predicted_magnitude': signal['predicted_magnitude'] if signal['predicted_magnitude'] else None,
                 'confidence': signal['confidence'],
-                'signal': signal_value,
-                'horizon_confidence': horizon['horizon_confidence'],
+                'signal': round(signal_value, 4),
                 'start_index': movement['start_index'],
                 'end_index': movement['end_index'],
                 'actual_pct_change': movement['pct_change'],
                 'actual_direction': movement['direction'],
                 'realized': realized,
                 'realization_status': status
-            }
+            })
 
-            joined_records.append(record)
+        print(f"   ✓ Joined {len(csv_rows)} records")
+        logger.add_count('joined_records', len(csv_rows))
 
-        print(f"  ✓ Joined {len(joined_records)} records")
-
-        # Save to output file for this process date
-        print(f"\n{'='*60}")
-        print("Saving Results")
-        print(f"{'='*60}")
-
-        output_dir = '/workspace/group/fx-portfolio/data/signal-realization'
-        os.makedirs(output_dir, exist_ok=True)
-
-        output_file = f'{output_dir}/{process_date_str}.json'
-
-        output_data = {
-            'process_date': process_date_str,
-            'generated_at': datetime.now().isoformat(),
-            'total_records': len(joined_records),
-            'records': joined_records
-        }
-
-        with open(output_file, 'w') as f:
-            json.dump(output_data, f, indent=2)
-
-        print(f"  ✓ Saved {len(joined_records)} records to {output_file}")
+        # Write to CSV
+        print(f"\n3. Saving to CSV...")
+        if csv_rows:
+            csv_path = write_csv(csv_rows, 'process_6_realization', date=date_str)
+            print(f"   ✓ Saved {len(csv_rows)} records to {csv_path}")
+            logger.add_info('output_file', str(csv_path))
+        else:
+            print(f"   ⚠ No records to save")
+            logger.warning("No realization records generated")
 
         # Print summary statistics
         print(f"\n{'='*60}")
@@ -435,17 +382,17 @@ def main():
         print(f"{'='*60}")
 
         status_counts = {}
-        for record in joined_records:
-            status = record['realization_status']
+        for row in csv_rows:
+            status = row['realization_status']
             status_counts[status] = status_counts.get(status, 0) + 1
 
-        print(f"Total records: {len(joined_records)}")
-        print(f"\nRealization Status:")
-        for status, count in sorted(status_counts.items()):
-            pct = (count / len(joined_records) * 100) if joined_records else 0
-            print(f"  {status:20s}: {count:4d} ({pct:5.1f}%)")
+        print(f"Total records: {len(csv_rows)}")
+        if csv_rows:
+            print(f"\nRealization Status:")
+            for status, count in sorted(status_counts.items()):
+                pct = (count / len(csv_rows) * 100)
+                print(f"  {status:20s}: {count:4d} ({pct:5.1f}%)")
 
-        logger.add_count('total_records', len(joined_records))
         logger.add_count('realized', status_counts.get('realized', 0))
         logger.add_count('unrealized', status_counts.get('unrealized', 0))
         logger.add_count('contradicted', status_counts.get('contradicted', 0))
@@ -461,4 +408,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Check signal realization')
+    parser.add_argument('--date', type=str, help='Date to process (YYYY-MM-DD), defaults to today')
+    args = parser.parse_args()
+
+    main(date_str=args.date)

@@ -167,7 +167,9 @@ def execute_process(config, process_id, date=None):
     supports_date = step.get('supports_date_filter', False)
 
     # Update legacy script paths to new folder structure
-    script_path = script_path.replace('scripts/', 'scripts/pipeline/')
+    # Only replace if not already in pipeline/ subfolder
+    if 'scripts/pipeline/' not in script_path and script_path.startswith('scripts/'):
+        script_path = script_path.replace('scripts/', 'scripts/pipeline/')
     if 'calculate-trades-step8.py' in script_path:
         script_path = script_path.replace('calculate-trades-step8.py', 'calculate-trades.py')
     if 'execute-strategies-step9.py' in script_path:

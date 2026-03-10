@@ -1,306 +1,225 @@
 #!/usr/bin/env python3
 """
-Currency Index Calculator - Enhanced Geometric Mean Method
+Currency Index Calculator - Percent Change Method
 
-Generates synthetic currency strength indices using geometric mean of all currency pairs.
-This properly isolates each currency's movement independent of trading pairs.
+Generates synthetic currency strength indices using percent changes from base date.
+This properly isolates each currency's movement and gives equal weight to all pairs
+regardless of magnitude.
 
-Method: For each currency, calculate geometric mean of all pairs where that currency
-is in the denominator. This cancels out individual currency effects, leaving only
-the target currency's isolated movement.
+Method: For each currency, calculate percent changes of all pairs (vs base date),
+average them, and apply to previous index value.
 
-Example for USD:
-- Normalize all pairs so USD is denominator: EUR/USD, GBP/USD, JPY/USD, etc.
-- Geometric mean = (EUR/USD × GBP/USD × JPY/USD × ...)^(1/n)
-- Result: Isolated USD movement (EUR, GBP, JPY effects cancel out)
+Example for USD on 2026-03-08:
+1. Load base rates (2026-02-24): EUR/USD=1.08, JPY/USD=0.0067, GBP/USD=0.85
+2. Load today's rates: EUR/USD=1.085, JPY/USD=0.0066, GBP/USD=0.853
+3. Calculate percent changes:
+   - EUR/USD: (1.085 / 1.08 - 1) × 100 = +0.46%
+   - JPY/USD: (0.0066 / 0.0067 - 1) × 100 = -1.49%
+   - GBP/USD: (0.853 / 0.85 - 1) × 100 = +0.35%
+4. Average: (+0.46 - 1.49 + 0.35) / 3 = -0.23%
+5. Apply to previous index: 100 × (1 - 0.0023) = 99.77
+
+Output: CSV with columns: date, currency, index
 """
 
-import json
-import os
-from datetime import datetime, timedelta
-import glob
 import sys
+import argparse
+from datetime import datetime
 
 sys.path.append('/workspace/group/fx-portfolio/scripts')
+from utilities.config_loader import get_currencies
 from utilities.pipeline_logger import PipelineLogger
+from utilities.csv_helper import read_csv, write_csv, csv_exists, get_previous_date
 
-CURRENCIES = ["EUR", "USD", "GBP", "JPY", "CHF", "AUD", "CAD", "NOK", "SEK", "CNY", "MXN"]
+CURRENCIES = get_currencies()
+BASE_DATE = "2026-02-24"  # First date in our system
 
-def load_historical_prices(days=30):
-    """Load historical FX prices with all pairs"""
-    prices_by_date = {}
 
-    # Find all price files
-    price_files = glob.glob('/workspace/group/fx-portfolio/data/prices/fx-rates-*.json')
-
-    for filepath in sorted(price_files)[-days:]:  # Last N days
-        try:
-            with open(filepath, 'r') as f:
-                data = json.load(f)
-                date_str = filepath.split('fx-rates-')[1].replace('.json', '')
-                prices_by_date[date_str] = data
-        except Exception as e:
-            print(f"Error loading {filepath}: {e}")
-
-    return prices_by_date
-
-def calculate_geometric_mean(values):
-    """Calculate geometric mean of a list of values"""
-    if not values or len(values) == 0:
-        return None
-
-    # Geometric mean = (v1 × v2 × ... × vn)^(1/n)
-    product = 1.0
-    for v in values:
-        product *= v
-
-    return product ** (1.0 / len(values))
-
-def calculate_currency_index_geometric(currency, all_pairs, base_all_pairs=None):
+def get_rate_for_pair(base_currency, quote_currency, rates_rows):
     """
-    Calculate geometric mean index for a currency
+    Get exchange rate for a specific currency pair from rates data.
+
+    Parameters:
+    - base_currency: Base currency (e.g., 'EUR')
+    - quote_currency: Quote currency (e.g., 'USD')
+    - rates_rows: List of dicts with keys: date, base_currency, quote_currency, rate
+
+    Returns:
+    - Rate as float, or None if not found
+    """
+    # First try to find exact match
+    for row in rates_rows:
+        if row['base_currency'] == base_currency and row['quote_currency'] == quote_currency:
+            return float(row['rate'])
+
+    # If not found, try inverse
+    for row in rates_rows:
+        if row['base_currency'] == quote_currency and row['quote_currency'] == base_currency:
+            return 1.0 / float(row['rate'])
+
+    return None
+
+
+def calculate_currency_index(currency, today_rates, base_rates, prev_index):
+    """
+    Calculate currency index using percent-change method.
 
     Parameters:
     - currency: Target currency (e.g., 'USD')
-    - all_pairs: Dict of all currency pairs for current date
-    - base_all_pairs: Dict of all currency pairs for base date (for normalization)
+    - today_rates: Today's exchange rates (list of dicts)
+    - base_rates: Base date exchange rates (list of dicts)
+    - prev_index: Previous day's index value (or 100.0 for base date)
 
     Returns:
-    - Raw index if base_all_pairs is None
-    - Normalized index (base=100) if base_all_pairs provided
+    - Index value (float)
     """
-    if not all_pairs:
-        return None
+    percent_changes = []
 
-    rates = []
-    pairs_used = []
-
-    # Get all pairs with target currency
+    # For each other currency, calculate percent change in OTHER/CURRENCY pair
     for other_currency in CURRENCIES:
         if other_currency == currency:
             continue
 
-        # We want currency in denominator (OTHER/CURRENCY format)
-        # Check if we have CURRENCY → OTHER (need to invert)
-        if currency in all_pairs and other_currency in all_pairs[currency]:
-            # We have CURRENCY/OTHER, invert to get OTHER/CURRENCY
-            rate = all_pairs[currency][other_currency]
-            normalized_rate = 1.0 / rate  # OTHER/CURRENCY
-            rates.append(normalized_rate)
-            pairs_used.append({
-                'pair': f'{other_currency}/{currency}',
-                'original_rate': rate,
-                'normalized_rate': normalized_rate,
-                'inverted': True
-            })
+        # Get OTHER/CURRENCY rates (other currency in numerator, target in denominator)
+        base_rate = get_rate_for_pair(other_currency, currency, base_rates)
+        today_rate = get_rate_for_pair(other_currency, currency, today_rates)
 
-        # Check if we have OTHER → CURRENCY (already correct)
-        elif other_currency in all_pairs and currency in all_pairs[other_currency]:
-            # We have OTHER/CURRENCY, use directly
-            rate = all_pairs[other_currency][currency]
-            rates.append(rate)
-            pairs_used.append({
-                'pair': f'{other_currency}/{currency}',
-                'original_rate': rate,
-                'normalized_rate': rate,
-                'inverted': False
-            })
+        if base_rate is None or today_rate is None:
+            continue
 
-    if not rates:
-        return None, []
+        # Calculate percent change from base date
+        pct_change = ((today_rate / base_rate) - 1) * 100
+        percent_changes.append(pct_change)
 
-    # Calculate geometric mean
-    index = calculate_geometric_mean(rates)
+    if not percent_changes:
+        return None
 
-    if index is None:
-        return None, []
+    # Average all percent changes (equal weight)
+    avg_change_pct = sum(percent_changes) / len(percent_changes)
 
-    # Normalize to base date if provided
-    if base_all_pairs:
-        base_index, _ = calculate_currency_index_geometric(currency, base_all_pairs, base_all_pairs=None)
-        if base_index:
-            index = (index / base_index) * 100
+    # Apply to previous index
+    new_index = prev_index * (1 + avg_change_pct / 100)
 
-    return index, pairs_used
+    return new_index
 
-def calculate_all_indices(days=30):
-    """Calculate geometric mean indices for all currencies"""
 
-    logger = PipelineLogger('step2', 'Calculate Currency Indices (Geometric Mean)')
+def calculate_all_indices(date_str):
+    """Calculate percent-change-based indices for all currencies for a specific date"""
+
+    logger = PipelineLogger('step2', 'Calculate Currency Indices (Percent Change Method)')
     logger.start()
 
     try:
         print("="*60)
-        print("Currency Index Calculator - Geometric Mean Method")
+        print("Currency Index Calculator - Percent Change Method")
         print("="*60)
+        print(f"\nProcessing date: {date_str}")
 
-        # Load historical prices
-        print(f"\nLoading {days} days of historical prices...")
-        prices_by_date = load_historical_prices(days)
-
-        if not prices_by_date:
-            print("❌ No historical price data found!")
-            logger.error("No historical price data found")
+        # Read today's exchange rates from Process 1
+        print(f"\n1. Loading exchange rates for {date_str}...")
+        try:
+            today_rates = read_csv('process_1_exchange_rates', date=date_str)
+            print(f"   ✓ Loaded {len(today_rates)} exchange rates")
+            logger.add_count('rates_loaded', len(today_rates))
+        except FileNotFoundError:
+            print(f"   ✗ No exchange rate data found for {date_str}")
+            logger.error(f"Missing exchange rate data for {date_str}")
             logger.fail()
             return
 
-        print(f"✓ Loaded {len(prices_by_date)} days of data")
-        logger.add_count('days_loaded', len(prices_by_date))
+        # Check if this IS the base date
+        is_base_date = (date_str == BASE_DATE)
 
-        # Find base date (oldest date with all_pairs structure)
-        base_date = None
-        for date_str in sorted(prices_by_date.keys()):
-            if prices_by_date[date_str].get('all_pairs'):
-                base_date = date_str
-                break
+        # Load base date exchange rates (needed for percent change calculation)
+        print(f"\n2. Loading base date exchange rates ({BASE_DATE})...")
+        base_rates = None
 
-        if not base_date:
-            print("❌ No price files with all_pairs structure found!")
-            logger.error("Missing all_pairs data structure in all files")
-            logger.fail()
-            return
+        if is_base_date:
+            print(f"   ℹ This is the base date - all indices will be set to 100")
+            base_rates = today_rates  # Use today's rates as base
+        else:
+            if csv_exists('process_1_exchange_rates', date=BASE_DATE):
+                base_rates = read_csv('process_1_exchange_rates', date=BASE_DATE)
+                print(f"   ✓ Loaded {len(base_rates)} base date exchange rates")
+                logger.add_count('base_rates_loaded', len(base_rates))
+            else:
+                print(f"   ✗ Base date rates not found!")
+                logger.error(f"Missing base date rates for {BASE_DATE}")
+                logger.fail()
+                return
 
-        latest_date = max(prices_by_date.keys())
+        # Load previous day's indices (needed to apply percent changes)
+        print(f"\n3. Loading previous day indices...")
+        prev_date = get_previous_date(date_str)
+        prev_indices = {}
 
-        print(f"Base date: {base_date}")
-        print(f"Latest date: {latest_date}")
-
-        logger.add_info('base_date', base_date)
-        logger.add_info('latest_date', latest_date)
-
-        # Get base date all_pairs for normalization
-        base_all_pairs = prices_by_date[base_date].get('all_pairs', {})
-
-        print(f"\nCalculating geometric mean indices for {len(CURRENCIES)} currencies...")
-
-        # Calculate indices for all dates
-        all_indices = {currency: {} for currency in CURRENCIES}
-
-        for date_str in sorted(prices_by_date.keys()):
-            current_all_pairs = prices_by_date[date_str].get('all_pairs', {})
-
-            if not current_all_pairs:
-                continue
-
+        if is_base_date:
+            # Base date: all start at 100
             for currency in CURRENCIES:
-                index, pairs_used = calculate_currency_index_geometric(
-                    currency,
-                    current_all_pairs,
-                    base_all_pairs
-                )
-
-                if index is not None:
-                    # Calculate previous day's index for daily change
-                    prev_index = None
-                    dates_list = sorted(all_indices[currency].keys())
-                    if dates_list:
-                        prev_date = dates_list[-1]
-                        prev_index = all_indices[currency][prev_date]['index']
-
-                    daily_change = None
-                    if prev_index:
-                        daily_change = ((index / prev_index) - 1) * 100
-
-                    all_indices[currency][date_str] = {
-                        'date': date_str,
-                        'currency': currency,
-                        'index': round(index, 4),
-                        'prev_index': round(prev_index, 4) if prev_index else None,
-                        'daily_change_pct': round(daily_change, 4) if daily_change else None,
-                        'base_date': base_date,
-                        'pairs_count': len(pairs_used),
-                        'calculation_method': 'geometric_mean'
-                    }
-
-        # Save indices
-        output_dir = '/workspace/group/fx-portfolio/data/indices'
-        os.makedirs(output_dir, exist_ok=True)
-
-        # Save per-currency index files
-        for currency in CURRENCIES:
-            if not all_indices[currency]:
-                continue
-
-            output_file = f'{output_dir}/{currency}_index.json'
-
-            with open(output_file, 'w') as f:
-                json.dump({
-                    'currency': currency,
-                    'calculation_method': 'geometric_mean',
-                    'note': 'Index isolates currency movement using geometric mean of all pairs',
-                    'base_date': base_date,
-                    'data': list(all_indices[currency].values())
-                }, f, indent=2)
-
-            print(f"  ✓ {currency}: {len(all_indices[currency])} days")
-
-        logger.add_count('currencies_calculated', len(CURRENCIES))
-        logger.add_count('total_index_points', sum(len(v) for v in all_indices.values()))
-
-        # Export for dashboard (CSV format)
-        export_dir = '/workspace/group/fx-portfolio/data/exports'
-        os.makedirs(export_dir, exist_ok=True)
-
-        import csv
-        with open(f'{export_dir}/step2_indices.csv', 'w', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=[
-                'date', 'currency', 'index', 'prev_index', 'daily_change_pct',
-                'base_date', 'pairs_count', 'calculation_method'
-            ])
-            writer.writeheader()
-
+                prev_indices[currency] = 100.0
+            print(f"   ℹ Base date - initializing all indices to 100")
+        elif csv_exists('process_2_indices', date=prev_date):
+            try:
+                prev_rows = read_csv('process_2_indices', date=prev_date)
+                # Build dict: currency -> index
+                for row in prev_rows:
+                    prev_indices[row['currency']] = float(row['index'])
+                print(f"   ✓ Loaded previous indices from {prev_date}")
+                logger.add_count('prev_indices_loaded', len(prev_indices))
+            except Exception as e:
+                print(f"   ⚠ Could not load previous indices: {e}")
+                logger.warning(f"Could not load previous indices: {e}")
+        else:
+            print(f"   ⚠ No previous indices found - will use 100 as starting point")
+            logger.warning(f"Missing previous indices for {prev_date}")
+            # Default to 100 if no previous data
             for currency in CURRENCIES:
-                for date_str in sorted(all_indices[currency].keys()):
-                    writer.writerow(all_indices[currency][date_str])
+                prev_indices[currency] = 100.0
 
-        logger.add_info('output_csv', f'{export_dir}/step2_indices.csv')
-
-        # Export validation data (detailed calculation breakdown for latest date)
-        validation_data = []
-        latest_all_pairs = prices_by_date[latest_date].get('all_pairs', {})
+        # Calculate indices for all currencies
+        print(f"\n4. Calculating indices for {len(CURRENCIES)} currencies...")
+        results = []
 
         for currency in CURRENCIES:
-            index, pairs_used = calculate_currency_index_geometric(
-                currency,
-                latest_all_pairs,
-                base_all_pairs
-            )
+            prev_index = prev_indices.get(currency, 100.0)
 
-            validation_data.append({
+            if is_base_date:
+                # Base date: set to 100
+                index = 100.0
+            else:
+                # Calculate using percent change method
+                index = calculate_currency_index(currency, today_rates, base_rates, prev_index)
+
+                if index is None:
+                    print(f"   ⚠ Could not calculate index for {currency}")
+                    logger.warning(f"Failed to calculate index for {currency}")
+                    continue
+
+            results.append({
+                'date': date_str,
                 'currency': currency,
-                'date': latest_date,
-                'index': round(index, 4) if index else None,
-                'pairs_used': pairs_used,
-                'pairs_count': len(pairs_used),
-                'geometric_mean_inputs': [p['normalized_rate'] for p in pairs_used]
+                'index': round(index, 6)
             })
 
-        with open(f'{export_dir}/step2_indices_validation.json', 'w') as f:
-            json.dump(validation_data, f, indent=2)
+            # Calculate daily change for display
+            daily_change_pct = ((index / prev_index) - 1) * 100 if not is_base_date else 0.0
+            change_str = f"{daily_change_pct:+.2f}%" if not is_base_date else "BASE"
+            print(f"   {currency}: {index:.4f} ({change_str})")
 
-        logger.add_info('output_validation', f'{export_dir}/step2_indices_validation.json')
+        if not results:
+            print("   ✗ No indices calculated!")
+            logger.error("Failed to calculate any indices")
+            logger.fail()
+            return
 
-        # Print summary for latest date
-        print(f"\n{'='*60}")
-        print(f"Latest Indices ({latest_date}):")
-        print(f"{'='*60}")
-        print(f"{'Currency':<10} {'Index':>10} {'Daily Δ%':>10} {'Pairs':>8}")
-        print("-" * 60)
+        logger.add_count('indices_calculated', len(results))
 
-        for currency in CURRENCIES:
-            if currency not in all_indices or latest_date not in all_indices[currency]:
-                continue
+        # Write to CSV
+        print(f"\n5. Saving indices to CSV...")
+        csv_path = write_csv(results, 'process_2_indices', date=date_str)
 
-            latest_data = all_indices[currency][latest_date]
-            daily_change = latest_data.get('daily_change_pct', 0) or 0
-
-            print(f"{currency:<10} {latest_data['index']:>10.4f} {daily_change:>9.2f}% {latest_data['pairs_count']:>8}")
-
-        print(f"{'='*60}")
-        print(f"✓ Indices saved to {output_dir}/")
-        print(f"✓ CSV export: {export_dir}/step2_indices.csv")
-        print(f"✓ Validation: {export_dir}/step2_indices_validation.json")
-        print(f"{'='*60}")
+        print(f"   ✓ Saved {len(results)} indices to {csv_path}")
+        logger.add_info('output_file', str(csv_path))
 
         logger.success()
 
@@ -311,5 +230,18 @@ def calculate_all_indices(days=30):
     finally:
         logger.finish()
 
+
+def main():
+    """Main execution"""
+    parser = argparse.ArgumentParser(description='Calculate currency strength indices')
+    parser.add_argument('--date', type=str, help='Date to process (YYYY-MM-DD), defaults to today')
+    args = parser.parse_args()
+
+    # Determine date
+    date_str = args.date if args.date else datetime.now().strftime('%Y-%m-%d')
+
+    calculate_all_indices(date_str)
+
+
 if __name__ == '__main__':
-    calculate_all_indices(days=30)
+    main()

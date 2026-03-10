@@ -1,25 +1,21 @@
 #!/usr/bin/env python3
 """
-Signal Aggregator (Step 7)
+Step 7: Signal Aggregator
 
 Aggregates unrealized signals from Step 6 by grouping on:
-- date
+- currency
 - generator_id
 - estimator_id
-- currency
 
 Calculates average predicted_direction and confidence for each group.
 
-Usage:
-    python3 scripts/aggregate-signals.py --date YYYY-MM-DD
+Reads from Process 6 CSV, writes to Process 7 CSV.
 
-Input: Step 6 realization data (data/signal-realization/YYYY-MM-DD.json)
-Output: data/aggregated-signals/aggregated_signals.csv
+Input: data/signal-realization/{date}.csv (from Process 6)
+Output: data/aggregated-signals/{date}.csv
 """
 
-import json
 import os
-import glob
 import sys
 import argparse
 import math
@@ -28,41 +24,15 @@ from collections import defaultdict
 
 sys.path.append('/workspace/group/fx-portfolio/scripts')
 from utilities.pipeline_logger import PipelineLogger
+from utilities.csv_helper import read_csv, write_csv
+from utilities.config_loader import get_currencies
 
-CURRENCIES = ["EUR", "USD", "GBP", "JPY", "CHF", "AUD", "CAD", "NOK", "SEK", "CNY", "MXN"]
+CURRENCIES = get_currencies()
 
-def load_unrealized_signals(date_str):
+
+def aggregate_signals(signals, date_str):
     """
-    Load unrealized signals from Step 6 (signal-realization) for a specific date
-
-    Returns: List of signal dicts
-    """
-    signals = []
-
-    # Read from signal-realization directory (Step 6 output)
-    realization_file = f'/workspace/group/fx-portfolio/data/signal-realization/{date_str}.json'
-
-    if not os.path.exists(realization_file):
-        return signals
-
-    try:
-        with open(realization_file, 'r') as f:
-            data = json.load(f)
-
-        # Filter for unrealized signals only
-        for record in data.get('records', []):
-            if record.get('realized') == False:
-                # Add process_date as 'date' for aggregation grouping
-                record['date'] = data.get('process_date', date_str)
-                signals.append(record)
-    except Exception as e:
-        print(f"  ⚠️  Error reading {realization_file}: {e}")
-
-    return signals
-
-def aggregate_signals(signals):
-    """
-    Aggregate signals by (date, generator_id, estimator_id, currency)
+    Aggregate signals by (currency, generator_id, estimator_id)
 
     For each group:
     - Count number of signals
@@ -76,17 +46,16 @@ def aggregate_signals(signals):
 
     for signal in signals:
         key = (
-            signal.get('date', ''),
+            signal.get('currency', ''),
             signal.get('generator_id', ''),
-            signal.get('estimator_id', ''),
-            signal.get('currency', '')
+            signal.get('estimator_id', '')
         )
         groups[key].append(signal)
 
     # Aggregate each group
     aggregated = []
 
-    for (date, generator_id, estimator_id, currency), group_signals in groups.items():
+    for (currency, generator_id, estimator_id), group_signals in groups.items():
         # Calculate weighted average direction
         # bullish = +1, bearish = -1, neutral = 0
         direction_scores = []
@@ -94,7 +63,7 @@ def aggregate_signals(signals):
 
         for sig in group_signals:
             direction = sig.get('predicted_direction', 'neutral')
-            signal_value = sig.get('signal', 0)  # Step 6 now uses 'signal' (confidence * magnitude)
+            signal_value = float(sig.get('signal', 0))  # confidence * magnitude
 
             if direction == 'bullish':
                 direction_scores.append(signal_value)
@@ -107,171 +76,121 @@ def aggregate_signals(signals):
 
         # Calculate aggregate metrics
         avg_score = sum(direction_scores) / len(direction_scores) if direction_scores else 0
+        avg_confidence = sum(confidences) / len(confidences) if confidences else 0
         signal_count = len(group_signals)
 
-        # Calculate penalty factor based on signal count (Option B: Smooth penalty curve)
-        # Reaches ~0.9 at 4 articles, ~1.0 at 8 articles
-        # Formula: min(log(count + 1) / log(5), 1.0)
-        penalty_factor = min(math.log(signal_count + 1) / math.log(5), 1.0)
+        # Determine net direction based on average score
+        if avg_score > 0.05:
+            net_direction = 'bullish'
+        elif avg_score < -0.05:
+            net_direction = 'bearish'
+        else:
+            net_direction = 'neutral'
 
-        # Apply penalty to reduce signal when there are few articles
-        # This prevents single articles from generating high-confidence signals
-        base_signal = avg_score
-        adjusted_signal = base_signal * penalty_factor
-
-        # Store SIGNED signal (after penalty applied)
-        # Positive = bullish, Negative = bearish, Near-zero = neutral
-        aggregate_signal = adjusted_signal
+        # Average signal is the signed average (positive=bullish, negative=bearish)
+        avg_signal = avg_score
 
         aggregated.append({
-            'date': date,
+            'date': date_str,
+            'currency': currency,
             'generator_id': generator_id,
             'estimator_id': estimator_id,
-            'currency': currency,
-            'signal_count': signal_count,
-            'penalty_factor': round(penalty_factor, 4),  # Show penalty factor for visibility
-            'base_signal': round(base_signal, 4),  # Signal before penalty
-            'aggregate_signal': round(aggregate_signal, 4)  # Signed: positive=bullish, negative=bearish (after penalty)
+            'count': signal_count,
+            'avg_signal': round(avg_signal, 4),
+            'avg_confidence': round(avg_confidence, 4),
+            'net_direction': net_direction
         })
 
-    # Sort by date, currency, generator_id
-    aggregated.sort(key=lambda x: (x['date'], x['currency'], x['generator_id'], x['estimator_id']))
+    # Sort by currency, generator_id, estimator_id
+    aggregated.sort(key=lambda x: (x['currency'], x['generator_id'], x['estimator_id']))
 
     return aggregated
 
-def save_aggregated_signals(aggregated_signals, date_str):
-    """
-    Save aggregated signals to CSV, merging with existing data.
-    Replaces rows for the current date, keeps other dates.
-    """
-    import csv
 
-    output_dir = '/workspace/group/fx-portfolio/data/aggregated-signals'
-    os.makedirs(output_dir, exist_ok=True)
+def main(date_str=None):
+    """Main function - aggregate unrealized signals"""
 
-    output_file = f'{output_dir}/aggregated_signals.csv'
-
-    fieldnames = [
-        'date', 'generator_id', 'estimator_id', 'currency',
-        'signal_count', 'penalty_factor', 'base_signal', 'aggregate_signal'
-    ]
-
-    # Check if file exists and load existing data
-    file_exists = os.path.exists(output_file)
-    other_date_rows = []
-
-    if file_exists:
-        with open(output_file, 'r') as f:
-            reader = csv.DictReader(f)
-            # Keep rows from other dates
-            other_date_rows = [row for row in reader if row.get('date') != date_str]
-
-    # Write all data: other dates + current date
-    with open(output_file, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        # Write other dates first
-        writer.writerows(other_date_rows)
-        # Write current date
-        writer.writerows(aggregated_signals)
-
-    return output_file
-
-def main():
-    parser = argparse.ArgumentParser(description='Aggregate unrealized signals (Step 7)')
-    parser.add_argument('--date', required=True, help='Date to process (YYYY-MM-DD)')
-    args = parser.parse_args()
+    if date_str is None:
+        date_str = datetime.now().strftime('%Y-%m-%d')
 
     logger = PipelineLogger('step7', 'Aggregate Signals')
     logger.start()
 
-    date_str = args.date
-
-    print(f"Processing date: {date_str}")
-
-    # Validate date format
     try:
-        datetime.fromisoformat(date_str)
-    except ValueError:
-        logger.error(f"Invalid date format: {date_str}. Expected YYYY-MM-DD")
-        logger.fail()
-        sys.exit(1)
+        print("="*60)
+        print("Signal Aggregator - CSV Output")
+        print("="*60)
+        print(f"\nProcessing date: {date_str}")
 
-    # Validate upstream data (Step 6: Signal Realization)
-    print(f"\n{'='*60}")
-    print("Validating Upstream Data (Step 6)")
-    print(f"{'='*60}")
+        # Load unrealized signals from Process 6
+        print(f"\n1. Loading unrealized signals from Process 6...")
+        try:
+            all_signals = read_csv('process_6_realization', date=date_str, validate=False)
+            print(f"   ✓ Loaded {len(all_signals)} realization records")
+        except FileNotFoundError:
+            print(f"   ✗ No realization data found for {date_str}")
+            print(f"   Step 6 (Signal Realization) must be run first")
+            logger.error(f"Missing upstream data: process_6_realization for {date_str}")
+            logger.fail()
+            return
 
-    realization_file = f'/workspace/group/fx-portfolio/data/signal-realization/{date_str}.json'
+        # Filter for unrealized signals only
+        unrealized = [s for s in all_signals if str(s.get('realized', '')).lower() == 'false']
+        print(f"   ✓ Found {len(unrealized)} unrealized signals")
+        logger.add_count('unrealized_signals', len(unrealized))
 
-    if not os.path.exists(realization_file):
-        logger.error(f"No realization file found for {date_str}. Run Step 6 first.")
-        logger.fail()
-        sys.exit(1)
+        if len(unrealized) == 0:
+            print(f"\n   ⚠ No unrealized signals found for {date_str}")
+            print("      This is normal if all signals have been realized or expired.")
+            # Still write empty CSV
+            csv_path = write_csv([], 'process_7_aggregated_signals', date=date_str)
+            logger.add_info('output_file', str(csv_path))
+            logger.add_count('aggregated_groups', 0)
+            logger.success()
+            return
 
-    print(f"  ✓ Found realization file: {realization_file}")
+        # Aggregate signals
+        print(f"\n2. Aggregating signals...")
+        aggregated = aggregate_signals(unrealized, date_str)
+        print(f"   ✓ Created {len(aggregated)} aggregated signal groups")
+        logger.add_count('aggregated_groups', len(aggregated))
 
-    # Load unrealized signals
-    print(f"\n{'='*60}")
-    print("Loading Unrealized Signals")
-    print(f"{'='*60}")
+        # Show summary by currency
+        print(f"\n   Aggregated signals by currency:")
+        currency_counts = defaultdict(int)
+        for agg in aggregated:
+            currency_counts[agg['currency']] += 1
 
-    signals = load_unrealized_signals(date_str)
-    print(f"  ✓ Loaded {len(signals)} unrealized signals")
+        for currency in sorted(currency_counts.keys()):
+            count = currency_counts[currency]
+            print(f"      {currency}: {count} groups")
 
-    if len(signals) == 0:
-        print(f"\n⚠️  No unrealized signals found for {date_str}")
-        print("  This is normal if all signals have been realized or expired.")
+        # Write to CSV
+        print(f"\n3. Saving to CSV...")
+        csv_path = write_csv(aggregated, 'process_7_aggregated_signals', date=date_str)
+        print(f"   ✓ Saved {len(aggregated)} aggregated signals to {csv_path}")
+        logger.add_info('output_file', str(csv_path))
 
-        # Still save (will remove this date's data if it existed)
-        output_file = save_aggregated_signals([], date_str)
-        logger.add_info('output_file', output_file)
-        logger.add_count('unrealized_signals', 0)
-        logger.add_count('aggregated_groups', 0)
+        # Summary
+        print(f"\n{'='*60}")
+        print(f"✓ Signal Aggregation Complete")
+        print(f"{'='*60}")
+        print(f"  Unrealized signals: {len(unrealized)}")
+        print(f"  Aggregated groups: {len(aggregated)}")
+
         logger.success()
+
+    except Exception as e:
+        logger.error(f"Failed to aggregate signals: {e}")
+        logger.fail()
+        raise
+    finally:
         logger.finish()
-        return
 
-    # Aggregate signals
-    print(f"\n{'='*60}")
-    print("Aggregating Signals")
-    print(f"{'='*60}")
-
-    aggregated = aggregate_signals(signals)
-    print(f"  ✓ Created {len(aggregated)} aggregated signal groups")
-
-    # Show summary by currency
-    print(f"\nAggregated signals by currency:")
-    currency_counts = defaultdict(int)
-    for agg in aggregated:
-        currency_counts[agg['currency']] += 1
-
-    for currency in sorted(currency_counts.keys()):
-        count = currency_counts[currency]
-        print(f"  {currency}: {count} aggregated groups")
-
-    # Save to CSV
-    print(f"\n{'='*60}")
-    print("Saving Aggregated Signals")
-    print(f"{'='*60}")
-
-    output_file = save_aggregated_signals(aggregated, date_str)
-    print(f"  ✓ Saved to: {output_file}")
-
-    # Log metrics
-    logger.add_count('unrealized_signals', len(signals))
-    logger.add_count('aggregated_groups', len(aggregated))
-    logger.add_info('output_file', output_file)
-
-    print(f"\n{'='*60}")
-    print(f"✓ Signal Aggregation Complete")
-    print(f"{'='*60}")
-    print(f"  Unrealized signals: {len(signals)}")
-    print(f"  Aggregated groups: {len(aggregated)}")
-    print(f"  Output: {output_file}")
-
-    logger.success()
-    logger.finish()
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Aggregate unrealized signals')
+    parser.add_argument('--date', type=str, help='Date to process (YYYY-MM-DD), defaults to today')
+    args = parser.parse_args()
+
+    main(date_str=args.date)

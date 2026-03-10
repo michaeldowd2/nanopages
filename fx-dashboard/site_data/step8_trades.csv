@@ -1,0 +1,13 @@
+date,trader_id,buy_currency,sell_currency,buy_signal,sell_signal,trade_signal
+2026-03-10,combinator-standard,JPY,NOK,0.5833,-0.5833,0.5833
+2026-03-10,combinator-standard,CNY,NOK,0.4933,-0.5833,0.5383
+2026-03-10,combinator-standard,JPY,CAD,0.5833,-0.28,0.4317
+2026-03-10,combinator-standard,JPY,USD,0.5833,-0.2704,0.4269
+2026-03-10,combinator-standard,CNY,CAD,0.4933,-0.28,0.3867
+2026-03-10,combinator-standard,CNY,USD,0.4933,-0.2704,0.3819
+2026-03-10,combinator-standard,EUR,NOK,0.125,-0.5833,0.3542
+2026-03-10,combinator-standard,JPY,AUD,0.5833,-0.1039,0.3436
+2026-03-10,combinator-standard,CNY,AUD,0.4933,-0.1039,0.2986
+2026-03-10,combinator-standard,EUR,CAD,0.125,-0.28,0.2025
+2026-03-10,combinator-standard,EUR,USD,0.125,-0.2704,0.1977
+2026-03-10,combinator-standard,EUR,AUD,0.125,-0.1039,0.1144

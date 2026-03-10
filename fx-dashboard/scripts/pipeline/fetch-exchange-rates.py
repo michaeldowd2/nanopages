@@ -15,29 +15,29 @@ API Source: GitHub Currency API (fawazahmed0/exchange-api)
 - 200+ currencies
 - Daily updates
 - CDN-backed for reliability
+
+Output: CSV with columns: date, base_currency, quote_currency, rate
 """
 
-import json
-import os
-from datetime import datetime
-
-# Load currencies from config
 import sys
+import argparse
+from datetime import datetime
+import urllib.request
+import urllib.error
+import json
+
+# Add utilities to path
 sys.path.append('/workspace/group/fx-portfolio/scripts')
 from utilities.config_loader import get_currencies
 from utilities.pipeline_logger import PipelineLogger
-
-# Use urllib.request (standard library - always available)
-import urllib.request
-import urllib.error
+from utilities.csv_helper import write_csv
 
 CURRENCIES = get_currencies()
 
 # GitHub Currency API endpoints (free, no API key needed)
-# Primary CDN endpoint
 CURRENCY_API_PRIMARY = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json"
-# Fallback endpoint (as recommended by API docs)
 CURRENCY_API_FALLBACK = "https://latest.currency-api.pages.dev/v1/currencies/eur.json"
+
 
 def fetch_eur_rates_from_api():
     """
@@ -45,7 +45,6 @@ def fetch_eur_rates_from_api():
 
     Returns rates in format: {"eur": {"usd": 1.18, "gbp": 0.874, ...}}
     Tries primary CDN first, then fallback URL if that fails.
-    Uses urllib.request (standard library, always available).
     """
     # Try primary endpoint first
     try:
@@ -53,7 +52,6 @@ def fetch_eur_rates_from_api():
         with urllib.request.urlopen(CURRENCY_API_PRIMARY, timeout=10) as response:
             data = json.loads(response.read().decode())
 
-        # API returns format: {"date": "2026-02-23", "eur": {"usd": 1.18, ...}}
         if "eur" in data:
             print("   ✓ Primary endpoint successful")
             return data["eur"], data.get("date", "unknown")
@@ -78,6 +76,7 @@ def fetch_eur_rates_from_api():
         except Exception as fallback_error:
             print(f"   ✗ Fallback endpoint also failed: {fallback_error}")
             raise Exception(f"Both API endpoints failed. Primary: {e}, Fallback: {fallback_error}")
+
 
 def fetch_eur_rates():
     """
@@ -123,6 +122,7 @@ def fetch_eur_rates():
         print("   Falling back to mock data")
         return mock_rates, "mock-data-fallback"
 
+
 def calculate_all_pairs(eur_rates):
     """
     Calculate all currency pair rates from EUR-based rates
@@ -158,29 +158,32 @@ def calculate_all_pairs(eur_rates):
 
     return all_pairs
 
-def save_rates(all_pairs, eur_rates):
-    """Save exchange rates to JSON file"""
-    data_dir = '/workspace/group/fx-portfolio/data/prices'
-    os.makedirs(data_dir, exist_ok=True)
 
-    timestamp = datetime.now().isoformat()
-    date_str = datetime.now().strftime('%Y-%m-%d')
+def save_rates_csv(all_pairs, date_str):
+    """
+    Save exchange rates to CSV file
 
-    output = {
-        'timestamp': timestamp,
-        'date': date_str,
-        'eur_base_rates': eur_rates,  # Original EUR-based rates
-        'all_pairs': all_pairs  # 10x10 matrix
-    }
+    Schema: date, base_currency, quote_currency, rate
+    """
+    # Convert all_pairs dict to rows
+    rows = []
+    for base_currency, quote_rates in all_pairs.items():
+        for quote_currency, rate in quote_rates.items():
+            rows.append({
+                'date': date_str,
+                'base_currency': base_currency,
+                'quote_currency': quote_currency,
+                'rate': rate
+            })
 
-    filename = f'{data_dir}/fx-rates-{date_str}.json'
+    # Write to CSV using helper
+    csv_path = write_csv(rows, 'process_1_exchange_rates', date=date_str)
 
-    with open(filename, 'w') as f:
-        json.dump(output, f, indent=2)
+    print(f"✓ Saved exchange rates: {csv_path}")
+    print(f"  Total rows: {len(rows)}")
 
-    print(f"✓ Saved exchange rates: {filename}")
+    return csv_path
 
-    return filename
 
 def print_sample_rates(all_pairs):
     """Print sample rates for verification"""
@@ -203,13 +206,22 @@ def print_sample_rates(all_pairs):
 
     print("="*60)
 
+
 def main():
     """Main execution"""
+    parser = argparse.ArgumentParser(description='Fetch exchange rates for all currency pairs')
+    parser.add_argument('--date', type=str, help='Date to process (YYYY-MM-DD), defaults to today')
+    args = parser.parse_args()
+
+    # Determine date
+    date_str = args.date if args.date else datetime.now().strftime('%Y-%m-%d')
+
     logger = PipelineLogger('step1', 'Fetch Exchange Rates (All Pairs)')
     logger.start()
 
     try:
-        print(f"\nCurrencies: {len(CURRENCIES)}")
+        print(f"\nProcessing date: {date_str}")
+        print(f"Currencies: {len(CURRENCIES)}")
         print(f"Total pairs: {len(CURRENCIES)} × {len(CURRENCIES)} = {len(CURRENCIES)**2}")
 
         logger.add_count('currencies', len(CURRENCIES))
@@ -235,11 +247,11 @@ def main():
 
         logger.add_count('pairs_calculated', total_calculated)
 
-        # Save to file
-        print("\n3. Saving to file...")
-        filename = save_rates(all_pairs, eur_rates)
+        # Save to CSV file
+        print("\n3. Saving to CSV...")
+        csv_path = save_rates_csv(all_pairs, date_str)
 
-        logger.add_info('output_file', filename)
+        logger.add_info('output_file', str(csv_path))
 
         # Print samples
         print_sample_rates(all_pairs)
@@ -252,6 +264,7 @@ def main():
         raise
     finally:
         logger.finish()
+
 
 if __name__ == '__main__':
     main()

@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """
-News Aggregator for FX Portfolio
-Fetches news from RSS feeds and NewsAPI
-Filters for currency relevance and stores clean JSON
+Step 3: News Aggregator for FX Portfolio
+
+Fetches news from RSS feeds and NewsAPI, filters for currency relevance,
+and stores in CSV format.
+
+Output: CSV with columns: date, source, url, currency, title, snippet
 """
 
 import json
@@ -12,13 +15,19 @@ import re
 import html
 import os
 import sys
+import argparse
 from datetime import datetime, timedelta
 from xml.etree import ElementTree as ET
 from email.utils import parsedate_to_datetime
 
 # Add scripts directory to path for imports
-sys.path.append(os.path.dirname(__file__))
+sys.path.append('/workspace/group/fx-portfolio/scripts')
 from utilities.env_loader import get_newsapi_key
+from utilities.config_loader import get_currencies
+from utilities.pipeline_logger import PipelineLogger
+from utilities.csv_helper import write_csv
+
+CURRENCIES = get_currencies()
 
 # Currency keywords for relevance filtering
 CURRENCY_KEYWORDS = {
@@ -35,6 +44,7 @@ CURRENCY_KEYWORDS = {
     "MXN": ["peso", "mxn", "mexico", "mexican", "banxico"]
 }
 
+
 def fetch_rss(url, user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'):
     """Fetch RSS feed content with full browser User-Agent to avoid blocking"""
     try:
@@ -45,13 +55,9 @@ def fetch_rss(url, user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWe
         print(f"Error fetching {url}: {e}")
         return None
 
-def parse_rss(xml_content, source_name='RSS'):
-    """Parse RSS XML and extract articles
 
-    Note: We use the retrieval date (today) as the effective publication date.
-    For fresh news aggregation, this is accurate enough - if we're fetching it today,
-    it was published today or very recently.
-    """
+def parse_rss(xml_content, source_name='RSS'):
+    """Parse RSS XML and extract articles"""
     articles = []
     cutoff_date = datetime.now() - timedelta(days=30)
 
@@ -63,8 +69,7 @@ def parse_rss(xml_content, source_name='RSS'):
             description = item.findtext('description', '')
             pub_date = item.findtext('pubDate', '')
 
-            # Check if article is too old (for filtering, not storage)
-            # We still use pubDate for filtering but don't store it
+            # Check if article is too old
             try:
                 if pub_date:
                     dt = parsedate_to_datetime(pub_date)
@@ -90,6 +95,7 @@ def parse_rss(xml_content, source_name='RSS'):
 
     return articles
 
+
 def calculate_relevance(text, currency):
     """Calculate relevance score (0-1) for a currency"""
     text_lower = text.lower()
@@ -103,15 +109,16 @@ def calculate_relevance(text, currency):
 
     return score
 
+
 def detect_fx_pair_in_text(text):
     """
     Detect FX pair mentions (e.g., "AUD/USD", "EUR/GBP")
     Returns list of (base, quote) tuples
     """
-    import re
     pattern = r'\b([A-Z]{3})/([A-Z]{3})\b'
     matches = re.findall(pattern, text)
     return matches
+
 
 def filter_articles_by_currency(articles, currency, min_score=0.3):
     """
@@ -131,67 +138,11 @@ def filter_articles_by_currency(articles, currency, min_score=0.3):
 
         # Include if: keyword score sufficient OR mentioned in FX pair
         if score >= min_score or in_pair:
-            # Boost score if currency is in a pair
-            if in_pair and score < 0.5:
-                score = max(score, 0.5)  # Minimum 0.5 for pair mentions
-
-            article['relevance_score'] = round(score, 2)
             article['currency'] = currency
             relevant.append(article.copy())  # Use copy to avoid mutation
 
     return relevant
 
-def load_url_index():
-    """Load global URL index to track all articles across currencies"""
-    import os
-    index_file = '/workspace/group/fx-portfolio/data/news/url_index.json'
-
-    if os.path.exists(index_file):
-        with open(index_file, 'r') as f:
-            return json.load(f)
-    return {}
-
-def save_url_index(index):
-    """Save global URL index"""
-    import os
-    index_file = '/workspace/group/fx-portfolio/data/news/url_index.json'
-    with open(index_file, 'w') as f:
-        json.dump(index, f, indent=2)
-
-def clean_old_articles():
-    """
-    Remove article files older than 30 days from storage
-
-    Note: We now use the file date (date key) as the publication date,
-    so we just check file dates instead of parsing individual article timestamps.
-    """
-    import os
-    import glob
-    cutoff_date = datetime.now() - timedelta(days=30)
-
-    for currency_dir in glob.glob('/workspace/group/fx-portfolio/data/news/*/'):
-        for filepath in glob.glob(f'{currency_dir}*.json'):
-            if 'url_index' in filepath or 'sources' in filepath:
-                continue
-
-            try:
-                # Extract date from filename: YYYY-MM-DD.json
-                filename = os.path.basename(filepath)
-                date_str = filename.replace('.json', '')
-
-                try:
-                    file_date = datetime.fromisoformat(date_str)
-
-                    # Remove file if older than 30 days
-                    if file_date < cutoff_date:
-                        os.remove(filepath)
-                        print(f"  Removed old file: {filepath}")
-                except ValueError:
-                    # Not a date-based filename, skip
-                    pass
-
-            except Exception as e:
-                print(f"  Error cleaning {filepath}: {e}")
 
 def fetch_from_newsapi(query, max_results=20):
     """
@@ -233,8 +184,7 @@ def fetch_from_newsapi(query, max_results=20):
 
         # Parse articles
         for item in data.get('articles', []):
-            # Check if article is too old (for filtering, not storage)
-            # We use publishedAt for filtering but don't store it
+            # Check if article is too old
             published_str = item.get('publishedAt', '')
             try:
                 if published_str:
@@ -275,149 +225,149 @@ def fetch_from_newsapi(query, max_results=20):
         print(f"  ⚠️ NewsAPI error: {e}")
         return []
 
-def save_daily_news(currency, articles, url_index, date_str=None):
-    """Save articles to daily JSON file"""
+
+def main(date_str=None):
+    """Main aggregation function"""
+
     if date_str is None:
         date_str = datetime.now().strftime('%Y-%m-%d')
 
-    output_dir = f'/workspace/group/fx-portfolio/data/news/{currency}'
-    import os
-    os.makedirs(output_dir, exist_ok=True)
+    logger = PipelineLogger('step3', 'Fetch News Articles')
+    logger.start()
 
-    filepath = f'{output_dir}/{date_str}.json'
+    try:
+        print("="*60)
+        print("FX News Aggregator - CSV Output")
+        print("="*60)
+        print(f"\nProcessing date: {date_str}")
 
-    # Load existing if present
-    existing_data = {'currency': currency, 'date': date_str, 'articles': []}
-    if os.path.exists(filepath):
-        with open(filepath, 'r') as f:
-            existing_data = json.load(f)
+        # Load sources
+        sources_path = '/workspace/group/fx-portfolio/config/news_sources.json'
+        with open(sources_path) as f:
+            sources = json.load(f)
 
-    # Deduplicate by URL (check both local and global index)
-    existing_urls = {a['url'] for a in existing_data['articles']}
-    new_articles = []
+        all_articles = []
 
-    for a in articles:
-        url = a['url']
-        # Skip if already exists locally or in global index
-        if url in existing_urls or url in url_index:
-            continue
+        # Fetch RSS feeds
+        print(f"\n1. Fetching RSS feeds ({len(sources['rss_feeds'])} sources)...")
+        for url in sources['rss_feeds']:
+            print(f"   Fetching: {url}")
 
-        new_articles.append(a)
-        # Add to global index with date key (matches the file date)
-        url_index[url] = {
-            'currency': currency,
-            'first_seen_date': date_str  # Use date string, not full timestamp
-        }
+            # Determine source name from URL
+            source_name = 'RSS'
+            if 'forexlive' in url or 'investinglive' in url:
+                source_name = 'ForexLive'
+            elif 'fxstreet' in url:
+                source_name = 'FXStreet'
+            elif 'marketwatch' in url:
+                source_name = 'MarketWatch'
+            elif 'yahoo' in url or 'finance.yahoo.com' in url:
+                source_name = 'Yahoo Finance'
+            elif 'investing.com' in url:
+                source_name = 'Investing.com'
+            elif 'dailyfx' in url:
+                source_name = 'DailyFX'
 
-    # Add new articles
-    existing_data['articles'].extend(new_articles)
+            xml = fetch_rss(url)
+            if xml:
+                articles = parse_rss(xml, source_name=source_name)
+                all_articles.extend(articles)
+                print(f"   ✓ Found {len(articles)} articles (within 30 days)")
 
-    # Generate combined text for LLM analysis
-    combined = '\n\n'.join([
-        f"[{a.get('relevance_score', 0):.2f}] {a['title']}\n{a['snippet']}"
-        for a in existing_data['articles']
-    ])
-    existing_data['combined_text'] = combined
+        logger.add_count('rss_articles_fetched', len(all_articles))
 
-    # Save
-    with open(filepath, 'w') as f:
-        json.dump(existing_data, f, indent=2)
+        # Fetch Reddit RSS (if any configured)
+        reddit_urls = sources.get('reddit_rss', [])
+        if reddit_urls:
+            print(f"\n2. Fetching Reddit RSS ({len(reddit_urls)} sources)...")
+            reddit_count = 0
+            for url in reddit_urls:
+                print(f"   Fetching: {url}")
+                xml = fetch_rss(url)
+                if xml:
+                    articles = parse_rss(xml, source_name='Reddit')
+                    all_articles.extend(articles)
+                    reddit_count += len(articles)
+                    print(f"   ✓ Found {len(articles)} posts (within 30 days)")
+            logger.add_count('reddit_articles_fetched', reddit_count)
 
-    return len(new_articles)
+        # Fetch from NewsAPI (if enabled)
+        if sources.get('newsapi_enabled', False):
+            print(f"\n3. Fetching from NewsAPI.org...")
 
-def main():
-    """Main aggregation function"""
-    print("="*60)
-    print("FX News Aggregator")
-    print("="*60)
+            queries = sources.get('newsapi_queries', ['forex'])
+            max_per_query = sources.get('newsapi_max_results_per_query', 20)
 
-    # Load global URL index
-    print("\nLoading URL index...")
-    url_index = load_url_index()
-    print(f"  Loaded {len(url_index)} previously seen URLs")
+            total_newsapi_count = 0
+            for query in queries:
+                print(f"   Query: '{query}'")
+                newsapi_articles = fetch_from_newsapi(query, max_results=max_per_query)
+                all_articles.extend(newsapi_articles)
+                total_newsapi_count += len(newsapi_articles)
 
-    # Clean old articles (>30 days)
-    print("\nCleaning articles older than 30 days...")
-    clean_old_articles()
+            print(f"   Total from NewsAPI: {total_newsapi_count} articles")
+            print(f"   API requests used: {len(queries)} of 100/day limit")
+            logger.add_count('newsapi_articles_fetched', total_newsapi_count)
 
-    # Load sources
-    with open('/workspace/group/fx-portfolio/data/news/sources.json') as f:
-        sources = json.load(f)
-
-    all_articles = []
-
-    # Fetch RSS feeds
-    for url in sources['rss_feeds']:
-        print(f"\nFetching: {url}")
-
-        # Determine source name from URL
-        source_name = 'RSS'
-        if 'forexlive' in url or 'investinglive' in url:
-            source_name = 'ForexLive'
-        elif 'fxstreet' in url:
-            source_name = 'FXStreet'
-        elif 'marketwatch' in url:
-            source_name = 'MarketWatch'
-        elif 'yahoo' in url or 'finance.yahoo.com' in url:
-            source_name = 'Yahoo Finance'
-        elif 'investing.com' in url:
-            source_name = 'Investing.com'
-        elif 'dailyfx' in url:
-            source_name = 'DailyFX'
-
-        xml = fetch_rss(url)
-        if xml:
-            articles = parse_rss(xml, source_name=source_name)
-            all_articles.extend(articles)
-            print(f"  ✓ Found {len(articles)} articles (within 30 days)")
-
-    # Fetch Reddit RSS (if any configured)
-    for url in sources.get('reddit_rss', []):
-        print(f"\nFetching: {url}")
-        xml = fetch_rss(url)
-        if xml:
-            articles = parse_rss(xml, source_name='Reddit')
-            all_articles.extend(articles)
-            print(f"  ✓ Found {len(articles)} posts (within 30 days)")
-
-    # Fetch from NewsAPI (if enabled)
-    if sources.get('newsapi_enabled', False):
         print(f"\n{'='*60}")
-        print("Fetching from NewsAPI.org")
+        print(f"Total articles fetched: {len(all_articles)}")
+        print(f"{'='*60}\n")
+
+        # Filter by currency and build CSV rows
+        print(f"4. Filtering articles by currency ({len(CURRENCIES)} currencies)...")
+        csv_rows = []
+        seen_urls = set()  # Deduplicate by URL across all currencies
+
+        for currency in CURRENCIES:
+            relevant = filter_articles_by_currency(all_articles, currency)
+
+            # Add to CSV rows (deduplicate by URL)
+            new_count = 0
+            for article in relevant:
+                url = article['url']
+                if url not in seen_urls:
+                    csv_rows.append({
+                        'date': date_str,
+                        'source': article['source'],
+                        'url': url,
+                        'currency': currency,
+                        'title': article['title'],
+                        'snippet': article['snippet']
+                    })
+                    seen_urls.add(url)
+                    new_count += 1
+
+            print(f"   {currency}: {new_count} unique articles (total relevant: {len(relevant)})")
+
+        logger.add_count('unique_articles', len(csv_rows))
+
+        # Write to CSV
+        print(f"\n5. Saving to CSV...")
+        if csv_rows:
+            csv_path = write_csv(csv_rows, 'process_3_news', date=date_str)
+            print(f"   ✓ Saved {len(csv_rows)} articles to {csv_path}")
+            logger.add_info('output_file', str(csv_path))
+        else:
+            print(f"   ⚠ No articles to save")
+            logger.warning("No articles fetched")
+
+        logger.success()
+
+        print(f"\n{'='*60}")
+        print("✓ News aggregation complete")
         print(f"{'='*60}")
 
-        queries = sources.get('newsapi_queries', ['forex'])
-        max_per_query = sources.get('newsapi_max_results_per_query', 20)
+    except Exception as e:
+        logger.error(f"Failed to fetch news: {e}")
+        logger.fail()
+        raise
+    finally:
+        logger.finish()
 
-        total_newsapi_count = 0
-        for query in queries:
-            print(f"\nQuery: '{query}'")
-            newsapi_articles = fetch_from_newsapi(query, max_results=max_per_query)
-            all_articles.extend(newsapi_articles)
-            total_newsapi_count += len(newsapi_articles)
-
-        print(f"\n  Total from NewsAPI: {total_newsapi_count} articles")
-        print(f"  API requests used: {len(queries)} of 100/day limit")
-
-    print(f"\n{'='*60}")
-    print(f"Total articles fetched: {len(all_articles)}")
-    print(f"{'='*60}\n")
-
-    # Filter by currency and save
-    currencies = ["EUR", "USD", "GBP", "JPY", "CHF", "AUD", "CAD", "NOK", "SEK", "CNY", "MXN"]
-
-    for currency in currencies:
-        relevant = filter_articles_by_currency(all_articles, currency)
-        count = save_daily_news(currency, relevant, url_index)
-        print(f"{currency}: {count} new relevant articles (total: {len(relevant)})")
-
-    # Save updated URL index
-    save_url_index(url_index)
-    print(f"\n✓ URL index updated ({len(url_index)} total URLs tracked)")
-
-    print(f"\n{'='*60}")
-    print("✓ News aggregation complete")
-    print(f"{'='*60}")
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Fetch news articles for currency analysis')
+    parser.add_argument('--date', type=str, help='Date to process (YYYY-MM-DD), defaults to today')
+    args = parser.parse_args()
+
+    main(date_str=args.date)
