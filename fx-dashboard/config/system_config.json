@@ -56,12 +56,12 @@
         "llm-horizon-v1-default"
       ],
       "generator_ids": [
-        "keyword-sentiment-v1.1-standard",
-        "llm-sentiment-v1-haiku"
+        "keyword-sentiment-v1.1",
+        "llm-sentiment-v1"
       ],
       "generator_weights": {
-        "keyword-sentiment-v1.1-standard": 0.5,
-        "llm-sentiment-v1-haiku": 1.0
+        "keyword-sentiment-v1.1": 0.5,
+        "llm-sentiment-v1": 1.0
       },
       "description": "Generates all combinations of bullish/bearish currency pairs"
     }
