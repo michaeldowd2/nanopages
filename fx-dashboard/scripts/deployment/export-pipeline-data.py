@@ -17,8 +17,7 @@ sys.path.append('/workspace/group/fx-portfolio/scripts')
 from utilities.csv_helper import read_csv
 
 def export_step1_exchange_rates():
-    """Step 1: Export exchange rates matrix CSV"""
-    output = []
+    """Step 1: Export exchange rates as matrix CSV (dashboard format)"""
 
     # Find all price CSV files
     price_files = sorted(glob.glob('/workspace/group/fx-portfolio/data/prices/*.csv'))
@@ -27,28 +26,52 @@ def export_step1_exchange_rates():
         print("⚠️  Step 1: No exchange rate files found")
         return 0
 
-    # Read all CSV files and combine
+    # Get list of currencies from system config
+    sys.path.append('/workspace/group/fx-portfolio/scripts')
+    from utilities.config_loader import get_currencies
+    currencies = get_currencies()
+
+    # Build matrix format: one row per (date, base_currency) with all quote currencies as columns
+    matrix_rows = []
+
     for filepath in price_files:
         try:
             date = Path(filepath).stem  # Extract date from filename
             rows = read_csv('process_1_exchange_rates', date=date, validate=False)
-            output.extend(rows)
+
+            # Group by base currency
+            by_base = {}
+            for row in rows:
+                base = row['base_currency']
+                quote = row['quote_currency']
+                rate = float(row['rate'])
+
+                if base not in by_base:
+                    by_base[base] = {'date': date, 'base_currency': base}
+
+                by_base[base][quote] = rate
+
+            # Add to matrix rows
+            for base_currency in currencies:
+                if base_currency in by_base:
+                    matrix_rows.append(by_base[base_currency])
+
         except Exception as e:
             print(f"⚠️  Error reading {filepath}: {e}")
 
-    # Write combined CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step1_exchange_rates.csv'
+    # Write matrix CSV
+    output_file = '/workspace/group/fx-portfolio/site_data/step1_exchange_rates_matrix.csv'
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
     with open(output_file, 'w', newline='') as f:
-        if output:
-            fieldnames = ['date', 'base_currency', 'quote_currency', 'rate']
+        if matrix_rows:
+            fieldnames = ['date', 'base_currency'] + currencies
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerows(output)
+            writer.writerows(matrix_rows)
 
-    print(f"✓ Step 1: Exported {len(output)} exchange rate records")
-    return len(output)
+    print(f"✓ Step 1: Exported {len(matrix_rows)} exchange rate matrix rows ({len(price_files)} dates × {len(currencies)} currencies)")
+    return len(matrix_rows)
 
 
 def export_step2_indices():
