@@ -561,7 +561,7 @@
         'step6': 'site_data/step6_realization.csv',
         'step7': 'site_data/step7_aggregated_signals.csv',
         'step8': 'site_data/step8_trades.csv',
-        'step9': 'site_data/step9_strategies.csv'
+        'step9': 'site_data/step9_portfolios.csv'
       }[step];
 
       fetch(csvFile)
@@ -1571,18 +1571,18 @@
         return;
       }
 
-      // Parse strategy parameters to extract T (target_trades) and trade size
+      // Parse strategy_id to extract T (target_trades) and trade size
       const strategyData = rows.map(row => {
-        // Parse params like "conf=0.1_T=2_size=0.1" or "conf=0.1_T=all_size=0.1"
-        const params = row.strategy_params;
-        const tMatch = params.match(/T=([\w]+)/);
-        const sizeMatch = params.match(/size=([\d.]+)/);
+        // Parse strategy_id like "momentum-T2-size10" or "momentum-Tall-size25"
+        const strategyId = row.strategy_id;
+        const tMatch = strategyId.match(/T([\w]+)/);
+        const sizeMatch = strategyId.match(/size([\d]+)/);
 
         return {
           t: tMatch ? tMatch[1] : 'all',  // Can be number or 'all'
-          size: sizeMatch ? parseFloat(sizeMatch[1]) : 0,
-          value: parseFloat(row.current_value) || 0,
-          trades: parseInt(row.no_trades_executed) || 0
+          size: sizeMatch ? parseFloat(sizeMatch[1]) / 100 : 0,  // Convert from 10 to 0.1
+          value: parseFloat(row.portfolio_value) || 0,
+          trades: parseInt(row.trades_executed) || 0
         };
       });
 
@@ -1693,7 +1693,7 @@
       strategyIds.forEach(id => {
         strategyData[id] = dates.map(date => {
           const row = rows.find(r => r.strategy_id === id && r.date === date);
-          return row ? parseFloat(row.current_value) : null;
+          return row ? parseFloat(row.portfolio_value) : null;
         });
       });
 
