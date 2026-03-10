@@ -322,7 +322,7 @@
       ]
     },
     "process_7_aggregated_signals": {
-      "description": "Aggregated unrealized signals by generator/estimator/currency",
+      "description": "Aggregated unrealized signals by generator/estimator/currency with penalty factor",
       "output_path": "data/aggregated-signals/{date}.csv",
       "columns": [
         {
@@ -346,14 +346,24 @@
           "description": "Time horizon estimator identifier"
         },
         {
-          "name": "count",
+          "name": "signal_count",
           "type": "int",
           "description": "Number of signals in aggregate"
         },
         {
-          "name": "avg_signal",
+          "name": "penalty_factor",
           "type": "float",
-          "description": "Average signal strength"
+          "description": "Penalty applied for low signal count (0-1)"
+        },
+        {
+          "name": "base_signal",
+          "type": "float",
+          "description": "Average signal before penalty"
+        },
+        {
+          "name": "aggregate_signal",
+          "type": "float",
+          "description": "Final signal after penalty (base \u00d7 penalty)"
         },
         {
           "name": "avg_confidence",

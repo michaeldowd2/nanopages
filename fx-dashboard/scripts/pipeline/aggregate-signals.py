@@ -79,24 +79,38 @@ def aggregate_signals(signals, date_str):
         avg_confidence = sum(confidences) / len(confidences) if confidences else 0
         signal_count = len(group_signals)
 
-        # Determine net direction based on average score
-        if avg_score > 0.05:
+        # Calculate penalty factor based on signal count
+        # Idea: Fewer signals = less reliable, so reduce the signal strength
+        # Formula: penalty = min(1.0, sqrt(signal_count / 4))
+        # - 1 signal: penalty = 0.50
+        # - 2 signals: penalty = 0.71
+        # - 4 signals: penalty = 1.00 (no penalty)
+        # - 8 signals: penalty = 1.00 (capped)
+        penalty_factor = min(1.0, math.sqrt(signal_count / 4.0))
+
+        # Base signal (before penalty)
+        base_signal = avg_score
+
+        # Apply penalty to get aggregate signal
+        aggregate_signal = base_signal * penalty_factor
+
+        # Determine net direction based on aggregate signal
+        if aggregate_signal > 0.05:
             net_direction = 'bullish'
-        elif avg_score < -0.05:
+        elif aggregate_signal < -0.05:
             net_direction = 'bearish'
         else:
             net_direction = 'neutral'
-
-        # Average signal is the signed average (positive=bullish, negative=bearish)
-        avg_signal = avg_score
 
         aggregated.append({
             'date': date_str,
             'currency': currency,
             'generator_id': generator_id,
             'estimator_id': estimator_id,
-            'count': signal_count,
-            'avg_signal': round(avg_signal, 4),
+            'signal_count': signal_count,
+            'penalty_factor': round(penalty_factor, 4),
+            'base_signal': round(base_signal, 4),
+            'aggregate_signal': round(aggregate_signal, 4),
             'avg_confidence': round(avg_confidence, 4),
             'net_direction': net_direction
         })
