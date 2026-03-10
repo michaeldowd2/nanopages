@@ -356,14 +356,14 @@
           "description": "Penalty applied for low signal count (0-1)"
         },
         {
-          "name": "base_signal",
+          "name": "avg_signal",
           "type": "float",
-          "description": "Average signal before penalty"
+          "description": "Average signal across all signals in group"
         },
         {
-          "name": "aggregate_signal",
+          "name": "factored_avg_signal",
           "type": "float",
-          "description": "Final signal after penalty (base \u00d7 penalty)"
+          "description": "Average signal after applying penalty factor"
         }
       ]
     },

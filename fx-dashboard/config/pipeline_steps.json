@@ -104,8 +104,8 @@
         {"name": "estimator_id", "type": "string", "description": "Time horizon estimator identifier"},
         {"name": "signal_count", "type": "int", "description": "Number of signals in aggregate"},
         {"name": "penalty_factor", "type": "float", "description": "Penalty applied for low signal count (0-1)"},
-        {"name": "base_signal", "type": "float", "description": "Average signal before penalty"},
-        {"name": "aggregate_signal", "type": "float", "description": "Final signal after penalty (base × penalty)"}
+        {"name": "avg_signal", "type": "float", "description": "Average signal across all signals in group"},
+        {"name": "factored_avg_signal", "type": "float", "description": "Average signal after applying penalty factor"}
       ]
     },
     "process_8_trades": {

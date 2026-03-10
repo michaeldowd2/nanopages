@@ -1,4 +1,4 @@
-date,currency,generator_id,estimator_id,signal_count,penalty_factor,base_signal,aggregate_signal
+date,currency,generator_id,estimator_id,signal_count,penalty_factor,avg_signal,factored_avg_signal
 2026-02-24,AUD,keyword-sentiment-v1.1,llm-horizon-v1-default,1,0.5,0.3,0.15
 2026-02-24,AUD,llm-sentiment-v1,llm-horizon-v1-default,2,0.7071,0.56,0.396
 2026-02-24,CAD,keyword-sentiment-v1.1,llm-horizon-v1-default,1,0.5,-0.448,-0.224

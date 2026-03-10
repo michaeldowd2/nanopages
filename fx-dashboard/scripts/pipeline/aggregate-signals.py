@@ -87,11 +87,11 @@ def aggregate_signals(signals, date_str):
         # - 8 signals: penalty = 1.00 (capped)
         penalty_factor = min(1.0, math.sqrt(signal_count / 4.0))
 
-        # Base signal (before penalty)
-        base_signal = avg_score
+        # Average signal (before applying penalty factor)
+        avg_signal = avg_score
 
-        # Apply penalty to get aggregate signal
-        aggregate_signal = base_signal * penalty_factor
+        # Apply penalty factor to get final factored signal
+        factored_avg_signal = avg_signal * penalty_factor
 
         aggregated.append({
             'date': date_str,
@@ -100,8 +100,8 @@ def aggregate_signals(signals, date_str):
             'estimator_id': estimator_id,
             'signal_count': signal_count,
             'penalty_factor': round(penalty_factor, 4),
-            'base_signal': round(base_signal, 4),
-            'aggregate_signal': round(aggregate_signal, 4)
+            'avg_signal': round(avg_signal, 4),
+            'factored_avg_signal': round(factored_avg_signal, 4)
         })
 
     # Sort by currency, generator_id, estimator_id

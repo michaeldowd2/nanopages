@@ -46,9 +46,9 @@ def combine_aggregated_signals(aggregated_signals, generator_weights=None):
     total_signal_count = 0
 
     for agg_sig in aggregated_signals:
-        # aggregate_signal is SIGNED (positive=bullish, negative=bearish)
+        # factored_avg_signal is SIGNED (positive=bullish, negative=bearish)
         # This already includes the penalty factor applied in Process 7
-        signed_signal = float(agg_sig.get('aggregate_signal', 0.0))
+        signed_signal = float(agg_sig.get('factored_avg_signal', 0.0))
         signal_count = int(agg_sig.get('signal_count', 0))
         generator_id = agg_sig.get('generator_id', '')
 
