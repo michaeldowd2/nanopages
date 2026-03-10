@@ -162,11 +162,19 @@ def write_csv(
     Returns:
         Path where CSV was written
     """
-    if not rows:
-        raise ValueError("Cannot write empty rows list")
-
     # Get column names
     expected_cols = get_column_names(process_name)
+
+    # Handle empty rows - write header-only CSV
+    if not rows:
+        output_path = get_output_path(process_name, **kwargs)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(output_path, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=expected_cols)
+            writer.writeheader()
+
+        return output_path
 
     # Validate columns if requested
     if validate:

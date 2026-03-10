@@ -225,6 +225,75 @@ No code changes needed - configuration-driven!
 
 ---
 
+## Historic Data and Backfilling
+
+### ⚠️ CRITICAL: Data-Fetching Processes
+
+**Processes 1 and 3 fetch LIVE data** from external sources and should NEVER be run with historic dates:
+
+| Process | Name | Data Source | Safe for Historic Dates? |
+|---------|------|-------------|-------------------------|
+| **1** | Exchange Rates | GitHub Currency API | ❌ **NO** - Fetches current rates |
+| **3** | News Aggregation | RSS/NewsAPI | ❌ **NO** - Fetches current news |
+
+**Why?** Running these with `--date 2026-02-24` will:
+- Fetch today's data from the API
+- Save it with filename `2026-02-24.csv`
+- **Corrupt the historic record** ⚠️
+
+**Guardrails:** The `run-system.py` script will block attempts to run P1 or P3 with historic dates.
+
+### ✅ Safe Processes for Historic Reruns
+
+The following processes **read from existing data** and are safe to rerun for historic dates:
+
+| Process | Name | Safe? | Reason |
+|---------|------|-------|--------|
+| **2** | Currency Indices | ✅ YES | Reads from P1 CSV files |
+| **4** | Time Horizon Analysis | ✅ YES | Reads from P3 CSV files |
+| **5** | Sentiment Signals | ✅ YES | Reads from P3 CSV files |
+| **6** | Signal Realization | ✅ YES | Reads from P2, P4, P5 CSV files |
+| **7** | Signal Aggregation | ✅ YES | Reads from P6 CSV files |
+| **8** | Trade Calculation | ✅ YES | Reads from P7 CSV files |
+| **9** | Portfolio Execution | ✅ YES | Reads from P1, P8 CSV files |
+
+### Backfilling Missing Data
+
+To backfill historic data for processes 2-9:
+
+```bash
+# Example: Backfill all processes for a specific date
+python3 scripts/utilities/run-system.py --date 2026-02-25 --process-ids 2 4 5 6 7 8 9
+
+# Example: Backfill just Process 2 for multiple dates
+for date in 2026-02-25 2026-02-26 2026-02-27; do
+    python3 scripts/utilities/run-system.py --date $date --process-ids 2
+done
+```
+
+**Requirements:**
+- P1 (Exchange Rates) CSV must exist for the target date
+- P3 (News) CSV must exist for the target date (if running P4+)
+
+### Obtaining Historic Exchange Rates
+
+If you need historic exchange rate data that was never fetched:
+
+1. **Manual Archive Sources:**
+   - European Central Bank: https://www.ecb.europa.eu/stats/eurofxref/
+   - Bank of England: https://www.bankofengland.co.uk/boeapps/database/
+   - FRED (Federal Reserve): https://fred.stlouisfed.org/
+
+2. **Format Requirements:**
+   - Create CSV with columns: `date, base_currency, quote_currency, rate`
+   - Save as `data/prices/YYYY-MM-DD.csv`
+   - Ensure all 121 currency pairs (11×11) are included
+
+3. **Validation:**
+   - Run: `python3 scripts/utilities/csv_helper.py --validate data/prices/YYYY-MM-DD.csv`
+
+---
+
 ## For More Details
 
 - Configuration: See [CONFIGURATION.md](CONFIGURATION.md)

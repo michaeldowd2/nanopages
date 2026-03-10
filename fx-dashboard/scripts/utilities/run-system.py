@@ -179,6 +179,38 @@ def execute_process(config, process_id, date=None):
     if 'generate-sentiment-signals-v2.py' in script_path:
         script_path = script_path.replace('generate-sentiment-signals-v2.py', 'generate-sentiment-signals.py')
 
+    # GUARDRAIL: Prevent historic reruns of data-fetching processes
+    # Processes 1 and 3 fetch live data from external APIs/sources
+    # Running them with historic dates will save today's data with historic filenames
+    if date:
+        from datetime import datetime
+        today = datetime.now().strftime('%Y-%m-%d')
+
+        # List of processes that fetch live/current data
+        FETCH_PROCESSES = {
+            '1': 'Exchange Rates (fetches current rates from API)',
+            '3': 'News Aggregation (fetches current news from RSS/NewsAPI)'
+        }
+
+        if process_id in FETCH_PROCESSES and date != today:
+            logger.error("="*60)
+            logger.error("GUARDRAIL VIOLATION: Cannot run data-fetching process with historic date")
+            logger.error(f"Process {process_id}: {FETCH_PROCESSES[process_id]}")
+            logger.error(f"Requested date: {date}")
+            logger.error(f"Today's date: {today}")
+            logger.error("")
+            logger.error("These processes fetch CURRENT data from external sources.")
+            logger.error("Running them with --date would save today's data with a historic filename,")
+            logger.error("corrupting the historic record.")
+            logger.error("")
+            logger.error("To backfill historic data, you must:")
+            logger.error("  1. Obtain actual historic data from archive sources")
+            logger.error("  2. Format it correctly and place it in the data folder manually")
+            logger.error("")
+            logger.error("Safe processes for historic reruns: 2, 4, 5, 6, 7, 8, 9")
+            logger.error("="*60)
+            return False
+
     # Build command
     script_full_path = BASE_DIR / script_path
 
