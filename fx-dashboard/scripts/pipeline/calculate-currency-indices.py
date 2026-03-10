@@ -2,22 +2,25 @@
 """
 Currency Index Calculator - Percent Change Method
 
-Generates synthetic currency strength indices using percent changes from base date.
+Generates synthetic currency strength indices using percent changes from previous day.
 This properly isolates each currency's movement and gives equal weight to all pairs
 regardless of magnitude.
 
-Method: For each currency, calculate percent changes of all pairs (vs base date),
+Method: For each currency, calculate percent changes of all pairs (vs previous day),
 average them, and apply to previous index value.
 
 Example for USD on 2026-03-08:
-1. Load base rates (2026-02-24): EUR/USD=1.08, JPY/USD=0.0067, GBP/USD=0.85
-2. Load today's rates: EUR/USD=1.085, JPY/USD=0.0066, GBP/USD=0.853
+1. Load previous rates (2026-03-07): EUR/USD=1.08, JPY/USD=0.0067, GBP/USD=0.85
+2. Load today's rates (2026-03-08): EUR/USD=1.085, JPY/USD=0.0066, GBP/USD=0.853
 3. Calculate percent changes:
    - EUR/USD: (1.085 / 1.08 - 1) × 100 = +0.46%
    - JPY/USD: (0.0066 / 0.0067 - 1) × 100 = -1.49%
    - GBP/USD: (0.853 / 0.85 - 1) × 100 = +0.35%
 4. Average: (+0.46 - 1.49 + 0.35) / 3 = -0.23%
 5. Apply to previous index: 100 × (1 - 0.0023) = 99.77
+
+If exchange rates are identical between two dates, all percent changes = 0%,
+so the index remains unchanged (as expected).
 
 Output: CSV with columns: date, currency, index
 """
@@ -60,14 +63,14 @@ def get_rate_for_pair(base_currency, quote_currency, rates_rows):
     return None
 
 
-def calculate_currency_index(currency, today_rates, base_rates, prev_index):
+def calculate_currency_index(currency, today_rates, prev_rates, prev_index):
     """
     Calculate currency index using percent-change method.
 
     Parameters:
     - currency: Target currency (e.g., 'USD')
     - today_rates: Today's exchange rates (list of dicts)
-    - base_rates: Base date exchange rates (list of dicts)
+    - prev_rates: Previous day's exchange rates (list of dicts)
     - prev_index: Previous day's index value (or 100.0 for base date)
 
     Returns:
@@ -81,14 +84,14 @@ def calculate_currency_index(currency, today_rates, base_rates, prev_index):
             continue
 
         # Get OTHER/CURRENCY rates (other currency in numerator, target in denominator)
-        base_rate = get_rate_for_pair(other_currency, currency, base_rates)
+        prev_rate = get_rate_for_pair(other_currency, currency, prev_rates)
         today_rate = get_rate_for_pair(other_currency, currency, today_rates)
 
-        if base_rate is None or today_rate is None:
+        if prev_rate is None or today_rate is None:
             continue
 
-        # Calculate percent change from base date
-        pct_change = ((today_rate / base_rate) - 1) * 100
+        # Calculate percent change from PREVIOUS DAY (not base date)
+        pct_change = ((today_rate / prev_rate) - 1) * 100
         percent_changes.append(pct_change)
 
     if not percent_changes:
@@ -130,27 +133,29 @@ def calculate_all_indices(date_str):
         # Check if this IS the base date
         is_base_date = (date_str == BASE_DATE)
 
-        # Load base date exchange rates (needed for percent change calculation)
-        print(f"\n2. Loading base date exchange rates ({BASE_DATE})...")
-        base_rates = None
+        # Get previous date
+        prev_date = get_previous_date(date_str)
+
+        # Load previous day's exchange rates (needed for percent change calculation)
+        print(f"\n2. Loading previous day exchange rates...")
+        prev_rates = None
 
         if is_base_date:
             print(f"   ℹ This is the base date - all indices will be set to 100")
-            base_rates = today_rates  # Use today's rates as base
+            prev_rates = today_rates  # Use today's rates (no change on base date)
         else:
-            if csv_exists('process_1_exchange_rates', date=BASE_DATE):
-                base_rates = read_csv('process_1_exchange_rates', date=BASE_DATE)
-                print(f"   ✓ Loaded {len(base_rates)} base date exchange rates")
-                logger.add_count('base_rates_loaded', len(base_rates))
+            if csv_exists('process_1_exchange_rates', date=prev_date):
+                prev_rates = read_csv('process_1_exchange_rates', date=prev_date)
+                print(f"   ✓ Loaded {len(prev_rates)} exchange rates from {prev_date}")
+                logger.add_count('prev_rates_loaded', len(prev_rates))
             else:
-                print(f"   ✗ Base date rates not found!")
-                logger.error(f"Missing base date rates for {BASE_DATE}")
+                print(f"   ✗ Previous day rates not found for {prev_date}!")
+                logger.error(f"Missing exchange rates for {prev_date}")
                 logger.fail()
                 return
 
         # Load previous day's indices (needed to apply percent changes)
         print(f"\n3. Loading previous day indices...")
-        prev_date = get_previous_date(date_str)
         prev_indices = {}
 
         if is_base_date:
@@ -188,7 +193,7 @@ def calculate_all_indices(date_str):
                 index = 100.0
             else:
                 # Calculate using percent change method
-                index = calculate_currency_index(currency, today_rates, base_rates, prev_index)
+                index = calculate_currency_index(currency, today_rates, prev_rates, prev_index)
 
                 if index is None:
                     print(f"   ⚠ Could not calculate index for {currency}")
