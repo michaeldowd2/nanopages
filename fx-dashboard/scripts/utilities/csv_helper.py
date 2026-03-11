@@ -23,19 +23,35 @@ def load_schema(process_name: str) -> Dict:
     Load CSV schema for a process from config.
 
     Args:
-        process_name: Schema name (e.g., 'process_1_exchange_rates')
+        process_name: Process ID (e.g., '1', '2', '3') or legacy schema name (e.g., 'process_1_exchange_rates')
 
     Returns:
-        Dict with 'columns' and 'output_path'
+        Dict with 'columns' and 'output_path' (from output_schema + output_path)
     """
     with open(CONFIG_PATH, 'r') as f:
         config = json.load(f)
 
-    schemas = config.get('csv_schemas', {})
-    if process_name not in schemas:
-        raise ValueError(f"Schema not found: {process_name}")
+    # Support both new process ID format and legacy schema names
+    if process_name.startswith('process_'):
+        # Legacy format: convert 'process_1_exchange_rates' to '1'
+        process_id = process_name.split('_')[1]
+    else:
+        process_id = process_name
 
-    return schemas[process_name]
+    steps = config.get('steps', {})
+    if process_id not in steps:
+        raise ValueError(f"Process not found: {process_id} (from {process_name})")
+
+    step = steps[process_id]
+
+    # Build schema from new structure
+    schema = {
+        'columns': step.get('output_schema', {}).get('columns', []),
+        'output_path': step.get('output_path', ''),
+        'description': step.get('output_schema', {}).get('description', step.get('description', ''))
+    }
+
+    return schema
 
 
 def get_column_names(process_name: str) -> List[str]:

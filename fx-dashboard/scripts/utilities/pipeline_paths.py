@@ -75,13 +75,19 @@ class PipelinePaths:
         Example:
             paths = PipelinePaths('1')
             output = paths.get_output_path(date='2024-01-15')
-            # Returns: /path/to/fx-portfolio/data/prices/fx-rates-2024-01-15.json
+            # Returns: /path/to/fx-portfolio/data/prices/2024-01-15.csv
         """
-        outputs = self.process.get('outputs', {})
-        primary = outputs.get('primary', '')
+        # Support both new and legacy config formats
+        if 'output_path' in self.process:
+            # New format (v4.0+): output_path property
+            primary = self.process.get('output_path', '')
+        else:
+            # Legacy format (v3.0): outputs.primary
+            outputs = self.process.get('outputs', {})
+            primary = outputs.get('primary', '')
 
         if not primary:
-            raise ValueError(f"Process {self.process_id} has no primary output defined")
+            raise ValueError(f"Process {self.process_id} has no output path defined")
 
         # Replace template variables
         template_vars = {
@@ -148,10 +154,17 @@ class PipelinePaths:
         Example:
             paths = PipelinePaths('1')
             patterns = paths.get_output_patterns()
-            # Returns: ['data/prices/fx-rates-*.json']
+            # Returns: ['data/prices/*.csv']
         """
-        outputs = self.process.get('outputs', {})
-        return outputs.get('patterns', [])
+        # Support both new and legacy config formats
+        if 'output_pattern' in self.process:
+            # New format (v4.0+): single output_pattern string
+            pattern = self.process.get('output_pattern', '')
+            return [pattern] if pattern else []
+        else:
+            # Legacy format (v3.0): outputs.patterns list
+            outputs = self.process.get('outputs', {})
+            return outputs.get('patterns', [])
 
     def get_data_dir(self, subdir: str) -> Path:
         """

@@ -1,505 +1,6 @@
 {
-  "version": "3.0",
-  "description": "FX Portfolio Trading Pipeline - CSV-based Data Format",
-  "csv_schemas": {
-    "process_1_exchange_rates": {
-      "description": "Exchange rates for all currency pairs",
-      "output_path": "data/prices/{date}.csv",
-      "columns": [
-        {
-          "name": "date",
-          "type": "string",
-          "description": "Trading date YYYY-MM-DD"
-        },
-        {
-          "name": "base_currency",
-          "type": "string",
-          "description": "Base currency (always EUR)"
-        },
-        {
-          "name": "quote_currency",
-          "type": "string",
-          "description": "Quote currency code"
-        },
-        {
-          "name": "rate",
-          "type": "float",
-          "description": "Exchange rate (quote/base)"
-        }
-      ]
-    },
-    "process_2_indices": {
-      "description": "Currency strength indices calculated using percent-change method (base 100)",
-      "output_path": "data/indices/{date}.csv",
-      "columns": [
-        {
-          "name": "date",
-          "type": "string",
-          "description": "Trading date YYYY-MM-DD"
-        },
-        {
-          "name": "currency",
-          "type": "string",
-          "description": "Currency code"
-        },
-        {
-          "name": "index",
-          "type": "float",
-          "description": "Currency strength index (base date = 100, calculated via percent changes from base)"
-        }
-      ]
-    },
-    "process_3_news": {
-      "description": "News articles aggregated from multiple sources",
-      "output_path": "data/news/{date}.csv",
-      "columns": [
-        {
-          "name": "date",
-          "type": "string",
-          "description": "Article fetch date YYYY-MM-DD"
-        },
-        {
-          "name": "source",
-          "type": "string",
-          "description": "News source name"
-        },
-        {
-          "name": "url",
-          "type": "string",
-          "description": "Article URL (unique identifier)"
-        },
-        {
-          "name": "currency",
-          "type": "string",
-          "description": "Currency the article relates to"
-        },
-        {
-          "name": "title",
-          "type": "string",
-          "description": "Article title"
-        },
-        {
-          "name": "snippet",
-          "type": "string",
-          "description": "Article snippet/summary"
-        }
-      ]
-    },
-    "process_4_horizons": {
-      "description": "Time horizon analysis for articles using LLM",
-      "output_path": "data/article-analysis/{date}.csv",
-      "columns": [
-        {
-          "name": "date",
-          "type": "string",
-          "description": "Analysis date YYYY-MM-DD"
-        },
-        {
-          "name": "source",
-          "type": "string",
-          "description": "News source name"
-        },
-        {
-          "name": "url",
-          "type": "string",
-          "description": "Article URL"
-        },
-        {
-          "name": "currency",
-          "type": "string",
-          "description": "Currency the article relates to"
-        },
-        {
-          "name": "title",
-          "type": "string",
-          "description": "Article title"
-        },
-        {
-          "name": "estimator_id",
-          "type": "string",
-          "description": "Estimator identifier"
-        },
-        {
-          "name": "time_horizon",
-          "type": "string",
-          "description": "Time horizon label (1day, 1week, 2week, 1month)"
-        },
-        {
-          "name": "horizon_days",
-          "type": "int",
-          "description": "Horizon in days"
-        },
-        {
-          "name": "valid_to_date",
-          "type": "string",
-          "description": "Date when horizon expires YYYY-MM-DD"
-        },
-        {
-          "name": "confidence",
-          "type": "float",
-          "description": "Confidence score (0-1)"
-        },
-        {
-          "name": "reasoning",
-          "type": "string",
-          "description": "LLM reasoning for horizon assignment"
-        }
-      ]
-    },
-    "process_5_signals": {
-      "description": "Sentiment signals generated from news articles",
-      "output_path": "data/signals/{date}.csv",
-      "columns": [
-        {
-          "name": "date",
-          "type": "string",
-          "description": "Signal generation date YYYY-MM-DD"
-        },
-        {
-          "name": "source",
-          "type": "string",
-          "description": "News source name"
-        },
-        {
-          "name": "url",
-          "type": "string",
-          "description": "Source article URL"
-        },
-        {
-          "name": "currency",
-          "type": "string",
-          "description": "Currency the signal relates to"
-        },
-        {
-          "name": "title",
-          "type": "string",
-          "description": "Source article title"
-        },
-        {
-          "name": "generator_id",
-          "type": "string",
-          "description": "Signal generator identifier"
-        },
-        {
-          "name": "predicted_direction",
-          "type": "string",
-          "description": "Predicted direction (bullish/bearish/neutral)"
-        },
-        {
-          "name": "predicted_magnitude",
-          "type": "string",
-          "nullable": true,
-          "description": "Predicted magnitude (small/medium/large)"
-        },
-        {
-          "name": "confidence",
-          "type": "float",
-          "description": "Signal confidence (0-1)"
-        },
-        {
-          "name": "pair_context",
-          "type": "string",
-          "nullable": true,
-          "description": "Specific currency pair context if applicable"
-        },
-        {
-          "name": "reasoning",
-          "type": "string",
-          "description": "Signal reasoning/explanation"
-        },
-        {
-          "name": "signal",
-          "type": "float",
-          "description": "Magnitude-weighted signal value (confidence \u00d7 magnitude_weight)"
-        }
-      ]
-    },
-    "process_6_realization": {
-      "description": "Signal realization check against actual currency movements",
-      "output_path": "data/signal-realization/{date}.csv",
-      "columns": [
-        {
-          "name": "date",
-          "type": "string",
-          "description": "Realization check date YYYY-MM-DD"
-        },
-        {
-          "name": "source",
-          "type": "string",
-          "description": "News source name"
-        },
-        {
-          "name": "url",
-          "type": "string",
-          "description": "Article URL"
-        },
-        {
-          "name": "currency",
-          "type": "string",
-          "description": "Currency code"
-        },
-        {
-          "name": "title",
-          "type": "string",
-          "description": "Article title"
-        },
-        {
-          "name": "article_download_date",
-          "type": "string",
-          "description": "Date article was fetched"
-        },
-        {
-          "name": "generator_id",
-          "type": "string",
-          "description": "Signal generator ID"
-        },
-        {
-          "name": "estimator_id",
-          "type": "string",
-          "description": "Time horizon estimator ID"
-        },
-        {
-          "name": "time_horizon",
-          "type": "string",
-          "description": "Time horizon label"
-        },
-        {
-          "name": "horizon_days",
-          "type": "int",
-          "description": "Horizon in days"
-        },
-        {
-          "name": "valid_to_date",
-          "type": "string",
-          "description": "Horizon expiry date"
-        },
-        {
-          "name": "predicted_direction",
-          "type": "string",
-          "description": "Predicted direction"
-        },
-        {
-          "name": "predicted_magnitude",
-          "type": "string",
-          "nullable": true,
-          "description": "Predicted magnitude"
-        },
-        {
-          "name": "confidence",
-          "type": "float",
-          "description": "Signal confidence"
-        },
-        {
-          "name": "signal",
-          "type": "float",
-          "description": "Numeric signal value"
-        },
-        {
-          "name": "start_index",
-          "type": "float",
-          "description": "Currency index at signal generation"
-        },
-        {
-          "name": "end_index",
-          "type": "float",
-          "description": "Currency index at horizon expiry"
-        },
-        {
-          "name": "actual_pct_change",
-          "type": "float",
-          "description": "Actual percentage change"
-        },
-        {
-          "name": "actual_direction",
-          "type": "string",
-          "description": "Actual direction (bullish/bearish)"
-        },
-        {
-          "name": "realized",
-          "type": "boolean",
-          "description": "Whether signal was realized"
-        },
-        {
-          "name": "realization_status",
-          "type": "string",
-          "description": "Status (realized/contradicted/pending)"
-        }
-      ]
-    },
-    "process_7_aggregated_signals": {
-      "description": "Aggregated unrealized signals by generator/estimator/currency with penalty factor",
-      "output_path": "data/aggregated-signals/{date}.csv",
-      "columns": [
-        {
-          "name": "date",
-          "type": "string",
-          "description": "Aggregation date YYYY-MM-DD"
-        },
-        {
-          "name": "currency",
-          "type": "string",
-          "description": "Currency code"
-        },
-        {
-          "name": "generator_id",
-          "type": "string",
-          "description": "Signal generator identifier"
-        },
-        {
-          "name": "estimator_id",
-          "type": "string",
-          "description": "Time horizon estimator identifier"
-        },
-        {
-          "name": "signal_count",
-          "type": "int",
-          "description": "Number of signals in aggregate"
-        },
-        {
-          "name": "penalty_factor",
-          "type": "float",
-          "description": "Penalty applied for low signal count (0-1)"
-        },
-        {
-          "name": "avg_signal",
-          "type": "float",
-          "description": "Average signal across all signals in group"
-        },
-        {
-          "name": "factored_avg_signal",
-          "type": "float",
-          "description": "Average signal after applying penalty factor"
-        }
-      ]
-    },
-    "process_8_trades": {
-      "description": "Proposed trades based on aggregated signals",
-      "output_path": "data/trades/{date}.csv",
-      "columns": [
-        {
-          "name": "date",
-          "type": "string",
-          "description": "Trade calculation date YYYY-MM-DD"
-        },
-        {
-          "name": "trader_id",
-          "type": "string",
-          "description": "Trader identifier"
-        },
-        {
-          "name": "buy_currency",
-          "type": "string",
-          "description": "Currency to buy"
-        },
-        {
-          "name": "sell_currency",
-          "type": "string",
-          "description": "Currency to sell"
-        },
-        {
-          "name": "buy_signal",
-          "type": "float",
-          "description": "Buy signal strength"
-        },
-        {
-          "name": "sell_signal",
-          "type": "float",
-          "description": "Sell signal strength"
-        },
-        {
-          "name": "trade_signal",
-          "type": "float",
-          "description": "Net trade signal (buy_signal - sell_signal)"
-        }
-      ]
-    },
-    "process_9_portfolio": {
-      "description": "Portfolio execution and state tracking",
-      "output_path": "data/portfolios/{date}.csv",
-      "columns": [
-        {
-          "name": "date",
-          "type": "string",
-          "description": "Trading date YYYY-MM-DD"
-        },
-        {
-          "name": "strategy_id",
-          "type": "string",
-          "description": "Strategy identifier"
-        },
-        {
-          "name": "trader_id",
-          "type": "string",
-          "description": "Trader identifier"
-        },
-        {
-          "name": "trades_executed",
-          "type": "int",
-          "description": "Number of trades executed"
-        },
-        {
-          "name": "portfolio_value",
-          "type": "float",
-          "description": "Total portfolio value in EUR"
-        },
-        {
-          "name": "EUR",
-          "type": "float",
-          "description": "EUR balance"
-        },
-        {
-          "name": "USD",
-          "type": "float",
-          "description": "USD balance"
-        },
-        {
-          "name": "GBP",
-          "type": "float",
-          "description": "GBP balance"
-        },
-        {
-          "name": "JPY",
-          "type": "float",
-          "description": "JPY balance"
-        },
-        {
-          "name": "CHF",
-          "type": "float",
-          "description": "CHF balance"
-        },
-        {
-          "name": "AUD",
-          "type": "float",
-          "description": "AUD balance"
-        },
-        {
-          "name": "CAD",
-          "type": "float",
-          "description": "CAD balance"
-        },
-        {
-          "name": "NOK",
-          "type": "float",
-          "description": "NOK balance"
-        },
-        {
-          "name": "SEK",
-          "type": "float",
-          "description": "SEK balance"
-        },
-        {
-          "name": "CNY",
-          "type": "float",
-          "description": "CNY balance"
-        },
-        {
-          "name": "MXN",
-          "type": "float",
-          "description": "MXN balance"
-        }
-      ]
-    }
-  },
+  "version": "4.0",
+  "description": "FX Portfolio Trading Pipeline - Refactored config with embedded schemas",
   "steps": {
     "1": {
       "id": "1",
@@ -508,13 +9,33 @@
       "description": "Fetch current exchange rates from API",
       "depends_on": [],
       "inputs": [],
-      "outputs": {
-        "primary": "data/prices/{date}.csv",
-        "patterns": [
-          "data/prices/*.csv"
+      "output_path": "data/prices/{date}.csv",
+      "output_pattern": "data/prices/*.csv",
+      "output_schema": {
+        "description": "Exchange rates for all currency pairs",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Trading date YYYY-MM-DD"
+          },
+          {
+            "name": "base_currency",
+            "type": "string",
+            "description": "Base currency (always EUR)"
+          },
+          {
+            "name": "quote_currency",
+            "type": "string",
+            "description": "Quote currency code"
+          },
+          {
+            "name": "rate",
+            "type": "float",
+            "description": "Exchange rate (quote/base)"
+          }
         ]
       },
-      "csv_schema": "process_1_exchange_rates",
       "supports_date_filter": true,
       "is_safe_to_clear": true
     },
@@ -529,13 +50,28 @@
       "inputs": [
         "data/prices/{date}.csv"
       ],
-      "outputs": {
-        "primary": "data/indices/{date}.csv",
-        "patterns": [
-          "data/indices/*.csv"
+      "output_path": "data/indices/{date}.csv",
+      "output_pattern": "data/indices/*.csv",
+      "output_schema": {
+        "description": "Currency strength indices calculated using percent-change method (base 100)",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Trading date YYYY-MM-DD"
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "description": "Currency code"
+          },
+          {
+            "name": "index",
+            "type": "float",
+            "description": "Currency strength index (base date = 100, calculated via percent changes from base)"
+          }
         ]
       },
-      "csv_schema": "process_2_indices",
       "supports_date_filter": true,
       "is_safe_to_clear": true
     },
@@ -546,13 +82,43 @@
       "description": "Fetch and store news articles from various sources",
       "depends_on": [],
       "inputs": [],
-      "outputs": {
-        "primary": "data/news/{date}.csv",
-        "patterns": [
-          "data/news/*.csv"
+      "output_path": "data/news/{date}.csv",
+      "output_pattern": "data/news/*.csv",
+      "output_schema": {
+        "description": "News articles aggregated from multiple sources",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Article fetch date YYYY-MM-DD"
+          },
+          {
+            "name": "source",
+            "type": "string",
+            "description": "News source name"
+          },
+          {
+            "name": "url",
+            "type": "string",
+            "description": "Article URL (unique identifier)"
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "description": "Currency the article relates to"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "description": "Article title"
+          },
+          {
+            "name": "snippet",
+            "type": "string",
+            "description": "Article snippet/summary"
+          }
         ]
       },
-      "csv_schema": "process_3_news",
       "supports_date_filter": true,
       "is_safe_to_clear": true,
       "warning": "Clearing news articles will require re-fetching from external APIs"
@@ -568,13 +134,68 @@
       "inputs": [
         "data/news/{date}.csv"
       ],
-      "outputs": {
-        "primary": "data/article-analysis/{date}.csv",
-        "patterns": [
-          "data/article-analysis/*.csv"
+      "output_path": "data/article-analysis/{date}.csv",
+      "output_pattern": "data/article-analysis/*.csv",
+      "output_schema": {
+        "description": "Time horizon analysis for articles using LLM",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Analysis date YYYY-MM-DD"
+          },
+          {
+            "name": "source",
+            "type": "string",
+            "description": "News source name"
+          },
+          {
+            "name": "url",
+            "type": "string",
+            "description": "Article URL"
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "description": "Currency the article relates to"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "description": "Article title"
+          },
+          {
+            "name": "estimator_id",
+            "type": "string",
+            "description": "Estimator identifier"
+          },
+          {
+            "name": "time_horizon",
+            "type": "string",
+            "description": "Time horizon label (1day, 1week, 2week, 1month)"
+          },
+          {
+            "name": "horizon_days",
+            "type": "int",
+            "description": "Horizon in days"
+          },
+          {
+            "name": "valid_to_date",
+            "type": "string",
+            "description": "Date when horizon expires YYYY-MM-DD"
+          },
+          {
+            "name": "confidence",
+            "type": "float",
+            "description": "Confidence score (0-1)"
+          },
+          {
+            "name": "reasoning",
+            "type": "string",
+            "description": "LLM reasoning for horizon assignment"
+          }
         ]
       },
-      "csv_schema": "process_4_horizons",
       "supports_date_filter": true,
       "is_safe_to_clear": true,
       "warning": "Uses LLM API - clearing will incur re-analysis costs"
@@ -586,15 +207,11 @@
       "description": "Taxonomy of currency-affecting events with keywords and signal characteristics",
       "depends_on": [],
       "inputs": [],
-      "outputs": {
-        "primary": "data/events/currency_events.json",
-        "patterns": [
-          "data/events/currency_events.json"
-        ]
-      },
+      "output_path": "data/events/currency_events.json",
+      "output_pattern": "data/events/currency_events.json",
       "supports_date_filter": false,
       "is_safe_to_clear": false,
-      "note": "Static reference data - manually curated event taxonomy"
+      "note": "Static reference data - manually curated event taxonomy (JSON format, not CSV)"
     },
     "5": {
       "id": "5",
@@ -607,13 +224,75 @@
       "inputs": [
         "data/news/{date}.csv"
       ],
-      "outputs": {
-        "primary": "data/signals/{date}.csv",
-        "patterns": [
-          "data/signals/*.csv"
+      "output_path": "data/signals/{date}.csv",
+      "output_pattern": "data/signals/*.csv",
+      "output_schema": {
+        "description": "Sentiment signals generated from news articles",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Signal generation date YYYY-MM-DD"
+          },
+          {
+            "name": "source",
+            "type": "string",
+            "description": "News source name"
+          },
+          {
+            "name": "url",
+            "type": "string",
+            "description": "Source article URL"
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "description": "Currency the signal relates to"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "description": "Source article title"
+          },
+          {
+            "name": "generator_id",
+            "type": "string",
+            "description": "Signal generator identifier"
+          },
+          {
+            "name": "predicted_direction",
+            "type": "string",
+            "description": "Predicted direction (bullish/bearish/neutral)"
+          },
+          {
+            "name": "predicted_magnitude",
+            "type": "string",
+            "nullable": true,
+            "description": "Predicted magnitude (small/medium/large)"
+          },
+          {
+            "name": "confidence",
+            "type": "float",
+            "description": "Signal confidence (0-1)"
+          },
+          {
+            "name": "pair_context",
+            "type": "string",
+            "nullable": true,
+            "description": "Specific currency pair context if applicable"
+          },
+          {
+            "name": "reasoning",
+            "type": "string",
+            "description": "Signal reasoning/explanation"
+          },
+          {
+            "name": "signal",
+            "type": "float",
+            "description": "Magnitude-weighted signal value (confidence \u00d7 magnitude_weight)"
+          }
         ]
       },
-      "csv_schema": "process_5_signals",
       "supports_date_filter": true,
       "is_safe_to_clear": true,
       "warning": "Uses LLM API - clearing will incur re-generation costs"
@@ -633,13 +312,119 @@
         "data/article-analysis/{date}.csv",
         "data/indices/{date}.csv"
       ],
-      "outputs": {
-        "primary": "data/signal-realization/{date}.csv",
-        "patterns": [
-          "data/signal-realization/*.csv"
+      "output_path": "data/signal-realization/{date}.csv",
+      "output_pattern": "data/signal-realization/*.csv",
+      "output_schema": {
+        "description": "Signal realization check against actual currency movements",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Realization check date YYYY-MM-DD"
+          },
+          {
+            "name": "source",
+            "type": "string",
+            "description": "News source name"
+          },
+          {
+            "name": "url",
+            "type": "string",
+            "description": "Article URL"
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "description": "Currency code"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "description": "Article title"
+          },
+          {
+            "name": "article_download_date",
+            "type": "string",
+            "description": "Date article was fetched"
+          },
+          {
+            "name": "generator_id",
+            "type": "string",
+            "description": "Signal generator ID"
+          },
+          {
+            "name": "estimator_id",
+            "type": "string",
+            "description": "Time horizon estimator ID"
+          },
+          {
+            "name": "time_horizon",
+            "type": "string",
+            "description": "Time horizon label"
+          },
+          {
+            "name": "horizon_days",
+            "type": "int",
+            "description": "Horizon in days"
+          },
+          {
+            "name": "valid_to_date",
+            "type": "string",
+            "description": "Horizon expiry date"
+          },
+          {
+            "name": "predicted_direction",
+            "type": "string",
+            "description": "Predicted direction"
+          },
+          {
+            "name": "predicted_magnitude",
+            "type": "string",
+            "nullable": true,
+            "description": "Predicted magnitude"
+          },
+          {
+            "name": "confidence",
+            "type": "float",
+            "description": "Signal confidence"
+          },
+          {
+            "name": "signal",
+            "type": "float",
+            "description": "Numeric signal value"
+          },
+          {
+            "name": "start_index",
+            "type": "float",
+            "description": "Currency index at signal generation"
+          },
+          {
+            "name": "end_index",
+            "type": "float",
+            "description": "Currency index at horizon expiry"
+          },
+          {
+            "name": "actual_pct_change",
+            "type": "float",
+            "description": "Actual percentage change"
+          },
+          {
+            "name": "actual_direction",
+            "type": "string",
+            "description": "Actual direction (bullish/bearish)"
+          },
+          {
+            "name": "realized",
+            "type": "boolean",
+            "description": "Whether signal was realized"
+          },
+          {
+            "name": "realization_status",
+            "type": "string",
+            "description": "Status (realized/contradicted/pending)"
+          }
         ]
       },
-      "csv_schema": "process_6_realization",
       "supports_date_filter": true,
       "is_safe_to_clear": true,
       "note": "Joins signals with horizons and index data"
@@ -655,13 +440,53 @@
       "inputs": [
         "data/signal-realization/*.csv"
       ],
-      "outputs": {
-        "primary": "data/aggregated-signals/{date}.csv",
-        "patterns": [
-          "data/aggregated-signals/*.csv"
+      "output_path": "data/aggregated-signals/{date}.csv",
+      "output_pattern": "data/aggregated-signals/*.csv",
+      "output_schema": {
+        "description": "Aggregated unrealized signals by generator/estimator/currency with penalty factor",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Aggregation date YYYY-MM-DD"
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "description": "Currency code"
+          },
+          {
+            "name": "generator_id",
+            "type": "string",
+            "description": "Signal generator identifier"
+          },
+          {
+            "name": "estimator_id",
+            "type": "string",
+            "description": "Time horizon estimator identifier"
+          },
+          {
+            "name": "signal_count",
+            "type": "int",
+            "description": "Number of signals in aggregate"
+          },
+          {
+            "name": "penalty_factor",
+            "type": "float",
+            "description": "Penalty applied for low signal count (0-1)"
+          },
+          {
+            "name": "avg_signal",
+            "type": "float",
+            "description": "Average signal across all signals in group"
+          },
+          {
+            "name": "factored_avg_signal",
+            "type": "float",
+            "description": "Average signal after applying penalty factor"
+          }
         ]
       },
-      "csv_schema": "process_7_aggregated_signals",
       "supports_date_filter": true,
       "is_safe_to_clear": true
     },
@@ -677,13 +502,48 @@
         "data/aggregated-signals/{date}.csv",
         "data/prices/{date}.csv"
       ],
-      "outputs": {
-        "primary": "data/trades/{date}.csv",
-        "patterns": [
-          "data/trades/*.csv"
+      "output_path": "data/trades/{date}.csv",
+      "output_pattern": "data/trades/*.csv",
+      "output_schema": {
+        "description": "Proposed trades based on aggregated signals",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Trade calculation date YYYY-MM-DD"
+          },
+          {
+            "name": "trader_id",
+            "type": "string",
+            "description": "Trader identifier"
+          },
+          {
+            "name": "buy_currency",
+            "type": "string",
+            "description": "Currency to buy"
+          },
+          {
+            "name": "sell_currency",
+            "type": "string",
+            "description": "Currency to sell"
+          },
+          {
+            "name": "buy_signal",
+            "type": "float",
+            "description": "Buy signal strength"
+          },
+          {
+            "name": "sell_signal",
+            "type": "float",
+            "description": "Sell signal strength"
+          },
+          {
+            "name": "trade_signal",
+            "type": "float",
+            "description": "Net trade signal (buy_signal - sell_signal)"
+          }
         ]
       },
-      "csv_schema": "process_8_trades",
       "supports_date_filter": true,
       "is_safe_to_clear": true
     },
@@ -701,13 +561,93 @@
         "data/trades/{date}.csv",
         "data/portfolios/{prev_date}.csv"
       ],
-      "outputs": {
-        "primary": "data/portfolios/{date}.csv",
-        "patterns": [
-          "data/portfolios/*.csv"
+      "output_path": "data/portfolios/{date}.csv",
+      "output_pattern": "data/portfolios/*.csv",
+      "output_schema": {
+        "description": "Portfolio execution and state tracking",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Trading date YYYY-MM-DD"
+          },
+          {
+            "name": "strategy_id",
+            "type": "string",
+            "description": "Strategy identifier"
+          },
+          {
+            "name": "trader_id",
+            "type": "string",
+            "description": "Trader identifier"
+          },
+          {
+            "name": "trades_executed",
+            "type": "int",
+            "description": "Number of trades executed"
+          },
+          {
+            "name": "portfolio_value",
+            "type": "float",
+            "description": "Total portfolio value in EUR"
+          },
+          {
+            "name": "EUR",
+            "type": "float",
+            "description": "EUR balance"
+          },
+          {
+            "name": "USD",
+            "type": "float",
+            "description": "USD balance"
+          },
+          {
+            "name": "GBP",
+            "type": "float",
+            "description": "GBP balance"
+          },
+          {
+            "name": "JPY",
+            "type": "float",
+            "description": "JPY balance"
+          },
+          {
+            "name": "CHF",
+            "type": "float",
+            "description": "CHF balance"
+          },
+          {
+            "name": "AUD",
+            "type": "float",
+            "description": "AUD balance"
+          },
+          {
+            "name": "CAD",
+            "type": "float",
+            "description": "CAD balance"
+          },
+          {
+            "name": "NOK",
+            "type": "float",
+            "description": "NOK balance"
+          },
+          {
+            "name": "SEK",
+            "type": "float",
+            "description": "SEK balance"
+          },
+          {
+            "name": "CNY",
+            "type": "float",
+            "description": "CNY balance"
+          },
+          {
+            "name": "MXN",
+            "type": "float",
+            "description": "MXN balance"
+          }
         ]
       },
-      "csv_schema": "process_9_portfolio",
       "supports_date_filter": true,
       "is_safe_to_clear": false,
       "warning": "Portfolio state is cumulative - clearing resets all portfolio history!"
@@ -739,28 +679,24 @@
         "data/trades/*.csv",
         "data/portfolios/*.csv"
       ],
-      "outputs": {
-        "primary": "site_data/",
-        "patterns": [
-          "site_data/step1_*.csv",
-          "site_data/step2_*.csv",
-          "site_data/step3_*.csv",
-          "site_data/step4_*.csv",
-          "site_data/step5_*.csv",
-          "site_data/step6_*.csv",
-          "site_data/step7_*.csv",
-          "site_data/step8_*.csv",
-          "site_data/step9_*.csv"
-        ]
-      },
+      "output_path": "site_data/",
+      "output_pattern": "site_data/step*.csv",
       "supports_date_filter": false,
       "is_safe_to_clear": false,
       "note": "Exports last 30 days of each process to dashboard format"
     }
   },
   "notes": {
+    "config_version": [
+      "Version 4.0: Refactored to embed schemas directly in step definitions",
+      "Changes from 3.0:",
+      "  - Removed top-level csv_schemas section (redundant)",
+      "  - Replaced outputs.primary/patterns with output_path/output_pattern",
+      "  - Removed csv_schema reference - schema now embedded as output_schema",
+      "  - More concise and self-contained step definitions"
+    ],
     "csv_format": [
-      "All process outputs are CSV files with schemas defined in csv_schemas section",
+      "All process outputs are CSV files with schemas defined inline",
       "Each process outputs one CSV file per date at data/{folder}/{date}.csv",
       "No more per-currency subdirectories - currency is a column in the CSV",
       "Export process concatenates last 30 days of each process' CSVs"
