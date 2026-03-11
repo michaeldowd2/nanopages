@@ -177,48 +177,6 @@ def export_step4_horizons():
     return len(output)
 
 
-def export_step4_1_currency_events():
-    """Step 4.1: Currency Events Reference Data"""
-    output = []
-
-    # Read currency events from reference file
-    events_file = '/workspace/group/fx-portfolio/data/currency-events/events.json'
-
-    if not os.path.exists(events_file):
-        print("⚠️  Step 4.1: Currency events file not found")
-        return 0
-
-    try:
-        with open(events_file, 'r') as f:
-            events = json.load(f)
-
-        # Flatten events structure for CSV
-        for event_category, event_list in events.items():
-            for event in event_list:
-                output.append({
-                    'category': event_category,
-                    'event_type': event.get('event_type', ''),
-                    'time_horizon': event.get('time_horizon', ''),
-                    'horizon_days': event.get('horizon_days', ''),
-                    'typical_impact': event.get('typical_impact', '')
-                })
-
-        # Write to CSV
-        output_file = '/workspace/group/fx-portfolio/site_data/step4_1_currency_events.csv'
-
-        with open(output_file, 'w', newline='') as f:
-            if output:
-                fieldnames = ['category', 'event_type', 'time_horizon', 'horizon_days', 'typical_impact']
-                writer = csv.DictWriter(f, fieldnames=fieldnames)
-                writer.writeheader()
-                writer.writerows(output)
-
-        print(f"✓ Step 4.1: Exported {len(output)} currency event types")
-        return len(output)
-
-    except Exception as e:
-        print(f"⚠️  Step 4.1: Error exporting currency events: {e}")
-        return 0
 
 
 def export_step5_signals():
@@ -452,7 +410,6 @@ def main():
     total += export_step2_indices()
     total += export_step3_news()
     total += export_step4_horizons()
-    total += export_step4_1_currency_events()
     total += export_step5_signals()
     total += export_step6_realization()
     total += export_step7_aggregated_signals()
