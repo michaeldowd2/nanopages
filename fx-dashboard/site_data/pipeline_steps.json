@@ -37,7 +37,8 @@
         ]
       },
       "supports_date_filter": true,
-      "is_safe_to_clear": true
+      "is_safe_to_clear": false,
+      "warning": "Historical exchange rates may not be re-fetchable for past dates"
     },
     "2": {
       "id": "2",
@@ -120,8 +121,8 @@
         ]
       },
       "supports_date_filter": true,
-      "is_safe_to_clear": true,
-      "warning": "Clearing news articles will require re-fetching from external APIs"
+      "is_safe_to_clear": false,
+      "warning": "News articles for past dates cannot be re-fetched - APIs only provide current/recent news"
     },
     "4": {
       "id": "4",
