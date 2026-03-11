@@ -13,9 +13,16 @@ New Design Principles:
 
 import json
 import os
+from pathlib import Path
 from typing import List, Dict, Any
 
-CONFIG_PATH = '/workspace/group/fx-portfolio/config/system_config.json'
+# Base directory for the project
+BASE_DIR = Path(__file__).parent.parent.parent
+CONFIG_PATH = BASE_DIR / 'config' / 'system_config.json'
+
+def get_base_dir() -> Path:
+    """Get the base directory for the project"""
+    return BASE_DIR
 
 def load_config() -> Dict[str, Any]:
     """Load system configuration from JSON file"""

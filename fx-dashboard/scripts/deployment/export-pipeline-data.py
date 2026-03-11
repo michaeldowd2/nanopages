@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """
-Pipeline Data Exporter (CSV-based)
-Exports data from each pipeline step CSV to combined CSVs for dashboard visualization
-Includes pipeline configuration (steps and dependencies)
+Pipeline Data Exporter (Config-Driven)
+
+Exports data from each pipeline step to combined CSVs for dashboard visualization.
+Now fully config-driven - reads paths and schemas from pipeline_steps.json.
+
+Version 2.0: Refactored to use config instead of hardcoded paths.
 """
 
 import json
@@ -15,19 +18,130 @@ from pathlib import Path
 # Add scripts directory to path for imports
 sys.path.append('/workspace/group/fx-portfolio/scripts')
 from utilities.csv_helper import read_csv
+from utilities.pipeline_paths import PipelinePaths
+
+BASE_DIR = Path('/workspace/group/fx-portfolio')
+SITE_DATA_DIR = BASE_DIR / 'site_data'
+CONFIG_PATH = BASE_DIR / 'config' / 'pipeline_steps.json'
+
+
+def load_pipeline_config():
+    """Load pipeline configuration"""
+    with open(CONFIG_PATH, 'r') as f:
+        return json.load(f)
+
+
+def get_all_files_for_step(step_id):
+    """
+    Get all data files for a given step using config-driven paths.
+
+    Args:
+        step_id: Step ID (e.g., '1', '2', '3')
+
+    Returns:
+        List of file paths sorted by name
+    """
+    paths = PipelinePaths(step_id)
+    patterns = paths.get_output_patterns()
+
+    all_files = []
+    for pattern in patterns:
+        full_pattern = str(BASE_DIR / pattern)
+        all_files.extend(glob.glob(full_pattern))
+
+    return sorted(all_files)
+
+
+def export_step_generic(step_id, step_name, process_schema_name=None):
+    """
+    Generic export function for most steps.
+
+    Args:
+        step_id: Step ID from config
+        step_name: Display name for logging
+        process_schema_name: Schema name for csv_helper (defaults to step_id)
+
+    Returns:
+        Number of records exported
+    """
+    if process_schema_name is None:
+        process_schema_name = step_id
+
+    output = []
+
+    # Get all files using config-driven approach
+    files = get_all_files_for_step(step_id)
+
+    if not files:
+        print(f"⚠️  Step {step_id}: No files found")
+        return 0
+
+    # Read all CSV files and combine
+    for filepath in files:
+        try:
+            date = Path(filepath).stem
+            rows = read_csv(process_schema_name, date=date, validate=False)
+            output.extend(rows)
+        except Exception as e:
+            print(f"⚠️  Error reading {filepath}: {e}")
+
+    # Write combined CSV using config-driven output path
+    output_file = SITE_DATA_DIR / f'step{step_id}_{get_step_filename(step_id)}.csv'
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(output_file, 'w', newline='') as f:
+        if output:
+            # Collect all unique fieldnames from all rows (some may have extra columns)
+            all_fieldnames = set()
+            for row in output:
+                all_fieldnames.update(row.keys())
+
+            fieldnames = sorted(list(all_fieldnames))
+
+            writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
+            writer.writeheader()
+            writer.writerows(output)
+
+    print(f"✓ Step {step_id}: Exported {len(output)} {step_name.lower()} records")
+    return len(output)
+
+
+def get_step_filename(step_id):
+    """
+    Get the output filename for a step based on convention.
+
+    Args:
+        step_id: Step ID (e.g., '1', '2', '3')
+
+    Returns:
+        Filename (e.g., 'indices', 'news', 'signals')
+    """
+    filenames = {
+        '1': 'exchange_rates_matrix',  # Special case - matrix format
+        '2': 'indices',
+        '3': 'news',
+        '4': 'horizons',
+        '4.1': 'currency_events',
+        '5': 'signals',
+        '6': 'realization',
+        '7': 'aggregated_signals',
+        '8': 'trades',
+        '9': 'portfolios'
+    }
+    return filenames.get(step_id, 'data')
+
 
 def export_step1_exchange_rates():
-    """Step 1: Export exchange rates as matrix CSV (dashboard format)"""
+    """Step 1: Export exchange rates as matrix CSV (special format for dashboard)"""
 
-    # Find all price CSV files
-    price_files = sorted(glob.glob('/workspace/group/fx-portfolio/data/prices/*.csv'))
+    # Get all price CSV files using config
+    price_files = get_all_files_for_step('1')
 
     if not price_files:
         print("⚠️  Step 1: No exchange rate files found")
         return 0
 
     # Get list of currencies from system config
-    sys.path.append('/workspace/group/fx-portfolio/scripts')
     from utilities.config_loader import get_currencies
     currencies = get_currencies()
 
@@ -36,8 +150,8 @@ def export_step1_exchange_rates():
 
     for filepath in price_files:
         try:
-            date = Path(filepath).stem  # Extract date from filename
-            rows = read_csv('process_1_exchange_rates', date=date, validate=False)
+            date = Path(filepath).stem
+            rows = read_csv('1', date=date, validate=False)
 
             # Group by base currency
             by_base = {}
@@ -60,8 +174,8 @@ def export_step1_exchange_rates():
             print(f"⚠️  Error reading {filepath}: {e}")
 
     # Write matrix CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step1_exchange_rates_matrix.csv'
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    output_file = SITE_DATA_DIR / 'step1_exchange_rates_matrix.csv'
+    output_file.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_file, 'w', newline='') as f:
         if matrix_rows:
@@ -74,117 +188,14 @@ def export_step1_exchange_rates():
     return len(matrix_rows)
 
 
-def export_step2_indices():
-    """Step 2: Synthetic Currency Indices"""
-    output = []
-
-    # Find all indices CSV files
-    index_files = sorted(glob.glob('/workspace/group/fx-portfolio/data/indices/*.csv'))
-
-    if not index_files:
-        print("⚠️  Step 2: No index files found")
-        return 0
-
-    # Read all CSV files and combine
-    for filepath in index_files:
-        try:
-            date = Path(filepath).stem
-            rows = read_csv('process_2_indices', date=date, validate=False)
-            output.extend(rows)
-        except Exception as e:
-            print(f"⚠️  Error reading {filepath}: {e}")
-
-    # Write combined CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step2_indices.csv'
-
-    with open(output_file, 'w', newline='') as f:
-        if output:
-            fieldnames = ['date', 'currency', 'index']
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(output)
-
-    print(f"✓ Step 2: Exported {len(output)} index records")
-    return len(output)
-
-
-def export_step3_news():
-    """Step 3: News Articles"""
-    output = []
-
-    # Find all news CSV files
-    news_files = sorted(glob.glob('/workspace/group/fx-portfolio/data/news/*.csv'))
-
-    if not news_files:
-        print("⚠️  Step 3: No news files found")
-        return 0
-
-    # Read all CSV files and combine
-    for filepath in news_files:
-        try:
-            date = Path(filepath).stem
-            rows = read_csv('process_3_news', date=date, validate=False)
-            output.extend(rows)
-        except Exception as e:
-            print(f"⚠️  Error reading {filepath}: {e}")
-
-    # Write combined CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step3_news.csv'
-
-    with open(output_file, 'w', newline='') as f:
-        if output:
-            fieldnames = ['date', 'source', 'url', 'currency', 'title', 'snippet']
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(output)
-
-    print(f"✓ Step 3: Exported {len(output)} news articles")
-    return len(output)
-
-
-def export_step4_horizons():
-    """Step 4: Time Horizon Analysis"""
-    output = []
-
-    # Find all horizon analysis CSV files
-    horizon_files = sorted(glob.glob('/workspace/group/fx-portfolio/data/article-analysis/*.csv'))
-
-    if not horizon_files:
-        print("⚠️  Step 4: No horizon analysis files found")
-        return 0
-
-    # Read all CSV files and combine
-    for filepath in horizon_files:
-        try:
-            date = Path(filepath).stem
-            rows = read_csv('process_4_horizons', date=date, validate=False)
-            output.extend(rows)
-        except Exception as e:
-            print(f"⚠️  Error reading {filepath}: {e}")
-
-    # Write combined CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step4_horizons.csv'
-
-    with open(output_file, 'w', newline='') as f:
-        if output:
-            fieldnames = ['date', 'source', 'url', 'currency', 'title', 'estimator_id',
-                         'time_horizon', 'horizon_days', 'valid_to_date', 'confidence', 'reasoning']
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(output)
-
-    print(f"✓ Step 4: Exported {len(output)} horizon analyses")
-    return len(output)
-
-
-
-
 def export_step4_1_currency_events():
     """Step 4.1: Currency Events Reference"""
-    # Read currency events JSON
-    events_file = '/workspace/group/fx-portfolio/data/events/currency_events.json'
 
-    if not os.path.exists(events_file):
+    # Get path from config
+    paths = PipelinePaths('4.1')
+    events_file = paths.get_output_path()
+
+    if not events_file.exists():
         print("⚠️  Step 4.1: Currency events file not found")
         return 0
 
@@ -205,8 +216,9 @@ def export_step4_1_currency_events():
             'description': event['description']
         })
 
-    # Write combined CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step4_1_currency_events.csv'
+    # Write CSV
+    output_file = SITE_DATA_DIR / 'step4_1_currency_events.csv'
+    output_file.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_file, 'w', newline='') as f:
         if output:
@@ -220,253 +232,87 @@ def export_step4_1_currency_events():
     return len(output)
 
 
-def export_step5_signals():
-    """Step 5: Sentiment Signals"""
-    output = []
-
-    # Find all signal CSV files
-    signal_files = sorted(glob.glob('/workspace/group/fx-portfolio/data/signals/*.csv'))
-
-    if not signal_files:
-        print("⚠️  Step 5: No signal files found")
-        return 0
-
-    # Read all CSV files and combine
-    for filepath in signal_files:
-        try:
-            date = Path(filepath).stem
-            rows = read_csv('process_5_signals', date=date, validate=False)
-            output.extend(rows)
-        except Exception as e:
-            print(f"⚠️  Error reading {filepath}: {e}")
-
-    # Write combined CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step5_signals.csv'
-
-    with open(output_file, 'w', newline='') as f:
-        if output:
-            # Use fieldnames from first row to ensure all columns are included
-            fieldnames = list(output[0].keys())
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(output)
-
-    print(f"✓ Step 5: Exported {len(output)} signals")
-    return len(output)
-
-
-def export_step6_realization():
-    """Step 6: Signal Realization Checks"""
-    output = []
-
-    # Find all realization CSV files
-    realization_files = sorted(glob.glob('/workspace/group/fx-portfolio/data/signal-realization/*.csv'))
-
-    if not realization_files:
-        print("⚠️  Step 6: No realization files found")
-        return 0
-
-    # Read all CSV files and combine
-    for filepath in realization_files:
-        try:
-            date = Path(filepath).stem
-            rows = read_csv('process_6_realization', date=date, validate=False)
-            output.extend(rows)
-        except Exception as e:
-            print(f"⚠️  Error reading {filepath}: {e}")
-
-    # Write combined CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step6_realization.csv'
-
-    with open(output_file, 'w', newline='') as f:
-        if output:
-            # Use fieldnames from first row to ensure all columns are included
-            fieldnames = list(output[0].keys())
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(output)
-
-    print(f"✓ Step 6: Exported {len(output)} realization checks")
-    return len(output)
-
-
-def export_step7_aggregated_signals():
-    """Step 7: Aggregated Signals"""
-    output = []
-
-    # Find all aggregated signals CSV files (only date-named files YYYY-MM-DD.csv)
-    import re
-    all_files = glob.glob('/workspace/group/fx-portfolio/data/aggregated-signals/*.csv')
-    agg_files = sorted([f for f in all_files if re.match(r'.*\d{4}-\d{2}-\d{2}\.csv$', f)])
-
-    if not agg_files:
-        print("⚠️  Step 7: No aggregated signals files found")
-        return 0
-
-    # Read all CSV files and combine
-    for filepath in agg_files:
-        try:
-            date = Path(filepath).stem
-            rows = read_csv('process_7_aggregated_signals', date=date, validate=False)
-            output.extend(rows)
-        except Exception as e:
-            print(f"⚠️  Error reading {filepath}: {e}")
-
-    # Write combined CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step7_aggregated_signals.csv'
-
-    with open(output_file, 'w', newline='') as f:
-        if output:
-            # Use fieldnames from first row to ensure all columns are included
-            fieldnames = list(output[0].keys())
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(output)
-
-    print(f"✓ Step 7: Exported {len(output)} aggregated signal records")
-    return len(output)
-
-
-def export_step8_trades():
-    """Step 8: Trade Recommendations"""
-    output = []
-
-    # Find all trades CSV files (only date-named files YYYY-MM-DD.csv)
-    import re
-    all_files = glob.glob('/workspace/group/fx-portfolio/data/trades/*.csv')
-    trade_files = sorted([f for f in all_files if re.match(r'.*\d{4}-\d{2}-\d{2}\.csv$', f)])
-
-    if not trade_files:
-        print("⚠️  Step 8: No trade files found")
-        return 0
-
-    # Read all CSV files and combine
-    for filepath in trade_files:
-        try:
-            date = Path(filepath).stem
-            rows = read_csv('process_8_trades', date=date, validate=False)
-            output.extend(rows)
-        except Exception as e:
-            print(f"⚠️  Error reading {filepath}: {e}")
-
-    # Write combined CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step8_trades.csv'
-
-    with open(output_file, 'w', newline='') as f:
-        if output:
-            fieldnames = ['date', 'trader_id', 'buy_currency', 'sell_currency',
-                         'buy_signal', 'sell_signal', 'trade_signal']
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(output)
-
-    print(f"✓ Step 8: Exported {len(output)} trade records")
-    return len(output)
-
-
-def export_step9_portfolios():
-    """Step 9: Portfolio Execution"""
-    output = []
-
-    # Find all portfolio CSV files (only date-named files YYYY-MM-DD.csv)
-    import re
-    all_files = glob.glob('/workspace/group/fx-portfolio/data/portfolios/*.csv')
-    portfolio_files = sorted([f for f in all_files if re.match(r'.*\d{4}-\d{2}-\d{2}\.csv$', f)])
-
-    if not portfolio_files:
-        print("⚠️  Execute Strategies: No portfolio files found")
-        return 0
-
-    # Read all CSV files and combine
-    for filepath in portfolio_files:
-        try:
-            date = Path(filepath).stem
-            rows = read_csv('process_9_portfolio', date=date, validate=False)
-            output.extend(rows)
-        except Exception as e:
-            print(f"⚠️  Error reading {filepath}: {e}")
-
-    # Write combined CSV
-    output_file = '/workspace/group/fx-portfolio/site_data/step9_portfolios.csv'
-
-    with open(output_file, 'w', newline='') as f:
-        if output:
-            # Get fieldnames from first row
-            if output:
-                fieldnames = list(output[0].keys())
-                writer = csv.DictWriter(f, fieldnames=fieldnames)
-                writer.writeheader()
-                writer.writerows(output)
-
-    print(f"✓ Execute Strategies: Exported {len(output)} strategy records")
-    return len(output)
-
-
 def export_pipeline_config():
-    """Export pipeline_steps.json for dashboard"""
-    config_src = '/workspace/group/fx-portfolio/config/pipeline_steps.json'
-    config_dst = '/workspace/group/fx-portfolio/site_data/pipeline_steps.json'
+    """Export pipeline_steps.json to site_data for dashboard"""
+    config_file = CONFIG_PATH
+    output_file = SITE_DATA_DIR / 'pipeline_steps.json'
+    output_file.parent.mkdir(parents=True, exist_ok=True)
 
-    if os.path.exists(config_src):
-        with open(config_src, 'r') as f:
-            config = json.load(f)
-        with open(config_dst, 'w') as f:
-            json.dump(config, f, indent=2)
-        print(f"✓ Pipeline config: Exported to {config_dst}")
-    else:
-        print("⚠️  Pipeline config not found")
+    with open(config_file, 'r') as f_in:
+        config = json.load(f_in)
+
+    with open(output_file, 'w') as f_out:
+        json.dump(config, f_out, indent=2)
+
+    print(f"✓ Pipeline config: Exported to {output_file}")
 
 
 def export_system_config():
-    """Export system configuration for dashboard"""
-    config_files = {
-        'traders': '/workspace/group/fx-portfolio/config/traders.json',
-        'strategies': '/workspace/group/fx-portfolio/config/strategies.json',
-        'generators': '/workspace/group/fx-portfolio/config/generators.json',
-        'estimators': '/workspace/group/fx-portfolio/config/estimators.json'
-    }
+    """Export system_config.json to site_data for dashboard"""
+    config_file = BASE_DIR / 'config' / 'system_config.json'
+    output_file = SITE_DATA_DIR / 'system_config.json'
+    output_file.parent.mkdir(parents=True, exist_ok=True)
 
-    system_config = {}
+    with open(config_file, 'r') as f_in:
+        config = json.load(f_in)
 
-    for key, filepath in config_files.items():
-        if os.path.exists(filepath):
-            with open(filepath, 'r') as f:
-                system_config[key] = json.load(f)
-
-    output_file = '/workspace/group/fx-portfolio/site_data/system_config.json'
-    with open(output_file, 'w') as f:
-        json.dump(system_config, f, indent=2)
+    with open(output_file, 'w') as f_out:
+        json.dump(config, f_out, indent=2)
 
     print(f"✓ System config: Exported to {output_file}")
 
 
 def main():
-    print("="*60)
-    print("Pipeline Data Exporter")
-    print("="*60)
+    """Main export function - now fully config-driven"""
+    print("=" * 60)
+    print("Pipeline Data Exporter (Config-Driven v2.0)")
+    print("=" * 60)
+
+    # Create output directory
+    SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     total = 0
 
-    total += export_step1_exchange_rates()
-    total += export_step2_indices()
-    total += export_step3_news()
-    total += export_step4_horizons()
-    export_step4_1_currency_events()  # Reference data, not counted in total
-    total += export_step5_signals()
-    total += export_step6_realization()
-    total += export_step7_aggregated_signals()
-    total += export_step8_trades()
-    total += export_step9_portfolios()
+    # Load config to get all exportable steps
+    config = load_pipeline_config()
+    steps = config.get('steps', {})
 
+    # Step 1: Special case (matrix format)
+    total += export_step1_exchange_rates()
+
+    # Steps 2-9: Use generic export (config-driven)
+    exportable_steps = {
+        '2': 'index records',
+        '3': 'news articles',
+        '4': 'horizon analyses',
+        '5': 'signals',
+        '6': 'realization checks',
+        '7': 'aggregated signal records',
+        '8': 'trade records',
+        '9': 'strategy records'
+    }
+
+    for step_id, description in exportable_steps.items():
+        if step_id in steps:
+            step_name = steps[step_id].get('name', description)
+            total += export_step_generic(step_id, description, process_schema_name=step_id)
+
+    # Step 4.1: Special case (JSON to CSV)
+    if '4.1' in steps:
+        export_step4_1_currency_events()
+
+    # Export configs
     export_pipeline_config()
     export_system_config()
 
-    print("\n" + "="*60)
+    print()
+    print("=" * 60)
     print("Export Complete")
-    print("="*60)
-    print(f"CSV files saved to: /workspace/group/fx-portfolio/site_data/")
-    print(f"\nTotal records exported: {total}")
-    print("="*60)
+    print("=" * 60)
+    print(f"CSV files saved to: {SITE_DATA_DIR}")
+    print()
+    print(f"Total records exported: {total}")
+    print("=" * 60)
 
 
 if __name__ == '__main__':
