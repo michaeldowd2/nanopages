@@ -16,6 +16,7 @@ import html
 import os
 import sys
 import argparse
+import glob
 from datetime import datetime, timedelta
 from xml.etree import ElementTree as ET
 from email.utils import parsedate_to_datetime
@@ -25,7 +26,7 @@ sys.path.append('/workspace/group/fx-portfolio/scripts')
 from utilities.env_loader import get_newsapi_key
 from utilities.config_loader import get_currencies
 from utilities.pipeline_logger import PipelineLogger
-from utilities.csv_helper import write_csv
+from utilities.csv_helper import write_csv, read_csv, csv_exists
 
 CURRENCIES = get_currencies()
 
@@ -226,6 +227,55 @@ def fetch_from_newsapi(query, max_results=20):
         return []
 
 
+def load_existing_urls(lookback_days=30):
+    """
+    Load all article URLs from existing news CSV files (past N days).
+
+    This prevents re-downloading and re-analyzing articles that were
+    already fetched in previous runs.
+
+    Args:
+        lookback_days: Number of days to look back (default: 30)
+
+    Returns:
+        Set of URLs from all existing news files
+    """
+    existing_urls = set()
+
+    # Find all news CSV files
+    news_files = sorted(glob.glob('/workspace/group/fx-portfolio/data/news/*.csv'))
+
+    if not news_files:
+        print("   No existing news files found")
+        return existing_urls
+
+    # Calculate cutoff date
+    cutoff_date = datetime.now() - timedelta(days=lookback_days)
+    cutoff_str = cutoff_date.strftime('%Y-%m-%d')
+
+    # Load URLs from each file
+    loaded_files = 0
+    for filepath in news_files:
+        # Extract date from filename
+        filename = os.path.basename(filepath)
+        file_date = filename.replace('.csv', '')
+
+        # Skip files older than cutoff
+        if file_date < cutoff_str:
+            continue
+
+        try:
+            rows = read_csv('3', date=file_date, validate=False)
+            urls_from_file = {row['url'] for row in rows}
+            existing_urls.update(urls_from_file)
+            loaded_files += 1
+        except Exception as e:
+            print(f"   ⚠️ Error reading {filepath}: {e}")
+
+    print(f"   ✓ Loaded {len(existing_urls)} existing URLs from {loaded_files} files (past {lookback_days} days)")
+    return existing_urls
+
+
 def main(date_str=None):
     """Main aggregation function"""
 
@@ -241,6 +291,11 @@ def main(date_str=None):
         print("="*60)
         print(f"\nProcessing date: {date_str}")
 
+        # Load existing URLs from past 30 days to prevent re-downloading
+        print(f"\n1. Loading existing article URLs (deduplication)...")
+        existing_urls = load_existing_urls(lookback_days=30)
+        logger.add_count('existing_urls_loaded', len(existing_urls))
+
         # Load sources
         sources_path = '/workspace/group/fx-portfolio/config/news_sources.json'
         with open(sources_path) as f:
@@ -249,7 +304,7 @@ def main(date_str=None):
         all_articles = []
 
         # Fetch RSS feeds
-        print(f"\n1. Fetching RSS feeds ({len(sources['rss_feeds'])} sources)...")
+        print(f"\n2. Fetching RSS feeds ({len(sources['rss_feeds'])} sources)...")
         for url in sources['rss_feeds']:
             print(f"   Fetching: {url}")
 
@@ -279,7 +334,7 @@ def main(date_str=None):
         # Fetch Reddit RSS (if any configured)
         reddit_urls = sources.get('reddit_rss', [])
         if reddit_urls:
-            print(f"\n2. Fetching Reddit RSS ({len(reddit_urls)} sources)...")
+            print(f"\n3. Fetching Reddit RSS ({len(reddit_urls)} sources)...")
             reddit_count = 0
             for url in reddit_urls:
                 print(f"   Fetching: {url}")
@@ -293,7 +348,7 @@ def main(date_str=None):
 
         # Fetch from NewsAPI (if enabled)
         if sources.get('newsapi_enabled', False):
-            print(f"\n3. Fetching from NewsAPI.org...")
+            print(f"\n4. Fetching from NewsAPI.org...")
 
             queries = sources.get('newsapi_queries', ['forex'])
             max_per_query = sources.get('newsapi_max_results_per_query', 20)
@@ -314,14 +369,18 @@ def main(date_str=None):
         print(f"{'='*60}\n")
 
         # Filter by currency and build CSV rows
-        print(f"4. Filtering articles by currency ({len(CURRENCIES)} currencies)...")
+        print(f"5. Filtering articles by currency ({len(CURRENCIES)} currencies)...")
+        print(f"   Deduplicating against {len(existing_urls)} existing URLs...")
+
         csv_rows = []
-        seen_urls = set()  # Deduplicate by URL across all currencies
+        seen_urls = existing_urls.copy()  # Start with existing URLs from past 30 days
+        new_urls_count = 0
+        duplicate_urls_count = 0
 
         for currency in CURRENCIES:
             relevant = filter_articles_by_currency(all_articles, currency)
 
-            # Add to CSV rows (deduplicate by URL)
+            # Add to CSV rows (deduplicate by URL against existing + current session)
             new_count = 0
             for article in relevant:
                 url = article['url']
@@ -336,13 +395,25 @@ def main(date_str=None):
                     })
                     seen_urls.add(url)
                     new_count += 1
+                    new_urls_count += 1
+                else:
+                    duplicate_urls_count += 1
 
-            print(f"   {currency}: {new_count} unique articles (total relevant: {len(relevant)})")
+            print(f"   {currency}: {new_count} new articles (skipped {len(relevant) - new_count} duplicates)")
 
         logger.add_count('unique_articles', len(csv_rows))
+        logger.add_count('new_urls', new_urls_count)
+        logger.add_count('duplicate_urls_skipped', duplicate_urls_count)
+
+        print(f"\n{'='*60}")
+        print(f"Deduplication Summary:")
+        print(f"  New URLs: {new_urls_count}")
+        print(f"  Duplicates skipped: {duplicate_urls_count}")
+        print(f"  Total to save: {len(csv_rows)}")
+        print(f"{'='*60}\n")
 
         # Write to CSV
-        print(f"\n5. Saving to CSV...")
+        print(f"6. Saving to CSV...")
         if csv_rows:
             csv_path = write_csv(csv_rows, 'process_3_news', date=date_str)
             print(f"   ✓ Saved {len(csv_rows)} articles to {csv_path}")
