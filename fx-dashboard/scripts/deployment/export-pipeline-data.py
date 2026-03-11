@@ -91,19 +91,11 @@ def export_step_generic(step_id, step_name, process_schema_name=None):
 
     with open(output_file, 'w', newline='') as f:
         if output:
-            # Get column order from schema
+            # Get column order from schema (source of truth)
             schema = load_schema(step_id)
-            schema_fieldnames = [col['name'] for col in schema['columns']]
+            fieldnames = [col['name'] for col in schema['columns']]
 
-            # Collect any extra fieldnames not in schema (for legacy compatibility)
-            all_fieldnames = set()
-            for row in output:
-                all_fieldnames.update(row.keys())
-
-            # Use schema order first, then append any extra fields (sorted)
-            extra_fields = sorted(list(all_fieldnames - set(schema_fieldnames)))
-            fieldnames = schema_fieldnames + extra_fields
-
+            # Write CSV with schema-defined columns
             writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
             writer.writeheader()
             writer.writerows(output)
