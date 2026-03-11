@@ -179,6 +179,47 @@ def export_step4_horizons():
 
 
 
+def export_step4_1_currency_events():
+    """Step 4.1: Currency Events Reference"""
+    # Read currency events JSON
+    events_file = '/workspace/group/fx-portfolio/data/events/currency_events.json'
+
+    if not os.path.exists(events_file):
+        print("⚠️  Step 4.1: Currency events file not found")
+        return 0
+
+    with open(events_file, 'r') as f:
+        events_data = json.load(f)
+
+    # Flatten events array to CSV format
+    output = []
+    for event in events_data.get('events', []):
+        output.append({
+            'event_id': event['event_id'],
+            'event_name': event['event_name'],
+            'category': event['category'],
+            'signal_direction': event['signal_direction'],
+            'signal_strength': event['signal_strength'],
+            'time_horizon': event['time_horizon'],
+            'confidence_impact': event['confidence_impact'],
+            'description': event['description']
+        })
+
+    # Write combined CSV
+    output_file = '/workspace/group/fx-portfolio/site_data/step4_1_currency_events.csv'
+
+    with open(output_file, 'w', newline='') as f:
+        if output:
+            fieldnames = ['event_id', 'event_name', 'category', 'signal_direction',
+                         'signal_strength', 'time_horizon', 'confidence_impact', 'description']
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(output)
+
+    print(f"✓ Step 4.1: Exported {len(output)} currency event definitions")
+    return len(output)
+
+
 def export_step5_signals():
     """Step 5: Sentiment Signals"""
     output = []
@@ -410,6 +451,7 @@ def main():
     total += export_step2_indices()
     total += export_step3_news()
     total += export_step4_horizons()
+    export_step4_1_currency_events()  # Reference data, not counted in total
     total += export_step5_signals()
     total += export_step6_realization()
     total += export_step7_aggregated_signals()

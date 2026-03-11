@@ -556,6 +556,7 @@
         'step2': 'site_data/step2_indices.csv',
         'step3': 'site_data/step3_news.csv',
         'step4': 'site_data/step4_horizons.csv',
+        'step4.1': 'site_data/step4_1_currency_events.csv',
         'step5': 'site_data/step5_signals.csv',
         'step6': 'site_data/step6_realization.csv',
         'step7': 'site_data/step7_aggregated_signals.csv',
@@ -1843,7 +1844,7 @@
         .catch(err => {
           console.error('Failed to load pipeline config:', err);
           // Fallback: load without dynamic generation
-          ['step2', 'step3', 'step4', 'step5', 'step6', 'step7', 'step8'].forEach(loadCSV);
+          ['step2', 'step3', 'step4', 'step4.1', 'step5', 'step6', 'step7', 'step8'].forEach(loadCSV);
           loadStep1Dates();
           loadSystemConfig();
           loadPipelineDependencies();
@@ -1859,8 +1860,12 @@
       const stepTabs = Object.keys(config.steps)
         .filter(id => id !== '10')  // Skip deployment step
         .sort((a, b) => {
-          const order = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-          return order.indexOf(a) - order.indexOf(b);
+          // Parse step IDs (handle both '4' and '4.1')
+          const parseStepId = (id) => {
+            const parts = id.split('.');
+            return parseFloat(id);
+          };
+          return parseStepId(a) - parseStepId(b);
         })
         .map(stepId => {
           const step = config.steps[stepId];
@@ -1880,8 +1885,9 @@
       Object.keys(config.steps)
         .filter(id => id !== '10')  // Skip deployment step
         .sort((a, b) => {
-          const order = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-          return order.indexOf(a) - order.indexOf(b);
+          // Parse step IDs (handle both '4' and '4.1')
+          const parseStepId = (id) => parseFloat(id);
+          return parseStepId(a) - parseStepId(b);
         })
         .forEach(stepId => {
           const step = config.steps[stepId];
@@ -1919,6 +1925,7 @@
         '2': 'indices',
         '3': 'news',
         '4': 'horizons',
+        '4.1': 'currency_events',
         '5': 'signals',
         '6': 'realization',
         '7': 'aggregated_signals',
