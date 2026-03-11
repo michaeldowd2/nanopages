@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Add scripts directory to path for imports
 sys.path.append('/workspace/group/fx-portfolio/scripts')
-from utilities.csv_helper import read_csv
+from utilities.csv_helper import read_csv, load_schema
 from utilities.pipeline_paths import PipelinePaths
 
 BASE_DIR = Path('/workspace/group/fx-portfolio')
@@ -91,12 +91,18 @@ def export_step_generic(step_id, step_name, process_schema_name=None):
 
     with open(output_file, 'w', newline='') as f:
         if output:
-            # Collect all unique fieldnames from all rows (some may have extra columns)
+            # Get column order from schema
+            schema = load_schema(step_id)
+            schema_fieldnames = [col['name'] for col in schema['columns']]
+
+            # Collect any extra fieldnames not in schema (for legacy compatibility)
             all_fieldnames = set()
             for row in output:
                 all_fieldnames.update(row.keys())
 
-            fieldnames = sorted(list(all_fieldnames))
+            # Use schema order first, then append any extra fields (sorted)
+            extra_fields = sorted(list(all_fieldnames - set(schema_fieldnames)))
+            fieldnames = schema_fieldnames + extra_fields
 
             writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
             writer.writeheader()
