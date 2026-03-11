@@ -329,6 +329,7 @@ def main(date_str=None):
             # Build CSV row (signal is now loaded from Process 5)
             csv_rows.append({
                 'date': date_str,
+                'article_id': signal.get('article_id', ''),
                 'source': signal['source'],
                 'url': url,
                 'currency': currency,

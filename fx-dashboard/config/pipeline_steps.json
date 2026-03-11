@@ -57,6 +57,7 @@
         "description": "News articles aggregated from multiple sources",
         "columns": [
           {"name": "date", "type": "string", "description": "Article fetch date YYYY-MM-DD"},
+          {"name": "article_id", "type": "string", "description": "Short hash ID derived from URL (12-char hex)"},
           {"name": "source", "type": "string", "description": "News source name"},
           {"name": "url", "type": "string", "description": "Article URL (unique identifier)"},
           {"name": "currency", "type": "string", "description": "Currency the article relates to"},
@@ -81,6 +82,7 @@
         "description": "Time horizon analysis for articles using LLM",
         "columns": [
           {"name": "date", "type": "string", "description": "Analysis date YYYY-MM-DD"},
+          {"name": "article_id", "type": "string", "description": "Short hash ID derived from URL (12-char hex)"},
           {"name": "source", "type": "string", "description": "News source name"},
           {"name": "url", "type": "string", "description": "Article URL"},
           {"name": "currency", "type": "string", "description": "Currency the article relates to"},
@@ -123,6 +125,7 @@
         "description": "Sentiment signals generated from news articles",
         "columns": [
           {"name": "date", "type": "string", "description": "Signal generation date YYYY-MM-DD"},
+          {"name": "article_id", "type": "string", "description": "Short hash ID derived from URL (12-char hex)"},
           {"name": "source", "type": "string", "description": "News source name"},
           {"name": "url", "type": "string", "description": "Source article URL"},
           {"name": "currency", "type": "string", "description": "Currency the signal relates to"},
@@ -157,6 +160,7 @@
         "description": "Signal realization check against actual currency movements",
         "columns": [
           {"name": "date", "type": "string", "description": "Realization check date YYYY-MM-DD"},
+          {"name": "article_id", "type": "string", "description": "Short hash ID derived from URL (12-char hex)"},
           {"name": "source", "type": "string", "description": "News source name"},
           {"name": "url", "type": "string", "description": "Article URL"},
           {"name": "currency", "type": "string", "description": "Currency code"},

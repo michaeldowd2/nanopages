@@ -20,8 +20,8 @@ python3 scripts/pipeline/fetch-news.py
 ```
 
 **Output**:
-- `/data/news/{CURRENCY}/{date}.json` - Articles per currency per day
-- `/data/news/url_index.json` - Global URL deduplication index
+- `/data/news/{date}.csv` - All articles for the date across all currencies (CSV format)
+- Cross-date deduplication: Each article URL is downloaded only once across all dates
 
 ---
 
@@ -29,63 +29,35 @@ python3 scripts/pipeline/fetch-news.py
 
 ### Output Files
 
-**Primary Output**: `/data/news/{CURRENCY}/{date}.json` (one file per currency per day)
-- Format: JSON
-- Updated: Created/appended during each run
-- Size: ~5-20 KB per currency per day
-
-**Deduplication Index**: `/data/news/url_index.json`
-- Tracks all seen URLs to prevent duplicates
-- Size: ~50-100 KB (growing over time)
+**Primary Output**: `/data/news/{date}.csv` (one file per date with all currencies)
+- Format: CSV
+- Updated: Created during each run
+- Size: ~20-60 KB per day (all currencies combined)
 
 ### Output Schema
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
-| currency | string | Currency this file relates to | USD |
-| date | string | Date key (YYYY-MM-DD) | 2026-02-21 |
-| articles | array | List of article objects | [...] |
-| combined_text | string | All snippets concatenated | "Fed signals..." |
-
-**Article Object**:
-
-| Field | Type | Description | Example |
-|-------|------|-------------|---------|
-| title | string | Article headline | Fed signals hawkish shift |
-| url | string | Article URL | https://... |
-| snippet | string | Clean text excerpt | Fed signals... |
-| published_at | string | Publication timestamp (ISO) | 2026-02-21T09:00:00Z |
-| relevance_score | float | Currency relevance (0-1) | 0.85 |
+| date | string | Fetch date (YYYY-MM-DD) | 2026-03-11 |
+| source | string | News source name | FXStreet |
+| url | string | Article URL (unique identifier) | https://... |
 | currency | string | Related currency | USD |
-| source | string | Source identifier | FXStreet |
+| title | string | Article headline | Fed signals hawkish shift |
+| snippet | string | Clean text excerpt | Fed signals... |
 
 ### Sample Output
 
-```json
-{
-  "currency": "USD",
-  "date": "2026-02-21",
-  "articles": [
-    {
-      "title": "Fed signals hawkish shift",
-      "url": "https://www.fxstreet.com/news/...",
-      "snippet": "The Federal Reserve indicated a more hawkish stance...",
-      "published_at": "2026-02-21T09:00:00Z",
-      "relevance_score": 0.85,
-      "currency": "USD",
-      "source": "FXStreet"
-    }
-  ],
-  "combined_text": "The Federal Reserve indicated a more hawkish stance..."
-}
+```csv
+date,source,url,currency,title,snippet
+2026-03-11,FXStreet,https://www.fxstreet.com/news/...,USD,Fed signals hawkish shift,The Federal Reserve indicated a more hawkish stance...
+2026-03-11,ForexLive,https://www.forexlive.com/...,EUR,ECB holds rates steady,The European Central Bank maintained its key interest rates...
 ```
 
 ### Interpretation
 
-- **relevance_score**: Higher values (>0.7) indicate strong currency relevance
+- **url**: Unique identifier for each article - used for deduplication across dates
 - **source**: Identifies where article came from (FXStreet, ForexLive, NewsAPI, etc.)
-- **Typical article count**: 5-15 articles per currency per day
-- **combined_text**: Used by generate-sentiment-signals for sentiment analysis
+- **Typical article count**: 30-60 articles per day across all currencies
 - **Use this data to**: Analyze time horizons and generate sentiment signals
 
 ---
@@ -250,74 +222,92 @@ def load_env_file():
 
 ## Output Format
 
-### Per-Currency Article File
+### Daily CSV File
 
-**Location**: `/data/news/{CURRENCY}/{date}.json`
+**Location**: `/data/news/{date}.csv`
 
-```json
-{
-  "currency": "USD",
-  "date": "2026-02-21",
-  "articles": [
-    {
-      "title": "Fed signals hawkish shift",
-      "url": "https://...",
-      "snippet": "Clean text excerpt...",
-      "published_at": "2026-02-21T09:00:00Z",
-      "relevance_score": 0.85,
-      "currency": "USD",
-      "source": "FXStreet"
-    }
-  ],
-  "combined_text": "All snippets concatenated..."
-}
+Example: `/data/news/2026-03-11.csv`
+
+```csv
+date,source,url,currency,title,snippet
+2026-03-11,FXStreet,https://www.fxstreet.com/news/...,USD,Fed signals hawkish shift,The Federal Reserve indicated...
+2026-03-11,ForexLive,https://www.forexlive.com/...,EUR,ECB holds rates,The European Central Bank...
+2026-03-11,NewsAPI (Reuters),https://reuters.com/...,GBP,Sterling rises on data,The British pound gained...
 ```
 
 ### Source Attribution
 
-Each article now includes a `source` field:
+Each article includes a `source` field identifying its origin:
 - `"FXStreet"` - From FXStreet RSS feed
 - `"ForexLive"` - From ForexLive RSS feed
 - `"Yahoo Finance"` - From Yahoo Finance RSS feed
-- `"NewsAPI"` - From NewsAPI (query-based)
+- `"NewsAPI (Reuters)"` - From NewsAPI (source name in parentheses)
+- `"Investing.com"` - From Investing.com RSS feed
+- `"MarketWatch"` - From MarketWatch RSS feed
+- `"DailyFX"` - From DailyFX RSS feed
 
 ---
 
 ## Features
 
-### 30-Day Retention
-Articles older than 30 days automatically filtered and cleaned.
+### Cross-Date URL Deduplication
+**Critical Feature**: Each article URL is downloaded and processed only once across all dates.
 
-### Global URL Deduplication
-Each URL tracked in `url_index.json` - same article never downloaded twice.
+**How it works**:
+1. On startup, loads all existing URLs from past 30 days into memory
+2. Before saving any article, checks if URL already exists
+3. Only NEW URLs are downloaded and saved
+4. Prevents re-downloading and re-analyzing the same content
 
-### Date Key Assignment
-New articles get assigned the date they were FIRST SEEN (the date the script runs).
+**Benefits**:
+- Reduces API costs for downstream LLM processing
+- Prevents duplicate sentiment signals
+- Ensures each article is analyzed exactly once
+- Maintains clean historical dataset
 
-### Relevance Scoring
-Keywords match per currency (0-1 score).
+### 30-Day Article Age Filter
+Articles older than 30 days (by publication date) are automatically filtered during fetch.
+
+### Relevance Filtering
+Articles filtered by currency keywords - each article can appear multiple times (once per relevant currency).
 
 ### Publication Timestamps
-Extracted from RSS `<pubDate>` tags (used for 30-day filtering only).
+Extracted from RSS `<pubDate>` tags (used for 30-day age filtering).
 
 ---
 
-## How Article Dating Works
+## How Cross-Date Deduplication Works
 
-When the script runs on a specific date (e.g., 2026-03-01):
+When the script runs on a specific date (e.g., 2026-03-11):
 
-1. **Fetches** fresh articles from RSS feeds and NewsAPI
-2. **Checks** each URL against the global `url_index.json`
-3. **For NEW articles** (never seen before):
-   - Saves to file: `/data/news/{CURRENCY}/2026-03-01.json`
-   - Adds to URL index with `first_seen_date: "2026-03-01"`
-4. **For EXISTING articles** (URL already in index):
-   - **Skips completely** - not downloaded or saved again
+1. **Loads existing URLs**: Scans past 30 days of CSV files and loads all URLs into memory
+   - Example: Loaded 648 URLs from 16 files
+2. **Fetches** fresh articles from RSS feeds and NewsAPI
+3. **Filters by currency**: Checks each article for currency keyword relevance
+4. **For EACH relevant article**:
+   - **If URL is NEW** (not in existing URLs):
+     - Saves to file: `/data/news/2026-03-11.csv`
+     - Article is tagged with date `2026-03-11`
+   - **If URL ALREADY EXISTS** (in any previous date's CSV):
+     - **Skips completely** - not downloaded or saved again
+     - Prevents duplicate processing
 
-This ensures:
-- Each article appears exactly ONCE across all dates
-- The date key represents when we FIRST discovered the article
-- Over time, each run adds only genuinely new articles
+**Example output from a typical run**:
+```
+✓ Loaded 648 existing URLs from 16 files (past 30 days)
+✓ Fetched 85 articles from RSS feeds
+✓ Fetched 20 articles from NewsAPI
+Deduplication Summary:
+  New URLs: 30
+  Duplicates skipped: 32
+  Total to save: 30
+```
+
+**Key guarantees**:
+- Each URL appears in exactly ONE date's CSV file
+- The date represents when we FIRST discovered the article
+- Downstream processes never analyze the same article twice
+- Dataset remains clean over time
 
 ---
 
@@ -361,20 +351,41 @@ python3 scripts/pipeline/analyze-time-horizons.py
 
 ## Debugging
 
-Check CSV export:
+Check today's news:
+```bash
+cat data/news/$(date +%Y-%m-%d).csv
+```
+
+Count articles per date:
+```bash
+for f in data/news/*.csv; do echo "$f: $(tail -n +2 "$f" | wc -l) articles"; done
+```
+
+Verify no duplicate URLs across all dates:
+```python
+python3 -c "
+import glob, sys
+from pathlib import Path
+sys.path.append('scripts')
+from utilities.csv_helper import read_csv
+
+news_files = sorted(glob.glob('data/news/*.csv'))
+all_urls = []
+for filepath in news_files:
+    date = Path(filepath).stem
+    rows = read_csv('3', date=date, validate=False)
+    all_urls.extend([row['url'] for row in rows])
+
+print(f'Total articles: {len(all_urls)}')
+print(f'Unique URLs: {len(set(all_urls))}')
+print(f'Duplicates: {len(all_urls) - len(set(all_urls))}')
+"
+```
+
+Export to dashboard:
 ```bash
 python3 scripts/deployment/export-pipeline-data.py
-cat data/exports/step3_news.csv
-```
-
-Check URL index:
-```bash
-python3 -c "import json; print(len(json.load(open('/workspace/group/fx-portfolio/data/news/url_index.json'))))"
-```
-
-View articles with source attribution:
-```bash
-cat data/news/USD/$(date +%Y-%m-%d).json | grep -A 2 '"source"'
+head -20 site_data/step3_news.csv
 ```
 
 ---
@@ -390,7 +401,7 @@ cat data/news/USD/$(date +%Y-%m-%d).json | grep -A 2 '"source"'
    ```bash
    grep NEWSAPI_APIKEY /workspace/project/.env
    ```
-2. Verify `newsapi_enabled: true` in `data/news/sources.json`
+2. Verify `newsapi_enabled: true` in `config/news_sources.json`
 3. Check script output for API errors
 
 ### Issue: Low article count
@@ -400,12 +411,38 @@ cat data/news/USD/$(date +%Y-%m-%d).json | grep -A 2 '"source"'
 **Causes**:
 - RSS feeds have limited history (24-48 hours typically)
 - Many articles filtered out due to currency relevance threshold
-- URL deduplication (articles already seen before)
+- **Cross-date deduplication** (articles already downloaded in previous runs)
 
 **Solution**:
-- Run more frequently to catch fresh articles
+- Run more frequently to catch fresh articles before they age out
 - Consider adding more RSS feeds or NewsAPI queries
-- Review relevance scoring threshold
+- Review relevance filtering keywords
+- **Note**: Low counts are EXPECTED after first run - most articles will be duplicates
+
+**Example**: After initial run, subsequent runs might show:
+```
+✓ Loaded 648 existing URLs from 16 files
+Fetched 105 articles
+Duplicates skipped: 75
+New articles saved: 30
+```
+
+This is normal behavior - the deduplication is working correctly!
+
+### Issue: Duplicate URLs in dataset
+
+**Symptom**: Same URL appears in multiple date files
+
+**Solution**:
+Run the cross-date deduplication utility to clean up:
+```bash
+python3 scripts/utilities/deduplicate-news-cross-dates.py
+```
+
+This will:
+- Keep first occurrence of each URL
+- Remove later occurrences from subsequent dates
+- Report how many duplicates were found and removed
 
 ---
 

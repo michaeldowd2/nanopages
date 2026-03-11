@@ -240,6 +240,7 @@ def main(date_str=None):
                 # Build CSV row
                 csv_rows.append({
                     'date': date_str,
+                    'article_id': article.get('article_id', ''),
                     'source': article['source'],
                     'url': article['url'],
                     'currency': article['currency'],

@@ -27,6 +27,7 @@ from utilities.env_loader import get_newsapi_key
 from utilities.config_loader import get_currencies
 from utilities.pipeline_logger import PipelineLogger
 from utilities.csv_helper import write_csv, read_csv, csv_exists
+from utilities.article_id import generate_article_id
 
 CURRENCIES = get_currencies()
 
@@ -387,6 +388,7 @@ def main(date_str=None):
                 if url not in seen_urls:
                     csv_rows.append({
                         'date': date_str,
+                        'article_id': generate_article_id(url),
                         'source': article['source'],
                         'url': url,
                         'currency': currency,

@@ -353,6 +353,7 @@ def main(date_str=None):
                 # Build CSV row
                 signal = {
                     'date': date_str,
+                    'article_id': article.get('article_id', ''),
                     'source': article['source'],
                     'url': article['url'],
                     'currency': currency,
