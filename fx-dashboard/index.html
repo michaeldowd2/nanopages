@@ -199,6 +199,7 @@
       filter: brightness(1.3);
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <div class="header">
@@ -679,7 +680,7 @@
             generateHorizonChart(rows);
             generateHorizonSummary(rows);
           } else if (step === 'step7' && rows.length > 0) {
-            generateStrategyChart(rows);
+            initializeStep7Chart(rows);
           } else if (step === 'step9' && rows.length > 0) {
             renderPortfolioHeatmap(rows);
           }
@@ -771,6 +772,149 @@
           </div>
         `;
       }).join('');
+    }
+
+    let step7ChartInstance = null;
+    let step7AllData = [];
+
+    function initializeStep7Chart(rows) {
+      step7AllData = rows;
+
+      // Get unique currencies and generators
+      const currencies = [...new Set(rows.map(r => r.currency))].sort();
+      const generators = [...new Set(rows.map(r => r.generator_id))].sort();
+
+      // Populate dropdowns
+      const currencySelect = document.getElementById('step7-currency-filter');
+      const generatorSelect = document.getElementById('step7-generator-filter');
+
+      currencySelect.innerHTML = '<option value="">Select Currency</option>' +
+        currencies.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      generatorSelect.innerHTML = '<option value="">Select Generator</option>' +
+        generators.map(g => `<option value="${g}">${g}</option>`).join('');
+
+      // Set default selections
+      if (currencies.length > 0) currencySelect.value = currencies[0];
+      if (generators.length > 0) generatorSelect.value = generators[0];
+
+      // Add event listeners
+      currencySelect.addEventListener('change', updateStep7Chart);
+      generatorSelect.addEventListener('change', updateStep7Chart);
+
+      // Initial render
+      updateStep7Chart();
+    }
+
+    function updateStep7Chart() {
+      const currency = document.getElementById('step7-currency-filter').value;
+      const generator = document.getElementById('step7-generator-filter').value;
+
+      if (!currency || !generator) return;
+
+      // Filter data
+      const filteredData = step7AllData.filter(r =>
+        r.currency === currency && r.generator_id === generator
+      );
+
+      if (filteredData.length === 0) {
+        if (step7ChartInstance) step7ChartInstance.destroy();
+        return;
+      }
+
+      // Sort by date
+      filteredData.sort((a, b) => a.date.localeCompare(b.date));
+
+      // Extract data for chart
+      const dates = filteredData.map(r => r.date);
+      const indexValues = filteredData.map(r => parseFloat(r.index));
+      const signalValues = filteredData.map(r => parseFloat(r.factored_avg_signal));
+
+      // Render chart
+      const ctx = document.getElementById('step7-chart').getContext('2d');
+
+      if (step7ChartInstance) {
+        step7ChartInstance.destroy();
+      }
+
+      step7ChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [
+            {
+              label: 'Index',
+              data: indexValues,
+              borderColor: '#00ff41',
+              backgroundColor: 'rgba(0, 255, 65, 0.1)',
+              yAxisID: 'y',
+              tension: 0.4
+            },
+            {
+              label: 'Factored Avg Signal',
+              data: signalValues,
+              borderColor: '#ff6b6b',
+              backgroundColor: 'rgba(255, 107, 107, 0.1)',
+              yAxisID: 'y1',
+              tension: 0.4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: `${currency} - ${generator}`,
+              color: '#00ff41',
+              font: { size: 14, family: "'Courier New', monospace" }
+            },
+            legend: {
+              labels: {
+                color: '#00ff41',
+                font: { family: "'Courier New', monospace" }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#888', font: { family: "'Courier New', monospace" } },
+              grid: { color: '#333' }
+            },
+            y: {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              title: {
+                display: true,
+                text: 'Index',
+                color: '#00ff41',
+                font: { family: "'Courier New', monospace" }
+              },
+              ticks: { color: '#00ff41', font: { family: "'Courier New', monospace" } },
+              grid: { color: '#333' }
+            },
+            y1: {
+              type: 'linear',
+              display: true,
+              position: 'right',
+              title: {
+                display: true,
+                text: 'Factored Avg Signal',
+                color: '#ff6b6b',
+                font: { family: "'Courier New', monospace" }
+              },
+              ticks: { color: '#ff6b6b', font: { family: "'Courier New', monospace" } },
+              grid: { drawOnChartArea: false }
+            }
+          }
+        }
+      });
     }
 
 
@@ -1936,6 +2080,36 @@
     }
 
     function generateTableContent(stepId) {
+      if (stepId === '7') {
+        return `
+          <!-- Chart Section -->
+          <div style="margin-bottom:30px;">
+            <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Signal & Index Trend</h3>
+            <div style="margin-bottom:15px;">
+              <label style="color:#ccc;font-size:0.9em;margin-right:10px;">Currency:</label>
+              <select id="step7-currency-filter" style="background:#1a1a1a;color:#00ff41;border:1px solid #333;padding:6px;margin-right:20px;font-size:0.9em;border-radius:4px;">
+                <option value="">Select Currency</option>
+              </select>
+
+              <label style="color:#ccc;font-size:0.9em;margin-right:10px;">Generator:</label>
+              <select id="step7-generator-filter" style="background:#1a1a1a;color:#00ff41;border:1px solid #333;padding:6px;font-size:0.9em;border-radius:4px;">
+                <option value="">Select Generator</option>
+              </select>
+            </div>
+            <canvas id="step7-chart" style="max-height:400px;"></canvas>
+          </div>
+
+          <!-- Table Section -->
+          <div class="csv-table-container">
+            <div class="loading" id="step${stepId}-loading">Loading...</div>
+            <table id="step${stepId}-table" style="display:none;">
+              <thead id="step${stepId}-thead"></thead>
+              <tbody id="step${stepId}-tbody"></tbody>
+            </table>
+          </div>
+        `;
+      }
+
       return `
         <div class="csv-table-container">
           <div class="loading" id="step${stepId}-loading">Loading...</div>
