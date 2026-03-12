@@ -233,7 +233,6 @@ When stale data is detected (fallback):
 
 ### Utilities Created
 - ✅ `/scripts/validation/spot-check-pipeline-data.py` - External validation script (optional)
-- ✅ `/scripts/utilities/backfill-historic-rates.py` - Batch historical download
 
 ---
 
@@ -251,7 +250,6 @@ When stale data is detected (fallback):
 - Implementation: `/scripts/pipeline/fetch-exchange-rates.py`
 - Investigation: `/docs/EXCHANGE_RATE_DATA_SOURCES.md`
 - Validation: `/scripts/validation/spot-check-pipeline-data.py`
-- Backfill utility: `/scripts/utilities/backfill-historic-rates.py`
 
 ---
 

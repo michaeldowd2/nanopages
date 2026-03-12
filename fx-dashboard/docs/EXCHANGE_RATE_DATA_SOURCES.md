@@ -127,10 +127,9 @@ fallback2_url = f"https://api.frankfurter.dev/v1/{date_str}?base=EUR"
 3. Log all data source switches
 
 ### Phase 3: Resilience (Medium-term)
-1. Add Frankfurter as third fallback
-2. Create utility for downloading historical rates
-3. Add data quality dashboard
-4. Monitor API reliability metrics
+1. Add Frankfurter as third fallback ✅ (completed)
+2. Add data quality dashboard
+3. Monitor API reliability metrics
 
 ---
 
@@ -166,9 +165,8 @@ curl "https://api.frankfurter.dev/v1/2026-03-01..2026-03-12?base=EUR"
 - ✅ `/scripts/validation/spot-check-pipeline-data.py` - Spot-check implementation
 - ✅ `/docs/EXCHANGE_RATE_DATA_SOURCES.md` - This document
 
-### To Modify
-- ⏳ `/scripts/pipeline/fetch-exchange-rates.py` - Add date-specific URLs
-- ⏳ `/scripts/utilities/backfill-historic-rates.py` - Create for historical data download
+### Modified
+- ✅ `/scripts/pipeline/fetch-exchange-rates.py` - Now uses date-specific URLs and handles any historical date
 
 ---
 
