@@ -338,7 +338,7 @@ def main(date_str=None):
                 'confidence': signal['confidence'],
                 'signal': signal['signal'],  # Simply use signal from Process 5
                 'start_index': movement['start_index'],
-                'end_index': movement['end_index'],
+                'index': movement['end_index'],
                 'actual_pct_change': movement['pct_change'],
                 'actual_direction': movement['direction'],
                 'realized': realized,

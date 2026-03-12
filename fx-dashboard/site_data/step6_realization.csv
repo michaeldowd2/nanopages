@@ -1,4 +1,4 @@
-date,article_id,currency,article_download_date,generator_id,estimator_id,time_horizon,horizon_days,valid_to_date,predicted_direction,predicted_magnitude,confidence,signal,start_index,end_index,actual_pct_change,actual_direction,realized,realization_status
+date,article_id,currency,article_download_date,generator_id,estimator_id,time_horizon,horizon_days,valid_to_date,predicted_direction,predicted_magnitude,confidence,signal,start_index,index,actual_pct_change,actual_direction,realized,realization_status
 2026-02-24,bf0c0ab30801,GBP,2026-02-24,keyword-sentiment-v1.1-standard,llm-horizon-v1-default,1week,7,2026-03-03,bearish,small,0.9,0.36,100.0,100.0,0.0,neutral,False,unrealized
 2026-02-24,639474d8fdb4,GBP,2026-02-24,keyword-sentiment-v1.1-standard,llm-horizon-v1-default,1week,7,2026-03-03,bearish,small,0.75,0.3,100.0,100.0,0.0,neutral,False,unrealized
 2026-02-24,69e0c9e63be9,GBP,2026-02-24,keyword-sentiment-v1.1-standard,llm-horizon-v1-default,1week,7,2026-03-03,bearish,small,0.9,0.36,100.0,100.0,0.0,neutral,False,unrealized

@@ -375,9 +375,9 @@
             "description": "Currency index at signal generation"
           },
           {
-            "name": "end_index",
+            "name": "index",
             "type": "float",
-            "description": "Currency index at horizon expiry"
+            "description": "Currency index at realization check date"
           },
           {
             "name": "actual_pct_change",
@@ -440,6 +440,11 @@
             "name": "estimator_id",
             "type": "string",
             "description": "Time horizon estimator identifier"
+          },
+          {
+            "name": "index",
+            "type": "float",
+            "description": "Current currency index value"
           },
           {
             "name": "signal_count",

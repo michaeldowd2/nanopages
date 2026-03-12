@@ -61,6 +61,9 @@ def aggregate_signals(signals, date_str):
         direction_scores = []
         confidences = []
 
+        # Get index from first signal (all signals in group should have same currency/date, thus same index)
+        index_value = float(group_signals[0].get('index', 0)) if group_signals else 0
+
         for sig in group_signals:
             direction = sig.get('predicted_direction', 'neutral')
             signal_value = float(sig.get('signal', 0))  # confidence * magnitude
@@ -98,6 +101,7 @@ def aggregate_signals(signals, date_str):
             'currency': currency,
             'generator_id': generator_id,
             'estimator_id': estimator_id,
+            'index': round(index_value, 4),
             'signal_count': signal_count,
             'penalty_factor': round(penalty_factor, 4),
             'avg_signal': round(avg_signal, 4),
