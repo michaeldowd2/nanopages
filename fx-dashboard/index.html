@@ -476,7 +476,7 @@
         }).join('');
       } else if (step === 'step4') {
         // Special rendering for step4 (show only key columns)
-        const keyColumns = ['date', 'estimator_id', 'currency', 'title', 'url', 'analyzed_at', 'time_horizon', 'horizon_days', 'valid_to_date', 'confidence', 'reasoning'];
+        const keyColumns = ['date', 'article_id', 'estimator_id', 'currency', 'time_horizon', 'horizon_days', 'valid_to_date', 'confidence', 'reasoning'];
         tbody.innerHTML = filteredRows.map(row => {
           return '<tr>' + keyColumns.map(h => {
             let value = row[h] || '';
@@ -597,7 +597,7 @@
             }).join('');
           } else if (step === 'step4') {
             // Special rendering for step4 (show only key columns)
-            const keyColumns = ['date', 'article_id', 'estimator_id', 'currency', 'title', 'url', 'time_horizon', 'horizon_days', 'valid_to_date', 'confidence', 'reasoning'];
+            const keyColumns = ['date', 'article_id', 'estimator_id', 'currency', 'time_horizon', 'horizon_days', 'valid_to_date', 'confidence', 'reasoning'];
             thead.innerHTML = '<tr>' + keyColumns.map(h => `<th>${h}</th>`).join('') + '</tr>';
             tbody.innerHTML = rows.map(row => {
               return '<tr>' + keyColumns.map(h => {

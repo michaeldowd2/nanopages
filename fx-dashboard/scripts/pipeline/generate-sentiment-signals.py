@@ -354,10 +354,7 @@ def main(date_str=None):
                 signal = {
                     'date': date_str,
                     'article_id': article.get('article_id', ''),
-                    'source': article['source'],
-                    'url': article['url'],
                     'currency': currency,
-                    'title': title,
                     'generator_id': gen_id,
                     'predicted_direction': signal_direction,
                     'predicted_magnitude': predicted_magnitude if predicted_magnitude else None,

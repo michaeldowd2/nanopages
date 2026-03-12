@@ -241,10 +241,7 @@ def main(date_str=None):
                 csv_rows.append({
                     'date': date_str,
                     'article_id': article.get('article_id', ''),
-                    'source': article['source'],
-                    'url': article['url'],
                     'currency': article['currency'],
-                    'title': article['title'],
                     'estimator_id': ESTIMATOR_ID,
                     'time_horizon': result['time_horizon'],
                     'horizon_days': result['horizon_days'],

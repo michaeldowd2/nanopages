@@ -156,24 +156,9 @@
             "description": "Short hash ID derived from URL (12-char hex)"
           },
           {
-            "name": "source",
-            "type": "string",
-            "description": "News source name"
-          },
-          {
-            "name": "url",
-            "type": "string",
-            "description": "Article URL"
-          },
-          {
             "name": "currency",
             "type": "string",
             "description": "Currency the article relates to"
-          },
-          {
-            "name": "title",
-            "type": "string",
-            "description": "Article title"
           },
           {
             "name": "estimator_id",
@@ -251,24 +236,9 @@
             "description": "Short hash ID derived from URL (12-char hex)"
           },
           {
-            "name": "source",
-            "type": "string",
-            "description": "News source name"
-          },
-          {
-            "name": "url",
-            "type": "string",
-            "description": "Source article URL"
-          },
-          {
             "name": "currency",
             "type": "string",
             "description": "Currency the signal relates to"
-          },
-          {
-            "name": "title",
-            "type": "string",
-            "description": "Source article title"
           },
           {
             "name": "generator_id",
@@ -344,24 +314,9 @@
             "description": "Short hash ID derived from URL (12-char hex)"
           },
           {
-            "name": "source",
-            "type": "string",
-            "description": "News source name"
-          },
-          {
-            "name": "url",
-            "type": "string",
-            "description": "Article URL"
-          },
-          {
             "name": "currency",
             "type": "string",
             "description": "Currency code"
-          },
-          {
-            "name": "title",
-            "type": "string",
-            "description": "Article title"
           },
           {
             "name": "article_download_date",

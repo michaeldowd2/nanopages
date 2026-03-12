@@ -62,7 +62,7 @@ def load_horizon_analyses_in_window(process_date_str):
     Load all horizon analyses from the past 30 days that are still valid
     (valid_to_date >= process_date)
 
-    Returns: dict keyed by (url, estimator_id, article_download_date) -> horizon_data
+    Returns: dict keyed by (article_id, estimator_id, article_download_date) -> horizon_data
     """
     process_date = datetime.fromisoformat(process_date_str)
     lookback_date = process_date - timedelta(days=30)
@@ -91,16 +91,14 @@ def load_horizon_analyses_in_window(process_date_str):
                 if valid_to_date < process_date:
                     continue  # Expired
 
-                url = row.get('url', '')
+                article_id = row.get('article_id', '')
                 estimator_id = row.get('estimator_id', '')
-                key = (url, estimator_id, date_str)
+                key = (article_id, estimator_id, date_str)
 
                 horizon_analyses[key] = {
-                    'url': url,
+                    'article_id': article_id,
                     'estimator_id': estimator_id,
                     'currency': row.get('currency', ''),
-                    'title': row.get('title', ''),
-                    'source': row.get('source', ''),
                     'article_download_date': date_str,
                     'time_horizon': row.get('time_horizon', ''),
                     'horizon_days': int(row.get('horizon_days', 0)),
@@ -122,7 +120,7 @@ def load_signals_from_all_dates(process_date_str):
     """
     Load all signals from the past 30 days (excluding neutral signals)
 
-    Returns: dict keyed by (url, generator_id, signal_download_date) -> signal_data
+    Returns: dict keyed by (article_id, generator_id, signal_download_date) -> signal_data
     """
     process_date = datetime.fromisoformat(process_date_str)
     lookback_date = process_date - timedelta(days=30)
@@ -141,27 +139,24 @@ def load_signals_from_all_dates(process_date_str):
             rows = read_csv('process_5_signals', date=date_str, validate=False)
 
             for row in rows:
-                url = row.get('url', '')
+                article_id = row.get('article_id', '')
                 generator_id = row.get('generator_id', '')
                 predicted_direction = row.get('predicted_direction', '')
 
-                if not url or not generator_id:
+                if not article_id or not generator_id:
                     continue
 
                 # Skip neutral signals - we only care about bullish/bearish
                 if predicted_direction == 'neutral':
                     continue
 
-                key = (url, generator_id, date_str)
+                key = (article_id, generator_id, date_str)
 
                 signals[key] = {
-                    'article_id': row.get('article_id', ''),
-                    'url': url,
+                    'article_id': article_id,
                     'generator_id': generator_id,
                     'currency': row.get('currency', ''),
                     'article_download_date': date_str,
-                    'title': row.get('title', ''),
-                    'source': row.get('source', ''),
                     'predicted_direction': predicted_direction,
                     'predicted_magnitude': row.get('predicted_magnitude'),
                     'confidence': float(row.get('confidence', 0)),
@@ -288,18 +283,18 @@ def main(date_str=None):
 
         csv_rows = []
 
-        for (url, generator_id, signal_date), signal in signals.items():
-            # Try to find matching horizon analysis (same URL and date)
+        for (article_id, generator_id, signal_date), signal in signals.items():
+            # Try to find matching horizon analysis (same article_id and date)
             matching_horizons = [
                 (key, horizon) for key, horizon in horizon_analyses.items()
-                if key[0] == url and key[2] == signal_date  # Match on URL and date
+                if key[0] == article_id and key[2] == signal_date  # Match on article_id and date
             ]
 
             if not matching_horizons:
                 continue  # No horizon data for this signal
 
             # Use the first matching horizon
-            (horizon_url, estimator_id, horizon_date), horizon = matching_horizons[0]
+            (horizon_article_id, estimator_id, horizon_date), horizon = matching_horizons[0]
 
             # Verify currency matches
             if signal['currency'] != horizon['currency']:
@@ -331,10 +326,7 @@ def main(date_str=None):
             csv_rows.append({
                 'date': date_str,
                 'article_id': signal.get('article_id', ''),
-                'source': signal['source'],
-                'url': url,
                 'currency': currency,
-                'title': signal['title'],
                 'article_download_date': article_download_date,
                 'generator_id': generator_id,
                 'estimator_id': estimator_id,
