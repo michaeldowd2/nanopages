@@ -199,7 +199,6 @@
       filter: brightness(1.3);
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <div class="header">
@@ -774,7 +773,6 @@
       }).join('');
     }
 
-    let step7ChartInstance = null;
     let step7AllData = [];
 
     function initializeStep7Chart(rows) {
@@ -807,10 +805,14 @@
     }
 
     function updateStep7Chart() {
+      const container = document.getElementById('step7-chart');
       const currency = document.getElementById('step7-currency-filter').value;
       const generator = document.getElementById('step7-generator-filter').value;
 
-      if (!currency || !generator) return;
+      if (!currency || !generator || !container) {
+        if (container) container.innerHTML = '<div style="color:#888;padding:20px;text-align:center;">Select currency and generator to view chart</div>';
+        return;
+      }
 
       // Filter data
       const filteredData = step7AllData.filter(r =>
@@ -818,103 +820,126 @@
       );
 
       if (filteredData.length === 0) {
-        if (step7ChartInstance) step7ChartInstance.destroy();
+        container.innerHTML = '<div style="color:#888;padding:20px;text-align:center;">No data available for selected filters</div>';
         return;
       }
 
       // Sort by date
       filteredData.sort((a, b) => a.date.localeCompare(b.date));
 
-      // Extract data for chart
+      // Extract data
       const dates = filteredData.map(r => r.date);
       const indexValues = filteredData.map(r => parseFloat(r.index));
       const signalValues = filteredData.map(r => parseFloat(r.factored_avg_signal));
 
-      // Render chart
-      const ctx = document.getElementById('step7-chart').getContext('2d');
+      // Find value ranges
+      const indexMin = Math.min(...indexValues);
+      const indexMax = Math.max(...indexValues);
+      const indexRange = indexMax - indexMin;
+      const indexPadding = indexRange * 0.1;
 
-      if (step7ChartInstance) {
-        step7ChartInstance.destroy();
+      const signalMin = Math.min(...signalValues);
+      const signalMax = Math.max(...signalValues);
+      const signalRange = signalMax - signalMin;
+      const signalPadding = signalRange * 0.1;
+
+      // Chart dimensions
+      const chartHeight = 350;
+      const chartWidth = container.offsetWidth || 800;
+      const marginLeft = 60;
+      const marginRight = 60;
+      const marginTop = 40;
+      const marginBottom = 50;
+      const plotWidth = chartWidth - marginLeft - marginRight;
+      const plotHeight = chartHeight - marginTop - marginBottom;
+
+      // Helper: scale index to Y coordinate (left axis)
+      function scaleYIndex(value) {
+        const normalized = (value - (indexMin - indexPadding)) / (indexRange + 2 * indexPadding);
+        return plotHeight - (normalized * plotHeight) + marginTop;
       }
 
-      step7ChartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: dates,
-          datasets: [
-            {
-              label: 'Index',
-              data: indexValues,
-              borderColor: '#00ff41',
-              backgroundColor: 'rgba(0, 255, 65, 0.1)',
-              yAxisID: 'y',
-              tension: 0.4
-            },
-            {
-              label: 'Factored Avg Signal',
-              data: signalValues,
-              borderColor: '#ff6b6b',
-              backgroundColor: 'rgba(255, 107, 107, 0.1)',
-              yAxisID: 'y1',
-              tension: 0.4
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: {
-            mode: 'index',
-            intersect: false
-          },
-          plugins: {
-            title: {
-              display: true,
-              text: `${currency} - ${generator}`,
-              color: '#00ff41',
-              font: { size: 14, family: "'Courier New', monospace" }
-            },
-            legend: {
-              labels: {
-                color: '#00ff41',
-                font: { family: "'Courier New', monospace" }
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: '#888', font: { family: "'Courier New', monospace" } },
-              grid: { color: '#333' }
-            },
-            y: {
-              type: 'linear',
-              display: true,
-              position: 'left',
-              title: {
-                display: true,
-                text: 'Index',
-                color: '#00ff41',
-                font: { family: "'Courier New', monospace" }
-              },
-              ticks: { color: '#00ff41', font: { family: "'Courier New', monospace" } },
-              grid: { color: '#333' }
-            },
-            y1: {
-              type: 'linear',
-              display: true,
-              position: 'right',
-              title: {
-                display: true,
-                text: 'Factored Avg Signal',
-                color: '#ff6b6b',
-                font: { family: "'Courier New', monospace" }
-              },
-              ticks: { color: '#ff6b6b', font: { family: "'Courier New', monospace" } },
-              grid: { drawOnChartArea: false }
-            }
-          }
+      // Helper: scale signal to Y coordinate (right axis)
+      function scaleYSignal(value) {
+        const normalized = (value - (signalMin - signalPadding)) / (signalRange + 2 * signalPadding);
+        return plotHeight - (normalized * plotHeight) + marginTop;
+      }
+
+      // Helper: scale date index to X coordinate
+      function scaleX(index) {
+        return marginLeft + (index / (dates.length - 1)) * plotWidth;
+      }
+
+      // Build SVG
+      let svg = `<svg width="${chartWidth}" height="${chartHeight}" style="background:#0a0e27;">`;
+
+      // Title
+      svg += `<text x="${chartWidth/2}" y="20" fill="#00ff41" text-anchor="middle" font-size="14" font-weight="bold">
+                ${currency} - ${generator}
+              </text>`;
+
+      // Y-axis grid lines and labels (left - Index)
+      const ySteps = 5;
+      for (let i = 0; i <= ySteps; i++) {
+        const value = (indexMin - indexPadding) + (indexRange + 2 * indexPadding) * (i / ySteps);
+        const y = scaleYIndex(value);
+
+        svg += `<line x1="${marginLeft}" y1="${y}" x2="${chartWidth - marginRight}" y2="${y}"
+                     stroke="#333" stroke-width="1" stroke-dasharray="2,2"/>`;
+        svg += `<text x="${marginLeft - 10}" y="${y + 4}" fill="#00ff41" text-anchor="end" font-size="11">
+                  ${value.toFixed(2)}
+                </text>`;
+      }
+
+      // Right Y-axis labels (Signal)
+      for (let i = 0; i <= ySteps; i++) {
+        const value = (signalMin - signalPadding) + (signalRange + 2 * signalPadding) * (i / ySteps);
+        const y = scaleYSignal(value);
+
+        svg += `<text x="${chartWidth - marginRight + 10}" y="${y + 4}" fill="#ff6b6b" text-anchor="start" font-size="11">
+                  ${value.toFixed(3)}
+                </text>`;
+      }
+
+      // X-axis labels
+      const labelStep = Math.max(1, Math.floor(dates.length / 7));
+      dates.forEach((date, i) => {
+        if (i % labelStep === 0 || i === dates.length - 1) {
+          const x = scaleX(i);
+          svg += `<text x="${x}" y="${chartHeight - marginBottom + 20}" fill="#888" text-anchor="middle" font-size="10">
+                    ${date}
+                  </text>`;
         }
       });
+
+      // Draw Index line (green)
+      let indexPath = 'M';
+      indexValues.forEach((value, i) => {
+        const x = scaleX(i);
+        const y = scaleYIndex(value);
+        indexPath += `${i === 0 ? '' : 'L'}${x},${y} `;
+      });
+      svg += `<path d="${indexPath}" stroke="#00ff41" stroke-width="2" fill="none"/>`;
+
+      // Draw Signal line (red)
+      let signalPath = 'M';
+      signalValues.forEach((value, i) => {
+        const x = scaleX(i);
+        const y = scaleYSignal(value);
+        signalPath += `${i === 0 ? '' : 'L'}${x},${y} `;
+      });
+      svg += `<path d="${signalPath}" stroke="#ff6b6b" stroke-width="2" fill="none"/>`;
+
+      // Legend
+      svg += `<g transform="translate(${marginLeft}, ${marginTop - 15})">
+                <line x1="0" y1="0" x2="30" y2="0" stroke="#00ff41" stroke-width="2"/>
+                <text x="35" y="4" fill="#00ff41" font-size="11">Index</text>
+                <line x1="120" y1="0" x2="150" y2="0" stroke="#ff6b6b" stroke-width="2"/>
+                <text x="155" y="4" fill="#ff6b6b" font-size="11">Factored Avg Signal</text>
+              </g>`;
+
+      svg += '</svg>';
+      container.innerHTML = svg;
     }
 
 
@@ -2085,6 +2110,7 @@
           <!-- Chart Section -->
           <div style="margin-bottom:30px;">
             <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Signal & Index Trend</h3>
+            <p style="color:#888;font-size:0.85em;margin-bottom:15px;">Track index values and aggregate signals over time</p>
             <div style="margin-bottom:15px;">
               <label style="color:#ccc;font-size:0.9em;margin-right:10px;">Currency:</label>
               <select id="step7-currency-filter" style="background:#1a1a1a;color:#00ff41;border:1px solid #333;padding:6px;margin-right:20px;font-size:0.9em;border-radius:4px;">
@@ -2096,7 +2122,15 @@
                 <option value="">Select Generator</option>
               </select>
             </div>
-            <canvas id="step7-chart" style="max-height:400px;"></canvas>
+            <div id="step7-chart" style="position:relative;height:400px;margin-top:20px;"></div>
+          </div>
+
+          <!-- Date Filter (below chart) -->
+          <div style="margin:20px 0;padding-top:20px;border-top:1px solid #333;">
+            <label for="step7-date-filter" style="color:#ccc;font-size:0.9em;">Filter table by Date:</label>
+            <select id="step7-date-filter" style="background:#1a1a1a;color:#00ff41;border:1px solid #333;padding:6px;margin-left:10px;font-size:0.9em;border-radius:4px;">
+              <option value="">All Dates</option>
+            </select>
           </div>
 
           <!-- Table Section -->
