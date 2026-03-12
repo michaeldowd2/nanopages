@@ -155,6 +155,7 @@ def load_signals_from_all_dates(process_date_str):
                 key = (url, generator_id, date_str)
 
                 signals[key] = {
+                    'article_id': row.get('article_id', ''),
                     'url': url,
                     'generator_id': generator_id,
                     'currency': row.get('currency', ''),
