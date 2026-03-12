@@ -680,6 +680,7 @@
             generateHorizonSummary(rows);
           } else if (step === 'step7' && rows.length > 0) {
             initializeStep7Chart(rows);
+            populateDateFilter('step7', rows);
           } else if (step === 'step9' && rows.length > 0) {
             renderPortfolioHeatmap(rows);
           }
@@ -845,7 +846,7 @@
 
       // Chart dimensions
       const chartHeight = 350;
-      const chartWidth = container.offsetWidth || 800;
+      const chartWidth = Math.max(600, container.offsetWidth || 800);
       const marginLeft = 60;
       const marginRight = 60;
       const marginTop = 40;
@@ -2070,7 +2071,7 @@
                 <h2>Step ${stepId}: ${step.name} <a href="site_data/step${stepId}_${getDefaultFilename(stepId)}.csv" class="csv-download" download>CSV</a></h2>
                 <p class="step-header">${step.description}</p>
 
-                ${step.supports_date_filter && stepId !== '9' ? `
+                ${step.supports_date_filter && stepId !== '9' && stepId !== '7' ? `
                 <!-- Date Filter -->
                 <div style="margin:15px 0;">
                   <label for="step${stepId}-date-filter" style="color:#ccc; font-size:0.9em;">Filter by Date:</label>
@@ -2122,7 +2123,7 @@
                 <option value="">Select Generator</option>
               </select>
             </div>
-            <div id="step7-chart" style="position:relative;height:400px;margin-top:20px;"></div>
+            <div id="step7-chart" style="position:relative;height:400px;margin-top:20px;overflow-x:auto;"></div>
           </div>
 
           <!-- Date Filter (below chart) -->
