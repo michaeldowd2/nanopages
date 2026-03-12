@@ -2,7 +2,7 @@
 """
 Step 1: Fetch Exchange Rates (All Pairs)
 
-Downloads exchange rates for all currency pairs (10x10 matrix).
+Downloads exchange rates for all currency pairs (11x11 matrix).
 Uses EUR as intermediary since most FX APIs provide EUR pairs.
 
 For each pair X/Y, we calculate:
@@ -10,117 +10,220 @@ X/Y = (EUR/Y) / (EUR/X)
 
 Example: USD/JPY = EUR/JPY ÷ EUR/USD
 
-API Source: GitHub Currency API (fawazahmed0/exchange-api)
-- Free, no API key required
-- 200+ currencies
-- Daily updates
-- CDN-backed for reliability
+API Sources (in order):
+1. GitHub Currency API (date-specific, avoids CDN cache)
+2. Frankfurter API (fallback, free, no signup)
+
+Built-in validation:
+- Compares rates to previous day
+- Auto-detects stale data
+- Falls back to alternate source if needed
 
 Output: CSV with columns: date, base_currency, quote_currency, rate
 """
 
 import sys
 import argparse
-from datetime import datetime
+from datetime import datetime, timedelta
 import urllib.request
 import urllib.error
 import json
+from pathlib import Path
 
 # Add utilities to path
 sys.path.append('/workspace/group/fx-portfolio/scripts')
 from utilities.config_loader import get_currencies
 from utilities.pipeline_logger import PipelineLogger
-from utilities.csv_helper import write_csv
+from utilities.csv_helper import write_csv, read_csv
 
 CURRENCIES = get_currencies()
 
-# GitHub Currency API endpoints (free, no API key needed)
-CURRENCY_API_PRIMARY = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json"
-CURRENCY_API_FALLBACK = "https://latest.currency-api.pages.dev/v1/currencies/eur.json"
 
-
-def fetch_eur_rates_from_api():
+def fetch_github_api_rates(date_str):
     """
-    Fetch EUR-based rates from GitHub Currency API
+    Fetch EUR-based rates from GitHub Currency API (date-specific endpoint)
 
-    Returns rates in format: {"eur": {"usd": 1.18, "gbp": 0.874, ...}}
-    Tries primary CDN first, then fallback URL if that fails.
+    Uses date in URL to bypass CDN cache and ensure fresh data.
+    Format: @YYYY-MM-DD instead of @latest
+
+    Args:
+        date_str: Date in YYYY-MM-DD format
+
+    Returns:
+        tuple: (rates_dict, api_date) or (None, None) if failed
     """
-    # Try primary endpoint first
+    # Date-specific endpoints (bypasses CDN cache)
+    primary_url = f"https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@{date_str}/v1/currencies/eur.json"
+    fallback_url = f"https://{date_str}.currency-api.pages.dev/v1/currencies/eur.json"
+
+    # Try primary endpoint
     try:
-        print("   Trying primary endpoint (cdn.jsdelivr.net)...")
-        with urllib.request.urlopen(CURRENCY_API_PRIMARY, timeout=10) as response:
+        print(f"   Trying GitHub API (cdn.jsdelivr.net) for {date_str}...")
+        with urllib.request.urlopen(primary_url, timeout=10) as response:
             data = json.loads(response.read().decode())
 
         if "eur" in data:
-            print("   ✓ Primary endpoint successful")
-            return data["eur"], data.get("date", "unknown")
+            print("   ✓ GitHub API primary successful")
+            return data["eur"], data.get("date", date_str)
         else:
             raise Exception("Unexpected API response format")
 
     except Exception as e:
-        print(f"   ⚠️ Primary endpoint failed: {e}")
-        print("   Trying fallback endpoint (currency-api.pages.dev)...")
+        print(f"   ⚠️  GitHub API primary failed: {e}")
+        print(f"   Trying GitHub API fallback (currency-api.pages.dev)...")
 
         # Try fallback endpoint
         try:
-            with urllib.request.urlopen(CURRENCY_API_FALLBACK, timeout=10) as response:
+            with urllib.request.urlopen(fallback_url, timeout=10) as response:
                 data = json.loads(response.read().decode())
 
             if "eur" in data:
-                print("   ✓ Fallback endpoint successful")
-                return data["eur"], data.get("date", "unknown")
+                print("   ✓ GitHub API fallback successful")
+                return data["eur"], data.get("date", date_str)
             else:
                 raise Exception("Unexpected API response format")
 
         except Exception as fallback_error:
-            print(f"   ✗ Fallback endpoint also failed: {fallback_error}")
-            raise Exception(f"Both API endpoints failed. Primary: {e}, Fallback: {fallback_error}")
+            print(f"   ✗ GitHub API fallback also failed: {fallback_error}")
+            return None, None
 
 
-def fetch_eur_rates():
+def fetch_frankfurter_rates(date_str):
     """
-    Fetch EUR-based rates from GitHub Currency API
+    Fetch EUR-based rates from Frankfurter API
 
-    Falls back to mock data only if API is completely unavailable.
+    Frankfurter is a free, open-source API with no signup or API key required.
+    - URL: https://frankfurter.dev/
+    - Historical data: 1999 to present
+    - No rate limits
+
+    Args:
+        date_str: Date in YYYY-MM-DD format
+
+    Returns:
+        tuple: (rates_dict, api_date) or (None, None) if failed
     """
-    # Mock rates (only used as last resort fallback)
-    mock_rates = {
-        "EUR": 1.0,
-        "USD": 1.18,
-        "GBP": 0.874,
-        "JPY": 182.44,
-        "CHF": 0.912,
-        "AUD": 1.67,
-        "CAD": 1.61,
-        "NOK": 11.25,
-        "SEK": 10.68,
-        "CNY": 8.14,
-        "MXN": 20.31
-    }
+    url = f"https://api.frankfurter.dev/v1/{date_str}?base=EUR"
 
-    # Try to fetch real data from API
     try:
-        rates_data, api_date = fetch_eur_rates_from_api()
+        print(f"   Trying Frankfurter API for {date_str}...")
+        with urllib.request.urlopen(url, timeout=10) as response:
+            data = json.loads(response.read().decode())
 
-        # Convert to uppercase keys and normalize format
-        normalized_rates = {"EUR": 1.0}  # EUR base is always 1.0
-
-        for currency_code, rate in rates_data.items():
-            # API returns lowercase codes (e.g., "usd"), convert to uppercase
-            currency_upper = currency_code.upper()
-            if currency_upper in CURRENCIES:
-                normalized_rates[currency_upper] = rate
-
-        print(f"   ✓ Fetched rates from API (date: {api_date})")
-        print(f"   ✓ Found {len(normalized_rates)} currencies from our list")
-
-        return normalized_rates, "github-currency-api"
+        if "rates" in data:
+            print("   ✓ Frankfurter API successful")
+            return data["rates"], data.get("date", date_str)
+        else:
+            raise Exception("Unexpected API response format")
 
     except Exception as e:
-        print(f"⚠️ API request failed: {e}")
-        print("   Falling back to mock data")
-        return mock_rates, "mock-data-fallback"
+        print(f"   ✗ Frankfurter API failed: {e}")
+        return None, None
+
+
+def normalize_rates(rates_data):
+    """
+    Normalize API rates to our format
+
+    Converts to uppercase keys and filters to our currency list.
+    Always includes EUR=1.0 as base.
+
+    Returns:
+        dict: {currency_code: rate}
+    """
+    normalized_rates = {"EUR": 1.0}
+
+    for currency_code, rate in rates_data.items():
+        currency_upper = currency_code.upper()
+        if currency_upper in CURRENCIES:
+            normalized_rates[currency_upper] = float(rate)
+
+    return normalized_rates
+
+
+def load_previous_day_rates(date_str):
+    """
+    Load exchange rates from previous day for comparison
+
+    Args:
+        date_str: Current date in YYYY-MM-DD format
+
+    Returns:
+        dict: {(base, quote): rate} or None if not available
+    """
+    try:
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+        prev_date = date_obj - timedelta(days=1)
+        prev_date_str = prev_date.strftime('%Y-%m-%d')
+
+        prev_rates = read_csv('1', date=prev_date_str, validate=False)
+
+        # Build lookup dict
+        lookup = {}
+        for row in prev_rates:
+            key = (row['base_currency'], row['quote_currency'])
+            lookup[key] = float(row['rate'])
+
+        return lookup
+
+    except Exception as e:
+        print(f"   ℹ️  No previous day data available ({e})")
+        return None
+
+
+def check_for_duplicates(eur_rates, date_str):
+    """
+    Check if current rates are identical to previous day (stale data detection)
+
+    Args:
+        eur_rates: Current EUR-based rates
+        date_str: Current date
+
+    Returns:
+        bool: True if rates are fresh (different), False if stale (identical)
+    """
+    print("\n2. Checking for stale data...")
+
+    # Load previous day rates
+    prev_lookup = load_previous_day_rates(date_str)
+
+    if not prev_lookup:
+        print("   ℹ️  No previous data to compare - assuming fresh")
+        return True
+
+    # Calculate all pairs for comparison
+    current_pairs = calculate_all_pairs(eur_rates)
+
+    # Compare rates
+    identical_count = 0
+    total_pairs = 0
+
+    for base in CURRENCIES:
+        for quote in CURRENCIES:
+            key = (base, quote)
+            if key in prev_lookup:
+                total_pairs += 1
+                current_rate = current_pairs[base][quote]
+                prev_rate = prev_lookup[key]
+
+                # Check if essentially identical (within 0.0001)
+                if abs(current_rate - prev_rate) < 0.0001:
+                    identical_count += 1
+
+    if total_pairs == 0:
+        print("   ℹ️  No overlapping pairs - assuming fresh")
+        return True
+
+    identical_pct = (identical_count / total_pairs) * 100
+
+    # Critical: >95% identical means stale data
+    if identical_pct >= 95:
+        print(f"   ⚠️  WARNING: {identical_pct:.1f}% rates unchanged - likely stale data")
+        print(f"   Sample: EUR/USD = {eur_rates.get('USD', 0):.6f}")
+        return False
+    else:
+        print(f"   ✓ Fresh data: {100-identical_pct:.1f}% rates changed from previous day")
+        return True
 
 
 def calculate_all_pairs(eur_rates):
@@ -227,28 +330,59 @@ def main():
         logger.add_count('currencies', len(CURRENCIES))
         logger.add_count('total_pairs', len(CURRENCIES) ** 2)
 
-        # Fetch EUR-based rates
+        # Step 1: Fetch EUR-based rates from GitHub API (date-specific)
         print("\n1. Fetching EUR-based rates from GitHub Currency API...")
-        eur_rates, data_source = fetch_eur_rates()
-        print(f"   ✓ Got rates for {len(eur_rates)} currencies")
+        rates_data, api_date = fetch_github_api_rates(date_str)
+
+        if rates_data:
+            eur_rates = normalize_rates(rates_data)
+            print(f"   ✓ Got rates for {len(eur_rates)} currencies (API date: {api_date})")
+            data_source = "github-currency-api"
+        else:
+            eur_rates = None
+            data_source = None
+
+        # Step 2: Check for duplicate rates (stale data)
+        if eur_rates and not check_for_duplicates(eur_rates, date_str):
+            print("\n   🔄 Stale data detected, trying Frankfurter API...")
+
+            # Try Frankfurter as fallback
+            rates_data, api_date = fetch_frankfurter_rates(date_str)
+
+            if rates_data:
+                eur_rates_fallback = normalize_rates(rates_data)
+                print(f"   ✓ Got rates from Frankfurter ({len(eur_rates_fallback)} currencies)")
+
+                # Check if Frankfurter data is also stale
+                if not check_for_duplicates(eur_rates_fallback, date_str):
+                    raise Exception(
+                        "Both GitHub and Frankfurter APIs returned stale data. "
+                        "This may indicate markets are closed (weekend) or no rate changes occurred."
+                    )
+
+                # Use Frankfurter data
+                eur_rates = eur_rates_fallback
+                data_source = "frankfurter-api"
+                logger.add_info('fallback_reason', 'github_api_stale_data')
+            else:
+                raise Exception("Frankfurter fallback also failed")
+
+        if not eur_rates:
+            raise Exception("All data sources failed")
 
         logger.add_count('eur_rates_fetched', len(eur_rates))
         logger.add_info('data_source', data_source)
 
-        # Warn if using mock data
-        if "mock" in data_source:
-            logger.warning(f'Using mock data: {data_source}')
-
-        # Calculate all pairs
-        print("\n2. Calculating all currency pairs...")
+        # Step 3: Calculate all pairs
+        print("\n3. Calculating all currency pairs...")
         all_pairs = calculate_all_pairs(eur_rates)
         total_calculated = sum(len(v) for v in all_pairs.values())
         print(f"   ✓ Calculated {total_calculated} exchange rates")
 
         logger.add_count('pairs_calculated', total_calculated)
 
-        # Save to CSV file
-        print("\n3. Saving to CSV...")
+        # Step 4: Save to CSV file
+        print("\n4. Saving to CSV...")
         csv_path = save_rates_csv(all_pairs, date_str)
 
         logger.add_info('output_file', str(csv_path))
