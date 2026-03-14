@@ -360,14 +360,26 @@ def main(date_str=None):
                         signal_direction = invert_direction(direction)
                         reasoning = f"{pair_context}: Inverse signal for quote currency - {reasoning}"
 
-                # Calculate signal value (confidence × magnitude_weight)
+                # Calculate base_signal based on direction and magnitude
+                # Positive if bullish, negative if bearish
+                # Scaled by magnitude: small=0.4, medium=0.7, large=1.0
                 magnitude_multipliers = {
                     'small': 0.4,
                     'medium': 0.7,
-                    'large': 1.4
+                    'large': 1.0
                 }
-                magnitude_weight = magnitude_multipliers.get(predicted_magnitude, 0.7) if predicted_magnitude else 0.7
-                signal_value = round(confidence * magnitude_weight, 4)
+
+                if signal_direction == 'neutral' or not predicted_magnitude:
+                    base_signal = 0.0
+                elif signal_direction == 'bullish':
+                    base_signal = magnitude_multipliers.get(predicted_magnitude, 0.7)
+                elif signal_direction == 'bearish':
+                    base_signal = -magnitude_multipliers.get(predicted_magnitude, 0.7)
+                else:
+                    base_signal = 0.0
+
+                # Calculate final signal value (confidence × base_signal)
+                signal_value = round(confidence * base_signal, 4)
 
                 # Get horizon data for this article and currency
                 horizon_key = (article.get('article_id', ''), currency)
@@ -380,15 +392,16 @@ def main(date_str=None):
                     'date': date_str,
                     'article_id': article.get('article_id', ''),
                     'currency': currency,
+                    'pair_context': pair_context if pair_context else None,
                     'estimator_id': estimator_id,
                     'valid_to_date': valid_to_date,
                     'generator_id': gen_id,
                     'predicted_direction': signal_direction,
                     'predicted_magnitude': predicted_magnitude if predicted_magnitude else None,
+                    'base_signal': round(base_signal, 4),
                     'confidence': confidence,
-                    'pair_context': pair_context if pair_context else None,
-                    'reasoning': reasoning,
-                    'signal': signal_value
+                    'signal': signal_value,
+                    'reasoning': reasoning
                 }
 
                 generator_signals.append(signal)

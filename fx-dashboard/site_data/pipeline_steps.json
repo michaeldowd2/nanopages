@@ -243,6 +243,12 @@
             "description": "Currency the signal relates to"
           },
           {
+            "name": "pair_context",
+            "type": "string",
+            "nullable": true,
+            "description": "Specific currency pair context if applicable"
+          },
+          {
             "name": "estimator_id",
             "type": "string",
             "description": "Time horizon estimator ID"
@@ -269,25 +275,24 @@
             "description": "Predicted magnitude (small/medium/large)"
           },
           {
+            "name": "base_signal",
+            "type": "float",
+            "description": "Base signal value from direction and magnitude: +/-1.0 (large), +/-0.7 (medium), +/-0.4 (small), 0 (neutral)"
+          },
+          {
             "name": "confidence",
             "type": "float",
             "description": "Signal confidence (0-1)"
           },
           {
-            "name": "pair_context",
-            "type": "string",
-            "nullable": true,
-            "description": "Specific currency pair context if applicable"
+            "name": "signal",
+            "type": "float",
+            "description": "Final signal value (confidence \u00d7 base_signal)"
           },
           {
             "name": "reasoning",
             "type": "string",
             "description": "Signal reasoning/explanation"
-          },
-          {
-            "name": "signal",
-            "type": "float",
-            "description": "Magnitude-weighted signal value (confidence \u00d7 magnitude_weight)"
           }
         ]
       },
