@@ -163,8 +163,6 @@
           {"name": "estimator_id", "type": "string", "description": "Time horizon estimator ID"},
           {"name": "valid_to_date", "type": "string", "description": "Horizon expiry date"},
           {"name": "predicted_direction", "type": "string", "description": "Predicted direction"},
-          {"name": "predicted_magnitude", "type": "string", "nullable": true, "description": "Predicted magnitude"},
-          {"name": "confidence", "type": "float", "description": "Signal confidence"},
           {"name": "signal", "type": "float", "description": "Numeric signal value"},
           {"name": "start_index", "type": "float", "description": "Currency index at signal generation"},
           {"name": "index", "type": "float", "description": "Currency index at realization check date"},

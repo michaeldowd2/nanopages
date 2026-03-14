@@ -327,8 +327,6 @@ def main(date_str=None):
                 'estimator_id': estimator_id,
                 'valid_to_date': valid_to_date_str,
                 'predicted_direction': signal['predicted_direction'],
-                'predicted_magnitude': signal['predicted_magnitude'] if signal['predicted_magnitude'] else None,
-                'confidence': signal['confidence'],
                 'signal': signal['signal'],
                 'start_index': movement['start_index'],
                 'index': movement['end_index'],

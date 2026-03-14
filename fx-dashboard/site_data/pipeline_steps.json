@@ -359,17 +359,6 @@
             "description": "Predicted direction"
           },
           {
-            "name": "predicted_magnitude",
-            "type": "string",
-            "nullable": true,
-            "description": "Predicted magnitude"
-          },
-          {
-            "name": "confidence",
-            "type": "float",
-            "description": "Signal confidence"
-          },
-          {
             "name": "signal",
             "type": "float",
             "description": "Numeric signal value"
