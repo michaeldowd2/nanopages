@@ -453,9 +453,33 @@
       });
     }
 
+    function populateCurrencyFilterForStep7Table(rows) {
+      // Populate the step7 table currency filter (separate from chart filter)
+      if (!rows[0]?.currency) return;
+
+      const currencies = [...new Set(rows.map(r => r.currency))].filter(c => c).sort();
+
+      const selector = document.getElementById('step7-currency-table-filter');
+      if (!selector) return;
+
+      selector.innerHTML = '<option value="">All Currencies</option>' +
+        currencies.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      // Add change listener to filter table
+      selector.addEventListener('change', (e) => {
+        filterTableByCurrency('step7', e.target.value);
+      });
+    }
+
     function filterTableByDate(step, selectedDate) {
       // Get current currency filter value (if exists)
-      const currencySelector = document.getElementById(`${step}-currency-filter`);
+      // For step7, check the table-specific currency filter
+      let currencySelector;
+      if (step === 'step7') {
+        currencySelector = document.getElementById('step7-currency-table-filter');
+      } else {
+        currencySelector = document.getElementById(`${step}-currency-filter`);
+      }
       const selectedCurrency = currencySelector ? currencySelector.value : '';
 
       // Apply combined filter
@@ -808,8 +832,8 @@
           // Populate date filter
           populateDateFilter(step, rows);
 
-          // Populate currency filter for steps 5 and 6
-          if (step === 'step5' || step === 'step6') {
+          // Populate currency filter for steps 2, 3, 4, 5, and 6
+          if (step === 'step2' || step === 'step3' || step === 'step4' || step === 'step5' || step === 'step6') {
             populateCurrencyFilter(step, rows);
           }
 
@@ -823,6 +847,7 @@
           } else if (step === 'step7' && rows.length > 0) {
             initializeStep7Chart(rows);
             populateDateFilter('step7', rows);
+            populateCurrencyFilterForStep7Table(rows);
           } else if (step === 'step9' && rows.length > 0) {
             renderPortfolioHeatmap(rows);
           }
@@ -2220,7 +2245,7 @@
                   <select id="step${stepId}-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
                     <option value="">All Dates</option>
                   </select>
-                  ${stepId === '5' || stepId === '6' ? `
+                  ${stepId === '2' || stepId === '3' || stepId === '4' || stepId === '5' || stepId === '6' ? `
                   <label for="step${stepId}-currency-filter" style="color:#ccc; font-size:0.9em; margin-left:20px;">Currency:</label>
                   <select id="step${stepId}-currency-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
                     <option value="">All Currencies</option>
@@ -2279,6 +2304,10 @@
             <label for="step7-date-filter" style="color:#ccc;font-size:0.9em;">Filter table by Date:</label>
             <select id="step7-date-filter" style="background:#1a1a1a;color:#00ff41;border:1px solid #333;padding:6px;margin-left:10px;font-size:0.9em;border-radius:4px;">
               <option value="">All Dates</option>
+            </select>
+            <label for="step7-currency-table-filter" style="color:#ccc;font-size:0.9em;margin-left:20px;">Currency:</label>
+            <select id="step7-currency-table-filter" style="background:#1a1a1a;color:#00ff41;border:1px solid #333;padding:6px;margin-left:10px;font-size:0.9em;border-radius:4px;">
+              <option value="">All Currencies</option>
             </select>
           </div>
 
