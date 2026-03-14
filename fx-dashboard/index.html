@@ -526,10 +526,9 @@
           }).join('') + '</tr>';
         }).join('');
       } else if (step === 'step4') {
-        // Special rendering for step4 (show only key columns)
-        const keyColumns = ['date', 'article_id', 'estimator_id', 'currency', 'time_horizon', 'horizon_days', 'valid_to_date', 'confidence', 'reasoning'];
+        // Use actual headers from CSV instead of hardcoded columns
         tbody.innerHTML = filteredRows.map(row => {
-          return '<tr>' + keyColumns.map(h => {
+          return '<tr>' + headers.map(h => {
             let value = row[h] || '';
             let displayValue = value;
 
@@ -646,9 +645,9 @@
           }).join('') + '</tr>';
         }).join('');
       } else if (step === 'step4') {
-        const keyColumns = ['date', 'article_id', 'estimator_id', 'currency', 'time_horizon', 'horizon_days', 'valid_to_date', 'confidence', 'reasoning'];
+        // Use actual headers from CSV instead of hardcoded columns
         tbody.innerHTML = filteredRows.map(row => {
-          return '<tr>' + keyColumns.map(h => {
+          return '<tr>' + headers.map(h => {
             let value = row[h] || '';
             let displayValue = value;
 
@@ -757,23 +756,16 @@
               }).join('') + '</tr>';
             }).join('');
           } else if (step === 'step4') {
-            // Special rendering for step4 (show only key columns)
-            const keyColumns = ['date', 'article_id', 'estimator_id', 'currency', 'time_horizon', 'horizon_days', 'valid_to_date', 'confidence', 'reasoning'];
-            thead.innerHTML = '<tr>' + keyColumns.map(h => `<th>${h}</th>`).join('') + '</tr>';
+            // Special rendering for step4 - use actual headers from CSV
+            thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
             tbody.innerHTML = rows.map(row => {
-              return '<tr>' + keyColumns.map(h => {
+              return '<tr>' + headers.map(h => {
                 let value = row[h] || '';
                 let displayValue = value;
 
                 // Truncate long fields
-                if (h === 'title' && value.length > 60) {
-                  displayValue = value.substring(0, 60) + '...';
-                } else if (h === 'reasoning' && value.length > 80) {
+                if (h === 'reasoning' && value.length > 80) {
                   displayValue = value.substring(0, 80) + '...';
-                } else if (h === 'url' && value.length > 50) {
-                  displayValue = value.substring(0, 50) + '...';
-                } else if (h === 'analyzed_at' && value.length > 16) {
-                  displayValue = value.substring(0, 16) + '...';
                 }
 
                 // Color code horizons
