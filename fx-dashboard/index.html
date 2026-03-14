@@ -427,7 +427,7 @@
       // Zero: gray
 
       if (clampedVal === 0) {
-        return 'background-color: #333; color: #888;';
+        return 'background-color: #333; color: #000;';
       } else if (clampedVal > 0) {
         // Positive: green gradient
         // 0.01-0.3: light green
@@ -437,16 +437,14 @@
         const red = Math.round(20 + (1 - intensity) * 30);
         const green = Math.round(150 + intensity * 105);  // 150 to 255
         const blue = Math.round(20 + (1 - intensity) * 30);
-        const textColor = intensity > 0.5 ? '#000' : '#0f0';
-        return `background-color: rgb(${red}, ${green}, ${blue}); color: ${textColor};`;
+        return `background-color: rgb(${red}, ${green}, ${blue}); color: #000;`;
       } else {
         // Negative: red gradient
         const intensity = Math.abs(clampedVal);
         const red = Math.round(150 + intensity * 105);  // 150 to 255
         const green = Math.round(20 + (1 - intensity) * 30);
         const blue = Math.round(20 + (1 - intensity) * 30);
-        const textColor = intensity > 0.5 ? '#000' : '#f00';
-        return `background-color: rgb(${red}, ${green}, ${blue}); color: ${textColor};`;
+        return `background-color: rgb(${red}, ${green}, ${blue}); color: #000;`;
       }
     }
 
