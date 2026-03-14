@@ -844,8 +844,8 @@
                 // Step 7: Show penalty_factor with neutral coloring (informational)
                 else if (step === 'step7' && h === 'penalty_factor') {
                   className = 'neutral';
-                  else className = 'neutral';
                 }
+
                 return `<td class="${className}" style="${style}" title="${value}">${value}</td>`;
               }).join('') + '</tr>';
             }).join('');
