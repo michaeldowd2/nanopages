@@ -1031,14 +1031,23 @@
       // Sort by date
       filteredData.sort((a, b) => a.date.localeCompare(b.date));
 
-      // Extract data
-      console.log('[Step7 Chart] Sample row:', filteredData[0]);
-      const dates = filteredData.map(r => r.date);
-      const indexValues = filteredData.map(r => parseFloat(r.index));
-      const signalValues = filteredData.map(r => parseFloat(r.factored_avg_signal));
-      console.log('[Step7 Chart] Sample values - index:', indexValues[0], 'signal:', signalValues[0]);
-      console.log('[Step7 Chart] All index values:', indexValues);
-      console.log('[Step7 Chart] All signal values:', signalValues);
+      // Extract data and filter out rows with NaN values
+      const validData = filteredData.filter(r => {
+        const idx = parseFloat(r.index);
+        const sig = parseFloat(r.factored_avg_signal);
+        return !isNaN(idx) && !isNaN(sig);
+      });
+
+      console.log('[Step7 Chart] Filtered', filteredData.length - validData.length, 'rows with NaN values');
+
+      if (validData.length === 0) {
+        container.innerHTML = '<div style="color:#888;padding:20px;text-align:center;">No valid data available (all values are NaN)</div>';
+        return;
+      }
+
+      const dates = validData.map(r => r.date);
+      const indexValues = validData.map(r => parseFloat(r.index));
+      const signalValues = validData.map(r => parseFloat(r.factored_avg_signal));
 
       // Find value ranges
       const indexMin = Math.min(...indexValues);
