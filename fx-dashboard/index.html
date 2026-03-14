@@ -412,6 +412,44 @@
     const loadedCSVs = {};
     const stepDataCache = {};  // Cache loaded data for filtering
 
+    // Heatmap color function for signal values
+    // Maps signal values from -1 to +1 to a color gradient from red to green
+    function getSignalHeatmapColor(value) {
+      const numVal = parseFloat(value);
+      if (isNaN(numVal)) return '';
+
+      // Clamp value between -1 and 1
+      const clampedVal = Math.max(-1, Math.min(1, numVal));
+
+      // Calculate color based on value
+      // Negative values: red tones
+      // Positive values: green tones
+      // Zero: gray
+
+      if (clampedVal === 0) {
+        return 'background-color: #333; color: #888;';
+      } else if (clampedVal > 0) {
+        // Positive: green gradient
+        // 0.01-0.3: light green
+        // 0.3-0.6: medium green
+        // 0.6-1.0: bright green
+        const intensity = Math.abs(clampedVal);
+        const red = Math.round(20 + (1 - intensity) * 30);
+        const green = Math.round(150 + intensity * 105);  // 150 to 255
+        const blue = Math.round(20 + (1 - intensity) * 30);
+        const textColor = intensity > 0.5 ? '#000' : '#0f0';
+        return `background-color: rgb(${red}, ${green}, ${blue}); color: ${textColor};`;
+      } else {
+        // Negative: red gradient
+        const intensity = Math.abs(clampedVal);
+        const red = Math.round(150 + intensity * 105);  // 150 to 255
+        const green = Math.round(20 + (1 - intensity) * 30);
+        const blue = Math.round(20 + (1 - intensity) * 30);
+        const textColor = intensity > 0.5 ? '#000' : '#f00';
+        return `background-color: rgb(${red}, ${green}, ${blue}); color: ${textColor};`;
+      }
+    }
+
     function populateDateFilter(step, rows) {
       // Extract unique dates from rows and populate the date filter dropdown
       const dateField = rows[0]?.date ? 'date' : (rows[0]?.process_date ? 'process_date' : (rows[0]?.timestamp ? 'timestamp' : null));
@@ -565,6 +603,7 @@
           return '<tr>' + headers.map(h => {
             let value = row[h];
             let className = '';
+            let style = '';
 
             // Color text values
             if (value === 'bullish') className = 'bullish';
@@ -573,17 +612,16 @@
             else if (value === 'true') className = 'bullish';
             else if (value === 'false') className = 'bearish';
 
-            // Color numeric signal values (column names ending in _signal or aggregate_confidence)
-            if ((h.endsWith('_signal') || h === 'aggregate_confidence') && value) {
+            // Apply heatmap to signal columns (column name contains 'signal' or is aggregate_confidence)
+            if ((h.includes('signal') || h === 'aggregate_confidence') && value) {
               const numVal = parseFloat(value);
               if (!isNaN(numVal)) {
-                if (numVal > 0.01) className = 'bullish';  // Positive = green
-                else if (numVal < -0.01) className = 'bearish';  // Negative = red
-                else className = 'neutral';  // Near-zero = gray
+                style = getSignalHeatmapColor(numVal);
+                className = '';  // Clear className when using heatmap
               }
             }
 
-            return `<td class="${className}" title="${value}">${value}</td>`;
+            return `<td class="${className}" style="${style}" title="${value}">${value}</td>`;
           }).join('') + '</tr>';
         }).join('');
       }
@@ -677,6 +715,7 @@
           return '<tr>' + headers.map(h => {
             let value = row[h];
             let className = '';
+            let style = '';
 
             if (value === 'bullish') className = 'bullish';
             else if (value === 'bearish') className = 'bearish';
@@ -684,16 +723,16 @@
             else if (value === 'true') className = 'bullish';
             else if (value === 'false') className = 'bearish';
 
-            if ((h.endsWith('_signal') || h === 'aggregate_confidence') && value) {
+            // Apply heatmap to signal columns
+            if ((h.includes('signal') || h === 'aggregate_confidence') && value) {
               const numVal = parseFloat(value);
               if (!isNaN(numVal)) {
-                if (numVal > 0.01) className = 'bullish';
-                else if (numVal < -0.01) className = 'bearish';
-                else className = 'neutral';
+                style = getSignalHeatmapColor(numVal);
+                className = '';  // Clear className when using heatmap
               }
             }
 
-            return `<td class="${className}" title="${value}">${value}</td>`;
+            return `<td class="${className}" style="${style}" title="${value}">${value}</td>`;
           }).join('') + '</tr>';
         }).join('');
       }
@@ -786,30 +825,28 @@
               return '<tr>' + headers.map(h => {
                 let value = row[h];
                 let className = '';
+                let style = '';
+
                 if (value === 'bullish') className = 'bullish';
                 else if (value === 'bearish') className = 'bearish';
                 else if (value === 'neutral') className = 'neutral';
                 else if (value === 'true') className = 'bullish';
                 else if (value === 'false') className = 'bearish';
-                // Step 7: Color aggregate_signal and base_signal by sign
-                else if (step === 'step7' && (h === 'aggregate_signal' || h === 'base_signal')) {
+
+                // Apply heatmap to signal columns
+                if (h.includes('signal') || h === 'aggregate_confidence') {
                   const numValue = parseFloat(value);
-                  if (numValue > 0.01) className = 'bullish';
-                  else if (numValue < -0.01) className = 'bearish';
-                  else className = 'neutral';
+                  if (!isNaN(numValue)) {
+                    style = getSignalHeatmapColor(numValue);
+                    className = '';  // Clear className when using heatmap
+                  }
                 }
                 // Step 7: Show penalty_factor with neutral coloring (informational)
                 else if (step === 'step7' && h === 'penalty_factor') {
                   className = 'neutral';
-                }
-                // Step 5/6: Color signal column by direction
-                else if ((step === 'step5' || step === 'step6') && h === 'signal') {
-                  const direction = row['predicted_direction'];
-                  if (direction === 'bullish') className = 'bullish';
-                  else if (direction === 'bearish') className = 'bearish';
                   else className = 'neutral';
                 }
-                return `<td class="${className}" title="${value}">${value}</td>`;
+                return `<td class="${className}" style="${style}" title="${value}">${value}</td>`;
               }).join('') + '</tr>';
             }).join('');
           }

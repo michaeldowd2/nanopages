@@ -65,17 +65,10 @@ def aggregate_signals(signals, date_str):
         index_value = float(group_signals[0].get('index', 0)) if group_signals else 0
 
         for sig in group_signals:
-            direction = sig.get('predicted_direction', 'neutral')
-            signal_value = float(sig.get('signal', 0))  # confidence * magnitude
+            signal_value = float(sig.get('signal', 0))  # Already signed: positive=bullish, negative=bearish
 
-            if direction == 'bullish':
-                direction_scores.append(signal_value)
-            elif direction == 'bearish':
-                direction_scores.append(-signal_value)
-            else:
-                direction_scores.append(0)
-
-            confidences.append(signal_value)
+            direction_scores.append(signal_value)
+            confidences.append(abs(signal_value))
 
         # Calculate aggregate metrics
         avg_score = sum(direction_scores) / len(direction_scores) if direction_scores else 0

@@ -316,7 +316,6 @@ def main(date_str=None):
                 'generator_id': generator_id,
                 'estimator_id': estimator_id,
                 'valid_to_date': valid_to_date_str,
-                'predicted_direction': signal['predicted_direction'],
                 'signal': signal['signal'],
                 'start_30d_max_diff': movement['start_30d_max_diff'],
                 'estimated_diff': estimated_diff,

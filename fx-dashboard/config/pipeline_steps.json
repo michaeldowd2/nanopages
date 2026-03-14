@@ -162,7 +162,6 @@
           {"name": "generator_id", "type": "string", "description": "Signal generator ID"},
           {"name": "estimator_id", "type": "string", "description": "Time horizon estimator ID"},
           {"name": "valid_to_date", "type": "string", "description": "Horizon expiry date"},
-          {"name": "predicted_direction", "type": "string", "description": "Predicted direction"},
           {"name": "signal", "type": "float", "description": "Numeric signal value"},
           {"name": "start_30d_max_diff", "type": "float", "description": "30-day max-min index range at signal generation date"},
           {"name": "estimated_diff", "type": "float", "description": "Estimated index movement (signal × start_30d_max_diff)"},
