@@ -164,12 +164,12 @@
           {"name": "valid_to_date", "type": "string", "description": "Horizon expiry date"},
           {"name": "predicted_direction", "type": "string", "description": "Predicted direction"},
           {"name": "signal", "type": "float", "description": "Numeric signal value"},
+          {"name": "start_30d_max_diff", "type": "float", "description": "30-day max-min index range at signal generation date"},
+          {"name": "estimated_diff", "type": "float", "description": "Estimated index movement (signal × start_30d_max_diff)"},
           {"name": "start_index", "type": "float", "description": "Currency index at signal generation"},
           {"name": "index", "type": "float", "description": "Currency index at realization check date"},
-          {"name": "actual_pct_change", "type": "float", "description": "Actual percentage change"},
-          {"name": "actual_direction", "type": "string", "description": "Actual direction (bullish/bearish)"},
-          {"name": "realized", "type": "boolean", "description": "Whether signal was realized"},
-          {"name": "realization_status", "type": "string", "description": "Status (realized/contradicted/pending)"}
+          {"name": "actual_diff", "type": "float", "description": "Actual index change (index - start_index)"},
+          {"name": "realized", "type": "boolean", "description": "Whether signal was realized (actual movement exceeded estimated movement in predicted direction)"}
         ]
       },
       "supports_date_filter": true,

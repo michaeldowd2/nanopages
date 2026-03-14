@@ -31,9 +31,9 @@ CURRENCIES = get_currencies()
 
 def load_currency_indices_multi_date(start_date, end_date):
     """
-    Load currency indices for multiple dates
+    Load currency indices and 30d_max_diff for multiple dates
 
-    Returns: dict keyed by (currency, date) -> index_value
+    Returns: dict keyed by (currency, date) -> {'index': value, '30d_max_diff': value}
     """
     indices = {}
     current_date = datetime.fromisoformat(start_date)
@@ -47,7 +47,11 @@ def load_currency_indices_multi_date(start_date, end_date):
             for row in rows:
                 currency = row['currency']
                 index_value = float(row['index'])
-                indices[(currency, date_str)] = index_value
+                max_diff_value = float(row.get('30d_max_diff', 0))
+                indices[(currency, date_str)] = {
+                    'index': index_value,
+                    '30d_max_diff': max_diff_value
+                }
         except FileNotFoundError:
             pass  # Skip missing dates
 
@@ -179,7 +183,7 @@ def calculate_index_movement(currency, start_date_str, end_date_str, indices):
     """
     Calculate currency index movement from start_date to end_date
 
-    Returns: dict with start_index, end_index, pct_change, direction
+    Returns: dict with start_index, end_index, start_30d_max_diff, actual_diff
     """
     start_key = (currency, start_date_str)
     end_key = (currency, end_date_str)
@@ -187,56 +191,44 @@ def calculate_index_movement(currency, start_date_str, end_date_str, indices):
     if start_key not in indices or end_key not in indices:
         return None
 
-    start_index = indices[start_key]
-    end_index = indices[end_key]
+    start_data = indices[start_key]
+    end_data = indices[end_key]
 
-    # Calculate percentage change
-    pct_change = ((end_index - start_index) / start_index) * 100
+    start_index = start_data['index']
+    end_index = end_data['index']
+    start_30d_max_diff = start_data['30d_max_diff']
 
-    # Determine direction (using 0.1% threshold)
-    if pct_change > 0.1:
-        direction = "bullish"
-    elif pct_change < -0.1:
-        direction = "bearish"
-    else:
-        direction = "neutral"
+    # Calculate simple difference (not percentage)
+    actual_diff = end_index - start_index
 
     return {
         'start_index': round(start_index, 4),
         'end_index': round(end_index, 4),
-        'pct_change': round(pct_change, 2),
-        'direction': direction
+        'start_30d_max_diff': round(start_30d_max_diff, 4),
+        'actual_diff': round(actual_diff, 4)
     }
 
 
-def check_realization(predicted_direction, actual_direction, predicted_magnitude, actual_pct_change):
+def check_realization(estimated_diff, actual_diff):
     """
-    Determine if a signal has been realized
+    Determine if a signal has been realized based on estimated vs actual movement
 
-    Returns: (realized: bool, status: str)
+    Returns: bool
+
+    Logic:
+    - If estimated_diff is negative: realized if actual_diff < estimated_diff (more negative)
+    - If estimated_diff is positive: realized if actual_diff > estimated_diff (more positive)
+    - If estimated_diff is zero: not realized
     """
-    # Check direction match
-    direction_matches = (predicted_direction == actual_direction)
-
-    # Check magnitude if specified
-    magnitude_sufficient = True
-    if predicted_magnitude and predicted_magnitude not in ['unclear', None]:
-        try:
-            # For magnitude keywords (small/medium/large), just check direction
-            # We could add thresholds here if needed
-            pass
-        except:
-            pass
-
-    # Determine status
-    if direction_matches and magnitude_sufficient:
-        return True, 'realized'
-    elif direction_matches and not magnitude_sufficient:
-        return False, 'partially_realized'
-    elif actual_direction == 'neutral':
-        return False, 'unrealized'
+    if estimated_diff < 0:
+        # Bearish signal - realized if actual movement is more negative than estimated
+        return actual_diff < estimated_diff
+    elif estimated_diff > 0:
+        # Bullish signal - realized if actual movement is more positive than estimated
+        return actual_diff > estimated_diff
     else:
-        return False, 'contradicted'
+        # Zero signal - not realized
+        return False
 
 
 def main(date_str=None):
@@ -309,13 +301,11 @@ def main(date_str=None):
             if not movement:
                 continue  # Can't calculate movement
 
+            # Calculate estimated_diff = signal × start_30d_max_diff
+            estimated_diff = round(signal['signal'] * movement['start_30d_max_diff'], 4)
+
             # Check realization
-            realized, status = check_realization(
-                signal['predicted_direction'],
-                movement['direction'],
-                signal['predicted_magnitude'],
-                movement['pct_change']
-            )
+            realized = check_realization(estimated_diff, movement['actual_diff'])
 
             # Build CSV row (signal includes horizon data from Process 5)
             csv_rows.append({
@@ -328,12 +318,12 @@ def main(date_str=None):
                 'valid_to_date': valid_to_date_str,
                 'predicted_direction': signal['predicted_direction'],
                 'signal': signal['signal'],
+                'start_30d_max_diff': movement['start_30d_max_diff'],
+                'estimated_diff': estimated_diff,
                 'start_index': movement['start_index'],
                 'index': movement['end_index'],
-                'actual_pct_change': movement['pct_change'],
-                'actual_direction': movement['direction'],
-                'realized': realized,
-                'realization_status': status
+                'actual_diff': movement['actual_diff'],
+                'realized': realized
             })
 
         print(f"   ✓ Joined {len(csv_rows)} records")
@@ -354,21 +344,19 @@ def main(date_str=None):
         print("Summary Statistics")
         print(f"{'='*60}")
 
-        status_counts = {}
-        for row in csv_rows:
-            status = row['realization_status']
-            status_counts[status] = status_counts.get(status, 0) + 1
+        realized_count = sum(1 for row in csv_rows if row['realized'])
+        unrealized_count = len(csv_rows) - realized_count
 
         print(f"Total records: {len(csv_rows)}")
         if csv_rows:
             print(f"\nRealization Status:")
-            for status, count in sorted(status_counts.items()):
-                pct = (count / len(csv_rows) * 100)
-                print(f"  {status:20s}: {count:4d} ({pct:5.1f}%)")
+            realized_pct = (realized_count / len(csv_rows) * 100)
+            unrealized_pct = (unrealized_count / len(csv_rows) * 100)
+            print(f"  Realized:   {realized_count:4d} ({realized_pct:5.1f}%)")
+            print(f"  Unrealized: {unrealized_count:4d} ({unrealized_pct:5.1f}%)")
 
-        logger.add_count('realized', status_counts.get('realized', 0))
-        logger.add_count('unrealized', status_counts.get('unrealized', 0))
-        logger.add_count('contradicted', status_counts.get('contradicted', 0))
+        logger.add_count('realized', realized_count)
+        logger.add_count('unrealized', unrealized_count)
 
         logger.success()
 
