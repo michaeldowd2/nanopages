@@ -435,7 +435,34 @@
       });
     }
 
+    function populateCurrencyFilter(step, rows) {
+      // Extract unique currencies from rows and populate the currency filter dropdown
+      if (!rows[0]?.currency) return;
+
+      const currencies = [...new Set(rows.map(r => r.currency))].filter(c => c).sort();
+
+      const selector = document.getElementById(`${step}-currency-filter`);
+      if (!selector) return;
+
+      selector.innerHTML = '<option value="">All Currencies</option>' +
+        currencies.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      // Add change listener to filter table
+      selector.addEventListener('change', (e) => {
+        filterTableByCurrency(step, e.target.value);
+      });
+    }
+
     function filterTableByDate(step, selectedDate) {
+      // Get current currency filter value (if exists)
+      const currencySelector = document.getElementById(`${step}-currency-filter`);
+      const selectedCurrency = currencySelector ? currencySelector.value : '';
+
+      // Apply combined filter
+      filterTableByCombined(step, selectedDate, selectedCurrency);
+    }
+
+    function filterTableByDate_old(step, selectedDate) {
       const cachedData = stepDataCache[step];
       if (!cachedData) return;
 
@@ -530,6 +557,116 @@
                 if (numVal > 0.01) className = 'bullish';  // Positive = green
                 else if (numVal < -0.01) className = 'bearish';  // Negative = red
                 else className = 'neutral';  // Near-zero = gray
+              }
+            }
+
+            return `<td class="${className}" title="${value}">${value}</td>`;
+          }).join('') + '</tr>';
+        }).join('');
+      }
+
+      // Update count
+      const countEl = document.getElementById(`${step}-count`);
+      if (countEl) countEl.textContent = filteredRows.length;
+    }
+
+    function filterTableByCurrency(step, selectedCurrency) {
+      // Get current date filter value
+      const dateSelector = document.getElementById(`${step}-date-filter`);
+      const selectedDate = dateSelector ? dateSelector.value : '';
+
+      // Apply combined filter
+      filterTableByCombined(step, selectedDate, selectedCurrency);
+    }
+
+    function filterTableByCombined(step, selectedDate, selectedCurrency) {
+      const cachedData = stepDataCache[step];
+      if (!cachedData) return;
+
+      const { headers, allRows } = cachedData;
+      const tbody = document.getElementById(`${step}-tbody`);
+
+      // Filter rows by selected date and currency
+      let filteredRows = allRows;
+
+      if (selectedDate) {
+        filteredRows = filteredRows.filter(row => {
+          const dateVal = row.date || row.process_date || row.timestamp || '';
+          const rowDate = dateVal.includes('T') ? dateVal.split('T')[0] : dateVal;
+          return rowDate === selectedDate;
+        });
+      }
+
+      if (selectedCurrency) {
+        filteredRows = filteredRows.filter(row => row.currency === selectedCurrency);
+      }
+
+      // Re-render table with filtered rows (same logic as filterTableByDate)
+      if (step === 'step2') {
+        tbody.innerHTML = filteredRows.map(row => {
+          return '<tr>' + headers.map(h => {
+            let value = row[h];
+            let displayValue = value;
+            let className = '';
+
+            if (h === 'pct_change' && value && value !== '') {
+              const numValue = parseFloat(value);
+              if (!isNaN(numValue)) {
+                if (numValue > 0) className = 'bullish';
+                else if (numValue < 0) className = 'bearish';
+                displayValue = numValue.toFixed(2) + '%';
+              }
+            }
+
+            return `<td class="${className}" title="${value}">${displayValue}</td>`;
+          }).join('') + '</tr>';
+        }).join('');
+      } else if (step === 'step4') {
+        const keyColumns = ['date', 'article_id', 'estimator_id', 'currency', 'time_horizon', 'horizon_days', 'valid_to_date', 'confidence', 'reasoning'];
+        tbody.innerHTML = filteredRows.map(row => {
+          return '<tr>' + keyColumns.map(h => {
+            let value = row[h] || '';
+            let displayValue = value;
+
+            if (h === 'reasoning' && value.length > 80) {
+              displayValue = value.substring(0, 80) + '...';
+            } else if (h === 'analyzed_at' && value.length > 16) {
+              displayValue = value.substring(0, 16) + '...';
+            }
+
+            let className = '';
+            if (h === 'time_horizon') {
+              if (value === '1day') className = 'bearish';
+              else if (value === '1week') className = 'neutral';
+              else if (value === '1month') className = 'bullish';
+            }
+
+            return `<td class="${className}" title="${value}">${displayValue}</td>`;
+          }).join('') + '</tr>';
+        }).join('');
+
+        if (filteredRows.length > 0) {
+          generateHorizonChart(filteredRows);
+          generateHorizonSummary(filteredRows);
+        }
+      } else {
+        tbody.innerHTML = filteredRows.map(row => {
+          return '<tr>' + headers.map(h => {
+            let value = row[h];
+            let className = '';
+
+            if (value === 'bullish') className = 'bullish';
+            else if (value === 'bearish') className = 'bearish';
+            else if (value === 'neutral') className = 'neutral';
+            else if (value === 'true') className = 'bullish';
+            else if (value === 'false') className = 'bearish';
+
+            if ((h.endsWith('_signal') || h === 'aggregate_confidence') && value) {
+              const numVal = parseFloat(value);
+              if (!isNaN(numVal)) {
+                if (numVal > 0.01) className = 'bullish';
+                else if (numVal < -0.01) className = 'bearish';
+                else className = 'neutral';
               }
             }
 
@@ -670,6 +807,11 @@
 
           // Populate date filter
           populateDateFilter(step, rows);
+
+          // Populate currency filter for step 6
+          if (step === 'step6') {
+            populateCurrencyFilter(step, rows);
+          }
 
           const countEl = document.getElementById(`${step}-count`);
           if (countEl) countEl.textContent = rows.length;
@@ -2078,6 +2220,12 @@
                   <select id="step${stepId}-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
                     <option value="">All Dates</option>
                   </select>
+                  ${stepId === '6' ? `
+                  <label for="step${stepId}-currency-filter" style="color:#ccc; font-size:0.9em; margin-left:20px;">Currency:</label>
+                  <select id="step${stepId}-currency-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
+                    <option value="">All Currencies</option>
+                  </select>
+                  ` : ''}
                 </div>
                 ` : ''}
 
