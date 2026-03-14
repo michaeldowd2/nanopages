@@ -228,7 +228,7 @@ def calculate_all_indices(date_str):
         historical_indices = {}  # {currency: [index_values]}
 
         current_date = lookback_date
-        while current_date <= process_date:
+        while current_date < process_date:  # Don't include today - only look at past 30 days
             check_date_str = current_date.strftime('%Y-%m-%d')
             try:
                 historical_rows = read_csv('process_2_indices', date=check_date_str, validate=False)
