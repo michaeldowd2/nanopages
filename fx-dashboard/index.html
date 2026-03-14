@@ -808,8 +808,8 @@
           // Populate date filter
           populateDateFilter(step, rows);
 
-          // Populate currency filter for step 6
-          if (step === 'step6') {
+          // Populate currency filter for steps 5 and 6
+          if (step === 'step5' || step === 'step6') {
             populateCurrencyFilter(step, rows);
           }
 
@@ -2220,7 +2220,7 @@
                   <select id="step${stepId}-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
                     <option value="">All Dates</option>
                   </select>
-                  ${stepId === '6' ? `
+                  ${stepId === '5' || stepId === '6' ? `
                   <label for="step${stepId}-currency-filter" style="color:#ccc; font-size:0.9em; margin-left:20px;">Currency:</label>
                   <select id="step${stepId}-currency-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:6px; margin-left:10px; font-size:0.9em; border-radius:4px;">
                     <option value="">All Currencies</option>
