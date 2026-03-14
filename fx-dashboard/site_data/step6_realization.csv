@@ -4925,7 +4925,7 @@ date,article_id,currency,article_download_date,generator_id,estimator_id,valid_t
 2026-03-13,501061f934d2,CAD,2026-03-13,keyword-sentiment-v1.1-standard,llm-horizon-v1-default,2026-03-20,bullish,small,0.9,0.36,98.0529,98.0529,0.0,neutral,False,unrealized
 2026-03-13,c18bbc196b54,EUR,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-20,bearish,medium,0.7,0.49,101.1052,101.1052,0.0,neutral,False,unrealized
 2026-03-13,bbf4247ef3e8,EUR,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bearish,medium,0.7,0.49,101.1052,101.1052,0.0,neutral,False,unrealized
-2026-03-13,ca1099b16110,EUR,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bearish,small,0.7,0.28,101.1052,101.1052,0.0,neutral,False,unrealized
+2026-03-13,ca1099b16110,EUR,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bearish,medium,0.7,0.49,101.1052,101.1052,0.0,neutral,False,unrealized
 2026-03-13,73332e4fb0b4,EUR,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bearish,small,0.7,0.28,101.1052,101.1052,0.0,neutral,False,unrealized
 2026-03-13,720534c7cf2a,EUR,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-20,bearish,medium,0.8,0.56,101.1052,101.1052,0.0,neutral,False,unrealized
 2026-03-13,b2cb8284316d,EUR,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-04-12,bearish,medium,0.8,0.56,101.1052,101.1052,0.0,neutral,False,unrealized
@@ -4944,14 +4944,14 @@ date,article_id,currency,article_download_date,generator_id,estimator_id,valid_t
 2026-03-13,696b283bca5c,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-20,bullish,small,0.7,0.28,98.6064,98.6064,0.0,neutral,False,unrealized
 2026-03-13,5ff2a85134b8,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-14,bearish,small,0.8,0.32,98.6064,98.6064,0.0,neutral,False,unrealized
 2026-03-13,eee2d46ed406,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-20,bullish,medium,0.8,0.56,98.6064,98.6064,0.0,neutral,False,unrealized
-2026-03-13,d1728808771e,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-27,bearish,medium,0.8,0.56,98.6064,98.6064,0.0,neutral,False,unrealized
+2026-03-13,d1728808771e,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-27,bearish,medium,0.7,0.49,98.6064,98.6064,0.0,neutral,False,unrealized
 2026-03-13,b159b0c1a88c,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-27,bearish,medium,0.8,0.56,98.6064,98.6064,0.0,neutral,False,unrealized
 2026-03-13,c0de146668d5,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-14,bullish,medium,0.8,0.56,98.6064,98.6064,0.0,neutral,False,unrealized
 2026-03-13,b5d76c09367a,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-04-12,bullish,medium,0.8,0.56,98.6064,98.6064,0.0,neutral,False,unrealized
 2026-03-13,9bd9cc34c583,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bullish,medium,0.8,0.56,98.6064,98.6064,0.0,neutral,False,unrealized
 2026-03-13,cc2968e8756a,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bearish,medium,0.8,0.56,98.6064,98.6064,0.0,neutral,False,unrealized
-2026-03-13,162a0d148116,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bearish,medium,0.7,0.49,98.6064,98.6064,0.0,neutral,False,unrealized
-2026-03-13,a8bff681369d,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bearish,small,0.7,0.28,98.6064,98.6064,0.0,neutral,False,unrealized
+2026-03-13,162a0d148116,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bearish,medium,0.8,0.56,98.6064,98.6064,0.0,neutral,False,unrealized
+2026-03-13,a8bff681369d,USD,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bearish,medium,0.7,0.49,98.6064,98.6064,0.0,neutral,False,unrealized
 2026-03-13,d332756efc67,GBP,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-16,bearish,medium,0.8,0.56,99.7446,99.7446,0.0,neutral,False,unrealized
 2026-03-13,176a4ad67d15,GBP,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-20,bearish,medium,0.7,0.49,99.7446,99.7446,0.0,neutral,False,unrealized
 2026-03-13,11ec5716031d,GBP,2026-03-13,llm-sentiment-v1-haiku,llm-horizon-v1-default,2026-03-20,bearish,medium,0.8,0.56,99.7446,99.7446,0.0,neutral,False,unrealized

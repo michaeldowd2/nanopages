@@ -124,15 +124,15 @@
           {"name": "date", "type": "string", "description": "Signal generation date YYYY-MM-DD"},
           {"name": "article_id", "type": "string", "description": "Short hash ID derived from URL (12-char hex)"},
           {"name": "currency", "type": "string", "description": "Currency the signal relates to"},
+          {"name": "estimator_id", "type": "string", "description": "Time horizon estimator ID"},
+          {"name": "valid_to_date", "type": "string", "description": "Date when horizon expires YYYY-MM-DD"},
           {"name": "generator_id", "type": "string", "description": "Signal generator identifier"},
           {"name": "predicted_direction", "type": "string", "description": "Predicted direction (bullish/bearish/neutral)"},
           {"name": "predicted_magnitude", "type": "string", "nullable": true, "description": "Predicted magnitude (small/medium/large)"},
           {"name": "confidence", "type": "float", "description": "Signal confidence (0-1)"},
           {"name": "pair_context", "type": "string", "nullable": true, "description": "Specific currency pair context if applicable"},
           {"name": "reasoning", "type": "string", "description": "Signal reasoning/explanation"},
-          {"name": "signal", "type": "float", "description": "Magnitude-weighted signal value (confidence × magnitude_weight)"},
-          {"name": "estimator_id", "type": "string", "description": "Time horizon estimator ID"},
-          {"name": "valid_to_date", "type": "string", "description": "Date when horizon expires YYYY-MM-DD"}
+          {"name": "signal", "type": "float", "description": "Magnitude-weighted signal value (confidence × magnitude_weight)"}
         ]
       },
       "supports_date_filter": true,

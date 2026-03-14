@@ -380,15 +380,15 @@ def main(date_str=None):
                     'date': date_str,
                     'article_id': article.get('article_id', ''),
                     'currency': currency,
+                    'estimator_id': estimator_id,
+                    'valid_to_date': valid_to_date,
                     'generator_id': gen_id,
                     'predicted_direction': signal_direction,
                     'predicted_magnitude': predicted_magnitude if predicted_magnitude else None,
                     'confidence': confidence,
                     'pair_context': pair_context if pair_context else None,
                     'reasoning': reasoning,
-                    'signal': signal_value,
-                    'estimator_id': estimator_id,
-                    'valid_to_date': valid_to_date
+                    'signal': signal_value
                 }
 
                 generator_signals.append(signal)

@@ -243,6 +243,16 @@
             "description": "Currency the signal relates to"
           },
           {
+            "name": "estimator_id",
+            "type": "string",
+            "description": "Time horizon estimator ID"
+          },
+          {
+            "name": "valid_to_date",
+            "type": "string",
+            "description": "Date when horizon expires YYYY-MM-DD"
+          },
+          {
             "name": "generator_id",
             "type": "string",
             "description": "Signal generator identifier"
@@ -278,16 +288,6 @@
             "name": "signal",
             "type": "float",
             "description": "Magnitude-weighted signal value (confidence \u00d7 magnitude_weight)"
-          },
-          {
-            "name": "estimator_id",
-            "type": "string",
-            "description": "Time horizon estimator ID"
-          },
-          {
-            "name": "valid_to_date",
-            "type": "string",
-            "description": "Date when horizon expires YYYY-MM-DD"
           }
         ]
       },

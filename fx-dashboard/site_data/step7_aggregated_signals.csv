@@ -320,11 +320,11 @@ date,currency,generator_id,estimator_id,index,signal_count,penalty_factor,avg_si
 2026-03-13,CHF,llm-sentiment-v1-haiku,llm-horizon-v1-default,100.1065,1,0.5,0.49,0.245
 2026-03-13,CNY,llm-sentiment-v1-haiku,llm-horizon-v1-default,98.4007,1,0.5,-0.56,-0.28
 2026-03-13,EUR,keyword-sentiment-v1.1-standard,llm-horizon-v1-default,101.1052,8,1.0,0.015,0.015
-2026-03-13,EUR,llm-sentiment-v1-haiku,llm-horizon-v1-default,101.1052,10,1.0,-0.395,-0.395
+2026-03-13,EUR,llm-sentiment-v1-haiku,llm-horizon-v1-default,101.1052,10,1.0,-0.416,-0.416
 2026-03-13,GBP,keyword-sentiment-v1.1-standard,llm-horizon-v1-default,99.7446,3,0.866,-0.36,-0.3118
 2026-03-13,GBP,llm-sentiment-v1-haiku,llm-horizon-v1-default,99.7446,3,0.866,-0.5367,-0.4648
 2026-03-13,USD,keyword-sentiment-v1.1-standard,llm-horizon-v1-default,98.6064,15,1.0,0.09,0.09
-2026-03-13,USD,llm-sentiment-v1-haiku,llm-horizon-v1-default,98.6064,19,1.0,-0.0095,-0.0095
+2026-03-13,USD,llm-sentiment-v1-haiku,llm-horizon-v1-default,98.6064,19,1.0,-0.0205,-0.0205
 2026-03-07,AUD,keyword-sentiment-v1.1-standard,llm-horizon-v1-default,,8,1.0,,
 2026-03-07,AUD,llm-sentiment-v1-haiku,llm-horizon-v1-default,,4,1.0,,
 2026-03-07,CAD,keyword-sentiment-v1.1-standard,llm-horizon-v1-default,,2,0.6826,,
