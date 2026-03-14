@@ -1,17 +1,17 @@
 event_id,event_name,keywords,signal,description
-bullish_signal,Generic Bullish Signal,"bullish,strengthens,gains,rallies,rises,advances,climbs,surges",0.5,Generic positive sentiment or strengthening signal for the currency
-bearish_signal,Generic Bearish Signal,"bearish,weakens,falls,declines,drops,tumbles,slumps,plunges",-0.5,Generic negative sentiment or weakening signal for the currency
+bullish_signal,Generic Bullish Signal,"bullish,strengthens,gains,rallies,rises,advances,climbs,surges",1.0,Generic positive sentiment or strengthening signal for the currency
+bearish_signal,Generic Bearish Signal,"bearish,weakens,falls,declines,drops,tumbles,slumps,plunges",-1.0,Generic negative sentiment or weakening signal for the currency
 cb_rate_hike,Central Bank Rate Hike,"rate hike,interest rate increase,raised rates,basis points increase,hawkish decision,policy tightening",0.9,"Central bank announces an increase in key interest rates, typically bullish for currency"
 cb_rate_cut,Central Bank Rate Cut,"rate cut,interest rate decrease,cut rates,basis points decrease,dovish decision,monetary easing",-0.9,"Central bank announces a decrease in key interest rates, typically bearish for currency"
-cb_hawkish_stance,Central Bank Hawkish Stance,"hawkish,inflation vigilance,tightening needed,future rate hikes,higher for longer,prepared to tighten",0.6,Central bank signals potential future rate increases or tightening
-cb_dovish_stance,Central Bank Dovish Stance,"dovish,growth concerns,easing warranted,future rate cuts,dovish guidance,prepared to ease",-0.6,Central bank signals potential future rate decreases or easing
-inflation_high,Inflation Above Expectations,"CPI above,inflation rises,price pressures,inflation accelerates,hotter than expected,core inflation",0.7,"Consumer price inflation comes in higher than market expectations, suggesting potential rate hikes"
-inflation_low,Inflation Below Expectations,"CPI below,inflation falls,disinflation,inflation decelerates,cooler than expected,price pressures ease",-0.7,"Consumer price inflation comes in lower than market expectations, suggesting potential rate cuts"
-gdp_strong,GDP Growth Above Expectations,"GDP above,growth beats,economic expansion,stronger growth,GDP accelerates",0.6,"GDP growth exceeds forecasts, indicating strong economic performance"
-gdp_weak,GDP Growth Below Expectations,"GDP below,growth disappoints,economic contraction,weaker growth,GDP contracts",-0.6,"GDP growth falls short of forecasts, indicating weak economic performance"
-employment_strong,Employment Data Strong,"jobs beat,employment rises,NFP above,payrolls beat,unemployment falls,strong labor market",0.6,"Employment figures exceed expectations, suggesting strong labor market"
-employment_weak,Employment Data Weak,"jobs miss,employment falls,NFP below,payrolls disappoint,unemployment rises,weak labor market",-0.6,"Employment figures fall short of expectations, suggesting weak labor market"
+cb_hawkish_stance,Central Bank Hawkish Stance,"hawkish,inflation vigilance,tightening needed,future rate hikes,higher for longer,prepared to tighten",0.5,Central bank signals potential future rate increases or tightening
+cb_dovish_stance,Central Bank Dovish Stance,"dovish,growth concerns,easing warranted,future rate cuts,dovish guidance,prepared to ease",-0.5,Central bank signals potential future rate decreases or easing
+inflation_high,Inflation Above Expectations,"CPI above,inflation rises,price pressures,inflation accelerates,hotter than expected,core inflation",0.6,"Consumer price inflation comes in higher than market expectations, suggesting potential rate hikes"
+inflation_low,Inflation Below Expectations,"CPI below,inflation falls,disinflation,inflation decelerates,cooler than expected,price pressures ease",-0.6,"Consumer price inflation comes in lower than market expectations, suggesting potential rate cuts"
+gdp_strong,GDP Growth Above Expectations,"GDP above,growth beats,economic expansion,stronger growth,GDP accelerates",0.5,"GDP growth exceeds forecasts, indicating strong economic performance"
+gdp_weak,GDP Growth Below Expectations,"GDP below,growth disappoints,economic contraction,weaker growth,GDP contracts",-0.5,"GDP growth falls short of forecasts, indicating weak economic performance"
+employment_strong,Employment Data Strong,"jobs beat,employment rises,NFP above,payrolls beat,unemployment falls,strong labor market",0.5,"Employment figures exceed expectations, suggesting strong labor market"
+employment_weak,Employment Data Weak,"jobs miss,employment falls,NFP below,payrolls disappoint,unemployment rises,weak labor market",-0.5,"Employment figures fall short of expectations, suggesting weak labor market"
 geopolitical_safe_haven,Geopolitical Crisis (Safe Haven),"safe-haven demand,risk aversion,geopolitical tensions,flight to safety,war,conflict",0.8,"Geopolitical crisis drives safe-haven flows (bullish for USD, JPY, CHF)"
-trade_balance_improve,Trade Balance Improvement,"trade surplus widens,exports rise,deficit narrows,current account surplus",0.4,"Trade balance shows improvement, indicating stronger external position"
+trade_balance_improve,Trade Balance Improvement,"trade surplus widens,exports rise,deficit narrows,current account surplus",0.3,"Trade balance shows improvement, indicating stronger external position"
 political_instability,Political Instability,"government falls,political crisis,snap election,no confidence,political instability,coalition collapse",-0.8,"Major political instability or government crisis, typically very bearish"
 sovereign_downgrade,Sovereign Credit Downgrade,"credit downgrade,rating cut,Moody's downgrade,S&P downgrade,Fitch downgrade",-0.9,"Credit rating agency downgrades sovereign debt, very bearish signal"
