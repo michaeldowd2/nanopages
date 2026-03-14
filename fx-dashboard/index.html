@@ -1062,6 +1062,7 @@
 
       // Helper: scale date index to X coordinate
       function scaleX(index) {
+        if (dates.length === 1) return marginLeft + plotWidth / 2;
         return marginLeft + (index / (dates.length - 1)) * plotWidth;
       }
 
@@ -2092,6 +2093,7 @@
 
       // Helper: scale date index to X coordinate
       function scaleX(index) {
+        if (dates.length === 1) return marginLeft + plotWidth / 2;
         return marginLeft + (index / (dates.length - 1)) * plotWidth;
       }
 
