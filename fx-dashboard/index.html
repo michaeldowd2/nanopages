@@ -1037,6 +1037,8 @@
       const indexValues = filteredData.map(r => parseFloat(r.index));
       const signalValues = filteredData.map(r => parseFloat(r.factored_avg_signal));
       console.log('[Step7 Chart] Sample values - index:', indexValues[0], 'signal:', signalValues[0]);
+      console.log('[Step7 Chart] All index values:', indexValues);
+      console.log('[Step7 Chart] All signal values:', signalValues);
 
       // Find value ranges
       const indexMin = Math.min(...indexValues);
