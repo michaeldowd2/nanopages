@@ -122,26 +122,109 @@ def detect_fx_pair_in_text(text):
     return matches
 
 
+def determine_primary_currency_from_pair(text, base, quote):
+    """
+    Determine which currency in a pair is the primary focus of the article.
+
+    Logic:
+    - Check for directional words (rises, falls, strengthens, weakens, etc.)
+    - The currency that appears with action verbs is typically the focus
+    - In "GBP/USD rises", GBP is the focus (base currency strengthening)
+    - In "USD weakens against EUR", USD is the focus
+
+    Returns: base currency code or quote currency code
+    """
+    text_lower = text.lower()
+
+    # Action words that indicate currency movement
+    rising_words = ['rises', 'rising', 'climbs', 'climbing', 'gains', 'gaining',
+                    'strengthens', 'strengthening', 'rallies', 'rallying', 'surges', 'surging',
+                    'jumps', 'jumping', 'advances', 'advancing', 'higher', 'up']
+    falling_words = ['falls', 'falling', 'drops', 'dropping', 'declines', 'declining',
+                     'weakens', 'weakening', 'slumps', 'slumping', 'tumbles', 'tumbling',
+                     'sinks', 'sinking', 'lower', 'down']
+
+    # Get currency names from keywords
+    base_keywords = CURRENCY_KEYWORDS.get(base, [base.lower()])
+    quote_keywords = CURRENCY_KEYWORDS.get(quote, [quote.lower()])
+
+    # Count directional mentions for each currency
+    base_mentions = 0
+    quote_mentions = 0
+
+    for keyword in base_keywords:
+        # Check if base currency appears with action words
+        for word in rising_words + falling_words:
+            if f"{keyword} {word}" in text_lower or f"{word} {keyword}" in text_lower:
+                base_mentions += 1
+
+    for keyword in quote_keywords:
+        # Check if quote currency appears with action words
+        for word in rising_words + falling_words:
+            if f"{keyword} {word}" in text_lower or f"{word} {keyword}" in text_lower:
+                quote_mentions += 1
+
+    # Default: if pair notation appears (e.g., "GBP/USD rises"), base currency is the focus
+    # This is FX convention: when GBP/USD rises, GBP is getting stronger
+    pair_notation = f"{base}/{quote}"
+    if pair_notation in text:
+        # Check what happens to the pair
+        pair_idx = text.find(pair_notation)
+        following_text = text[pair_idx:pair_idx+100].lower()
+
+        has_rising = any(word in following_text for word in rising_words)
+        has_falling = any(word in following_text for word in falling_words)
+
+        # If pair is rising/falling, base currency is the focus
+        if has_rising or has_falling:
+            return base
+
+    # If one currency is mentioned more with action words, it's the focus
+    if base_mentions > quote_mentions:
+        return base
+    elif quote_mentions > base_mentions:
+        return quote
+
+    # Default to base currency (FX convention)
+    return base
+
+
 def filter_articles_by_currency(articles, currency, min_score=0.3):
     """
     Filter articles relevant to a specific currency
 
-    Enhanced: Also includes articles about FX pairs involving this currency,
-    even if the currency keyword score is below threshold
+    Enhanced logic:
+    1. For articles with FX pair mentions, determine the PRIMARY currency focus
+    2. Only assign article to the primary currency to avoid duplicates
+    3. Fall back to keyword-based filtering for non-pair articles
     """
     relevant = []
     for article in articles:
         text = f"{article['title']} {article['snippet']}"
-        score = calculate_relevance(text, currency)
 
-        # Check if article mentions an FX pair involving this currency
+        # Check for FX pair mentions first
         pairs = detect_fx_pair_in_text(text)
-        in_pair = any(currency in (base, quote) for base, quote in pairs)
 
-        # Include if: keyword score sufficient OR mentioned in FX pair
-        if score >= min_score or in_pair:
-            article['currency'] = currency
-            relevant.append(article.copy())  # Use copy to avoid mutation
+        if pairs:
+            # Article mentions FX pairs - determine primary focus
+            for base, quote in pairs:
+                if currency in (base, quote):
+                    # This currency is in the pair - but is it the focus?
+                    primary = determine_primary_currency_from_pair(text, base, quote)
+
+                    if primary == currency:
+                        # This currency is the PRIMARY focus
+                        article_copy = article.copy()
+                        article_copy['currency'] = currency
+                        relevant.append(article_copy)
+                        break  # Only add once per article
+        else:
+            # No FX pairs mentioned - use keyword-based relevance
+            score = calculate_relevance(text, currency)
+            if score >= min_score:
+                article_copy = article.copy()
+                article_copy['currency'] = currency
+                relevant.append(article_copy)
 
     return relevant
 
