@@ -972,10 +972,13 @@
 
     function initializeStep7Chart(rows) {
       step7AllData = rows;
+      console.log('[Step7 Chart] Initialized with', rows.length, 'rows');
 
       // Get unique currencies and generators
       const currencies = [...new Set(rows.map(r => r.currency))].sort();
       const generators = [...new Set(rows.map(r => r.generator_id))].sort();
+      console.log('[Step7 Chart] Available currencies:', currencies);
+      console.log('[Step7 Chart] Available generators:', generators);
 
       // Populate dropdowns
       const currencySelect = document.getElementById('step7-currency-filter');
@@ -1004,8 +1007,11 @@
       const currency = document.getElementById('step7-currency-filter').value;
       const generator = document.getElementById('step7-generator-filter').value;
 
+      console.log('[Step7 Chart] Starting render...', { currency, generator });
+
       if (!currency || !generator || !container) {
         if (container) container.innerHTML = '<div style="color:#888;padding:20px;text-align:center;">Select currency and generator to view chart</div>';
+        console.log('[Step7 Chart] Missing inputs:', { currency, generator, hasContainer: !!container });
         return;
       }
 
@@ -1014,8 +1020,11 @@
         r.currency === currency && r.generator_id === generator
       );
 
+      console.log('[Step7 Chart] Filtered data:', filteredData.length, 'rows');
+
       if (filteredData.length === 0) {
         container.innerHTML = '<div style="color:#888;padding:20px;text-align:center;">No data available for selected filters</div>';
+        console.log('[Step7 Chart] No data found');
         return;
       }
 
@@ -1031,12 +1040,17 @@
       const indexMin = Math.min(...indexValues);
       const indexMax = Math.max(...indexValues);
       const indexRange = indexMax - indexMin;
-      const indexPadding = indexRange * 0.1;
+      const indexPadding = indexRange > 0 ? indexRange * 0.1 : 0.1; // Avoid zero padding
 
       const signalMin = Math.min(...signalValues);
       const signalMax = Math.max(...signalValues);
       const signalRange = signalMax - signalMin;
-      const signalPadding = signalRange * 0.1;
+      const signalPadding = signalRange > 0 ? signalRange * 0.1 : 0.01; // Avoid zero padding
+
+      console.log('[Step7 Chart] Value ranges:', {
+        indexMin, indexMax, indexRange, indexPadding,
+        signalMin, signalMax, signalRange, signalPadding
+      });
 
       // Chart dimensions
       const chartHeight = 350;
@@ -1050,13 +1064,17 @@
 
       // Helper: scale index to Y coordinate (left axis)
       function scaleYIndex(value) {
-        const normalized = (value - (indexMin - indexPadding)) / (indexRange + 2 * indexPadding);
+        const denominator = indexRange + 2 * indexPadding;
+        if (denominator === 0) return marginTop + plotHeight / 2; // Center if no range
+        const normalized = (value - (indexMin - indexPadding)) / denominator;
         return plotHeight - (normalized * plotHeight) + marginTop;
       }
 
       // Helper: scale signal to Y coordinate (right axis)
       function scaleYSignal(value) {
-        const normalized = (value - (signalMin - signalPadding)) / (signalRange + 2 * signalPadding);
+        const denominator = signalRange + 2 * signalPadding;
+        if (denominator === 0) return marginTop + plotHeight / 2; // Center if no range
+        const normalized = (value - (signalMin - signalPadding)) / denominator;
         return plotHeight - (normalized * plotHeight) + marginTop;
       }
 
@@ -1136,6 +1154,7 @@
 
       svg += '</svg>';
       container.innerHTML = svg;
+      console.log('[Step7 Chart] Chart rendered successfully');
     }
 
 
