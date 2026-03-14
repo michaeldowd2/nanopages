@@ -2051,21 +2051,21 @@
 
       // Add legend
       html += `
-        <div style="margin-top:20px; display:flex; align-items:center; justify-content:center; gap:15px; font-size:0.85em;">
+        <div style="margin-top:15px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:0.75em; flex-wrap:wrap;">
           <span style="color:#888;">Performance:</span>
-          <div style="display:flex; align-items:center; gap:5px;">
-            <div style="width:30px; height:15px; background:#ff4444;"></div>
+          <div style="display:flex; align-items:center; gap:3px;">
+            <div style="width:20px; height:12px; background:#ff4444;"></div>
             <span style="color:#888;">Low</span>
           </div>
-          <div style="display:flex; align-items:center; gap:5px;">
-            <div style="width:30px; height:15px; background:#88aa44;"></div>
-            <span style="color:#888;">Medium</span>
+          <div style="display:flex; align-items:center; gap:3px;">
+            <div style="width:20px; height:12px; background:#88aa44;"></div>
+            <span style="color:#888;">Med</span>
           </div>
-          <div style="display:flex; align-items:center; gap:5px;">
-            <div style="width:30px; height:15px; background:#00ff41;"></div>
+          <div style="display:flex; align-items:center; gap:3px;">
+            <div style="width:20px; height:12px; background:#00ff41;"></div>
             <span style="color:#888;">High</span>
           </div>
-          <span style="color:#666; margin-left:10px;">Range: €${minValue.toFixed(0)} - €${maxValue.toFixed(0)}</span>
+          <span style="color:#666;">€${minValue.toFixed(0)}-€${maxValue.toFixed(0)}</span>
         </div>
       `;
 
@@ -2267,7 +2267,7 @@
         })
         .map(stepId => {
           const step = config.steps[stepId];
-          const label = stepId === '9' ? `STEP ${stepId}: PORTFOLIOS` : `STEP ${stepId}`;
+          const label = `STEP ${stepId}`;
           return `<div class="tab" onclick="showTab('step${stepId}')">${label}</div>`;
         })
         .join('');
@@ -2347,13 +2347,13 @@
             <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Signal & Index Trend</h3>
             <p style="color:#888;font-size:0.85em;margin-bottom:15px;">Track index values and aggregate signals over time</p>
             <div style="margin-bottom:15px;">
-              <label style="color:#ccc;font-size:0.9em;margin-right:10px;">Currency:</label>
-              <select id="step7-currency-filter" style="background:#1a1a1a;color:#00ff41;border:1px solid #333;padding:6px;margin-right:20px;font-size:0.9em;border-radius:4px;">
+              <label style="color:#ccc;font-size:0.85em;margin-right:5px;">Currency:</label>
+              <select id="step7-currency-filter" style="background:#1a1a1a;color:#00ff41;border:1px solid #333;padding:4px 6px;margin-right:10px;font-size:0.85em;border-radius:4px;max-width:120px;">
                 <option value="">Select Currency</option>
               </select>
 
-              <label style="color:#ccc;font-size:0.9em;margin-right:10px;">Generator:</label>
-              <select id="step7-generator-filter" style="background:#1a1a1a;color:#00ff41;border:1px solid #333;padding:6px;font-size:0.9em;border-radius:4px;">
+              <label style="color:#ccc;font-size:0.85em;margin-right:5px;">Generator:</label>
+              <select id="step7-generator-filter" style="background:#1a1a1a;color:#00ff41;border:1px solid #333;padding:4px 6px;font-size:0.85em;border-radius:4px;max-width:140px;">
                 <option value="">Select Generator</option>
               </select>
             </div>
@@ -2414,7 +2414,7 @@
             </select>
           </div>
 
-          <div id="portfolio-heatmap" style="overflow-x:auto;"></div>
+          <div id="portfolio-heatmap" style="overflow-x:auto; overflow-y:hidden; margin-bottom:20px;"></div>
         </div>
 
         <div class="chart">
