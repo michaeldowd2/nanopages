@@ -27,7 +27,7 @@ Output: CSV with columns: date, currency, index
 
 import sys
 import argparse
-from datetime import datetime
+from datetime import datetime, timedelta
 
 sys.path.append('/workspace/group/fx-portfolio/scripts')
 from utilities.config_loader import get_currencies
@@ -219,8 +219,44 @@ def calculate_all_indices(date_str):
 
         logger.add_count('indices_calculated', len(results))
 
+        # Calculate 30-day max diff for each currency
+        print(f"\n5. Calculating 30-day max-min differences...")
+        process_date = datetime.fromisoformat(date_str)
+        lookback_date = process_date - timedelta(days=30)
+
+        # Load all indices from past 30 days
+        historical_indices = {}  # {currency: [index_values]}
+
+        current_date = lookback_date
+        while current_date <= process_date:
+            check_date_str = current_date.strftime('%Y-%m-%d')
+            try:
+                historical_rows = read_csv('process_2_indices', date=check_date_str, validate=False)
+                for row in historical_rows:
+                    curr = row['currency']
+                    idx_val = float(row['index'])
+                    if curr not in historical_indices:
+                        historical_indices[curr] = []
+                    historical_indices[curr].append(idx_val)
+            except FileNotFoundError:
+                pass  # Date doesn't exist yet
+
+            current_date += timedelta(days=1)
+
+        # Calculate max-min diff for each currency and add to results
+        for result in results:
+            currency = result['currency']
+            if currency in historical_indices and len(historical_indices[currency]) > 0:
+                indices = historical_indices[currency]
+                max_diff = max(indices) - min(indices)
+                result['30d_max_diff'] = round(max_diff, 4)
+            else:
+                result['30d_max_diff'] = 0.0
+
+        print(f"   ✓ Calculated 30-day ranges for {len(results)} currencies")
+
         # Write to CSV
-        print(f"\n5. Saving indices to CSV...")
+        print(f"\n6. Saving indices to CSV...")
         csv_path = write_csv(results, 'process_2_indices', date=date_str)
 
         print(f"   ✓ Saved {len(results)} indices to {csv_path}")

@@ -70,6 +70,11 @@
             "name": "index",
             "type": "float",
             "description": "Currency strength index (base date = 100, calculated via percent changes from base)"
+          },
+          {
+            "name": "30d_max_diff",
+            "type": "float",
+            "description": "Difference between max and min index values over the past 30 days"
           }
         ]
       },
