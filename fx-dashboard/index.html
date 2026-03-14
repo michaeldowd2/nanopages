@@ -1032,9 +1032,11 @@
       filteredData.sort((a, b) => a.date.localeCompare(b.date));
 
       // Extract data
+      console.log('[Step7 Chart] Sample row:', filteredData[0]);
       const dates = filteredData.map(r => r.date);
       const indexValues = filteredData.map(r => parseFloat(r.index));
       const signalValues = filteredData.map(r => parseFloat(r.factored_avg_signal));
+      console.log('[Step7 Chart] Sample values - index:', indexValues[0], 'signal:', signalValues[0]);
 
       // Find value ranges
       const indexMin = Math.min(...indexValues);
