@@ -206,11 +206,8 @@ def export_step4_1_currency_events():
         output.append({
             'event_id': event['event_id'],
             'event_name': event['event_name'],
-            'category': event['category'],
-            'signal_direction': event['signal_direction'],
-            'signal_strength': event['signal_strength'],
-            'time_horizon': event['time_horizon'],
-            'confidence_impact': event['confidence_impact'],
+            'keywords': ','.join(event['keywords']),  # Join keywords array into comma-separated string
+            'signal': event['signal'],
             'description': event['description']
         })
 
@@ -220,8 +217,7 @@ def export_step4_1_currency_events():
 
     with open(output_file, 'w', newline='') as f:
         if output:
-            fieldnames = ['event_id', 'event_name', 'category', 'signal_direction',
-                         'signal_strength', 'time_horizon', 'confidence_impact', 'description']
+            fieldnames = ['event_id', 'event_name', 'keywords', 'signal', 'description']
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(output)
