@@ -224,11 +224,11 @@ def calculate_all_indices(date_str):
         process_date = datetime.fromisoformat(date_str)
         lookback_date = process_date - timedelta(days=30)
 
-        # Load all indices from past 30 days
+        # Load all indices from past 30 days (not including today)
         historical_indices = {}  # {currency: [index_values]}
 
         current_date = lookback_date
-        while current_date < process_date:  # Don't include today - only look at past 30 days
+        while current_date < process_date:  # Load past data only
             check_date_str = current_date.strftime('%Y-%m-%d')
             try:
                 historical_rows = read_csv('process_2_indices', date=check_date_str, validate=False)
@@ -243,11 +243,17 @@ def calculate_all_indices(date_str):
 
             current_date += timedelta(days=1)
 
-        # Calculate max-min diff for each currency and add to results
+        # Add today's values from results and calculate max-min diff
         for result in results:
             currency = result['currency']
-            if currency in historical_indices and len(historical_indices[currency]) > 0:
-                indices = historical_indices[currency]
+            today_index = result['index']
+
+            # Add today's index to the historical data
+            if currency not in historical_indices:
+                historical_indices[currency] = []
+            indices = historical_indices[currency] + [today_index]
+
+            if len(indices) > 0:
                 max_diff = max(indices) - min(indices)
                 result['30d_max_diff'] = round(max_diff, 4)
             else:
