@@ -206,6 +206,7 @@ def export_step4_1_currency_events():
         output.append({
             'event_id': event['event_id'],
             'event_name': event['event_name'],
+            'required_keywords': ','.join(event.get('required_keywords', [])),  # Optional field
             'keywords': ','.join(event['keywords']),  # Join keywords array into comma-separated string
             'signal': event['signal'],
             'description': event['description']
@@ -217,7 +218,7 @@ def export_step4_1_currency_events():
 
     with open(output_file, 'w', newline='') as f:
         if output:
-            fieldnames = ['event_id', 'event_name', 'keywords', 'signal', 'description']
+            fieldnames = ['event_id', 'event_name', 'required_keywords', 'keywords', 'signal', 'description']
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(output)
