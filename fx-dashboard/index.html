@@ -413,7 +413,7 @@
     const stepDataCache = {};  // Cache loaded data for filtering
 
     // Heatmap color function for signal values
-    // Maps signal values from -1 to +1 to a color gradient from red to green
+    // Maps signal values from -1 to +1 to a font color gradient from red to green
     function getSignalHeatmapColor(value) {
       const numVal = parseFloat(value);
       if (isNaN(numVal)) return '';
@@ -427,7 +427,7 @@
       // Zero: gray
 
       if (clampedVal === 0) {
-        return 'background-color: #333; color: #000;';
+        return 'color: #888;';
       } else if (clampedVal > 0) {
         // Positive: green gradient
         // 0.01-0.3: light green
@@ -437,14 +437,14 @@
         const red = Math.round(20 + (1 - intensity) * 30);
         const green = Math.round(150 + intensity * 105);  // 150 to 255
         const blue = Math.round(20 + (1 - intensity) * 30);
-        return `background-color: rgb(${red}, ${green}, ${blue}); color: #000;`;
+        return `color: rgb(${red}, ${green}, ${blue});`;
       } else {
         // Negative: red gradient
         const intensity = Math.abs(clampedVal);
         const red = Math.round(150 + intensity * 105);  // 150 to 255
         const green = Math.round(20 + (1 - intensity) * 30);
         const blue = Math.round(20 + (1 - intensity) * 30);
-        return `background-color: rgb(${red}, ${green}, ${blue}); color: #000;`;
+        return `color: rgb(${red}, ${green}, ${blue});`;
       }
     }
 
