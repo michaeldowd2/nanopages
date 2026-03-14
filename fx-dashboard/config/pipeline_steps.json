@@ -89,7 +89,6 @@
           {"name": "time_horizon", "type": "string", "description": "Time horizon label (1day, 1week, 2week, 1month)"},
           {"name": "horizon_days", "type": "int", "description": "Horizon in days"},
           {"name": "valid_to_date", "type": "string", "description": "Date when horizon expires YYYY-MM-DD"},
-          {"name": "confidence", "type": "float", "description": "Confidence score (0-1)"},
           {"name": "reasoning", "type": "string", "description": "LLM reasoning for horizon assignment"}
         ]
       },

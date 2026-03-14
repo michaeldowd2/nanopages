@@ -186,11 +186,6 @@
             "description": "Date when horizon expires YYYY-MM-DD"
           },
           {
-            "name": "confidence",
-            "type": "float",
-            "description": "Confidence score (0-1)"
-          },
-          {
             "name": "reasoning",
             "type": "string",
             "description": "LLM reasoning for horizon assignment"

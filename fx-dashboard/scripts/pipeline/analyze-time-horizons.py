@@ -246,7 +246,6 @@ def main(date_str=None):
                     'time_horizon': result['time_horizon'],
                     'horizon_days': result['horizon_days'],
                     'valid_to_date': valid_to_date,
-                    'confidence': result['confidence'],
                     'reasoning': result['reasoning']
                 })
 
