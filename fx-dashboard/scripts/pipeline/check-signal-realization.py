@@ -2,15 +2,14 @@
 """
 Step 6: Signal Realization Checker
 
-Joins horizon analysis and sentiment signals for all articles still within their validity window.
-For a given processing date, includes articles from up to 30 days prior that have valid_to_date >= processing_date.
+Checks realization status for all signals still within their validity window.
+For a given processing date, includes signals from up to 30 days prior that have valid_to_date >= processing_date.
 
-Reads from CSV outputs of Processes 2, 4, and 5. Writes to Process 6 CSV output.
+Reads from CSV outputs of Processes 2 and 5. Writes to Process 6 CSV output.
 
 Input:
 - data/indices/{date}.csv (from Process 2)
-- data/article-analysis/{date}.csv (from Process 4, past 30 days)
-- data/signals/{date}.csv (from Process 5, past 30 days)
+- data/signals/{date}.csv (from Process 5, past 30 days - includes horizon data)
 
 Output: data/signal-realization/{date}.csv
 """
@@ -160,8 +159,10 @@ def load_signals_from_all_dates(process_date_str):
                     'predicted_direction': predicted_direction,
                     'predicted_magnitude': row.get('predicted_magnitude'),
                     'confidence': float(row.get('confidence', 0)),
-                    'signal': float(row.get('signal', 0)),  # Load signal from Process 5
-                    'reasoning': row.get('reasoning', '')
+                    'signal': float(row.get('signal', 0)),
+                    'reasoning': row.get('reasoning', ''),
+                    'estimator_id': row.get('estimator_id', ''),
+                    'valid_to_date': row.get('valid_to_date', '')
                 }
                 total_loaded += 1
 
@@ -268,37 +269,31 @@ def main(date_str=None):
         print(f"   ✓ Loaded {len(indices)} index data points")
         logger.add_count('indices_loaded', len(indices))
 
-        # Load horizon analyses (valid for this date)
-        horizon_analyses = load_horizon_analyses_in_window(date_str)
-        logger.add_count('horizons_loaded', len(horizon_analyses))
-
-        # Load signals (from past 30 days, excluding neutral)
+        # Load signals (from past 30 days, excluding neutral, includes horizon data)
+        print(f"\n1. Loading signals from {lookback_str} to {date_str}...")
         signals = load_signals_from_all_dates(date_str)
         logger.add_count('signals_loaded', len(signals))
 
-        # Join horizon and signals
+        # Process signals and check realization
         print(f"\n{'='*60}")
-        print("Joining Horizons and Signals")
+        print("Processing Signals")
         print(f"{'='*60}")
 
         csv_rows = []
 
         for (article_id, generator_id, signal_date), signal in signals.items():
-            # Try to find matching horizon analysis (same article_id and date)
-            matching_horizons = [
-                (key, horizon) for key, horizon in horizon_analyses.items()
-                if key[0] == article_id and key[2] == signal_date  # Match on article_id and date
-            ]
+            # Get horizon data from signal (now included in Process 5 output)
+            estimator_id = signal.get('estimator_id', 'unknown')
+            valid_to_date_str = signal.get('valid_to_date', '')
 
-            if not matching_horizons:
-                continue  # No horizon data for this signal
+            if not valid_to_date_str:
+                continue  # Signal missing horizon data
 
-            # Use the first matching horizon
-            (horizon_article_id, estimator_id, horizon_date), horizon = matching_horizons[0]
-
-            # Verify currency matches
-            if signal['currency'] != horizon['currency']:
-                continue
+            # Check if signal is still valid for the processing date
+            valid_to_date = datetime.fromisoformat(valid_to_date_str)
+            process_date = datetime.fromisoformat(date_str)
+            if valid_to_date < process_date:
+                continue  # Signal has expired
 
             article_download_date = signal['article_download_date']
             currency = signal['currency']
@@ -322,7 +317,7 @@ def main(date_str=None):
                 movement['pct_change']
             )
 
-            # Build CSV row (signal is now loaded from Process 5)
+            # Build CSV row (signal includes horizon data from Process 5)
             csv_rows.append({
                 'date': date_str,
                 'article_id': signal.get('article_id', ''),
@@ -330,13 +325,11 @@ def main(date_str=None):
                 'article_download_date': article_download_date,
                 'generator_id': generator_id,
                 'estimator_id': estimator_id,
-                'time_horizon': horizon['time_horizon'],
-                'horizon_days': horizon['horizon_days'],
-                'valid_to_date': horizon['valid_to_date'],
+                'valid_to_date': valid_to_date_str,
                 'predicted_direction': signal['predicted_direction'],
                 'predicted_magnitude': signal['predicted_magnitude'] if signal['predicted_magnitude'] else None,
                 'confidence': signal['confidence'],
-                'signal': signal['signal'],  # Simply use signal from Process 5
+                'signal': signal['signal'],
                 'start_index': movement['start_index'],
                 'index': movement['end_index'],
                 'actual_pct_change': movement['pct_change'],

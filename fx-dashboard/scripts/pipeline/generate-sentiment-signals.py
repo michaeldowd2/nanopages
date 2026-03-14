@@ -285,6 +285,25 @@ def main(date_str=None):
             logger.fail()
             return
 
+        # Load horizon analyses from Process 4 CSV
+        print(f"\n2. Loading horizon analyses from Process 4...")
+        try:
+            horizons = read_csv('process_4_horizons', date=date_str, validate=False)
+            print(f"   ✓ Loaded {len(horizons)} horizon analyses")
+            logger.add_count('horizons_loaded', len(horizons))
+        except FileNotFoundError:
+            print(f"   ✗ No horizon analyses found for {date_str}")
+            print(f"   Step 4 (Time Horizon Analysis) must be run first")
+            logger.error(f"Missing upstream data: process_4_horizons for {date_str}")
+            logger.fail()
+            return
+
+        # Create horizon lookup by (article_id, currency)
+        horizon_lookup = {}
+        for h in horizons:
+            key = (h['article_id'], h['currency'])
+            horizon_lookup[key] = h
+
         if not articles:
             print(f"   ⚠ No articles to analyze")
             logger.warning("No articles found")
@@ -350,6 +369,12 @@ def main(date_str=None):
                 magnitude_weight = magnitude_multipliers.get(predicted_magnitude, 0.7) if predicted_magnitude else 0.7
                 signal_value = round(confidence * magnitude_weight, 4)
 
+                # Get horizon data for this article and currency
+                horizon_key = (article.get('article_id', ''), currency)
+                horizon = horizon_lookup.get(horizon_key)
+                estimator_id = horizon['estimator_id'] if horizon else 'unknown'
+                valid_to_date = horizon['valid_to_date'] if horizon else ''
+
                 # Build CSV row
                 signal = {
                     'date': date_str,
@@ -361,7 +386,9 @@ def main(date_str=None):
                     'confidence': confidence,
                     'pair_context': pair_context if pair_context else None,
                     'reasoning': reasoning,
-                    'signal': signal_value
+                    'signal': signal_value,
+                    'estimator_id': estimator_id,
+                    'valid_to_date': valid_to_date
                 }
 
                 generator_signals.append(signal)

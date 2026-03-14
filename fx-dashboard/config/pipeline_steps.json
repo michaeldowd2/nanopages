@@ -114,8 +114,8 @@
       "name": "Sentiment Signals",
       "script": "scripts/pipeline/generate-sentiment-signals.py",
       "description": "Generate sentiment signals using keyword and LLM generators",
-      "depends_on": ["3"],
-      "inputs": ["data/news/{date}.csv"],
+      "depends_on": ["3", "4"],
+      "inputs": ["data/news/{date}.csv", "data/article-analysis/{date}.csv"],
       "output_path": "data/signals/{date}.csv",
       "output_pattern": "data/signals/*.csv",
       "output_schema": {
@@ -130,7 +130,9 @@
           {"name": "confidence", "type": "float", "description": "Signal confidence (0-1)"},
           {"name": "pair_context", "type": "string", "nullable": true, "description": "Specific currency pair context if applicable"},
           {"name": "reasoning", "type": "string", "description": "Signal reasoning/explanation"},
-          {"name": "signal", "type": "float", "description": "Magnitude-weighted signal value (confidence × magnitude_weight)"}
+          {"name": "signal", "type": "float", "description": "Magnitude-weighted signal value (confidence × magnitude_weight)"},
+          {"name": "estimator_id", "type": "string", "description": "Time horizon estimator ID"},
+          {"name": "valid_to_date", "type": "string", "description": "Date when horizon expires YYYY-MM-DD"}
         ]
       },
       "supports_date_filter": true,
@@ -142,11 +144,10 @@
       "name": "Signal Realization",
       "script": "scripts/pipeline/check-signal-realization.py",
       "description": "Check if signals have been realized (predicted events occurred)",
-      "depends_on": ["5", "4", "2"],
+      "depends_on": ["2", "5"],
       "inputs": [
-        "data/signals/{date}.csv",
-        "data/article-analysis/{date}.csv",
-        "data/indices/{date}.csv"
+        "data/indices/{date}.csv",
+        "data/signals/{date}.csv"
       ],
       "output_path": "data/signal-realization/{date}.csv",
       "output_pattern": "data/signal-realization/*.csv",
@@ -159,8 +160,6 @@
           {"name": "article_download_date", "type": "string", "description": "Date article was fetched"},
           {"name": "generator_id", "type": "string", "description": "Signal generator ID"},
           {"name": "estimator_id", "type": "string", "description": "Time horizon estimator ID"},
-          {"name": "time_horizon", "type": "string", "description": "Time horizon label"},
-          {"name": "horizon_days", "type": "int", "description": "Horizon in days"},
           {"name": "valid_to_date", "type": "string", "description": "Horizon expiry date"},
           {"name": "predicted_direction", "type": "string", "description": "Predicted direction"},
           {"name": "predicted_magnitude", "type": "string", "nullable": true, "description": "Predicted magnitude"},

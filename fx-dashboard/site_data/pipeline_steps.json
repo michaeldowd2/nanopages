@@ -215,10 +215,12 @@
       "script": "scripts/pipeline/generate-sentiment-signals.py",
       "description": "Generate sentiment signals using keyword and LLM generators",
       "depends_on": [
-        "3"
+        "3",
+        "4"
       ],
       "inputs": [
-        "data/news/{date}.csv"
+        "data/news/{date}.csv",
+        "data/article-analysis/{date}.csv"
       ],
       "output_path": "data/signals/{date}.csv",
       "output_pattern": "data/signals/*.csv",
@@ -276,6 +278,16 @@
             "name": "signal",
             "type": "float",
             "description": "Magnitude-weighted signal value (confidence \u00d7 magnitude_weight)"
+          },
+          {
+            "name": "estimator_id",
+            "type": "string",
+            "description": "Time horizon estimator ID"
+          },
+          {
+            "name": "valid_to_date",
+            "type": "string",
+            "description": "Date when horizon expires YYYY-MM-DD"
           }
         ]
       },
@@ -289,14 +301,12 @@
       "script": "scripts/pipeline/check-signal-realization.py",
       "description": "Check if signals have been realized (predicted events occurred)",
       "depends_on": [
-        "5",
-        "4",
-        "2"
+        "2",
+        "5"
       ],
       "inputs": [
-        "data/signals/{date}.csv",
-        "data/article-analysis/{date}.csv",
-        "data/indices/{date}.csv"
+        "data/indices/{date}.csv",
+        "data/signals/{date}.csv"
       ],
       "output_path": "data/signal-realization/{date}.csv",
       "output_pattern": "data/signal-realization/*.csv",
@@ -332,16 +342,6 @@
             "name": "estimator_id",
             "type": "string",
             "description": "Time horizon estimator ID"
-          },
-          {
-            "name": "time_horizon",
-            "type": "string",
-            "description": "Time horizon label"
-          },
-          {
-            "name": "horizon_days",
-            "type": "int",
-            "description": "Horizon in days"
           },
           {
             "name": "valid_to_date",
