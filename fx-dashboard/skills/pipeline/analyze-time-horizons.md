@@ -195,7 +195,7 @@ Each analyzed article is saved to `/data/article-analysis/{url_hash}.json`:
 
 **Location**: `/workspace/project/.env`
 ```
-ANTHROPIC_API_KEY=sk-ant-api03-...
+ANTHROPIC_API_KEY=<your-anthropic-api-key>
 ```
 
 **Loading**: Uses centralized `env_loader.py`
@@ -377,7 +377,7 @@ python3 -c "import json; print(len(json.load(open('/workspace/group/fx-portfolio
 
 3. If missing, add it:
    ```bash
-   echo "ANTHROPIC_API_KEY=sk-ant-api03-..." >> /workspace/project/.env
+   echo "ANTHROPIC_API_KEY=<your-anthropic-api-key>" >> /workspace/project/.env
    ```
 
 ### Issue: JSON parsing errors

@@ -454,7 +454,7 @@ This enables A/B testing of generator types!
 
 **Location**: `/workspace/project/.env`
 ```
-ANTHROPIC_API_KEY=sk-ant-api03-...
+ANTHROPIC_API_KEY=<your-anthropic-api-key>
 ```
 
 **Loading**: Uses centralized `env_loader.py`

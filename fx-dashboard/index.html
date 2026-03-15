@@ -462,13 +462,19 @@
       const selector = document.getElementById(`${step}-date-filter`);
       if (!selector) return;
 
+      // Select latest date (first in reverse-sorted list) by default
       selector.innerHTML = '<option value="">All Dates</option>' +
-        dates.map(d => `<option value="${d}">${d}</option>`).join('');
+        dates.map((d, index) => `<option value="${d}" ${index === 0 ? 'selected' : ''}>${d}</option>`).join('');
 
       // Add change listener to filter table
       selector.addEventListener('change', (e) => {
         filterTableByDate(step, e.target.value);
       });
+
+      // Apply initial filter to latest date
+      if (dates.length > 0) {
+        filterTableByDate(step, dates[0]);
+      }
     }
 
     function populateCurrencyFilter(step, rows) {
@@ -760,63 +766,63 @@
           const tradeSignalColor = parseFloat(trade.trade_signal) > 0 ? '#00ff41' : '#ff4444';
 
           return `
-            <div style="background:#1a1e3a; border:1px solid #333; border-radius:8px; padding:16px; margin-bottom:12px; border-left:4px solid ${tradeSignalColor};">
-              <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:12px;">
+            <div style="background:#1a1e3a; border:1px solid #333; border-radius:4px; padding:10px; margin-bottom:8px; border-left:3px solid ${tradeSignalColor};">
+              <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:8px;">
                 <div>
-                  <div style="color:#00ff41; font-size:1.1em; font-weight:bold; margin-bottom:4px;">
+                  <div style="color:#00ff41; font-size:1em; font-weight:bold; margin-bottom:2px;">
                     ${trade.sell_currency} → ${trade.buy_currency}
                   </div>
-                  <div style="color:#888; font-size:0.85em;">
+                  <div style="color:#888; font-size:0.75em;">
                     ${trade.date} · ${trade.strategy_id}
                   </div>
                 </div>
                 <div style="text-align:right;">
-                  <div style="color:${tradeSignalColor}; font-size:1.1em; font-weight:bold;">
+                  <div style="color:${tradeSignalColor}; font-size:0.95em; font-weight:bold;">
                     ${parseFloat(trade.trade_signal).toFixed(3)}
                   </div>
-                  <div style="color:#888; font-size:0.75em;">signal</div>
+                  <div style="color:#888; font-size:0.7em;">signal</div>
                 </div>
               </div>
 
-              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-top:12px;">
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:8px;">
                 <div>
-                  <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Sold</div>
-                  <div style="color:#ff4444; font-size:1em; font-weight:bold;">
+                  <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Sold</div>
+                  <div style="color:#ff4444; font-size:0.85em; font-weight:bold;">
                     ${parseFloat(trade.sell_amount).toFixed(4)} ${trade.sell_currency}
                   </div>
                 </div>
 
                 <div>
-                  <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Bought</div>
-                  <div style="color:#00ff41; font-size:1em; font-weight:bold;">
+                  <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Bought</div>
+                  <div style="color:#00ff41; font-size:0.85em; font-weight:bold;">
                     ${parseFloat(trade.buy_amount).toFixed(4)} ${trade.buy_currency}
                   </div>
                 </div>
 
                 <div>
-                  <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Exchange Rate</div>
-                  <div style="color:#ccc; font-size:0.9em;">
+                  <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Exchange Rate</div>
+                  <div style="color:#ccc; font-size:0.8em;">
                     ${parseFloat(trade.exchange_rate).toFixed(6)}
                   </div>
                 </div>
 
                 <div>
-                  <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Trade Size</div>
-                  <div style="color:#ccc; font-size:0.9em;">
+                  <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Trade Size</div>
+                  <div style="color:#ccc; font-size:0.8em;">
                     €${parseFloat(trade.trade_size_eur).toFixed(2)}
                   </div>
                 </div>
 
                 <div>
-                  <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Spread Cost</div>
-                  <div style="color:#ff8844; font-size:0.9em;">
+                  <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Spread Cost</div>
+                  <div style="color:#ff8844; font-size:0.8em;">
                     €${parseFloat(trade.cost_eur).toFixed(2)} (${(parseFloat(trade.spread_pct) * 100).toFixed(2)}%)
                   </div>
                 </div>
 
                 <div>
-                  <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Trader</div>
-                  <div style="color:#888; font-size:0.85em;">
+                  <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Trader</div>
+                  <div style="color:#888; font-size:0.75em;">
                     ${trade.trader_id}
                   </div>
                 </div>
@@ -941,63 +947,63 @@
               const tradeSignalColor = parseFloat(trade.trade_signal) > 0 ? '#00ff41' : '#ff4444';
 
               return `
-                <div style="background:#1a1e3a; border:1px solid #333; border-radius:8px; padding:16px; margin-bottom:12px; border-left:4px solid ${tradeSignalColor};">
-                  <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:12px;">
+                <div style="background:#1a1e3a; border:1px solid #333; border-radius:4px; padding:10px; margin-bottom:8px; border-left:3px solid ${tradeSignalColor};">
+                  <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:8px;">
                     <div>
-                      <div style="color:#00ff41; font-size:1.1em; font-weight:bold; margin-bottom:4px;">
+                      <div style="color:#00ff41; font-size:1em; font-weight:bold; margin-bottom:2px;">
                         ${trade.sell_currency} → ${trade.buy_currency}
                       </div>
-                      <div style="color:#888; font-size:0.85em;">
+                      <div style="color:#888; font-size:0.75em;">
                         ${trade.date} · ${trade.strategy_id}
                       </div>
                     </div>
                     <div style="text-align:right;">
-                      <div style="color:${tradeSignalColor}; font-size:1.1em; font-weight:bold;">
+                      <div style="color:${tradeSignalColor}; font-size:0.95em; font-weight:bold;">
                         ${parseFloat(trade.trade_signal).toFixed(3)}
                       </div>
-                      <div style="color:#888; font-size:0.75em;">signal</div>
+                      <div style="color:#888; font-size:0.7em;">signal</div>
                     </div>
                   </div>
 
-                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-top:12px;">
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:8px;">
                     <div>
-                      <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Sold</div>
-                      <div style="color:#ff4444; font-size:1em; font-weight:bold;">
+                      <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Sold</div>
+                      <div style="color:#ff4444; font-size:0.85em; font-weight:bold;">
                         ${parseFloat(trade.sell_amount).toFixed(4)} ${trade.sell_currency}
                       </div>
                     </div>
 
                     <div>
-                      <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Bought</div>
-                      <div style="color:#00ff41; font-size:1em; font-weight:bold;">
+                      <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Bought</div>
+                      <div style="color:#00ff41; font-size:0.85em; font-weight:bold;">
                         ${parseFloat(trade.buy_amount).toFixed(4)} ${trade.buy_currency}
                       </div>
                     </div>
 
                     <div>
-                      <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Exchange Rate</div>
-                      <div style="color:#ccc; font-size:0.9em;">
+                      <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Exchange Rate</div>
+                      <div style="color:#ccc; font-size:0.8em;">
                         ${parseFloat(trade.exchange_rate).toFixed(6)}
                       </div>
                     </div>
 
                     <div>
-                      <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Trade Size</div>
-                      <div style="color:#ccc; font-size:0.9em;">
+                      <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Trade Size</div>
+                      <div style="color:#ccc; font-size:0.8em;">
                         €${parseFloat(trade.trade_size_eur).toFixed(2)}
                       </div>
                     </div>
 
                     <div>
-                      <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Spread Cost</div>
-                      <div style="color:#ff8844; font-size:0.9em;">
+                      <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Spread Cost</div>
+                      <div style="color:#ff8844; font-size:0.8em;">
                         €${parseFloat(trade.cost_eur).toFixed(2)} (${(parseFloat(trade.spread_pct) * 100).toFixed(2)}%)
                       </div>
                     </div>
 
                     <div>
-                      <div style="color:#666; font-size:0.75em; text-transform:uppercase; margin-bottom:4px;">Trader</div>
-                      <div style="color:#888; font-size:0.85em;">
+                      <div style="color:#666; font-size:0.7em; text-transform:uppercase; margin-bottom:2px;">Trader</div>
+                      <div style="color:#888; font-size:0.75em;">
                         ${trade.trader_id}
                       </div>
                     </div>
@@ -1042,7 +1048,9 @@
           }
 
           loading.style.display = 'none';
-          table.style.display = 'table';
+          if (step !== 'step8.1') {
+            table.style.display = 'table';
+          }
           loadedCSVs[step] = true;
 
           // Cache data for filtering
