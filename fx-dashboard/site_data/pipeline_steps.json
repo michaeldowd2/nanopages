@@ -850,6 +850,11 @@
             "name": "avg_pct_change",
             "type": "float",
             "description": "Average % change across all 11 currencies (currency-neutral performance)"
+          },
+          {
+            "name": "value",
+            "type": "float",
+            "description": "Cumulative performance index (starts at 1.0, compounds avg_pct_change daily)"
           }
         ]
       },

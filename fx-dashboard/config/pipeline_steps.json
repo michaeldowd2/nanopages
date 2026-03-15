@@ -340,7 +340,8 @@
           {"name": "sek_pct_change", "type": "float", "description": "% change in SEK value from previous day"},
           {"name": "cny_pct_change", "type": "float", "description": "% change in CNY value from previous day"},
           {"name": "mxn_pct_change", "type": "float", "description": "% change in MXN value from previous day"},
-          {"name": "avg_pct_change", "type": "float", "description": "Average % change across all 11 currencies (currency-neutral performance)"}
+          {"name": "avg_pct_change", "type": "float", "description": "Average % change across all 11 currencies (currency-neutral performance)"},
+          {"name": "value", "type": "float", "description": "Cumulative performance index (starts at 1.0, compounds avg_pct_change daily)"}
         ]
       },
       "supports_date_filter": true,

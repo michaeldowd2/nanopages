@@ -1065,8 +1065,8 @@
             populateCurrencyFilter(step, rows);
           }
 
-          // Populate strategy filter for steps 8.1 and 9
-          if (step === 'step8.1' || step === 'step9') {
+          // Populate strategy filter for steps 8.1, 9, and 10
+          if (step === 'step8.1' || step === 'step9' || step === 'step10') {
             populateStrategyFilter(step, rows);
           }
 
@@ -2522,7 +2522,7 @@
                     <option value="">All Currencies</option>
                   </select>
                   ` : ''}
-                  ${stepId === '8.1' ? `
+                  ${stepId === '8.1' || stepId === '10' ? `
                   <label for="step${stepId}-strategy-filter" style="color:#ccc; font-size:0.9em; margin-left:15px;">Strategy:</label>
                   <select id="step${stepId}-strategy-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:5px; margin-left:5px; font-size:0.9em; border-radius:4px;">
                     <option value="">All Strategies</option>

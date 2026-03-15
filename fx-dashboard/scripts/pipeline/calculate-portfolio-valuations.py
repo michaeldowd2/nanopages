@@ -112,7 +112,7 @@ def load_previous_valuations(date_str):
 
             try:
                 prev_rows = read_csv('process_10_valuations', date=check_date_str, validate=False)
-                # Build lookup: {strategy_id: {currency_value: value}}
+                # Build lookup: {strategy_id: {currency_value: value, value: cumulative_value}}
                 prev_vals = {}
                 for row in prev_rows:
                     strategy_id = row['strategy_id']
@@ -120,6 +120,8 @@ def load_previous_valuations(date_str):
                         curr.lower() + '_value': float(row[curr.lower() + '_value'])
                         for curr in CURRENCIES
                     }
+                    # Also store cumulative value for compounding
+                    prev_vals[strategy_id]['value'] = float(row.get('value', 1.0))
                 return prev_vals
             except:
                 # File doesn't exist, try next day
@@ -213,13 +215,23 @@ def main():
         # Calculate average % change (currency-neutral performance metric)
         avg_pct_change = sum(pct_changes.values()) / len(pct_changes)
 
+        # Calculate cumulative value (performance index starting at 1.0)
+        if strategy_id in prev_valuations:
+            prev_value = prev_valuations[strategy_id]['value']
+            # Compound: new_value = prev_value × (1 + pct_change/100)
+            cumulative_value = prev_value * (1 + avg_pct_change / 100)
+        else:
+            # First day - start at 1.0
+            cumulative_value = 1.0
+
         # Build output row
         output_row = {
             'date': date_str,
             'strategy_id': strategy_id,
             **values,
             **pct_changes,
-            'avg_pct_change': avg_pct_change
+            'avg_pct_change': avg_pct_change,
+            'value': cumulative_value
         }
 
         output_rows.append(output_row)
@@ -252,6 +264,7 @@ def main():
             print(f"  {curr}: {pct:+.2f}%")
 
         print(f"\nAverage % Change (Currency-Neutral): {sample['avg_pct_change']:+.2f}%")
+        print(f"Cumulative Value (Performance Index): {sample['value']:.6f}")
 
     print("\n" + "=" * 60)
     print("✓ Portfolio valuation complete")
