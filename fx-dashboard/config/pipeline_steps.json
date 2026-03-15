@@ -652,11 +652,6 @@
             "description": "Number of trades executed"
           },
           {
-            "name": "portfolio_value",
-            "type": "float",
-            "description": "Total portfolio value in EUR"
-          },
-          {
             "name": "EUR",
             "type": "float",
             "description": "EUR balance"

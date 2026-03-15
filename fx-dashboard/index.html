@@ -1011,6 +1011,20 @@
                 else if (step === 'step7' && h === 'penalty_factor') {
                   className = 'neutral';
                 }
+                // Step 10: Format numeric columns to 2 decimals and color avg_pct_change
+                else if (step === 'step10') {
+                  const numValue = parseFloat(value);
+                  if (!isNaN(numValue)) {
+                    // Format all numeric columns to 2 decimal places
+                    value = numValue.toFixed(2);
+
+                    // Color avg_pct_change based on positive/negative
+                    if (h === 'avg_pct_change') {
+                      if (numValue > 0) className = 'bullish';  // Green for positive
+                      else if (numValue < 0) className = 'bearish';  // Red for negative
+                    }
+                  }
+                }
 
                 return `<td class="${className}" style="${style}" title="${value}">${value}</td>`;
               }).join('') + '</tr>';

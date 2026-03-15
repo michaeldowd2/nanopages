@@ -38,27 +38,24 @@ python3 scripts/pipeline/execute-strategies.py --date 2026-03-08
 | Column | Type | Description | Example |
 |--------|------|-------------|---------|
 | date | string | Execution date (YYYY-MM-DD) | 2026-02-21 |
-| strategy_name | string | Strategy identifier | simple-momentum |
-| strategy_params | string | Parameter combination | conf=0.5_size=0.25_agg=average |
-| executed_trades | integer | Number of trades executed | 2 |
+| strategy_id | string | Strategy identifier | trader_keyword-llm_est_keyword-llm_conf_0.7_size_0.15 |
+| trader_id | string | Trader identifier | trader_keyword-llm |
+| trades_executed | integer | Number of trades executed | 2 |
 | EUR, USD, GBP, JPY... | float | Balance in each currency | 5000 |
-| current_value | float | Total portfolio value in EUR | 9875.50 |
 
 ### Sample Output
 
 ```csv
-date,strategy_name,strategy_params,executed_trades,EUR,USD,GBP,JPY,CHF,AUD,CAD,NOK,SEK,CNY,MXN,current_value
-2026-02-21,simple-momentum,conf=0.5_size=0.25_agg=average,2,5000,2500,0,0,0,1200,0,0,0,0,0,9875.50
+date,strategy_id,trader_id,trades_executed,EUR,USD,GBP,JPY,CHF,AUD,CAD,NOK,SEK,CNY,MXN
+2026-02-21,trader_keyword-llm_est_keyword-llm_conf_0.7_size_0.15,trader_keyword-llm,2,5000,2500,0,0,0,1200,0,0,0,0,0
 ```
 
 ### Interpretation
 
-- **executed_trades**: Number of currency pair trades executed that day
-- **current_value**: Total portfolio value in EUR (accounts for all currency holdings)
+- **trades_executed**: Number of currency pair trades executed that day
 - **Currency balances**: Current holdings in each currency (0 = no position)
-- **Value < 10000**: Portfolio has lost money (spreads, bad trades)
-- **Value > 10000**: Portfolio has gained money (successful trades)
-- **Use this data to**: Compare performance across different strategy parameters
+- **Use this data to**: Track portfolio composition over time
+- **Note**: Portfolio value is calculated separately in Process 10 (Portfolio Valuation) which values the portfolio in all 11 currencies for currency-neutral performance tracking
 
 ---
 
@@ -85,21 +82,20 @@ date,strategy_name,strategy_params,executed_trades,EUR,USD,GBP,JPY,CHF,AUD,CAD,N
 
 Columns:
 - `date` - Execution date
-- `strategy_name` - e.g., "simple-momentum"
-- `strategy_params` - Parameter combination
-- `executed_trades` - Count of trades executed today
+- `strategy_id` - Strategy identifier
+- `trader_id` - Trader identifier
+- `trades_executed` - Count of trades executed today
 - `EUR`, `USD`, `GBP`, `JPY`, `CHF`, `AUD`, `CAD`, `NOK`, `SEK`, `CNY`, `MXN` - Balance in each currency
-- `current_value` - Total portfolio value in EUR
 
 **Example row:**
 ```
-2026-02-21,simple-momentum,conf=0.5_size=0.25_agg=average,2,5000,2500,0,0,0,1200,0,0,0,0,0,9875.50
+2026-02-21,trader_keyword-llm_est_keyword-llm_conf_0.7_size_0.15,trader_keyword-llm,2,5000,2500,0,0,0,1200,0,0,0,0,0
 ```
 
 This means:
 - 2 trades executed
 - €5,000 in EUR, $2,500 in USD, A$1,200 in AUD
-- Total portfolio worth €9,875.50 (lost €124.50 to spreads)
+- Portfolio value calculated in Process 10 (Portfolio Valuation)
 
 
 ## Trade Execution Logic

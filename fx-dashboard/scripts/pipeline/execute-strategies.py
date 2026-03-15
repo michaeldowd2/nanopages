@@ -121,24 +121,6 @@ def initialize_portfolio(eur_rates):
     return portfolio
 
 
-def calculate_portfolio_value(portfolio, eur_rates):
-    """Calculate total portfolio value in EUR"""
-    total_eur = 0.0
-
-    for currency, amount in portfolio.items():
-        if amount <= 0:
-            continue
-
-        if currency == 'EUR':
-            total_eur += amount
-        else:
-            rate = eur_rates.get(currency)
-            if rate:
-                total_eur += amount / rate
-
-    return round(total_eur, 2)
-
-
 def execute_trade(trade, all_pairs, eur_rates, portfolio, max_trade_size_pct, confidence_threshold):
     """
     Execute a single trade: sell sell_currency, buy buy_currency.
@@ -300,8 +282,7 @@ def main(date_str=None):
                 print(f"      Initializing new portfolio with {INITIAL_BALANCE_PER_CURRENCY} EUR per currency")
                 portfolio = initialize_portfolio(eur_rates)
             else:
-                prev_value = calculate_portfolio_value(portfolio, eur_rates)
-                print(f"      Loaded portfolio from {prev_date} (value: €{prev_value:.2f})")
+                print(f"      Loaded portfolio from {prev_date}")
 
             # Filter trades for this trader
             trader_trades = [
@@ -334,10 +315,6 @@ def main(date_str=None):
                 if execution:
                     executed_trades.append(execution)
 
-            # Calculate portfolio value
-            portfolio_value = calculate_portfolio_value(portfolio, eur_rates)
-
-            print(f"      Portfolio value: €{portfolio_value:.2f}")
             print(f"      Executed trades: {len(executed_trades)}")
 
             # Build result record
@@ -345,8 +322,7 @@ def main(date_str=None):
                 'date': date_str,
                 'strategy_id': strategy_id,
                 'trader_id': trader_id,
-                'trades_executed': len(executed_trades),
-                'portfolio_value': portfolio_value
+                'trades_executed': len(executed_trades)
             }
 
             # Add currency balances
