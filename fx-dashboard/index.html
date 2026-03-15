@@ -2466,7 +2466,7 @@
 
       // Generate step tabs
       const stepTabs = Object.keys(config.steps)
-        .filter(id => id !== '10')  // Skip deployment step
+        .filter(id => id !== '11')  // Skip deployment step
         .sort((a, b) => {
           // Parse step IDs (handle both '4' and '4.1')
           const parseStepId = (id) => {
@@ -2491,7 +2491,7 @@
 
       // Generate content divs for each step
       Object.keys(config.steps)
-        .filter(id => id !== '10')  // Skip deployment step
+        .filter(id => id !== '11')  // Skip deployment step
         .sort((a, b) => {
           // Parse step IDs (handle both '4' and '4.1')
           const parseStepId = (id) => parseFloat(id);
