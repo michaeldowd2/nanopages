@@ -881,7 +881,8 @@
         'step7': 'site_data/step7_aggregated_signals.csv',
         'step8': 'site_data/step8_trades.csv',
         'step8.1': 'site_data/step8.1_executed_trades.csv',
-        'step9': 'site_data/step9_portfolios.csv'
+        'step9': 'site_data/step9_portfolios.csv',
+        'step10': 'site_data/step10_valuations.csv'
       }[step];
 
       fetch(csvFile)
@@ -2049,7 +2050,7 @@
 
           // Sort steps by ID (handle decimal step IDs like 4.1 and 8.1)
           const sortedSteps = Object.keys(steps)
-            .filter(id => id !== '10')  // Exclude deployment step
+            .filter(id => id !== '11')  // Exclude deployment step
             .sort((a, b) => {
               const parseStepId = (id) => parseFloat(id);
               return parseStepId(a) - parseStepId(b);
@@ -2438,7 +2439,7 @@
 
           // Load data for all steps
           Object.keys(config.steps).forEach(stepId => {
-            if (stepId !== '10') {  // Skip deployment step
+            if (stepId !== '11') {  // Skip deployment step
               loadCSV(`step${stepId}`);
             }
           });
@@ -2550,7 +2551,8 @@
         '7': 'aggregated_signals',
         '8': 'trades',
         '8.1': 'executed_trades',
-        '9': 'strategies'
+        '9': 'strategies',
+        '10': 'valuations'
       };
       return filenames[stepId] || 'data';
     }

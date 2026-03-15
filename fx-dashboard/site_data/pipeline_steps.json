@@ -709,6 +709,156 @@
     },
     "10": {
       "id": "10",
+      "name": "Portfolio Valuation",
+      "script": "scripts/pipeline/calculate-portfolio-valuations.py",
+      "description": "Calculate multi-currency portfolio valuations and currency-neutral performance metrics",
+      "depends_on": [
+        "1",
+        "9"
+      ],
+      "inputs": [
+        "data/prices/{date}.csv",
+        "data/portfolios/{date}.csv",
+        "data/valuations/{prev_date}.csv"
+      ],
+      "output_path": "data/valuations/{date}.csv",
+      "output_pattern": "data/valuations/*.csv",
+      "output_schema": {
+        "description": "Portfolio values in all currencies with percentage changes",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Valuation date YYYY-MM-DD"
+          },
+          {
+            "name": "strategy_id",
+            "type": "string",
+            "description": "Strategy identifier"
+          },
+          {
+            "name": "eur_value",
+            "type": "float",
+            "description": "Portfolio value in EUR"
+          },
+          {
+            "name": "usd_value",
+            "type": "float",
+            "description": "Portfolio value in USD"
+          },
+          {
+            "name": "gbp_value",
+            "type": "float",
+            "description": "Portfolio value in GBP"
+          },
+          {
+            "name": "jpy_value",
+            "type": "float",
+            "description": "Portfolio value in JPY"
+          },
+          {
+            "name": "chf_value",
+            "type": "float",
+            "description": "Portfolio value in CHF"
+          },
+          {
+            "name": "aud_value",
+            "type": "float",
+            "description": "Portfolio value in AUD"
+          },
+          {
+            "name": "cad_value",
+            "type": "float",
+            "description": "Portfolio value in CAD"
+          },
+          {
+            "name": "nok_value",
+            "type": "float",
+            "description": "Portfolio value in NOK"
+          },
+          {
+            "name": "sek_value",
+            "type": "float",
+            "description": "Portfolio value in SEK"
+          },
+          {
+            "name": "cny_value",
+            "type": "float",
+            "description": "Portfolio value in CNY"
+          },
+          {
+            "name": "mxn_value",
+            "type": "float",
+            "description": "Portfolio value in MXN"
+          },
+          {
+            "name": "eur_pct_change",
+            "type": "float",
+            "description": "% change in EUR value from previous day"
+          },
+          {
+            "name": "usd_pct_change",
+            "type": "float",
+            "description": "% change in USD value from previous day"
+          },
+          {
+            "name": "gbp_pct_change",
+            "type": "float",
+            "description": "% change in GBP value from previous day"
+          },
+          {
+            "name": "jpy_pct_change",
+            "type": "float",
+            "description": "% change in JPY value from previous day"
+          },
+          {
+            "name": "chf_pct_change",
+            "type": "float",
+            "description": "% change in CHF value from previous day"
+          },
+          {
+            "name": "aud_pct_change",
+            "type": "float",
+            "description": "% change in AUD value from previous day"
+          },
+          {
+            "name": "cad_pct_change",
+            "type": "float",
+            "description": "% change in CAD value from previous day"
+          },
+          {
+            "name": "nok_pct_change",
+            "type": "float",
+            "description": "% change in NOK value from previous day"
+          },
+          {
+            "name": "sek_pct_change",
+            "type": "float",
+            "description": "% change in SEK value from previous day"
+          },
+          {
+            "name": "cny_pct_change",
+            "type": "float",
+            "description": "% change in CNY value from previous day"
+          },
+          {
+            "name": "mxn_pct_change",
+            "type": "float",
+            "description": "% change in MXN value from previous day"
+          },
+          {
+            "name": "avg_pct_change",
+            "type": "float",
+            "description": "Average % change across all 11 currencies (currency-neutral performance)"
+          }
+        ]
+      },
+      "supports_date_filter": true,
+      "is_safe_to_clear": true,
+      "note": "Multi-currency valuation reduces EUR-centric bias in performance measurement"
+    },
+    "11": {
+      "id": "11",
       "name": "Dashboard Deployment",
       "script": "scripts/deployment/export-pipeline-data.py",
       "description": "Export pipeline data to site_data for dashboard",
@@ -721,7 +871,8 @@
         "6",
         "7",
         "8",
-        "9"
+        "9",
+        "10"
       ],
       "inputs": [
         "data/prices/*.csv",
@@ -732,7 +883,8 @@
         "data/signal-realization/*.csv",
         "data/aggregated-signals/*.csv",
         "data/trades/*.csv",
-        "data/portfolios/*.csv"
+        "data/portfolios/*.csv",
+        "data/valuations/*.csv"
       ],
       "output_path": "site_data/",
       "output_pattern": "site_data/step*.csv",

@@ -125,7 +125,8 @@ def get_step_filename(step_id):
         '7': 'aggregated_signals',
         '8': 'trades',
         '8.1': 'executed_trades',
-        '9': 'portfolios'
+        '9': 'portfolios',
+        '10': 'valuations'
     }
     return filenames.get(step_id, 'data')
 
@@ -286,7 +287,8 @@ def main():
         '7': 'aggregated signal records',
         '8': 'trade records',
         '8.1': 'executed trade records',
-        '9': 'strategy records'
+        '9': 'strategy records',
+        '10': 'valuation records'
     }
 
     for step_id, description in exportable_steps.items():
