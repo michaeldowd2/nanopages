@@ -1051,6 +1051,9 @@
             populateDateFilter('step7', rows);
             populateCurrencyFilterForStep7Table(rows);
           } else if (step === 'step10' && rows.length > 0) {
+            // Re-populate filters for step10 to ensure they're populated after dynamic content is inserted
+            populateDateFilter(step, rows);
+            populateStrategyFilter(step, rows);
             renderPortfolioHeatmap(rows, 'value');
           }
         })
