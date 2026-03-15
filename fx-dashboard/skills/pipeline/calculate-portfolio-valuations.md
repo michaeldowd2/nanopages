@@ -4,7 +4,7 @@ Calculate multi-currency portfolio valuations and currency-neutral performance m
 
 ## Purpose
 
-Process 10 calculates the value of each portfolio strategy in all 11 currencies and computes a currency-neutral performance index. This eliminates EUR-centric bias by averaging percentage changes across all currencies.
+Process 10 calculates the value of each portfolio in all 11 currencies and computes a currency-neutral performance index. This eliminates EUR-centric bias by averaging percentage changes across all currencies.
 
 ## What It Does
 
@@ -32,7 +32,7 @@ By valuing in all 11 currencies and averaging the % changes, we get a currency-n
 
 **data/valuations/{date}.csv** with columns:
 - `date`: Valuation date
-- `strategy_id`: Strategy identifier
+- `strategy_id`: Portfolio identifier
 - `eur_value`, `usd_value`, `gbp_value`, etc.: Portfolio value in each currency
 - `eur_pct_change`, `usd_pct_change`, etc.: % change from previous day in each currency
 - `avg_pct_change`: Average % change across all 11 currencies (currency-neutral metric)
@@ -40,7 +40,7 @@ By valuing in all 11 currencies and averaging the % changes, we get a currency-n
 
 ## How It Works
 
-For each strategy:
+For each portfolio:
 
 1. **Load current portfolio balances** (e.g., 50 EUR, 100 USD, 200 GBP)
 2. **Load exchange rates** for the date
@@ -79,7 +79,7 @@ Day 3:
 - `avg_pct_change` = +1.5%
 - `value` = 1.02 × (1 + 1.5/100) = 1.0353
 
-The `value` column is the key performance metric - it shows cumulative performance independent of any single currency's movement.
+The `value` column is the key performance metric - it shows cumulative portfolio performance independent of any single currency's movement.
 
 ## Usage
 
@@ -99,7 +99,7 @@ python scripts/pipeline/calculate-portfolio-valuations.py --date 2024-03-14
 
 - First day (or after a gap) has no previous valuations, so all % changes are 0% and value starts at 1.0
 - The script looks back up to 7 days to find the most recent previous valuation
-- Performance index compounds daily - a strategy with value=1.05 has gained 5% cumulatively
+- Performance index compounds daily - a portfolio with value=1.05 has gained 5% cumulatively
 - The `avg_pct_change` is the key currency-neutral performance metric used in dashboard charts
 
 ## Configuration

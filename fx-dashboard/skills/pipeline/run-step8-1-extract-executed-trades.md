@@ -4,7 +4,7 @@ Run Step 8.1 of the FX portfolio pipeline to extract actual executed trades with
 
 ## What This Does
 
-Step 8.1 extracts the actual trades executed for each portfolio strategy, showing:
+Step 8.1 extracts the actual trades executed for each portfolio configuration, showing:
 - Real currency amounts bought and sold
 - Balance changes before/after each trade
 - Exchange rates applied
@@ -66,7 +66,7 @@ After running:
 1. Run `python3 scripts/deployment/export-pipeline-data.py` to export to dashboard
 2. Open the dashboard at `index.html`
 3. Navigate to "STEP 8.1" tab
-4. Filter by strategy, date, or currency to view executed trades
+4. Filter by portfolio, date, or currency to view executed trades
 
 ## Example Output
 
@@ -81,4 +81,4 @@ date,strategy_id,trader_id,sell_currency,buy_currency,sell_amount,buy_amount,...
 - Trade amounts in Step 8.1 should exactly match what was applied in Step 9
 - Useful for debugging portfolio behavior and understanding actual trade sizes
 - Shows spread costs explicitly (0.74% by default)
-- One row per executed trade (strategies with multiple trades get multiple rows)
+- One row per executed trade (portfolios with multiple trades get multiple rows)

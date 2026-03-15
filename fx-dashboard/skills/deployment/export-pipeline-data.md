@@ -50,7 +50,7 @@ All files generated in `site_data/` directory:
 **Trades**:
 - `site_data/step8_trades.csv` (~10 KB)
 
-**Strategies**:
+**Portfolios**:
 - `site_data/step9_strategies.csv` (~20 KB)
 
 **Configuration**:

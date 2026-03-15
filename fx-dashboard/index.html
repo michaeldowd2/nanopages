@@ -286,7 +286,7 @@
         </tr>
         <tr>
           <td>7</td>
-          <td><span class="status-indicator status-active"></span>Strategies</td>
+          <td><span class="status-indicator status-active"></span>Portfolios</td>
           <td class="bullish">Active</td>
           <td><span id="step7-count">-</span> combos</td>
         </tr>
@@ -304,7 +304,7 @@
         <strong style="color:#00ff41;">ℹ️ Configuration Design:</strong><br>
         • Each module+parameter combination has a unique ID<br>
         • <strong>All listed modules are active</strong> - no separate "active" flag<br>
-        • Strategies reference specific estimator and generator IDs<br>
+        • Portfolios reference specific estimator and generator IDs<br>
         • To add/remove: edit <code style="background:#0a0a0a; padding:2px 6px; border-radius:2px;">config/system_config.json</code>
       </div>
 
@@ -483,7 +483,7 @@
     }
 
     function populateStrategyFilter(step, rows) {
-      // Extract unique strategy IDs from rows and populate the strategy filter dropdown
+      // Extract unique portfolio IDs from rows and populate the portfolio filter dropdown
       if (!rows[0]?.strategy_id) return;
 
       const strategies = [...new Set(rows.map(r => r.strategy_id))].filter(s => s).sort();
@@ -491,8 +491,8 @@
       const selector = document.getElementById(`${step}-strategy-filter`);
       if (!selector) return;
 
-      // Build options with first strategy selected by default
-      selector.innerHTML = '<option value="">All Strategies</option>' +
+      // Build options with first portfolio selected by default
+      selector.innerHTML = '<option value="">All Portfolios</option>' +
         strategies.map((s, index) => `<option value="${s}" ${index === 0 ? 'selected' : ''}>${s}</option>`).join('');
 
       // Add change listener to filter table
@@ -500,14 +500,14 @@
         filterTableByStrategy(step, e.target.value);
       });
 
-      // Apply initial filter to first strategy
+      // Apply initial filter to first portfolio
       if (strategies.length > 0) {
         filterTableByStrategy(step, strategies[0]);
       }
     }
 
     function filterTableByDate(step, selectedDate) {
-      // Get current currency and strategy filter values (if they exist)
+      // Get current currency and portfolio filter values (if they exist)
       // For step7, check the table-specific currency filter
       let currencySelector;
       if (step === 'step7') {
@@ -632,7 +632,7 @@
     }
 
     function filterTableByCurrency(step, selectedCurrency) {
-      // Get current date and strategy filter values
+      // Get current date and portfolio filter values
       const dateSelector = document.getElementById(`${step}-date-filter`);
       const selectedDate = dateSelector ? dateSelector.value : '';
       const strategySelector = document.getElementById(`${step}-strategy-filter`);
@@ -660,7 +660,7 @@
       const { headers, allRows } = cachedData;
       const tbody = document.getElementById(`${step}-tbody`);
 
-      // Filter rows by selected date, currency, and strategy
+      // Filter rows by selected date, currency, and portfolio
       let filteredRows = allRows;
 
       if (selectedDate) {
@@ -1593,7 +1593,7 @@
 
           const strategies = config.strategies || {};
           if (Object.keys(strategies).length > 0) {
-            content.innerHTML += renderModuleSection('Strategies', '🎯', strategies);
+            content.innerHTML += renderModuleSection('Portfolios', '🎯', strategies);
           }
 
           const settings = config.pipeline_settings || {};
@@ -2510,9 +2510,9 @@
                   </select>
                   ` : ''}
                   ${stepId === '8.1' || stepId === '10' ? `
-                  <label for="step${stepId}-strategy-filter" style="color:#ccc; font-size:0.9em; margin-left:15px;">Strategy:</label>
+                  <label for="step${stepId}-strategy-filter" style="color:#ccc; font-size:0.9em; margin-left:15px;">Portfolio:</label>
                   <select id="step${stepId}-strategy-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:5px; margin-left:5px; font-size:0.9em; border-radius:4px;">
-                    <option value="">All Strategies</option>
+                    <option value="">All Portfolios</option>
                   </select>
                   ` : ''}
                 </div>
@@ -2605,7 +2605,7 @@
       return `
         <div class="chart" style="margin-bottom:30px;">
           <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Cumulative Performance (Currency-Neutral)</h3>
-          <p style="color:#888;font-size:0.85em;margin-bottom:15px;">Track strategy performance using the currency-neutral value index</p>
+          <p style="color:#888;font-size:0.85em;margin-bottom:15px;">Track portfolio performance using the currency-neutral value index</p>
           <div style="overflow-x:auto; overflow-y:hidden;">
             <div id="portfolio-line-chart" style="position:relative; height:400px; margin-top:20px; min-width:1450px;"></div>
           </div>
@@ -2639,15 +2639,15 @@
     function generatePortfolioContent(stepId) {
       return `
 
-        <!-- Date and Strategy Filters moved here, below all charts -->
+        <!-- Date and Portfolio Filters moved here, below all charts -->
         <div style="margin:20px 0; padding-top:20px; border-top:1px solid #333;">
           <label for="step${stepId}-date-filter" style="color:#ccc; font-size:0.9em;">Date:</label>
           <select id="step${stepId}-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:5px; margin-left:5px; font-size:0.9em; border-radius:4px;">
             <option value="">All Dates</option>
           </select>
-          <label for="step${stepId}-strategy-filter" style="color:#ccc; font-size:0.9em; margin-left:15px;">Strategy:</label>
+          <label for="step${stepId}-strategy-filter" style="color:#ccc; font-size:0.9em; margin-left:15px;">Portfolio:</label>
           <select id="step${stepId}-strategy-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:5px; margin-left:5px; font-size:0.9em; border-radius:4px;">
-            <option value="">All Strategies</option>
+            <option value="">All Portfolios</option>
           </select>
         </div>
 
@@ -2659,13 +2659,13 @@
           </table>
         </div>
 
-        <!-- Strategy Detail Section -->
+        <!-- Portfolio Detail Section -->
         <div id="strategy-detail" style="display:none; margin-top:30px; padding-top:30px; border-top:1px solid #333;">
-          <h3 style="color:#00ff41;font-size:1.1em;margin-bottom:15px;">Strategy Details</h3>
+          <h3 style="color:#00ff41;font-size:1.1em;margin-bottom:15px;">Portfolio Configuration</h3>
 
-          <label for="strategy-selector" style="color:#ccc; font-size:0.9em;">Select Strategy:</label>
+          <label for="strategy-selector" style="color:#ccc; font-size:0.9em;">Select Portfolio:</label>
           <select id="strategy-selector" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:8px; margin:10px 0; font-size:1em; border-radius:4px;">
-            <option value="">Choose a strategy...</option>
+            <option value="">Choose a portfolio...</option>
           </select>
 
           <div id="strategy-info" style="display:none;">

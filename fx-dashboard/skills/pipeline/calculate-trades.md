@@ -1,6 +1,6 @@
 # Skill: calculate-trades
 
-Generate trade recommendations from aggregated signals using a combinator strategy.
+Generate trade recommendations from aggregated signals using a combinator approach.
 
 ---
 
@@ -187,6 +187,6 @@ The combinator uses this logic:
 ## Next Steps
 
 After running this step:
-- **execute-strategies**: Execute trades on portfolio strategies
+- **execute-strategies**: Execute trades on portfolios
 - Review trade recommendations in dashboard
 - Analyze which currency pairs are most frequently recommended

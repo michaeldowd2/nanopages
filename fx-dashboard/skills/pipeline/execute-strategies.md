@@ -1,10 +1,10 @@
 # Skill: execute-strategies
 
-Execute trading strategies on hypothetical portfolios using unrealized signals.
+Execute trading portfolios on hypothetical portfolios using unrealized signals.
 
 ## Purpose
 
-Strategies aggregate currency signals, generate pair trades, and track hypothetical account balances over time. Multiple parameter combinations run in parallel to compare performance.
+Portfolios aggregate currency signals, generate pair trades, and track hypothetical account balances over time. Multiple parameter combinations run in parallel to compare performance.
 
 ---
 
@@ -23,7 +23,7 @@ python3 scripts/pipeline/execute-strategies.py --date 2026-03-08
 
 **Single Output**: `/data/portfolios/strategies.csv`
 - Format: CSV
-- Updated: Appended daily (one row per strategy per date)
+- Updated: Appended daily (one row per portfolio per date)
 - Size: ~2-5 KB per day
 - Contains complete portfolio history and state
 
@@ -38,7 +38,7 @@ python3 scripts/pipeline/execute-strategies.py --date 2026-03-08
 | Column | Type | Description | Example |
 |--------|------|-------------|---------|
 | date | string | Execution date (YYYY-MM-DD) | 2026-02-21 |
-| strategy_id | string | Strategy identifier | trader_keyword-llm_est_keyword-llm_conf_0.7_size_0.15 |
+| strategy_id | string | Portfolio identifier | trader_keyword-llm_est_keyword-llm_conf_0.7_size_0.15 |
 | trader_id | string | Trader identifier | trader_keyword-llm |
 | trades_executed | integer | Number of trades executed | 2 |
 | EUR, USD, GBP, JPY... | float | Balance in each currency | 5000 |
@@ -59,7 +59,7 @@ date,strategy_id,trader_id,trades_executed,EUR,USD,GBP,JPY,CHF,AUD,CAD,NOK,SEK,C
 
 ---
 
-## Current Implementation: Simple Momentum Strategy
+## Current Implementation: Simple Momentum Portfolio
 
 **Logic:**
 1. Load unrealized signals (realized=false from check-signal-realization)
@@ -74,7 +74,7 @@ date,strategy_id,trader_id,trades_executed,EUR,USD,GBP,JPY,CHF,AUD,CAD,NOK,SEK,C
 - `trade_size_pct`: % of available balance to trade (0.25, 0.50, 0.75)
 - `aggregation_method`: How to combine signals ('average')
 
-**9 Combinations:** 3 thresholds × 3 sizes × 1 method = 9 strategies
+**9 Combinations:** 3 thresholds × 3 sizes × 1 method = 9 portfolios
 
 ## Output
 
@@ -82,7 +82,7 @@ date,strategy_id,trader_id,trades_executed,EUR,USD,GBP,JPY,CHF,AUD,CAD,NOK,SEK,C
 
 Columns:
 - `date` - Execution date
-- `strategy_id` - Strategy identifier
+- `strategy_id` - Portfolio identifier
 - `trader_id` - Trader identifier
 - `trades_executed` - Count of trades executed today
 - `EUR`, `USD`, `GBP`, `JPY`, `CHF`, `AUD`, `CAD`, `NOK`, `SEK`, `CNY`, `MXN` - Balance in each currency
@@ -130,7 +130,7 @@ Pairs generated:
 ## Portfolio State Management
 
 **How it works:**
-1. Each strategy reads its most recent row from strategies.csv to get starting balances
+1. Each portfolio reads its most recent row from strategies.csv to get starting balances
 2. If no previous row exists (first run), initializes with 100 EUR equivalent in each currency
 3. Executes trades and updates balances
 4. Appends new row to strategies.csv with updated balances
@@ -156,41 +156,41 @@ Pairs generated:
 
 After running this step:
 - Compare performance across 9 parameter combinations
-- Identify best-performing strategies
+- Identify best-performing portfolios
 - Analyze trade patterns and currency preferences
 
 ## Debugging
 
-View all strategies:
+View all portfolios:
 ```bash
 column -t -s, data/portfolios/strategies.csv | less -S
 ```
 
-## Future Strategies
+## Future Portfolios
 
-Additional strategies to implement:
+Additional portfolios to implement:
 
-**1. Contrarian Strategy**
+**1. Contrarian Portfolio**
 - Fade extreme signals (sell overbought, buy oversold)
 - Inverse of momentum logic
 
-**2. Multi-Timeframe Strategy**
+**2. Multi-Timeframe Portfolio**
 - Combine short/medium/long horizon signals
 - Weight recent signals higher
 
-**3. Risk-Weighted Strategy**
+**3. Risk-Weighted Portfolio**
 - Adjust trade sizes based on confidence
 - Smaller trades for lower confidence signals
 
-**4. Mean Reversion Strategy**
+**4. Mean Reversion Portfolio**
 - Track historical average signal strength per currency
 - Trade when deviation from mean exceeds threshold
 
-**5. Volatility-Adjusted Strategy**
+**5. Volatility-Adjusted Portfolio**
 - Reduce trade sizes during high volatility periods
 - Use index movements to calculate volatility
 
-Each strategy can have its own parameters and generate 9+ combinations.
+Each portfolio can have its own parameters and generate 9+ combinations.
 
 ## Notes
 
@@ -198,4 +198,4 @@ Each strategy can have its own parameters and generate 9+ combinations.
 - Trades only execute if confidence threshold met
 - Spreads applied on both sides of trade (total ~0.74%)
 - No trades = portfolio value stays same (minus any previous losses)
-- Strategies run independently (don't affect each other)
+- Portfolios run independently (don't affect each other)
