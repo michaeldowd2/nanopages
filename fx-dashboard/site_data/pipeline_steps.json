@@ -572,26 +572,6 @@
             "description": "Amount of currency bought (after spread)"
           },
           {
-            "name": "sell_balance_before",
-            "type": "float",
-            "description": "Sell currency balance before trade"
-          },
-          {
-            "name": "sell_balance_after",
-            "type": "float",
-            "description": "Sell currency balance after trade"
-          },
-          {
-            "name": "buy_balance_before",
-            "type": "float",
-            "description": "Buy currency balance before trade"
-          },
-          {
-            "name": "buy_balance_after",
-            "type": "float",
-            "description": "Buy currency balance after trade"
-          },
-          {
             "name": "exchange_rate",
             "type": "float",
             "description": "Exchange rate used"
@@ -610,26 +590,6 @@
             "name": "cost_eur",
             "type": "float",
             "description": "Spread cost in EUR"
-          },
-          {
-            "name": "portfolio_value_before",
-            "type": "float",
-            "description": "Total portfolio value in EUR before trade"
-          },
-          {
-            "name": "portfolio_value_after",
-            "type": "float",
-            "description": "Total portfolio value in EUR after trade"
-          },
-          {
-            "name": "buy_signal",
-            "type": "float",
-            "description": "Buy signal strength"
-          },
-          {
-            "name": "sell_signal",
-            "type": "float",
-            "description": "Sell signal strength"
           },
           {
             "name": "trade_signal",

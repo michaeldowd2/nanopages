@@ -507,8 +507,26 @@
       });
     }
 
+    function populateStrategyFilter(step, rows) {
+      // Extract unique strategy IDs from rows and populate the strategy filter dropdown
+      if (!rows[0]?.strategy_id) return;
+
+      const strategies = [...new Set(rows.map(r => r.strategy_id))].filter(s => s).sort();
+
+      const selector = document.getElementById(`${step}-strategy-filter`);
+      if (!selector) return;
+
+      selector.innerHTML = '<option value="">All Strategies</option>' +
+        strategies.map(s => `<option value="${s}">${s}</option>`).join('');
+
+      // Add change listener to filter table
+      selector.addEventListener('change', (e) => {
+        filterTableByStrategy(step, e.target.value);
+      });
+    }
+
     function filterTableByDate(step, selectedDate) {
-      // Get current currency filter value (if exists)
+      // Get current currency and strategy filter values (if they exist)
       // For step7, check the table-specific currency filter
       let currencySelector;
       if (step === 'step7') {
@@ -518,8 +536,11 @@
       }
       const selectedCurrency = currencySelector ? currencySelector.value : '';
 
+      const strategySelector = document.getElementById(`${step}-strategy-filter`);
+      const selectedStrategy = strategySelector ? strategySelector.value : '';
+
       // Apply combined filter
-      filterTableByCombined(step, selectedDate, selectedCurrency);
+      filterTableByCombined(step, selectedDate, selectedCurrency, selectedStrategy);
     }
 
     function filterTableByDate_old(step, selectedDate) {
@@ -630,22 +651,35 @@
     }
 
     function filterTableByCurrency(step, selectedCurrency) {
-      // Get current date filter value
+      // Get current date and strategy filter values
       const dateSelector = document.getElementById(`${step}-date-filter`);
       const selectedDate = dateSelector ? dateSelector.value : '';
+      const strategySelector = document.getElementById(`${step}-strategy-filter`);
+      const selectedStrategy = strategySelector ? strategySelector.value : '';
 
       // Apply combined filter
-      filterTableByCombined(step, selectedDate, selectedCurrency);
+      filterTableByCombined(step, selectedDate, selectedCurrency, selectedStrategy);
     }
 
-    function filterTableByCombined(step, selectedDate, selectedCurrency) {
+    function filterTableByStrategy(step, selectedStrategy) {
+      // Get current date and currency filter values
+      const dateSelector = document.getElementById(`${step}-date-filter`);
+      const selectedDate = dateSelector ? dateSelector.value : '';
+      const currencySelector = document.getElementById(`${step}-currency-filter`);
+      const selectedCurrency = currencySelector ? currencySelector.value : '';
+
+      // Apply combined filter
+      filterTableByCombined(step, selectedDate, selectedCurrency, selectedStrategy);
+    }
+
+    function filterTableByCombined(step, selectedDate, selectedCurrency, selectedStrategy) {
       const cachedData = stepDataCache[step];
       if (!cachedData) return;
 
       const { headers, allRows } = cachedData;
       const tbody = document.getElementById(`${step}-tbody`);
 
-      // Filter rows by selected date and currency
+      // Filter rows by selected date, currency, and strategy
       let filteredRows = allRows;
 
       if (selectedDate) {
@@ -658,6 +692,10 @@
 
       if (selectedCurrency) {
         filteredRows = filteredRows.filter(row => row.currency === selectedCurrency);
+      }
+
+      if (selectedStrategy) {
+        filteredRows = filteredRows.filter(row => row.strategy_id === selectedStrategy);
       }
 
       // Re-render table with filtered rows (same logic as filterTableByDate)
@@ -863,6 +901,11 @@
           // Populate currency filter for steps 2, 3, 4, 5, and 6
           if (step === 'step2' || step === 'step3' || step === 'step4' || step === 'step5' || step === 'step6') {
             populateCurrencyFilter(step, rows);
+          }
+
+          // Populate strategy filter for steps 8.1 and 9
+          if (step === 'step8.1' || step === 'step9') {
+            populateStrategyFilter(step, rows);
           }
 
           const countEl = document.getElementById(`${step}-count`);
@@ -1700,16 +1743,18 @@
         '3': { x: 100, y: 200, layer: 0 },
         '2': { x: 300, y: 50, layer: 1 },
         '4': { x: 300, y: 200, layer: 1 },
-        '5': { x: 300, y: 280, layer: 1 },
-        '6': { x: 500, y: 150, layer: 2 },
-        '7': { x: 700, y: 150, layer: 3 },
-        '8': { x: 900, y: 150, layer: 4 },
+        '4.1': { x: 300, y: 280, layer: 1 },
+        '5': { x: 300, y: 360, layer: 1 },
+        '6': { x: 500, y: 180, layer: 2 },
+        '7': { x: 700, y: 180, layer: 3 },
+        '8': { x: 900, y: 180, layer: 4 },
+        '8.1': { x: 900, y: 100, layer: 4 },
         '9': { x: 1100, y: 150, layer: 5 }
       };
 
       const nodeRadius = 35;
       const svgWidth = 1250;
-      const svgHeight = 350;
+      const svgHeight = 420;
 
       // Start building SVG
       let svg = `<svg width="${svgWidth}" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg">`;
@@ -1841,11 +1886,13 @@
           // Build dependency graph visualization
           let html = '<div style="font-family:monospace; font-size:0.85em; line-height:1.8;">';
 
-          // Sort steps by ID
-          const sortedSteps = Object.keys(steps).sort((a, b) => {
-            const order = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-            return order.indexOf(a) - order.indexOf(b);
-          });
+          // Sort steps by ID (handle decimal step IDs like 4.1 and 8.1)
+          const sortedSteps = Object.keys(steps)
+            .filter(id => id !== '10')  // Exclude deployment step
+            .sort((a, b) => {
+              const parseStepId = (id) => parseFloat(id);
+              return parseStepId(a) - parseStepId(b);
+            });
 
           sortedSteps.forEach(stepId => {
             const step = steps[stepId];
@@ -2313,6 +2360,12 @@
                     <option value="">All Currencies</option>
                   </select>
                   ` : ''}
+                  ${stepId === '8.1' ? `
+                  <label for="step${stepId}-strategy-filter" style="color:#ccc; font-size:0.9em; margin-left:15px;">Strategy:</label>
+                  <select id="step${stepId}-strategy-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:5px; margin-left:5px; font-size:0.9em; border-radius:4px;">
+                    <option value="">All Strategies</option>
+                  </select>
+                  ` : ''}
                 </div>
                 ` : ''}
 
@@ -2424,11 +2477,15 @@
           <div id="strategy-chart"></div>
         </div>
 
-        <!-- Date Filter moved here, below all charts -->
+        <!-- Date and Strategy Filters moved here, below all charts -->
         <div style="margin:20px 0; padding-top:20px; border-top:1px solid #333;">
           <label for="step${stepId}-date-filter" style="color:#ccc; font-size:0.9em;">Date:</label>
           <select id="step${stepId}-date-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:5px; margin-left:5px; font-size:0.9em; border-radius:4px;">
             <option value="">All Dates</option>
+          </select>
+          <label for="step${stepId}-strategy-filter" style="color:#ccc; font-size:0.9em; margin-left:15px;">Strategy:</label>
+          <select id="step${stepId}-strategy-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:5px; margin-left:5px; font-size:0.9em; border-radius:4px;">
+            <option value="">All Strategies</option>
           </select>
         </div>
 

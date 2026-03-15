@@ -140,7 +140,7 @@ def calculate_portfolio_value(portfolio, eur_rates):
 
 
 def execute_trade_with_details(trade, all_pairs, eur_rates, portfolio, max_trade_size_pct, confidence_threshold,
-                                 strategy_id, date_str, portfolio_value_before):
+                                 strategy_id, date_str):
     """
     Execute a single trade and return full execution details.
 
@@ -212,16 +212,9 @@ def execute_trade_with_details(trade, all_pairs, eur_rates, portfolio, max_trade
 
     cost_eur = actual_trade_size_eur - buy_value_eur
 
-    # Get balance before trade
-    sell_balance_before = portfolio[sell_curr]
-    buy_balance_before = portfolio.get(buy_curr, 0)
-
     # Update portfolio balances
     portfolio[sell_curr] -= sell_amount
     portfolio[buy_curr] = portfolio.get(buy_curr, 0) + buy_amount_after_spread
-
-    # Calculate portfolio value after this trade
-    portfolio_value_after = calculate_portfolio_value(portfolio, eur_rates)
 
     return {
         'date': date_str,
@@ -231,18 +224,10 @@ def execute_trade_with_details(trade, all_pairs, eur_rates, portfolio, max_trade
         'buy_currency': buy_curr,
         'sell_amount': round(sell_amount, 4),
         'buy_amount': round(buy_amount_after_spread, 4),
-        'sell_balance_before': round(sell_balance_before, 4),
-        'sell_balance_after': round(portfolio[sell_curr], 4),
-        'buy_balance_before': round(buy_balance_before, 4),
-        'buy_balance_after': round(portfolio[buy_curr], 4),
         'exchange_rate': round(pair_rate, 6),
         'spread_pct': spread,
         'trade_size_eur': round(actual_trade_size_eur, 2),
         'cost_eur': round(cost_eur, 2),
-        'portfolio_value_before': round(portfolio_value_before, 2),
-        'portfolio_value_after': round(portfolio_value_after, 2),
-        'buy_signal': trade['buy_signal'],
-        'sell_signal': trade['sell_signal'],
         'trade_signal': trade['trade_signal']
     }
 
@@ -348,11 +333,10 @@ def main(date_str=None):
             for trade in trades_to_execute:
                 execution = execute_trade_with_details(
                     trade, all_pairs, eur_rates, portfolio, max_trade_size_pct,
-                    conf_threshold, strategy_id, date_str, portfolio_value
+                    conf_threshold, strategy_id, date_str
                 )
                 if execution:
                     all_executed_trades.append(execution)
-                    portfolio_value = execution['portfolio_value_after']  # Update for next trade
 
             print(f"      Extracted {len([t for t in all_executed_trades if t['strategy_id'] == strategy_id])} trades")
             total_trades_extracted += len([t for t in all_executed_trades if t['strategy_id'] == strategy_id])
