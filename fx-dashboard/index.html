@@ -758,6 +758,7 @@
         'step6': 'site_data/step6_realization.csv',
         'step7': 'site_data/step7_aggregated_signals.csv',
         'step8': 'site_data/step8_trades.csv',
+        'step8.1': 'site_data/step8.1_executed_trades.csv',
         'step9': 'site_data/step9_portfolios.csv'
       }[step];
 
@@ -2242,7 +2243,7 @@
         .catch(err => {
           console.error('Failed to load pipeline config:', err);
           // Fallback: load without dynamic generation
-          ['step2', 'step3', 'step4', 'step4.1', 'step5', 'step6', 'step7', 'step8'].forEach(loadCSV);
+          ['step2', 'step3', 'step4', 'step4.1', 'step5', 'step6', 'step7', 'step8', 'step8.1'].forEach(loadCSV);
           loadStep1Dates();
           loadSystemConfig();
           loadPipelineDependencies();
@@ -2334,6 +2335,7 @@
         '6': 'realization',
         '7': 'aggregated_signals',
         '8': 'trades',
+        '8.1': 'executed_trades',
         '9': 'strategies'
       };
       return filenames[stepId] || 'data';

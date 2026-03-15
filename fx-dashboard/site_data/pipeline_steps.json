@@ -517,6 +517,131 @@
       "supports_date_filter": true,
       "is_safe_to_clear": true
     },
+    "8.1": {
+      "id": "8.1",
+      "name": "Executed Trades",
+      "script": "scripts/pipeline/extract-executed-trades.py",
+      "description": "Extract actual executed trades with real currency amounts for each portfolio",
+      "depends_on": [
+        "1",
+        "8"
+      ],
+      "inputs": [
+        "data/prices/{date}.csv",
+        "data/trades/{date}.csv",
+        "data/portfolios/{prev_date}.csv"
+      ],
+      "output_path": "data/executed-trades/{date}.csv",
+      "output_pattern": "data/executed-trades/*.csv",
+      "output_schema": {
+        "description": "Actual executed trades with full transaction details per portfolio strategy",
+        "columns": [
+          {
+            "name": "date",
+            "type": "string",
+            "description": "Trade execution date YYYY-MM-DD"
+          },
+          {
+            "name": "strategy_id",
+            "type": "string",
+            "description": "Strategy identifier"
+          },
+          {
+            "name": "trader_id",
+            "type": "string",
+            "description": "Trader identifier"
+          },
+          {
+            "name": "sell_currency",
+            "type": "string",
+            "description": "Currency sold"
+          },
+          {
+            "name": "buy_currency",
+            "type": "string",
+            "description": "Currency bought"
+          },
+          {
+            "name": "sell_amount",
+            "type": "float",
+            "description": "Amount of currency sold"
+          },
+          {
+            "name": "buy_amount",
+            "type": "float",
+            "description": "Amount of currency bought (after spread)"
+          },
+          {
+            "name": "sell_balance_before",
+            "type": "float",
+            "description": "Sell currency balance before trade"
+          },
+          {
+            "name": "sell_balance_after",
+            "type": "float",
+            "description": "Sell currency balance after trade"
+          },
+          {
+            "name": "buy_balance_before",
+            "type": "float",
+            "description": "Buy currency balance before trade"
+          },
+          {
+            "name": "buy_balance_after",
+            "type": "float",
+            "description": "Buy currency balance after trade"
+          },
+          {
+            "name": "exchange_rate",
+            "type": "float",
+            "description": "Exchange rate used"
+          },
+          {
+            "name": "spread_pct",
+            "type": "float",
+            "description": "Spread percentage applied (0.0074 = 0.74%)"
+          },
+          {
+            "name": "trade_size_eur",
+            "type": "float",
+            "description": "Trade size in EUR equivalent"
+          },
+          {
+            "name": "cost_eur",
+            "type": "float",
+            "description": "Spread cost in EUR"
+          },
+          {
+            "name": "portfolio_value_before",
+            "type": "float",
+            "description": "Total portfolio value in EUR before trade"
+          },
+          {
+            "name": "portfolio_value_after",
+            "type": "float",
+            "description": "Total portfolio value in EUR after trade"
+          },
+          {
+            "name": "buy_signal",
+            "type": "float",
+            "description": "Buy signal strength"
+          },
+          {
+            "name": "sell_signal",
+            "type": "float",
+            "description": "Sell signal strength"
+          },
+          {
+            "name": "trade_signal",
+            "type": "float",
+            "description": "Net trade signal"
+          }
+        ]
+      },
+      "supports_date_filter": true,
+      "is_safe_to_clear": true,
+      "note": "This step runs in parallel to Step 9 - it does not feed into Step 9 but mirrors its trade execution logic to show actual amounts"
+    },
     "9": {
       "id": "9",
       "name": "Portfolio Execution",
