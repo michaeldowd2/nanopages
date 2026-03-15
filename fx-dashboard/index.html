@@ -1273,7 +1273,7 @@
       }
 
       // Build SVG
-      let svg = `<svg width="${chartWidth}" height="${chartHeight}" style="background:#0a0e27; max-width:100%; display:block;">`;
+      let svg = `<svg width="${chartWidth}" height="${chartHeight}" style="background:#0a0e27; display:block;">`;
 
       // Title
       svg += `<text x="${chartWidth/2}" y="20" fill="#00ff41" text-anchor="middle" font-size="14" font-weight="bold">
@@ -2283,7 +2283,7 @@
 
       // Chart dimensions
       const chartHeight = 350;
-      const chartWidth = container.offsetWidth || 800;
+      const chartWidth = 1450;  // Fixed width for horizontal scrolling
       const marginLeft = 60;
       const marginRight = 20;
       const marginTop = 20;
@@ -2310,7 +2310,7 @@
       }
 
       // Build SVG
-      let svg = `<svg width="${chartWidth}" height="${chartHeight}" style="background:#0a0e27; max-width:100%; display:block;">`;
+      let svg = `<svg width="${chartWidth}" height="${chartHeight}" style="background:#0a0e27; display:block;">`;
 
       // Y-axis grid lines and labels
       const ySteps = 5;
@@ -2589,7 +2589,9 @@
         <div class="chart" style="margin-bottom:30px;">
           <h3 style="color:#00ff41;font-size:1em;margin-bottom:10px;">Cumulative Performance (Currency-Neutral)</h3>
           <p style="color:#888;font-size:0.85em;margin-bottom:15px;">Track strategy performance using the currency-neutral value index</p>
-          <div id="portfolio-line-chart" style="position:relative; height:400px; margin-top:20px;"></div>
+          <div style="overflow-x:auto; overflow-y:hidden;">
+            <div id="portfolio-line-chart" style="position:relative; height:400px; margin-top:20px; min-width:1450px;"></div>
+          </div>
         </div>
 
         <div class="chart" style="margin-bottom:30px;">
