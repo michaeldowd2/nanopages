@@ -2433,7 +2433,6 @@
 
     function generateDynamicTabs(config) {
       const navTabs = document.getElementById('nav-tabs');
-      const trackingTab = navTabs.querySelector('[onclick*="tracking"]');
 
       // Generate step tabs
       const stepTabs = Object.keys(config.steps)
@@ -2453,12 +2452,12 @@
         })
         .join('');
 
-      // Insert step tabs before tracking tab
-      trackingTab.insertAdjacentHTML('beforebegin', stepTabs);
+      // Append step tabs to nav
+      navTabs.insertAdjacentHTML('beforeend', stepTabs);
     }
 
     function generateDynamicContent(config) {
-      const trackingDiv = document.getElementById('tracking');
+      const container = document.body;
 
       // Generate content divs for each step
       Object.keys(config.steps)
@@ -2507,7 +2506,9 @@
             </div>
           `;
 
-          trackingDiv.insertAdjacentHTML('beforebegin', contentHtml);
+          // Insert before the closing body tag (or after config div)
+          const configDiv = document.getElementById('config');
+          configDiv.insertAdjacentHTML('afterend', contentHtml);
         });
     }
 
