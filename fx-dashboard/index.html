@@ -516,13 +516,19 @@
       const selector = document.getElementById(`${step}-strategy-filter`);
       if (!selector) return;
 
+      // Build options with first strategy selected by default
       selector.innerHTML = '<option value="">All Strategies</option>' +
-        strategies.map(s => `<option value="${s}">${s}</option>`).join('');
+        strategies.map((s, index) => `<option value="${s}" ${index === 0 ? 'selected' : ''}>${s}</option>`).join('');
 
       // Add change listener to filter table
       selector.addEventListener('change', (e) => {
         filterTableByStrategy(step, e.target.value);
       });
+
+      // Apply initial filter to first strategy
+      if (strategies.length > 0) {
+        filterTableByStrategy(step, strategies[0]);
+      }
     }
 
     function filterTableByDate(step, selectedDate) {
