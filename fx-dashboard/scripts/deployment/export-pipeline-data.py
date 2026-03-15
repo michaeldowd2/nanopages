@@ -52,7 +52,7 @@ def get_all_files_for_step(step_id):
     return sorted(all_files)
 
 
-def export_step_generic(step_id, step_name, process_schema_name=None):
+def export_step_generic(step_id, step_name, process_schema_name=None, number_of_dates=30):
     """
     Generic export function for most steps.
 
@@ -60,6 +60,7 @@ def export_step_generic(step_id, step_name, process_schema_name=None):
         step_id: Step ID from config
         step_name: Display name for logging
         process_schema_name: Schema name for csv_helper (defaults to step_id)
+        number_of_dates: Maximum number of most recent dates to export (default 30)
 
     Returns:
         Number of records exported
@@ -75,6 +76,9 @@ def export_step_generic(step_id, step_name, process_schema_name=None):
     if not files:
         print(f"⚠️  Step {step_id}: No files found")
         return 0
+
+    # Limit to most recent N files
+    files = files[-number_of_dates:] if number_of_dates > 0 else files
 
     # Read all CSV files and combine
     for filepath in files:
@@ -131,7 +135,7 @@ def get_step_filename(step_id):
     return filenames.get(step_id, 'data')
 
 
-def export_step1_exchange_rates():
+def export_step1_exchange_rates(number_of_dates=30):
     """Step 1: Export exchange rates as matrix CSV (special format for dashboard)"""
 
     # Get all price CSV files using config
@@ -140,6 +144,9 @@ def export_step1_exchange_rates():
     if not price_files:
         print("⚠️  Step 1: No exchange rate files found")
         return 0
+
+    # Limit to most recent N files
+    price_files = price_files[-number_of_dates:] if number_of_dates > 0 else price_files
 
     # Get list of currencies from system config
     from utilities.config_loader import get_currencies
@@ -275,9 +282,10 @@ def main():
     steps = config.get('steps', {})
 
     # Step 1: Special case (matrix format)
-    total += export_step1_exchange_rates()
+    step1_dates = steps.get('1', {}).get('number_of_export_dates', 30)
+    total += export_step1_exchange_rates(number_of_dates=step1_dates)
 
-    # Steps 2-9: Use generic export (config-driven)
+    # Steps 2-10: Use generic export (config-driven)
     exportable_steps = {
         '2': 'index records',
         '3': 'news articles',
@@ -294,7 +302,8 @@ def main():
     for step_id, description in exportable_steps.items():
         if step_id in steps:
             step_name = steps[step_id].get('name', description)
-            total += export_step_generic(step_id, description, process_schema_name=step_id)
+            number_of_dates = steps[step_id].get('number_of_export_dates', 30)
+            total += export_step_generic(step_id, description, process_schema_name=step_id, number_of_dates=number_of_dates)
 
     # Step 4.1: Special case (JSON to CSV)
     if '4.1' in steps:
