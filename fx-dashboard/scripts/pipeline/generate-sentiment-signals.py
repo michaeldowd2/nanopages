@@ -230,61 +230,87 @@ def analyze_sentiment_event_keywords(combined_text, currency, params, currency_e
     return matched_events
 
 
-def analyze_sentiment_llm(combined_text, currency, params):
+def analyze_sentiment_llm(combined_text, currency, params, currency_events):
     """
-    LLM-based sentiment analysis using Claude Haiku
+    Event-based LLM sentiment analysis using Claude Haiku
+
+    Evaluates article against all currency events and returns strength scores
+    for each relevant event.
 
     Args:
         combined_text: Article title + snippet
         currency: 3-letter currency code
         params: Generator parameters (model, temperature, etc.)
+        currency_events: List of event dictionaries from Step 4.1
 
     Returns:
-        tuple: (direction, confidence, reasoning, magnitude)
+        list: List of (event_id, signal, confidence, reasoning) tuples for matching events
     """
     api_key = get_anthropic_key()
     if not api_key:
-        print("  ⚠️  Anthropic API key not found, falling back to neutral")
-        return 'neutral', 0.3, 'API key not available', None
+        print("  ⚠️  Anthropic API key not found, returning empty list")
+        return []
+
+    # Build event list for prompt
+    event_descriptions = []
+    for event in currency_events:
+        event_id = event['event_id']
+        event_name = event['event_name']
+        event_signal = event['signal']
+        description = event.get('description', '')
+
+        # Determine polarity for clarity
+        polarity = "BULLISH" if event_signal > 0 else "BEARISH" if event_signal < 0 else "NEUTRAL"
+
+        event_descriptions.append(
+            f"- **{event_id}** ({polarity}, signal={event_signal}): {event_name}\n  {description}"
+        )
+
+    events_text = "\n".join(event_descriptions)
 
     # Build prompt
-    prompt = f"""You are an expert FX market analyst. Analyze this news article and determine its sentiment for {currency}.
+    prompt = f"""You are an expert FX market analyst. Analyze this news article for {currency} and identify which currency events (if any) are indicated.
 
 **Article Text**:
 {combined_text}
 
-**Your task**: Determine the sentiment for {currency} based on this article.
+**Currency Events to Consider**:
+{events_text}
 
-**Analysis Framework**:
-1. **Direction**: Is this BULLISH (positive for {currency}), BEARISH (negative for {currency}), or NEUTRAL?
-2. **Confidence**: How confident are you? (0.0 = not confident, 1.0 = very confident)
-3. **Magnitude**: If directional, is the expected impact SMALL, MEDIUM, or LARGE?
-4. **Reasoning**: Brief explanation (1-2 sentences)
+**Your Task**:
+For each event that this article clearly indicates or discusses, assign a strength score (0.0-1.0):
+- 1.0 = Very strong indication of this event
+- 0.7 = Clear indication
+- 0.5 = Moderate indication
+- 0.3 = Weak indication
+- 0.0 = No indication (DON'T include in response)
 
-**Important Considerations**:
-- FX pairs: If article mentions "{currency}/XXX rises", that's BULLISH for {currency}
-- FX pairs: If article mentions "XXX/{currency} rises", that's BEARISH for {currency} (inverse)
-- Central bank hawkishness → BULLISH for currency
-- Central bank dovishness → BEARISH for currency
-- Economic strength indicators → BULLISH
-- Economic weakness indicators → BEARISH
+**CRITICAL RULES**:
+1. ONLY include events that are actually discussed or indicated in the article
+2. DO NOT make up events or assign strengths without clear evidence
+3. If the article doesn't clearly indicate any specific event, return an empty array
+4. Use generic bullish_signal/bearish_signal ONLY if no specific event applies but there's clear directional sentiment
+5. For FX pairs: "{currency}/XXX rises" = bullish for {currency}, "XXX/{currency} rises" = bearish for {currency}
 
 **Output Format (JSON)**:
 {{
-  "direction": "bullish|bearish|neutral",
-  "confidence": 0.0-1.0,
-  "magnitude": "small|medium|large|null",
-  "reasoning": "brief explanation"
+  "events": [
+    {{
+      "event_id": "event_id_from_list",
+      "strength": 0.0-1.0,
+      "reasoning": "brief explanation why this event applies"
+    }}
+  ]
 }}
 
-Return ONLY the JSON, no other text."""
+Return ONLY the JSON array. If no events match, return {{"events": []}}."""
 
     # Call Anthropic API
     try:
         url = "https://api.anthropic.com/v1/messages"
         request_body = {
             "model": "claude-3-haiku-20240307",
-            "max_tokens": 300,
+            "max_tokens": 500,  # Increased for multiple events
             "temperature": params.get('temperature', 0.3),
             "messages": [{"role": "user", "content": prompt}]
         }
@@ -305,25 +331,58 @@ Return ONLY the JSON, no other text."""
             result = json.loads(response.read().decode('utf-8'))
             response_text = result['content'][0]['text']
 
-            # Extract JSON from response (handle markdown code blocks)
+            # Extract JSON from response (handle markdown code blocks and nested structures)
             import re
-            json_match = re.search(r'\{[^}]+\}', response_text, re.DOTALL)
-            if json_match:
+            # Remove markdown code blocks if present
+            response_text = re.sub(r'```json\s*', '', response_text)
+            response_text = re.sub(r'```\s*$', '', response_text)
+            response_text = response_text.strip()
+
+            # Try to find JSON object (including nested arrays)
+            json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+            if not json_match:
+                print(f"  ⚠️  Failed to find JSON in LLM response")
+                return []
+
+            try:
                 analysis = json.loads(json_match.group(0))
+            except json.JSONDecodeError as e:
+                # Silently skip parse errors - LLM may have returned malformed JSON
+                return []
+            detected_events = analysis.get('events', [])
 
-                direction = analysis.get('direction', 'neutral')
-                confidence = float(analysis.get('confidence', 0.5))
-                magnitude = analysis.get('magnitude')
-                reasoning = analysis.get('reasoning', 'LLM analysis')
+            if not detected_events:
+                return []  # No events detected
 
-                return direction, round(confidence, 2), reasoning, magnitude
-            else:
-                print(f"  ⚠️  Failed to parse LLM response, falling back to neutral")
-                return 'neutral', 0.3, 'Parse error', None
+            # Convert to output format
+            matched_events = []
+            event_lookup = {e['event_id']: e for e in currency_events}
+
+            for detected in detected_events:
+                event_id = detected.get('event_id')
+                strength = float(detected.get('strength', 0))
+                reasoning = detected.get('reasoning', 'LLM analysis')
+
+                # Validate event_id exists
+                if event_id not in event_lookup:
+                    continue
+
+                event = event_lookup[event_id]
+                event_signal = event['signal']
+
+                # Calculate final signal = strength × event_signal
+                final_signal = round(strength * event_signal, 4)
+
+                # Use strength as confidence
+                confidence = round(min(0.9, strength), 2)
+
+                matched_events.append((event_id, final_signal, confidence, reasoning))
+
+            return matched_events
 
     except Exception as e:
-        print(f"  ⚠️  LLM API error: {str(e)[:100]}, falling back to neutral")
-        return 'neutral', 0.3, f'API error: {str(e)[:50]}', None
+        print(f"  ⚠️  LLM API error: {str(e)[:100]}")
+        return []
 
 
 def detect_fx_pair(title):
@@ -488,64 +547,58 @@ def main(date_str=None):
                         all_signals.append(signal)
 
                 elif is_llm:
-                    # LLM-based sentiment analysis (unchanged)
-                    direction, confidence, reasoning, predicted_magnitude = analyze_sentiment_llm(
-                        article_text, currency, generator_params
+                    # Event-based LLM sentiment analysis
+                    matched_events = analyze_sentiment_llm(
+                        article_text, currency, generator_params, currency_events
                     )
 
-                    # Check for FX pair mentions
+                    # If no events detected, skip this article (LLM found nothing relevant)
+                    if not matched_events:
+                        continue
+
+                    # Check for FX pair mentions (for reasoning context)
                     base_curr, quote_curr = detect_fx_pair(title)
-                    signal_direction = direction
                     pair_context = None
 
                     if base_curr and quote_curr:
                         pair_context = f"{base_curr}/{quote_curr}"
 
-                        if currency == base_curr:
-                            signal_direction = direction
+                    # Create one signal per matched event
+                    for event_id, signal_value, confidence, reasoning in matched_events:
+                        # Determine direction and magnitude from signal value
+                        if signal_value > 0:
+                            direction = 'bullish'
+                            magnitude = 'large' if abs(signal_value) >= 0.7 else 'medium' if abs(signal_value) >= 0.4 else 'small'
+                        elif signal_value < 0:
+                            direction = 'bearish'
+                            magnitude = 'large' if abs(signal_value) >= 0.7 else 'medium' if abs(signal_value) >= 0.4 else 'small'
+                        else:
+                            direction = 'neutral'
+                            magnitude = None
+
+                        # Add pair context to reasoning if applicable
+                        if pair_context:
                             reasoning = f"{pair_context}: {reasoning}"
-                        elif currency == quote_curr:
-                            signal_direction = invert_direction(direction)
-                            reasoning = f"{pair_context}: Inverse signal for quote currency - {reasoning}"
 
-                    # Calculate base_signal based on direction and magnitude
-                    magnitude_multipliers = {
-                        'small': 0.4,
-                        'medium': 0.7,
-                        'large': 1.0
-                    }
+                        signal = {
+                            'date': date_str,
+                            'article_id': article.get('article_id', ''),
+                            'currency': currency,
+                            'pair_context': pair_context,
+                            'estimator_id': estimator_id,
+                            'valid_to_date': valid_to_date,
+                            'generator_id': gen_id,
+                            'event_id': event_id,  # Actual event ID from LLM analysis
+                            'predicted_direction': direction,
+                            'predicted_magnitude': magnitude,
+                            'base_signal': round(signal_value, 4),
+                            'confidence': confidence,
+                            'signal': signal_value,
+                            'reasoning': reasoning
+                        }
 
-                    if signal_direction == 'neutral' or not predicted_magnitude:
-                        base_signal = 0.0
-                    elif signal_direction == 'bullish':
-                        base_signal = magnitude_multipliers.get(predicted_magnitude, 0.7)
-                    elif signal_direction == 'bearish':
-                        base_signal = -magnitude_multipliers.get(predicted_magnitude, 0.7)
-                    else:
-                        base_signal = 0.0
-
-                    # Calculate final signal value (confidence × base_signal)
-                    signal_value = round(confidence * base_signal, 4)
-
-                    signal = {
-                        'date': date_str,
-                        'article_id': article.get('article_id', ''),
-                        'currency': currency,
-                        'pair_context': pair_context if pair_context else None,
-                        'estimator_id': estimator_id,
-                        'valid_to_date': valid_to_date,
-                        'generator_id': gen_id,
-                        'event_id': 'none',  # LLM doesn't use event taxonomy
-                        'predicted_direction': signal_direction,
-                        'predicted_magnitude': predicted_magnitude if predicted_magnitude else None,
-                        'base_signal': round(base_signal, 4),
-                        'confidence': confidence,
-                        'signal': signal_value,
-                        'reasoning': reasoning
-                    }
-
-                    generator_signals.append(signal)
-                    all_signals.append(signal)
+                        generator_signals.append(signal)
+                        all_signals.append(signal)
 
             # Calculate summary
             bullish = sum(1 for s in generator_signals if s['predicted_direction'] == 'bullish')
