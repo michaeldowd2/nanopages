@@ -166,7 +166,8 @@ def load_signals_from_all_dates(process_date_str):
                     'signal': float(row.get('signal', 0)),
                     'reasoning': row.get('reasoning', ''),
                     'estimator_id': row.get('estimator_id', ''),
-                    'valid_to_date': row.get('valid_to_date', '')
+                    'valid_to_date': row.get('valid_to_date', ''),
+                    'event_id': row.get('event_id', 'none')
                 }
                 total_loaded += 1
 
