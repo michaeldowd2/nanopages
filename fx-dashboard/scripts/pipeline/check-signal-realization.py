@@ -308,13 +308,15 @@ def main(date_str=None):
             realized = check_realization(estimated_diff, movement['actual_diff'])
 
             # Build CSV row (signal includes horizon data from Process 5)
+            # Column order: date, article_id, currency, article_download_date, estimator_id, generator_id, event_id, ...
             csv_rows.append({
                 'date': date_str,
                 'article_id': signal.get('article_id', ''),
                 'currency': currency,
                 'article_download_date': article_download_date,
-                'generator_id': generator_id,
                 'estimator_id': estimator_id,
+                'generator_id': generator_id,
+                'event_id': signal.get('event_id', 'none'),  # Get from signal or default to 'none'
                 'valid_to_date': valid_to_date_str,
                 'signal': signal['signal'],
                 'start_30d_max_diff': movement['start_30d_max_diff'],

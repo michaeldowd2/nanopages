@@ -131,6 +131,105 @@ def analyze_sentiment_keywords(combined_text, currency, params):
     return direction, round(confidence, 2), reasoning, magnitude
 
 
+def load_currency_events():
+    """Load currency events taxonomy from Step 4.1"""
+    events_path = '/workspace/group/fx-portfolio/data/events/currency_events.json'
+    with open(events_path, 'r') as f:
+        data = json.load(f)
+    return data['events']
+
+
+def analyze_sentiment_event_keywords(combined_text, currency, params, currency_events):
+    """
+    Event-based keyword sentiment analysis
+
+    Matches article text against currency events taxonomy to determine
+    which events are indicated and their strength.
+
+    Args:
+        combined_text: Article title + snippet
+        currency: 3-letter currency code
+        params: Generator parameters
+        currency_events: List of event dictionaries from Step 4.1
+
+    Returns:
+        list: List of (event_id, signal, confidence, reasoning) tuples for matching events
+    """
+    import re
+
+    text_lower = combined_text.lower()
+    matched_events = []
+
+    # Track bullish vs bearish matches for fallback
+    bullish_matches = 0
+    bearish_matches = 0
+
+    for event in currency_events:
+        event_id = event['event_id']
+        event_signal = event['signal']
+        keywords = event.get('keywords', [])
+        required_keywords = event.get('required_keywords', [])
+
+        # Check if required keywords are present (if any are specified)
+        if required_keywords:
+            has_required = any(req_kw.lower() in text_lower for req_kw in required_keywords)
+            if not has_required:
+                continue  # Skip this event if required keywords not found
+
+        # Count matching keywords from the event
+        keyword_matches = sum(1 for kw in keywords if kw.lower() in text_lower)
+
+        if keyword_matches == 0:
+            continue  # No keywords matched
+
+        # Track generic bullish/bearish matches for fallback
+        if event_id == 'bullish_signal':
+            bullish_matches = keyword_matches
+        elif event_id == 'bearish_signal':
+            bearish_matches = keyword_matches
+
+        # Calculate event strength based on keyword matches
+        # Use more generous threshold: 1 match = 10% strength minimum
+        # Scale up to 100% strength with more matches
+        max_keywords = len(keywords)
+        # Use 10 keywords as threshold (about 30% of typical event keyword list)
+        strength = min(1.0, keyword_matches / max(1, 10))  # 1 match = 0.1, 10 matches = 1.0
+
+        # Calculate confidence based on match quality
+        # More matches = higher confidence
+        confidence = min(0.9, 0.3 + (keyword_matches * 0.08))  # 0.3 base + 0.08 per match, max 0.9
+
+        # Calculate final signal = strength × event_signal
+        final_signal = round(strength * event_signal, 4)
+
+        reasoning = f"{event['event_name']}: {keyword_matches} keyword matches"
+
+        matched_events.append((event_id, final_signal, confidence, reasoning))
+
+    # If no events matched, create a neutral fallback signal
+    # This ensures every article generates at least one signal (matching old behavior)
+    if len(matched_events) == 0:
+        # Use the stronger of bullish/bearish generic signals with neutral=0.0
+        if bullish_matches > 0 or bearish_matches > 0:
+            # Had some keywords but strength was too low - output neutral
+            matched_events.append((
+                'bullish_signal' if bullish_matches >= bearish_matches else 'bearish_signal',
+                0.0,
+                0.3,
+                f"{currency} mixed/weak signals; neutral"
+            ))
+        else:
+            # No keywords at all - truly neutral article
+            matched_events.append((
+                'bullish_signal',  # Default to bullish_signal as event_id
+                0.0,
+                0.2,
+                f"{currency} no clear sentiment indicators"
+            ))
+
+    return matched_events
+
+
 def analyze_sentiment_llm(combined_text, currency, params):
     """
     LLM-based sentiment analysis using Claude Haiku
@@ -310,6 +409,10 @@ def main(date_str=None):
             logger.fail()
             return
 
+        # Load currency events for event-based keyword matching
+        currency_events = load_currency_events()
+        print(f"\n✓ Loaded {len(currency_events)} currency events from Step 4.1")
+
         # Generate signals with each generator
         all_signals = []
         summary_by_generator = {}
@@ -323,12 +426,11 @@ def main(date_str=None):
             generator_type = gen_config['type']
             generator_params = gen_config.get('params', {})
 
-            # Select analysis function
-            if generator_type == 'keyword-sentiment-v1.1':
-                analyze_func = analyze_sentiment_keywords
-            elif generator_type == 'llm-sentiment-v1':
-                analyze_func = analyze_sentiment_llm
-            else:
+            # Determine if this is event-based keyword or traditional analysis
+            is_event_based_keyword = (generator_type == 'keyword-sentiment-v1.1')
+            is_llm = (generator_type == 'llm-sentiment-v1')
+
+            if not is_event_based_keyword and not is_llm:
                 print(f"  ⚠️  Unknown generator type: {generator_type}")
                 continue
 
@@ -340,72 +442,110 @@ def main(date_str=None):
                 title = article['title']
                 article_text = f"{title} {article.get('snippet', '')}"
 
-                # Analyze sentiment
-                direction, confidence, reasoning, predicted_magnitude = analyze_func(
-                    article_text, currency, generator_params
-                )
-
-                # Check for FX pair mentions
-                base_curr, quote_curr = detect_fx_pair(title)
-                signal_direction = direction
-                pair_context = None
-
-                if base_curr and quote_curr:
-                    pair_context = f"{base_curr}/{quote_curr}"
-
-                    if currency == base_curr:
-                        signal_direction = direction
-                        reasoning = f"{pair_context}: {reasoning}"
-                    elif currency == quote_curr:
-                        signal_direction = invert_direction(direction)
-                        reasoning = f"{pair_context}: Inverse signal for quote currency - {reasoning}"
-
-                # Calculate base_signal based on direction and magnitude
-                # Positive if bullish, negative if bearish
-                # Scaled by magnitude: small=0.4, medium=0.7, large=1.0
-                magnitude_multipliers = {
-                    'small': 0.4,
-                    'medium': 0.7,
-                    'large': 1.0
-                }
-
-                if signal_direction == 'neutral' or not predicted_magnitude:
-                    base_signal = 0.0
-                elif signal_direction == 'bullish':
-                    base_signal = magnitude_multipliers.get(predicted_magnitude, 0.7)
-                elif signal_direction == 'bearish':
-                    base_signal = -magnitude_multipliers.get(predicted_magnitude, 0.7)
-                else:
-                    base_signal = 0.0
-
-                # Calculate final signal value (confidence × base_signal)
-                signal_value = round(confidence * base_signal, 4)
-
                 # Get horizon data for this article and currency
                 horizon_key = (article.get('article_id', ''), currency)
                 horizon = horizon_lookup.get(horizon_key)
                 estimator_id = horizon['estimator_id'] if horizon else 'unknown'
                 valid_to_date = horizon['valid_to_date'] if horizon else ''
 
-                # Build CSV row
-                signal = {
-                    'date': date_str,
-                    'article_id': article.get('article_id', ''),
-                    'currency': currency,
-                    'pair_context': pair_context if pair_context else None,
-                    'estimator_id': estimator_id,
-                    'valid_to_date': valid_to_date,
-                    'generator_id': gen_id,
-                    'predicted_direction': signal_direction,
-                    'predicted_magnitude': predicted_magnitude if predicted_magnitude else None,
-                    'base_signal': round(base_signal, 4),
-                    'confidence': confidence,
-                    'signal': signal_value,
-                    'reasoning': reasoning
-                }
+                if is_event_based_keyword:
+                    # Event-based keyword matching
+                    matched_events = analyze_sentiment_event_keywords(
+                        article_text, currency, generator_params, currency_events
+                    )
 
-                generator_signals.append(signal)
-                all_signals.append(signal)
+                    # Create one signal per matched event
+                    for event_id, signal_value, confidence, reasoning in matched_events:
+                        # Determine direction and magnitude from signal value
+                        if signal_value > 0:
+                            direction = 'bullish'
+                            magnitude = 'large' if signal_value >= 0.7 else 'medium' if signal_value >= 0.4 else 'small'
+                        elif signal_value < 0:
+                            direction = 'bearish'
+                            magnitude = 'large' if signal_value <= -0.7 else 'medium' if signal_value <= -0.4 else 'small'
+                        else:
+                            direction = 'neutral'
+                            magnitude = None
+
+                        signal = {
+                            'date': date_str,
+                            'article_id': article.get('article_id', ''),
+                            'currency': currency,
+                            'pair_context': None,  # Event-based doesn't use pair context
+                            'estimator_id': estimator_id,
+                            'valid_to_date': valid_to_date,
+                            'generator_id': gen_id,
+                            'event_id': event_id,  # Actual event ID from taxonomy
+                            'predicted_direction': direction,
+                            'predicted_magnitude': magnitude,
+                            'base_signal': round(signal_value, 4),  # Signal comes directly from event match
+                            'confidence': confidence,
+                            'signal': signal_value,
+                            'reasoning': reasoning
+                        }
+
+                        generator_signals.append(signal)
+                        all_signals.append(signal)
+
+                elif is_llm:
+                    # LLM-based sentiment analysis (unchanged)
+                    direction, confidence, reasoning, predicted_magnitude = analyze_sentiment_llm(
+                        article_text, currency, generator_params
+                    )
+
+                    # Check for FX pair mentions
+                    base_curr, quote_curr = detect_fx_pair(title)
+                    signal_direction = direction
+                    pair_context = None
+
+                    if base_curr and quote_curr:
+                        pair_context = f"{base_curr}/{quote_curr}"
+
+                        if currency == base_curr:
+                            signal_direction = direction
+                            reasoning = f"{pair_context}: {reasoning}"
+                        elif currency == quote_curr:
+                            signal_direction = invert_direction(direction)
+                            reasoning = f"{pair_context}: Inverse signal for quote currency - {reasoning}"
+
+                    # Calculate base_signal based on direction and magnitude
+                    magnitude_multipliers = {
+                        'small': 0.4,
+                        'medium': 0.7,
+                        'large': 1.0
+                    }
+
+                    if signal_direction == 'neutral' or not predicted_magnitude:
+                        base_signal = 0.0
+                    elif signal_direction == 'bullish':
+                        base_signal = magnitude_multipliers.get(predicted_magnitude, 0.7)
+                    elif signal_direction == 'bearish':
+                        base_signal = -magnitude_multipliers.get(predicted_magnitude, 0.7)
+                    else:
+                        base_signal = 0.0
+
+                    # Calculate final signal value (confidence × base_signal)
+                    signal_value = round(confidence * base_signal, 4)
+
+                    signal = {
+                        'date': date_str,
+                        'article_id': article.get('article_id', ''),
+                        'currency': currency,
+                        'pair_context': pair_context if pair_context else None,
+                        'estimator_id': estimator_id,
+                        'valid_to_date': valid_to_date,
+                        'generator_id': gen_id,
+                        'event_id': 'none',  # LLM doesn't use event taxonomy
+                        'predicted_direction': signal_direction,
+                        'predicted_magnitude': predicted_magnitude if predicted_magnitude else None,
+                        'base_signal': round(base_signal, 4),
+                        'confidence': confidence,
+                        'signal': signal_value,
+                        'reasoning': reasoning
+                    }
+
+                    generator_signals.append(signal)
+                    all_signals.append(signal)
 
             # Calculate summary
             bullish = sum(1 for s in generator_signals if s['predicted_direction'] == 'bullish')

@@ -269,6 +269,11 @@
             "description": "Signal generator identifier"
           },
           {
+            "name": "event_id",
+            "type": "string",
+            "description": "Currency event identifier (references step 4.1 taxonomy)"
+          },
+          {
             "name": "predicted_direction",
             "type": "string",
             "description": "Predicted direction (bullish/bearish/neutral)"
@@ -345,14 +350,19 @@
             "description": "Date article was fetched"
           },
           {
+            "name": "estimator_id",
+            "type": "string",
+            "description": "Time horizon estimator ID"
+          },
+          {
             "name": "generator_id",
             "type": "string",
             "description": "Signal generator ID"
           },
           {
-            "name": "estimator_id",
+            "name": "event_id",
             "type": "string",
-            "description": "Time horizon estimator ID"
+            "description": "Currency event identifier (references step 4.1 taxonomy)"
           },
           {
             "name": "valid_to_date",
