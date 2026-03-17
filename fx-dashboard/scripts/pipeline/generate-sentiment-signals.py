@@ -206,27 +206,8 @@ def analyze_sentiment_event_keywords(combined_text, currency, params, currency_e
 
         matched_events.append((event_id, final_signal, confidence, reasoning))
 
-    # If no events matched, create a neutral fallback signal
-    # This ensures every article generates at least one signal (matching old behavior)
-    if len(matched_events) == 0:
-        # Use the stronger of bullish/bearish generic signals with neutral=0.0
-        if bullish_matches > 0 or bearish_matches > 0:
-            # Had some keywords but strength was too low - output neutral
-            matched_events.append((
-                'bullish_signal' if bullish_matches >= bearish_matches else 'bearish_signal',
-                0.0,
-                0.3,
-                f"{currency} mixed/weak signals; neutral"
-            ))
-        else:
-            # No keywords at all - truly neutral article
-            matched_events.append((
-                'bullish_signal',  # Default to bullish_signal as event_id
-                0.0,
-                0.2,
-                f"{currency} no clear sentiment indicators"
-            ))
-
+    # Return matched events (empty list if no events detected)
+    # In event-based framework, no events = no signals (not neutral)
     return matched_events
 
 
@@ -515,16 +496,17 @@ def main(date_str=None):
 
                     # Create one signal per matched event
                     for event_id, signal_value, confidence, reasoning in matched_events:
+                        # Skip zero/neutral signals - event framework only outputs activated events
+                        if signal_value == 0:
+                            continue
+
                         # Determine direction and magnitude from signal value
                         if signal_value > 0:
                             direction = 'bullish'
                             magnitude = 'large' if signal_value >= 0.7 else 'medium' if signal_value >= 0.4 else 'small'
-                        elif signal_value < 0:
+                        else:  # signal_value < 0
                             direction = 'bearish'
-                            magnitude = 'large' if signal_value <= -0.7 else 'medium' if signal_value <= -0.4 else 'small'
-                        else:
-                            direction = 'neutral'
-                            magnitude = None
+                            magnitude = 'large' if abs(signal_value) >= 0.7 else 'medium' if abs(signal_value) >= 0.4 else 'small'
 
                         signal = {
                             'date': date_str,
@@ -565,16 +547,17 @@ def main(date_str=None):
 
                     # Create one signal per matched event
                     for event_id, signal_value, confidence, reasoning in matched_events:
+                        # Skip zero/neutral signals - event framework only outputs activated events
+                        if signal_value == 0:
+                            continue
+
                         # Determine direction and magnitude from signal value
                         if signal_value > 0:
                             direction = 'bullish'
                             magnitude = 'large' if abs(signal_value) >= 0.7 else 'medium' if abs(signal_value) >= 0.4 else 'small'
-                        elif signal_value < 0:
+                        else:  # signal_value < 0
                             direction = 'bearish'
                             magnitude = 'large' if abs(signal_value) >= 0.7 else 'medium' if abs(signal_value) >= 0.4 else 'small'
-                        else:
-                            direction = 'neutral'
-                            magnitude = None
 
                         # Add pair context to reasoning if applicable
                         if pair_context:
