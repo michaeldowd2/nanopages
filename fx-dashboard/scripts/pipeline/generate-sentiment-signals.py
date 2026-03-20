@@ -443,10 +443,14 @@ def main(date_str=None):
             key = (h['article_id'], h['currency'])
             horizon_lookup[key] = h
 
-        if not articles:
-            print(f"   ⚠ No articles to analyze")
-            logger.warning("No articles found")
-            logger.fail()
+        if not articles or not horizons:
+            print(f"   ⚠ No articles/horizons to analyze")
+            print(f"\n3. Saving empty CSV...")
+            # Create empty CSV file for downstream processes
+            csv_path = write_csv([], 'process_5_signals', date=date_str)
+            print(f"   ✓ Saved empty CSV (0 signals) to {csv_path}")
+            logger.warning("No articles/horizons found - empty CSV created")
+            logger.success()
             return
 
         # Load currency events for event-based keyword matching

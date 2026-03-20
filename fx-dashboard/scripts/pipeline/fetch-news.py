@@ -497,15 +497,16 @@ def main(date_str=None):
         print(f"  Total to save: {len(csv_rows)}")
         print(f"{'='*60}\n")
 
-        # Write to CSV
+        # Write to CSV (always create file, even if empty)
+        # This allows downstream processes to run correctly
         print(f"6. Saving to CSV...")
+        csv_path = write_csv(csv_rows, 'process_3_news', date=date_str)
         if csv_rows:
-            csv_path = write_csv(csv_rows, 'process_3_news', date=date_str)
             print(f"   ✓ Saved {len(csv_rows)} articles to {csv_path}")
-            logger.add_info('output_file', str(csv_path))
         else:
-            print(f"   ⚠ No articles to save")
-            logger.warning("No articles fetched")
+            print(f"   ✓ Saved empty CSV (0 articles) to {csv_path}")
+            logger.warning("No articles fetched - empty CSV created for downstream processes")
+        logger.add_info('output_file', str(csv_path))
 
         logger.success()
 

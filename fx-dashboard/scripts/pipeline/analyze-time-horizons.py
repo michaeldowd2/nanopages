@@ -210,8 +210,12 @@ def main(date_str=None):
 
         if not articles:
             print(f"   ⚠ No articles to analyze")
-            logger.warning("No articles found")
-            logger.fail()
+            print(f"\n2. Saving empty CSV...")
+            # Create empty CSV file for downstream processes
+            csv_path = write_csv([], 'process_4_horizons', date=date_str)
+            print(f"   ✓ Saved empty CSV (0 analyses) to {csv_path}")
+            logger.warning("No articles found - empty CSV created")
+            logger.success()
             return
 
         # Analyze each article

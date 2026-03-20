@@ -184,7 +184,11 @@ def calculate_index_movement(currency, start_date_str, end_date_str, indices):
     """
     Calculate currency index movement from start_date to end_date
 
-    Returns: dict with start_index, end_index, start_30d_max_diff, actual_diff
+    Now tracks min/max index values throughout the period to determine
+    if the signal was realized at any point (not just at end_date).
+
+    Returns: dict with start_index, end_index, start_30d_max_diff, actual_diff,
+                    min_index, max_index, greatest_positive_travel, greatest_negative_travel
     """
     start_key = (currency, start_date_str)
     end_key = (currency, end_date_str)
@@ -199,34 +203,69 @@ def calculate_index_movement(currency, start_date_str, end_date_str, indices):
     end_index = end_data['index']
     start_30d_max_diff = start_data['30d_max_diff']
 
-    # Calculate simple difference (not percentage)
+    # Calculate actual_diff (current approach)
     actual_diff = end_index - start_index
+
+    # NEW: Find min and max index values between start_date and end_date
+    # This allows us to check if signal was realized at ANY point, not just currently
+    from datetime import datetime, timedelta
+
+    start_dt = datetime.fromisoformat(start_date_str)
+    end_dt = datetime.fromisoformat(end_date_str)
+
+    min_index = start_index
+    max_index = start_index
+
+    # Iterate through all dates in the range
+    current_dt = start_dt
+    while current_dt <= end_dt:
+        current_date_str = current_dt.strftime('%Y-%m-%d')
+        current_key = (currency, current_date_str)
+
+        if current_key in indices:
+            current_index = indices[current_key]['index']
+            min_index = min(min_index, current_index)
+            max_index = max(max_index, current_index)
+
+        current_dt += timedelta(days=1)
+
+    # Calculate greatest positive and negative travel from start_index
+    greatest_positive_travel = max_index - start_index
+    greatest_negative_travel = min_index - start_index  # Will be negative if index fell
 
     return {
         'start_index': round(start_index, 4),
         'end_index': round(end_index, 4),
         'start_30d_max_diff': round(start_30d_max_diff, 4),
-        'actual_diff': round(actual_diff, 4)
+        'actual_diff': round(actual_diff, 4),
+        'min_index': round(min_index, 4),
+        'max_index': round(max_index, 4),
+        'greatest_positive_travel': round(greatest_positive_travel, 4),
+        'greatest_negative_travel': round(greatest_negative_travel, 4)
     }
 
 
-def check_realization(estimated_diff, actual_diff):
+def check_realization(estimated_diff, greatest_positive_travel, greatest_negative_travel):
     """
-    Determine if a signal has been realized based on estimated vs actual movement
+    Determine if a signal has been realized at ANY point since article publication
+
+    NEW LOGIC: Check if the index traveled the estimated distance at any point,
+    not just if it's currently at that level.
 
     Returns: bool
 
     Logic:
-    - If estimated_diff is negative: realized if actual_diff < estimated_diff (more negative)
-    - If estimated_diff is positive: realized if actual_diff > estimated_diff (more positive)
-    - If estimated_diff is zero: not realized
+    - If estimated_diff > 0 (bullish): realized if greatest_positive_travel >= estimated_diff
+    - If estimated_diff < 0 (bearish): realized if greatest_negative_travel <= estimated_diff
+    - If estimated_diff = 0: not realized
     """
-    if estimated_diff < 0:
-        # Bearish signal - realized if actual movement is more negative than estimated
-        return actual_diff < estimated_diff
-    elif estimated_diff > 0:
-        # Bullish signal - realized if actual movement is more positive than estimated
-        return actual_diff > estimated_diff
+    if estimated_diff > 0:
+        # Bullish signal - realized if index traveled at least estimated_diff upward at any point
+        return greatest_positive_travel >= estimated_diff
+    elif estimated_diff < 0:
+        # Bearish signal - realized if index traveled at least |estimated_diff| downward at any point
+        # Note: both estimated_diff and greatest_negative_travel are negative for bearish moves
+        return greatest_negative_travel <= estimated_diff
     else:
         # Zero signal - not realized
         return False
@@ -305,8 +344,12 @@ def main(date_str=None):
             # Calculate estimated_diff = signal × start_30d_max_diff
             estimated_diff = round(signal['signal'] * movement['start_30d_max_diff'], 4)
 
-            # Check realization
-            realized = check_realization(estimated_diff, movement['actual_diff'])
+            # Check realization using new logic (checks if realized at ANY point)
+            realized = check_realization(
+                estimated_diff,
+                movement['greatest_positive_travel'],
+                movement['greatest_negative_travel']
+            )
 
             # Build CSV row (signal includes horizon data from Process 5)
             # Column order: date, article_id, currency, article_download_date, estimator_id, generator_id, event_id, ...
@@ -323,8 +366,12 @@ def main(date_str=None):
                 'start_30d_max_diff': movement['start_30d_max_diff'],
                 'estimated_diff': estimated_diff,
                 'start_index': movement['start_index'],
+                'min_index': movement['min_index'],  # NEW
+                'max_index': movement['max_index'],  # NEW
                 'index': movement['end_index'],
                 'actual_diff': movement['actual_diff'],
+                'greatest_positive_travel': movement['greatest_positive_travel'],  # NEW
+                'greatest_negative_travel': movement['greatest_negative_travel'],  # NEW
                 'realized': realized
             })
 

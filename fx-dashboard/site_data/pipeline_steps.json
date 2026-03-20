@@ -390,6 +390,16 @@
             "description": "Currency index at signal generation"
           },
           {
+            "name": "min_index",
+            "type": "float",
+            "description": "Minimum index value reached since signal generation"
+          },
+          {
+            "name": "max_index",
+            "type": "float",
+            "description": "Maximum index value reached since signal generation"
+          },
+          {
             "name": "index",
             "type": "float",
             "description": "Currency index at realization check date"
@@ -400,9 +410,19 @@
             "description": "Actual index change (index - start_index)"
           },
           {
+            "name": "greatest_positive_travel",
+            "type": "float",
+            "description": "Greatest upward movement from start_index (max_index - start_index)"
+          },
+          {
+            "name": "greatest_negative_travel",
+            "type": "float",
+            "description": "Greatest downward movement from start_index (min_index - start_index, negative value)"
+          },
+          {
             "name": "realized",
             "type": "boolean",
-            "description": "Whether signal was realized (actual movement exceeded estimated movement in predicted direction)"
+            "description": "Whether signal was realized at any point (index traveled estimated distance in predicted direction)"
           }
         ]
       },
