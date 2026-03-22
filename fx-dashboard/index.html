@@ -849,9 +849,9 @@
         'step6': 'site_data/step6_realization.csv',
         'step7': 'site_data/step7_aggregated_signals.csv',
         'step8': 'site_data/step8_trades.csv',
-        'step8.1': 'site_data/step8.1_executed_trades.csv',
-        'step9': 'site_data/step9_portfolios.csv',
-        'step10': 'site_data/step10_valuations.csv'
+        'step9': 'site_data/step9_executed_trades.csv',
+        'step10': 'site_data/step10_portfolios.csv',
+        'step11': 'site_data/step11_valuations.csv'
       }[step];
 
       fetch(csvFile)
@@ -1011,8 +1011,8 @@
                 else if (step === 'step7' && h === 'penalty_factor') {
                   className = 'neutral';
                 }
-                // Step 10: Format numeric columns to 2 decimals and color avg_pct_change
-                else if (step === 'step10') {
+                // Step 11: Format numeric columns to 2 decimals and color avg_pct_change
+                else if (step === 'step11') {
                   const numValue = parseFloat(value);
                   if (!isNaN(numValue)) {
                     // Format all numeric columns to 2 decimal places
@@ -1032,7 +1032,7 @@
           }
 
           loading.style.display = 'none';
-          if (step !== 'step8.1') {
+          if (step !== 'step9') {
             table.style.display = 'table';
           }
           loadedCSVs[step] = true;
@@ -1048,8 +1048,8 @@
             populateCurrencyFilter(step, rows);
           }
 
-          // Populate strategy filter for steps 8.1, 9, and 10
-          if (step === 'step8.1' || step === 'step9' || step === 'step10') {
+          // Populate strategy filter for steps 9, 10, and 11
+          if (step === 'step9' || step === 'step10' || step === 'step11') {
             populateStrategyFilter(step, rows);
           }
 
@@ -1064,8 +1064,8 @@
             initializeStep7Chart(rows);
             populateDateFilter('step7', rows);
             populateCurrencyFilterForStep7Table(rows);
-          } else if (step === 'step10' && rows.length > 0) {
-            // Re-populate filters for step10 to ensure they're populated after dynamic content is inserted
+          } else if (step === 'step11' && rows.length > 0) {
+            // Re-populate filters for step11 to ensure they're populated after dynamic content is inserted
             populateDateFilter(step, rows);
             populateStrategyFilter(step, rows);
             renderPortfolioHeatmap(rows, 'value');
@@ -2478,7 +2478,7 @@
 
       // Generate content divs for each step
       Object.keys(config.steps)
-        .filter(id => id !== '11')  // Skip deployment step
+        .filter(id => id !== '12')  // Skip deployment step if it exists
         .sort((a, b) => {
           // Parse step IDs (handle both '4' and '4.1')
           const parseStepId = (id) => parseFloat(id);
@@ -2509,7 +2509,7 @@
                     <option value="">All Currencies</option>
                   </select>
                   ` : ''}
-                  ${stepId === '8.1' || stepId === '10' ? `
+                  ${stepId === '9' || stepId === '10' || stepId === '11' ? `
                   <label for="step${stepId}-strategy-filter" style="color:#ccc; font-size:0.9em; margin-left:15px;">Portfolio:</label>
                   <select id="step${stepId}-strategy-filter" style="background:#1a1a1a; color:#00ff41; border:1px solid #333; padding:5px; margin-left:5px; font-size:0.9em; border-radius:4px;">
                     <option value="">All Portfolios</option>
@@ -2518,7 +2518,7 @@
                 </div>
                 ` : ''}
 
-                ${stepId === '10' ? generateValuationContent(stepId) : (stepId === '9' ? generatePortfolioContent(stepId) : (stepId === '8.1' ? generateTradeCardsContent(stepId) : generateTableContent(stepId)))}
+                ${stepId === '11' ? generateValuationContent(stepId) : (stepId === '10' ? generatePortfolioContent(stepId) : (stepId === '9' ? generateTradeCardsContent(stepId) : generateTableContent(stepId)))}
               </div>
             </div>
           `;

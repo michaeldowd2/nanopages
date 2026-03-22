@@ -128,9 +128,9 @@ def get_step_filename(step_id):
         '6': 'realization',
         '7': 'aggregated_signals',
         '8': 'trades',
-        '8.1': 'executed_trades',
-        '9': 'portfolios',
-        '10': 'valuations'
+        '9': 'executed_trades',
+        '10': 'portfolios',
+        '11': 'valuations'
     }
     return filenames.get(step_id, 'data')
 
@@ -285,7 +285,7 @@ def main():
     step1_dates = steps.get('1', {}).get('number_of_export_dates', 30)
     total += export_step1_exchange_rates(number_of_dates=step1_dates)
 
-    # Steps 2-10: Use generic export (config-driven)
+    # Steps 2-11: Use generic export (config-driven)
     exportable_steps = {
         '2': 'index records',
         '3': 'news articles',
@@ -294,9 +294,9 @@ def main():
         '6': 'realization checks',
         '7': 'aggregated signal records',
         '8': 'trade records',
-        '8.1': 'executed trade records',
-        '9': 'strategy records',
-        '10': 'valuation records'
+        '9': 'executed trade records',
+        '10': 'strategy records',
+        '11': 'valuation records'
     }
 
     for step_id, description in exportable_steps.items():
