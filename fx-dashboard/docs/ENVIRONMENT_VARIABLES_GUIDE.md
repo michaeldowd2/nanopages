@@ -124,7 +124,10 @@ These scripts don't currently use API keys:
 - `calculate-currency-indices.py` - Pure calculation
 - `generate-sentiment-signals.py` - Keyword-based (no API)
 - `check-signal-realization.py` - Pure calculation
-- `execute-strategies.py` - Pure logic
+- `calculate-trades.py` - Pure logic
+- `execute-trades.py` - Pure calculation
+- `calculate-account-balances.py` - Pure logic
+- `calculate-portfolio-performance.py` - Pure calculation
 - `export-pipeline-data.py` - File processing only
 
 ### 🔮 Future Integration Candidates

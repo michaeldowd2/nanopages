@@ -91,8 +91,10 @@ fx-portfolio/
 │   ├── generate-sentiment-signals-v2.py # Step 5
 │   ├── check-signal-realization.py # Step 6
 │   ├── aggregate-signals.py    # Step 7
-│   ├── calculate-trades-step8.py # Step 8
-│   ├── execute-strategies-step9.py # Step 9
+│   ├── calculate-trades.py     # Step 8
+│   ├── execute-trades.py       # Step 9
+│   ├── calculate-account-balances.py # Step 10
+│   ├── calculate-portfolio-performance.py # Step 11
 │   ├── export-pipeline-data.py # Export to site_data
 │   ├── env_loader.py           # Environment variables
 │   ├── config_loader.py        # Config helpers
@@ -105,8 +107,10 @@ fx-portfolio/
 │   ├── signals/                # Sentiment signals
 │   ├── signal-realization/     # Realization checks
 │   ├── aggregated-signals/     # Aggregated signals
-│   ├── trades/                 # Trade recommendations
-│   ├── portfolios/             # Portfolio state
+│   ├── trades/                 # Trade recommendations (Step 8)
+│   ├── executed-trades/        # Executed trades with amounts (Step 9)
+│   ├── portfolios/             # Portfolio account balances (Step 10)
+│   ├── valuations/             # Portfolio performance (Step 11)
 │   └── logs/                   # Pipeline logs
 ├── site_data/                  # Dashboard exports
 ├── skills/                     # Automation skills
