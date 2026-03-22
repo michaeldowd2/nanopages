@@ -730,6 +730,7 @@
       } else if (step === 'step9') {
         // Render cards for step 9 (executed trades)
         const cardsContainer = document.getElementById(`${step}-cards`);
+        if (!cardsContainer) return;
         cardsContainer.innerHTML = filteredRows.map(trade => {
           const tradeSignalClass = parseFloat(trade.trade_signal) > 0 ? 'bullish' : 'bearish';
           const tradeSignalColor = parseFloat(trade.trade_signal) > 0 ? '#00ff41' : '#ff4444';
@@ -912,6 +913,7 @@
           } else if (step === 'step9') {
             // Special card rendering for step 9 (executed trades)
             const cardsContainer = document.getElementById(`${step}-cards`);
+            if (!cardsContainer) return;
             cardsContainer.innerHTML = rows.map(trade => {
               const tradeSignalClass = parseFloat(trade.trade_signal) > 0 ? 'bullish' : 'bearish';
               const tradeSignalColor = parseFloat(trade.trade_signal) > 0 ? '#00ff41' : '#ff4444';
