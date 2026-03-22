@@ -2427,7 +2427,7 @@
 
           // Load data for all steps
           Object.keys(config.steps).forEach(stepId => {
-            if (stepId !== '11') {  // Skip deployment step
+            if (stepId !== '12') {  // Skip deployment step
               loadCSV(`step${stepId}`);
             }
           });
@@ -2453,7 +2453,7 @@
 
       // Generate step tabs
       const stepTabs = Object.keys(config.steps)
-        .filter(id => id !== '11')  // Skip deployment step
+        .filter(id => id !== '12')  // Skip deployment step
         .sort((a, b) => {
           // Parse step IDs (handle both '4' and '4.1')
           const parseStepId = (id) => {
@@ -2539,9 +2539,9 @@
         '6': 'realization',
         '7': 'aggregated_signals',
         '8': 'trades',
-        '8.1': 'executed_trades',
-        '9': 'strategies',
-        '10': 'valuations'
+        '9': 'executed_trades',
+        '10': 'portfolios',
+        '11': 'valuations'
       };
       return filenames[stepId] || 'data';
     }
