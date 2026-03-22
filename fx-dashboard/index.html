@@ -2498,7 +2498,7 @@
                 <h2>Step ${stepId}: ${step.name} <a href="site_data/step${stepId}_${getDefaultFilename(stepId)}.csv" class="csv-download" download>CSV</a></h2>
                 <p class="step-header">${step.description}</p>
 
-                ${step.supports_date_filter && stepId !== '9' && stepId !== '7' ? `
+                ${step.supports_date_filter && stepId !== '7' ? `
                 <!-- Date Filter -->
                 <div style="margin:15px 0;">
                   <label for="step${stepId}-date-filter" style="color:#ccc; font-size:0.9em;">Date:</label>
