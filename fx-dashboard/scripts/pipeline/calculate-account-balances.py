@@ -323,12 +323,50 @@ def main(date_str=None):
         print(f"   ✓ Saved {len(results)} portfolio states to {csv_path}")
         logger.add_info('output_file', str(csv_path))
 
+        # Validation checks
+        print(f"\n5. Running validation checks...")
+        validation_warnings = []
+
+        if total_trades_applied > 0:
+            # Check if balances changed from previous day
+            if prev_date:
+                prev_portfolios = {}
+                try:
+                    prev_rows = read_csv('process_10_portfolio', date=prev_date, validate=False)
+                    for row in prev_rows:
+                        prev_portfolios[row['strategy_id']] = {curr: float(row[curr]) for curr in CURRENCIES}
+                except:
+                    pass  # Previous day might not exist
+
+                if prev_portfolios:
+                    unchanged_count = 0
+                    for result in results:
+                        strategy_id = result['strategy_id']
+                        if strategy_id in prev_portfolios:
+                            prev = prev_portfolios[strategy_id]
+                            current = {curr: result[curr] for curr in CURRENCIES}
+                            # Check if all balances are identical
+                            if all(abs(prev[curr] - current[curr]) < 0.0001 for curr in CURRENCIES):
+                                unchanged_count += 1
+
+                    if unchanged_count > 0:
+                        warning = f"⚠️  WARNING: {unchanged_count} portfolios have identical balances to previous day despite {total_trades_applied} trades executed"
+                        print(f"   {warning}")
+                        validation_warnings.append(warning)
+                        logger.add_info('validation_warning', warning)
+                    else:
+                        print(f"   ✓ All portfolio balances changed from previous day")
+
         # Summary
         print(f"\n{'='*60}")
         print(f"✓ Account Balance Calculation Complete")
         print(f"{'='*60}")
         print(f"  Strategies processed: {len(results)}")
         print(f"  Total trades applied: {total_trades_applied}")
+        if validation_warnings:
+            print(f"\n  Validation Warnings: {len(validation_warnings)}")
+            for warning in validation_warnings:
+                print(f"    - {warning}")
 
         logger.success()
 

@@ -111,7 +111,7 @@ def load_previous_valuations(date_str):
             check_date_str = check_date.strftime('%Y-%m-%d')
 
             try:
-                prev_rows = read_csv('process_10_valuations', date=check_date_str, validate=False)
+                prev_rows = read_csv('process_11_valuations', date=check_date_str, validate=False)
                 # Build lookup: {strategy_id: {currency_value: value, value: cumulative_value}}
                 prev_vals = {}
                 for row in prev_rows:
@@ -243,6 +243,44 @@ def main():
     output_file = write_csv(output_rows, '11', date=date_str, validate=False)
     print(f"   ✓ Wrote {len(output_rows)} records to {output_file}")
 
+    # Validation checks
+    print("\n6. Running validation checks...")
+    validation_warnings = []
+
+    # Check if performance metrics reset to zero when they shouldn't
+    if prev_valuations:
+        zero_performance_count = 0
+        for row in output_rows:
+            if row['avg_pct_change'] == 0.0 and row['value'] == 1.0:
+                zero_performance_count += 1
+
+        if zero_performance_count > 0:
+            warning = f"⚠️  WARNING: {zero_performance_count} strategies have performance metrics reset to zero (0% change, value=1.0) despite previous data existing"
+            print(f"   {warning}")
+            validation_warnings.append(warning)
+        else:
+            print(f"   ✓ Performance metrics correctly calculated from previous day")
+    else:
+        print(f"   ℹ️  First day of tracking - performance metrics initialized to baseline")
+
+    # Check that values are actually different from previous day
+    if prev_valuations:
+        unchanged_count = 0
+        for row in output_rows:
+            strategy_id = row['strategy_id']
+            if strategy_id in prev_valuations:
+                prev = prev_valuations[strategy_id]
+                # Check if EUR value is identical
+                if abs(row['eur_value'] - prev['eur_value']) < 0.01:
+                    unchanged_count += 1
+
+        if unchanged_count > 0:
+            warning = f"⚠️  WARNING: {unchanged_count} portfolios have nearly identical EUR values to previous day"
+            print(f"   {warning}")
+            validation_warnings.append(warning)
+        else:
+            print(f"   ✓ Portfolio values changed from previous day")
+
     # Display summary
     print("\n" + "=" * 60)
     print("Summary")
@@ -265,6 +303,11 @@ def main():
 
         print(f"\nAverage % Change (Currency-Neutral): {sample['avg_pct_change']:+.2f}%")
         print(f"Cumulative Value (Performance Index): {sample['value']:.6f}")
+
+    if validation_warnings:
+        print(f"\nValidation Warnings: {len(validation_warnings)}")
+        for warning in validation_warnings:
+            print(f"  - {warning}")
 
     print("\n" + "=" * 60)
     print("✓ Portfolio valuation complete")
