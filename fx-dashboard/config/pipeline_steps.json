@@ -556,11 +556,11 @@
       "is_safe_to_clear": true,
       "number_of_export_dates": 30
     },
-    "8.1": {
-      "id": "8.1",
-      "name": "Executed Trades",
-      "script": "scripts/pipeline/extract-executed-trades.py",
-      "description": "Extract actual executed trades with real currency amounts for each portfolio configuration",
+    "9": {
+      "id": "9",
+      "name": "Execute Trades",
+      "script": "scripts/pipeline/execute-trades.py",
+      "description": "Execute trades with exact amounts calculated",
       "depends_on": [
         "1",
         "8"
@@ -573,17 +573,17 @@
       "output_path": "data/executed-trades/{date}.csv",
       "output_pattern": "data/executed-trades/*.csv",
       "output_schema": {
-        "description": "Actual executed trades with full transaction details per portfolio configuration",
+        "description": "Executed trades with exact amounts calculated",
         "columns": [
           {
             "name": "date",
             "type": "string",
-            "description": "Trade execution date YYYY-MM-DD"
+            "description": "Trading date YYYY-MM-DD"
           },
           {
             "name": "strategy_id",
             "type": "string",
-            "description": "Portfolio identifier"
+            "description": "Strategy identifier"
           },
           {
             "name": "trader_id",
@@ -639,21 +639,21 @@
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true,
-      "note": "This step runs in parallel to Step 9 - it does not feed into Step 9 but mirrors its trade execution logic to show actual amounts",
+      "note": "Definitive trade execution with exact amounts - feeds into Process 10",
       "number_of_export_dates": 30
     },
-    "9": {
-      "id": "9",
-      "name": "Execute Portfolios",
-      "script": "scripts/pipeline/execute-strategies.py",
-      "description": "Execute trades on portfolios and track values",
+    "10": {
+      "id": "10",
+      "name": "Account Balances",
+      "script": "scripts/pipeline/calculate-account-balances.py",
+      "description": "Update account balances from executed trades",
       "depends_on": [
         "1",
-        "8"
+        "9"
       ],
       "inputs": [
         "data/prices/{date}.csv",
-        "data/trades/{date}.csv",
+        "data/executed-trades/{date}.csv",
         "data/portfolios/{prev_date}.csv"
       ],
       "output_path": "data/portfolios/{date}.csv",
@@ -743,14 +743,14 @@
       "warning": "Portfolio state is cumulative - clearing resets all portfolio history!",
       "number_of_export_dates": 30
     },
-    "10": {
-      "id": "10",
-      "name": "Portfolio Valuations",
-      "script": "scripts/pipeline/calculate-portfolio-valuations.py",
+    "11": {
+      "id": "11",
+      "name": "Portfolio Performance",
+      "script": "scripts/pipeline/calculate-portfolio-performance.py",
       "description": "Calculate multi-currency portfolio valuations and currency-neutral performance metrics",
       "depends_on": [
         "1",
-        "9"
+        "10"
       ],
       "inputs": [
         "data/prices/{date}.csv",
@@ -760,7 +760,7 @@
       "output_path": "data/valuations/{date}.csv",
       "output_pattern": "data/valuations/*.csv",
       "output_schema": {
-        "description": "Portfolio values in all currencies with percentage changes",
+        "description": "Portfolio valuations in all currencies with performance metrics",
         "columns": [
           {
             "name": "date",
@@ -830,109 +830,72 @@
           {
             "name": "eur_pct_change",
             "type": "float",
-            "description": "% change in EUR value from previous day"
+            "description": "EUR value % change from previous day"
           },
           {
             "name": "usd_pct_change",
             "type": "float",
-            "description": "% change in USD value from previous day"
+            "description": "USD value % change from previous day"
           },
           {
             "name": "gbp_pct_change",
             "type": "float",
-            "description": "% change in GBP value from previous day"
+            "description": "GBP value % change from previous day"
           },
           {
             "name": "jpy_pct_change",
             "type": "float",
-            "description": "% change in JPY value from previous day"
+            "description": "JPY value % change from previous day"
           },
           {
             "name": "chf_pct_change",
             "type": "float",
-            "description": "% change in CHF value from previous day"
+            "description": "CHF value % change from previous day"
           },
           {
             "name": "aud_pct_change",
             "type": "float",
-            "description": "% change in AUD value from previous day"
+            "description": "AUD value % change from previous day"
           },
           {
             "name": "cad_pct_change",
             "type": "float",
-            "description": "% change in CAD value from previous day"
+            "description": "CAD value % change from previous day"
           },
           {
             "name": "nok_pct_change",
             "type": "float",
-            "description": "% change in NOK value from previous day"
+            "description": "NOK value % change from previous day"
           },
           {
             "name": "sek_pct_change",
             "type": "float",
-            "description": "% change in SEK value from previous day"
+            "description": "SEK value % change from previous day"
           },
           {
             "name": "cny_pct_change",
             "type": "float",
-            "description": "% change in CNY value from previous day"
+            "description": "CNY value % change from previous day"
           },
           {
             "name": "mxn_pct_change",
             "type": "float",
-            "description": "% change in MXN value from previous day"
+            "description": "MXN value % change from previous day"
           },
           {
             "name": "avg_pct_change",
             "type": "float",
-            "description": "Average % change across all 11 currencies (currency-neutral performance)"
+            "description": "Average % change across all currencies (currency-neutral performance)"
           },
           {
             "name": "value",
             "type": "float",
-            "description": "Cumulative performance index (starts at 1.0, compounds avg_pct_change daily)"
+            "description": "Cumulative performance index (starts at 1.0)"
           }
         ]
       },
       "supports_date_filter": true,
       "is_safe_to_clear": true,
-      "note": "Multi-currency valuation reduces EUR-centric bias in performance measurement",
-      "number_of_export_dates": 30
-    },
-    "11": {
-      "id": "11",
-      "name": "Dashboard Deployment",
-      "script": "scripts/deployment/export-pipeline-data.py",
-      "description": "Export pipeline data to site_data for dashboard",
-      "depends_on": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10"
-      ],
-      "inputs": [
-        "data/prices/*.csv",
-        "data/indices/*.csv",
-        "data/news/*.csv",
-        "data/article-analysis/*.csv",
-        "data/signals/*.csv",
-        "data/signal-realization/*.csv",
-        "data/aggregated-signals/*.csv",
-        "data/trades/*.csv",
-        "data/portfolios/*.csv",
-        "data/valuations/*.csv"
-      ],
-      "output_path": "site_data/",
-      "output_pattern": "site_data/step*.csv",
-      "supports_date_filter": false,
-      "is_safe_to_clear": false,
-      "note": "Exports last 30 days of each process to dashboard format",
       "number_of_export_dates": 30
     }
   },

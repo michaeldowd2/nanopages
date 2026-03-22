@@ -17,6 +17,13 @@ from datetime import datetime, timedelta
 BASE_DIR = Path(__file__).parent.parent.parent
 CONFIG_PATH = BASE_DIR / "config" / "pipeline_steps.json"
 
+# Legacy process name mappings (for backward compatibility)
+LEGACY_NAME_MAP = {
+    'process_9_executed_trades': '9',
+    'process_10_portfolio': '10',
+    'process_11_valuations': '11',
+}
+
 
 def load_schema(process_name: str) -> Dict:
     """
@@ -31,8 +38,11 @@ def load_schema(process_name: str) -> Dict:
     with open(CONFIG_PATH, 'r') as f:
         config = json.load(f)
 
+    # Check legacy name mappings first
+    if process_name in LEGACY_NAME_MAP:
+        process_id = LEGACY_NAME_MAP[process_name]
     # Support both new process ID format and legacy schema names
-    if process_name.startswith('process_'):
+    elif process_name.startswith('process_'):
         # Legacy format: convert 'process_1_exchange_rates' to '1'
         process_id = process_name.split('_')[1]
     else:
