@@ -2035,9 +2035,9 @@
           // Build dependency graph visualization
           let html = '<div style="font-family:monospace; font-size:0.85em; line-height:1.8;">';
 
-          // Sort steps by ID (handle decimal step IDs like 4.1 and 8.1)
+          // Sort steps by ID (handle decimal step IDs like 4.1)
           const sortedSteps = Object.keys(steps)
-            .filter(id => id !== '11')  // Exclude deployment step
+            .filter(id => id !== '12')  // Exclude deployment step
             .sort((a, b) => {
               const parseStepId = (id) => parseFloat(id);
               return parseStepId(a) - parseStepId(b);
@@ -2078,10 +2078,10 @@
 
             // Show outputs
             const outputs = [];
-            if (step.outputs.source && step.outputs.source.length > 0) {
+            if (step.outputs && step.outputs.source && step.outputs.source.length > 0) {
               outputs.push('Source: ' + step.outputs.source.join(', '));
             }
-            if (step.outputs.exports && step.outputs.exports.length > 0) {
+            if (step.outputs && step.outputs.exports && step.outputs.exports.length > 0) {
               outputs.push('Exports: ' + step.outputs.exports.join(', '));
             }
             if (outputs.length > 0) {
