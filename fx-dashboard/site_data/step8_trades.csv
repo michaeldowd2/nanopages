@@ -577,6 +577,16 @@ date,trader_id,buy_currency,sell_currency,buy_signal,sell_signal,trade_signal
 2026-03-22,combinator-standard,CNY,JPY,0.0227,-0.2616,0.1422
 2026-03-22,combinator-standard,CHF,JPY,0.0187,-0.2616,0.1401
 2026-03-22,combinator-standard,CAD,JPY,0.0178,-0.2616,0.1397
+2026-03-23,combinator-standard,NOK,JPY,0.35,-0.2616,0.3058
+2026-03-23,combinator-standard,MXN,JPY,0.2019,-0.2616,0.2317
+2026-03-23,combinator-standard,AUD,JPY,0.1648,-0.2616,0.2132
+2026-03-23,combinator-standard,USD,JPY,0.1505,-0.2616,0.2061
+2026-03-23,combinator-standard,EUR,JPY,0.1375,-0.2616,0.1995
+2026-03-23,combinator-standard,GBP,JPY,0.0643,-0.2616,0.1629
+2026-03-23,combinator-standard,SEK,JPY,0.0304,-0.2616,0.146
+2026-03-23,combinator-standard,CNY,JPY,0.0227,-0.2616,0.1422
+2026-03-23,combinator-standard,CHF,JPY,0.0187,-0.2616,0.1401
+2026-03-23,combinator-standard,CAD,JPY,0.0178,-0.2616,0.1397
 2026-03-07,combinator-standard,CAD,EUR,0.4319,-0.2158,0.3238
 2026-03-07,combinator-standard,CAD,CHF,0.4319,-0.1705,0.3012
 2026-03-07,combinator-standard,CAD,MXN,0.4319,-0.155,0.2934
