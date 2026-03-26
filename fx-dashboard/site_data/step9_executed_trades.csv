@@ -1551,3 +1551,7 @@ date,strategy_id,trader_id,sell_currency,buy_currency,sell_amount,buy_amount,exc
 2026-03-25,momentum-T6-size50,combinator-standard,SEK,GBP,0.3129,0.0248,0.079998,0.0074,0.03,0.0,0.1416
 2026-03-25,momentum-T6-size50,combinator-standard,SEK,MXN,0.2339,0.4416,1.902233,0.0074,0.02,0.0,0.1139
 2026-03-25,momentum-T6-size50,combinator-standard,JPY,USD,5.7351,0.0358,0.006297,0.0074,0.03,0.0,0.1113
+2026-03-25,haiku-T1-size5,haiku-only,JPY,GBP,213.9115,0.9973,0.004697,0.0074,1.16,0.01,0.2321
+2026-03-25,haiku-T1-size10,haiku-only,JPY,GBP,427.823,1.9946,0.004697,0.0074,2.32,0.02,0.2321
+2026-03-25,haiku-T1-size20,haiku-only,JPY,GBP,855.6459,3.9892,0.004697,0.0074,4.64,0.03,0.2321
+2026-03-25,haiku-T1-size50,haiku-only,JPY,GBP,2139.1148,9.9731,0.004697,0.0074,11.61,0.09,0.2321

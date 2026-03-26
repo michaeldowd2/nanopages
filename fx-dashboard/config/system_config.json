@@ -64,6 +64,20 @@
         "llm-sentiment-v1-haiku": 1.0
       },
       "description": "Generates all combinations of bullish/bearish currency pairs"
+    },
+    "haiku-only": {
+      "id": "haiku-only",
+      "type": "combinator",
+      "estimator_ids": [
+        "llm-horizon-v1-default"
+      ],
+      "generator_ids": [
+        "llm-sentiment-v1-haiku"
+      ],
+      "generator_weights": {
+        "llm-sentiment-v1-haiku": 1.0
+      },
+      "description": "Uses only LLM (Haiku) sentiment signals, no keyword mixing"
     }
   },
   "strategies": {
@@ -242,6 +256,50 @@
         "trade_size_pct": 0.5
       },
       "description": "Top 6 trades, confidence >10%, aggressive size (50% max)"
+    },
+    "haiku-T1-size5": {
+      "id": "haiku-T1-size5",
+      "type": "simple-momentum",
+      "params": {
+        "trader_id": "haiku-only",
+        "confidence_threshold": 0.1,
+        "target_trades": 1,
+        "trade_size_pct": 0.05
+      },
+      "description": "Haiku-only: Top 1 trade, confidence >10%, ultra-conservative size (5% max)"
+    },
+    "haiku-T1-size10": {
+      "id": "haiku-T1-size10",
+      "type": "simple-momentum",
+      "params": {
+        "trader_id": "haiku-only",
+        "confidence_threshold": 0.1,
+        "target_trades": 1,
+        "trade_size_pct": 0.1
+      },
+      "description": "Haiku-only: Top 1 trade, confidence >10%, conservative size (10% max)"
+    },
+    "haiku-T1-size20": {
+      "id": "haiku-T1-size20",
+      "type": "simple-momentum",
+      "params": {
+        "trader_id": "haiku-only",
+        "confidence_threshold": 0.1,
+        "target_trades": 1,
+        "trade_size_pct": 0.2
+      },
+      "description": "Haiku-only: Top 1 trade, confidence >10%, moderate size (20% max)"
+    },
+    "haiku-T1-size50": {
+      "id": "haiku-T1-size50",
+      "type": "simple-momentum",
+      "params": {
+        "trader_id": "haiku-only",
+        "confidence_threshold": 0.1,
+        "target_trades": 1,
+        "trade_size_pct": 0.5
+      },
+      "description": "Haiku-only: Top 1 trade, confidence >10%, aggressive size (50% max)"
     }
   },
   "pipeline_settings": {
