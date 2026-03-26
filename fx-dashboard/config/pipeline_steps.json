@@ -750,10 +750,12 @@
       "description": "Calculate multi-currency portfolio valuations and currency-neutral performance metrics",
       "depends_on": [
         "1",
+        "7",
         "10"
       ],
       "inputs": [
         "data/prices/{date}.csv",
+        "data/aggregated-signals/{date}.csv",
         "data/portfolios/{date}.csv",
         "data/valuations/{prev_date}.csv"
       ],
@@ -891,6 +893,61 @@
             "name": "value",
             "type": "float",
             "description": "Cumulative performance index (starts at 1.0)"
+          },
+          {
+            "name": "eur_signal",
+            "type": "float",
+            "description": "Weighted average signal for EUR"
+          },
+          {
+            "name": "usd_signal",
+            "type": "float",
+            "description": "Weighted average signal for USD"
+          },
+          {
+            "name": "gbp_signal",
+            "type": "float",
+            "description": "Weighted average signal for GBP"
+          },
+          {
+            "name": "jpy_signal",
+            "type": "float",
+            "description": "Weighted average signal for JPY"
+          },
+          {
+            "name": "chf_signal",
+            "type": "float",
+            "description": "Weighted average signal for CHF"
+          },
+          {
+            "name": "aud_signal",
+            "type": "float",
+            "description": "Weighted average signal for AUD"
+          },
+          {
+            "name": "cad_signal",
+            "type": "float",
+            "description": "Weighted average signal for CAD"
+          },
+          {
+            "name": "nok_signal",
+            "type": "float",
+            "description": "Weighted average signal for NOK"
+          },
+          {
+            "name": "sek_signal",
+            "type": "float",
+            "description": "Weighted average signal for SEK"
+          },
+          {
+            "name": "cny_signal",
+            "type": "float",
+            "description": "Weighted average signal for CNY"
+          },
+          {
+            "name": "mxn_signal",
+            "type": "float",
+            "description": "Weighted average signal for MXN"
           }
         ]
       },

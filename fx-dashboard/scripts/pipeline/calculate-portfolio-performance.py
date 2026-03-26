@@ -8,16 +8,18 @@ the percentage changes, we reduce the EUR-centric bias in performance measuremen
 
 Input:
 - data/prices/{date}.csv - Exchange rates for the date
+- data/aggregated-signals/{date}.csv - Aggregated signals from Process 7
 - data/portfolios/{date}.csv - Portfolio balances from Process 10
 - data/valuations/{prev_date}.csv - Previous day's valuations (for % change)
 
 Output:
-- data/valuations/{date}.csv - Portfolio values and % changes in all currencies
+- data/valuations/{date}.csv - Portfolio values, % changes, and weighted signals in all currencies
 """
 
 import sys
 import csv
 import os
+import json
 from pathlib import Path
 from datetime import datetime, timedelta
 import argparse
@@ -29,6 +31,83 @@ sys.path.insert(0, str(project_root / 'scripts'))
 from utilities.csv_helper import read_csv, write_csv
 
 CURRENCIES = ['EUR', 'USD', 'GBP', 'JPY', 'CHF', 'AUD', 'CAD', 'NOK', 'SEK', 'CNY', 'MXN']
+
+
+def load_system_config():
+    """Load system configuration including strategy definitions."""
+    config_path = project_root / 'config' / 'system_config.json'
+    try:
+        with open(config_path, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"❌ Failed to load system config: {e}")
+        return None
+
+
+def load_aggregated_signals(date_str):
+    """Load aggregated signals for the given date."""
+    try:
+        rows = read_csv('process_7_aggregated_signals', date=date_str, validate=False)
+    except Exception as e:
+        print(f"❌ Failed to load aggregated signals for {date_str}: {e}")
+        return None
+
+    # Build lookup: signals[currency][generator_id] = factored_avg_signal
+    signals = {}
+    for row in rows:
+        currency = row['currency']
+        generator_id = row['generator_id']
+        factored_signal = float(row['factored_avg_signal'])
+
+        if currency not in signals:
+            signals[currency] = {}
+        signals[currency][generator_id] = factored_signal
+
+    return signals
+
+
+def calculate_weighted_signal(signals, trader_id, currency, config):
+    """
+    Calculate weighted average signal for a currency based on trader's generator weights.
+
+    Args:
+        signals: dict of {currency: {generator_id: signal}}
+        trader_id: trader identifier from strategy config
+        currency: currency code
+        config: system configuration dict
+
+    Returns:
+        float: weighted average signal, or 0.0 if no signals available
+    """
+    # Get trader configuration
+    trader_config = config.get('traders', {}).get(trader_id)
+    if not trader_config:
+        return 0.0
+
+    generator_weights = trader_config.get('generator_weights', {})
+    generator_ids = trader_config.get('generator_ids', [])
+
+    if not generator_weights or not generator_ids:
+        return 0.0
+
+    # Get signals for this currency
+    currency_signals = signals.get(currency, {})
+
+    # Calculate weighted average
+    weighted_sum = 0.0
+    total_weight = 0.0
+
+    for gen_id in generator_ids:
+        if gen_id in generator_weights and gen_id in currency_signals:
+            weight = generator_weights[gen_id]
+            signal = currency_signals[gen_id]
+            weighted_sum += weight * signal
+            total_weight += weight
+
+    if total_weight == 0:
+        return 0.0
+
+    return weighted_sum / total_weight
 
 
 def load_exchange_rates(date_str):
@@ -152,8 +231,24 @@ def main():
     print("=" * 60)
     print(f"Processing date: {date_str}\n")
 
+    # Load system configuration
+    print("1. Loading system configuration...")
+    config = load_system_config()
+    if not config:
+        print("❌ Failed to load system configuration")
+        sys.exit(1)
+    print(f"   ✓ Loaded configuration with {len(config.get('strategies', {}))} strategies")
+
+    # Load aggregated signals
+    print("\n2. Loading aggregated signals...")
+    signals = load_aggregated_signals(date_str)
+    if not signals:
+        print("❌ Failed to load aggregated signals")
+        sys.exit(1)
+    print(f"   ✓ Loaded signals for {len(signals)} currencies")
+
     # Load exchange rates
-    print("1. Loading exchange rates...")
+    print("\n3. Loading exchange rates...")
     rates = load_exchange_rates(date_str)
     if not rates:
         print("❌ Failed to load exchange rates")
@@ -161,7 +256,7 @@ def main():
     print(f"   ✓ Loaded rates for {len(rates)} currencies")
 
     # Load portfolio balances
-    print("\n2. Loading portfolio balances...")
+    print("\n4. Loading portfolio balances...")
     try:
         portfolio_rows = read_csv('process_10_portfolio', date=date_str, validate=False)
         print(f"   ✓ Loaded {len(portfolio_rows)} portfolio records")
@@ -170,7 +265,7 @@ def main():
         sys.exit(1)
 
     # Load previous valuations for % change calculation
-    print("\n3. Loading previous valuations...")
+    print("\n5. Loading previous valuations...")
     prev_valuations = load_previous_valuations(date_str)
     if prev_valuations:
         print(f"   ✓ Loaded previous valuations for {len(prev_valuations)} strategies")
@@ -178,11 +273,12 @@ def main():
         print("   ℹ️  No previous valuations found (first day or gap in data)")
 
     # Calculate valuations
-    print("\n4. Calculating multi-currency valuations...")
+    print("\n6. Calculating multi-currency valuations and weighted signals...")
     output_rows = []
 
     for portfolio in portfolio_rows:
         strategy_id = portfolio['strategy_id']
+        trader_id = portfolio.get('trader_id', '')
 
         # Extract currency balances
         balances = {
@@ -224,6 +320,12 @@ def main():
             # First day - start at 1.0
             cumulative_value = 1.0
 
+        # Calculate weighted currency signals based on trader's generator weights
+        currency_signals = {}
+        for curr in CURRENCIES:
+            weighted_signal = calculate_weighted_signal(signals, trader_id, curr, config)
+            currency_signals[curr.lower() + '_signal'] = weighted_signal
+
         # Build output row
         output_row = {
             'date': date_str,
@@ -231,20 +333,21 @@ def main():
             **values,
             **pct_changes,
             'avg_pct_change': avg_pct_change,
-            'value': cumulative_value
+            'value': cumulative_value,
+            **currency_signals
         }
 
         output_rows.append(output_row)
 
-    print(f"   ✓ Calculated valuations for {len(output_rows)} strategies")
+    print(f"   ✓ Calculated valuations and signals for {len(output_rows)} strategies")
 
     # Write output
-    print("\n5. Writing valuations...")
+    print("\n7. Writing valuations...")
     output_file = write_csv(output_rows, '11', date=date_str, validate=False)
     print(f"   ✓ Wrote {len(output_rows)} records to {output_file}")
 
     # Validation checks
-    print("\n6. Running validation checks...")
+    print("\n8. Running validation checks...")
     validation_warnings = []
 
     # Check if performance metrics reset to zero when they shouldn't
