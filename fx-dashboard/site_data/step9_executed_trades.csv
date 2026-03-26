@@ -1555,7 +1555,7 @@ date,strategy_id,trader_id,sell_currency,buy_currency,sell_amount,buy_amount,exc
 2026-03-26,momentum-T6-size50,combinator-standard,JPY,MXN,8.5497,0.9465,0.11153,0.0074,0.05,0.0,0.1757
 2026-03-26,momentum-T6-size50,combinator-standard,JPY,CAD,7.7676,0.0668,0.00867,0.0074,0.04,0.0,0.175
 2026-03-26,momentum-T6-size50,combinator-standard,JPY,NOK,6.5614,0.3961,0.060818,0.0074,0.04,0.0,0.162
-2026-03-26,haiku-T1-size5,haiku-only,SEK,MXN,15.4345,29.12,1.900754,0.0074,1.43,0.01,0.2852
-2026-03-26,haiku-T1-size10,haiku-only,SEK,MXN,30.8689,58.24,1.900754,0.0074,2.85,0.02,0.2852
 2026-03-26,haiku-T1-size20,haiku-only,SEK,MXN,61.7378,116.4801,1.900754,0.0074,5.71,0.04,0.2852
-2026-03-26,haiku-T1-size50,haiku-only,SEK,MXN,154.3446,291.2002,1.900754,0.0074,14.27,0.11,0.2852
+2026-03-26,haiku-T1-size40,haiku-only,SEK,MXN,123.4143,232.8443,1.900754,0.0074,11.41,0.08,0.2852
+2026-03-26,haiku-T1-size60,haiku-only,SEK,MXN,185.1214,349.2665,1.900754,0.0074,17.11,0.13,0.2852
+2026-03-26,haiku-T1-size80,haiku-only,SEK,MXN,246.8286,465.6887,1.900754,0.0074,22.82,0.17,0.2852

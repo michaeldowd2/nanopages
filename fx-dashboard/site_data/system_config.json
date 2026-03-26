@@ -257,28 +257,6 @@
       },
       "description": "Top 6 trades, confidence >10%, aggressive size (50% max)"
     },
-    "haiku-T1-size5": {
-      "id": "haiku-T1-size5",
-      "type": "simple-momentum",
-      "params": {
-        "trader_id": "haiku-only",
-        "confidence_threshold": 0.1,
-        "target_trades": 1,
-        "trade_size_pct": 0.05
-      },
-      "description": "Haiku-only: Top 1 trade, confidence >10%, ultra-conservative size (5% max)"
-    },
-    "haiku-T1-size10": {
-      "id": "haiku-T1-size10",
-      "type": "simple-momentum",
-      "params": {
-        "trader_id": "haiku-only",
-        "confidence_threshold": 0.1,
-        "target_trades": 1,
-        "trade_size_pct": 0.1
-      },
-      "description": "Haiku-only: Top 1 trade, confidence >10%, conservative size (10% max)"
-    },
     "haiku-T1-size20": {
       "id": "haiku-T1-size20",
       "type": "simple-momentum",
@@ -290,16 +268,38 @@
       },
       "description": "Haiku-only: Top 1 trade, confidence >10%, moderate size (20% max)"
     },
-    "haiku-T1-size50": {
-      "id": "haiku-T1-size50",
+    "haiku-T1-size40": {
+      "id": "haiku-T1-size40",
       "type": "simple-momentum",
       "params": {
         "trader_id": "haiku-only",
         "confidence_threshold": 0.1,
         "target_trades": 1,
-        "trade_size_pct": 0.5
+        "trade_size_pct": 0.4
       },
-      "description": "Haiku-only: Top 1 trade, confidence >10%, aggressive size (50% max)"
+      "description": "Haiku-only: Top 1 trade, confidence >10%, moderate-aggressive size (40% max)"
+    },
+    "haiku-T1-size60": {
+      "id": "haiku-T1-size60",
+      "type": "simple-momentum",
+      "params": {
+        "trader_id": "haiku-only",
+        "confidence_threshold": 0.1,
+        "target_trades": 1,
+        "trade_size_pct": 0.6
+      },
+      "description": "Haiku-only: Top 1 trade, confidence >10%, aggressive size (60% max)"
+    },
+    "haiku-T1-size80": {
+      "id": "haiku-T1-size80",
+      "type": "simple-momentum",
+      "params": {
+        "trader_id": "haiku-only",
+        "confidence_threshold": 0.1,
+        "target_trades": 1,
+        "trade_size_pct": 0.8
+      },
+      "description": "Haiku-only: Top 1 trade, confidence >10%, very aggressive size (80% max)"
     }
   },
   "pipeline_settings": {
