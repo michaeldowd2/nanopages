@@ -777,176 +777,211 @@
           {
             "name": "eur_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in EUR"
           },
           {
             "name": "usd_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in USD"
           },
           {
             "name": "gbp_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in GBP"
           },
           {
             "name": "jpy_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in JPY"
           },
           {
             "name": "chf_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in CHF"
           },
           {
             "name": "aud_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in AUD"
           },
           {
             "name": "cad_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in CAD"
           },
           {
             "name": "nok_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in NOK"
           },
           {
             "name": "sek_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in SEK"
           },
           {
             "name": "cny_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in CNY"
           },
           {
             "name": "mxn_value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Portfolio value in MXN"
           },
           {
             "name": "eur_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "EUR value % change from previous day"
           },
           {
             "name": "usd_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "USD value % change from previous day"
           },
           {
             "name": "gbp_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "GBP value % change from previous day"
           },
           {
             "name": "jpy_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "JPY value % change from previous day"
           },
           {
             "name": "chf_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "CHF value % change from previous day"
           },
           {
             "name": "aud_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "AUD value % change from previous day"
           },
           {
             "name": "cad_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "CAD value % change from previous day"
           },
           {
             "name": "nok_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "NOK value % change from previous day"
           },
           {
             "name": "sek_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "SEK value % change from previous day"
           },
           {
             "name": "cny_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "CNY value % change from previous day"
           },
           {
             "name": "mxn_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "MXN value % change from previous day"
           },
           {
             "name": "avg_pct_change",
             "type": "float",
+            "decimal_places": 2,
             "description": "Average % change across all currencies (currency-neutral performance)"
           },
           {
             "name": "value",
             "type": "float",
+            "decimal_places": 2,
             "description": "Cumulative performance index (starts at 1.0)"
           },
           {
             "name": "eur_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for EUR"
           },
           {
             "name": "usd_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for USD"
           },
           {
             "name": "gbp_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for GBP"
           },
           {
             "name": "jpy_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for JPY"
           },
           {
             "name": "chf_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for CHF"
           },
           {
             "name": "aud_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for AUD"
           },
           {
             "name": "cad_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for CAD"
           },
           {
             "name": "nok_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for NOK"
           },
           {
             "name": "sek_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for SEK"
           },
           {
             "name": "cny_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for CNY"
           },
           {
             "name": "mxn_signal",
             "type": "float",
+            "decimal_places": 4,
             "description": "Weighted average signal for MXN"
           }
         ]

@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Add scripts directory to path for imports
 sys.path.append('/workspace/group/fx-portfolio/scripts')
-from utilities.csv_helper import read_csv, load_schema
+from utilities.csv_helper import read_csv, load_schema, format_row_values
 from utilities.pipeline_paths import PipelinePaths
 
 BASE_DIR = Path('/workspace/group/fx-portfolio')
@@ -99,10 +99,13 @@ def export_step_generic(step_id, step_name, process_schema_name=None, number_of_
             schema = load_schema(step_id)
             fieldnames = [col['name'] for col in schema['columns']]
 
+            # Format rows according to schema decimal_places
+            formatted_output = [format_row_values(row, schema) for row in output]
+
             # Write CSV with schema-defined columns
             writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
             writer.writeheader()
-            writer.writerows(output)
+            writer.writerows(formatted_output)
 
     print(f"✓ Step {step_id}: Exported {len(output)} {step_name.lower()} records")
     return len(output)

@@ -170,6 +170,41 @@ def read_csv_multi_dates(
     return all_rows
 
 
+def format_row_values(row: Dict, schema: Dict) -> Dict:
+    """
+    Format row values according to schema decimal_places specifications.
+
+    Args:
+        row: Dictionary of row values
+        schema: Schema dictionary with column definitions
+
+    Returns:
+        Dictionary with formatted values
+    """
+    formatted_row = {}
+
+    # Build column metadata lookup
+    col_metadata = {col['name']: col for col in schema.get('columns', [])}
+
+    for key, value in row.items():
+        col_meta = col_metadata.get(key, {})
+        col_type = col_meta.get('type', 'string')
+        decimal_places = col_meta.get('decimal_places')
+
+        # Format float values if decimal_places is specified
+        if col_type == 'float' and decimal_places is not None and value is not None:
+            try:
+                # Convert to float and format to specified decimal places
+                float_val = float(value)
+                formatted_row[key] = f"{float_val:.{decimal_places}f}"
+            except (ValueError, TypeError):
+                formatted_row[key] = value
+        else:
+            formatted_row[key] = value
+
+    return formatted_row
+
+
 def write_csv(
     rows: List[Dict],
     process_name: str,
@@ -188,6 +223,9 @@ def write_csv(
     Returns:
         Path where CSV was written
     """
+    # Load full schema for formatting
+    schema = load_schema(process_name)
+
     # Get column names
     expected_cols = get_column_names(process_name)
 
@@ -213,6 +251,9 @@ def write_csv(
                 f"Actual: {actual_cols}"
             )
 
+    # Format rows according to schema decimal_places
+    formatted_rows = [format_row_values(row, schema) for row in rows]
+
     # Get output path
     csv_path = get_output_path(process_name, **kwargs)
 
@@ -223,7 +264,7 @@ def write_csv(
     with open(csv_path, 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=expected_cols)
         writer.writeheader()
-        writer.writerows(rows)
+        writer.writerows(formatted_rows)
 
     return csv_path
 
