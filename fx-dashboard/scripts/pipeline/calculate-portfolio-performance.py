@@ -326,16 +326,21 @@ def main():
             weighted_signal = calculate_weighted_signal(signals, trader_id, curr, config)
             currency_signals[curr.lower() + '_signal'] = weighted_signal
 
-        # Build output row
+        # Build output row with columns grouped by currency
+        # Format: date, strategy_id, avg_pct_change, value, then for each currency: X_value, X_pct_change, X_signal
         output_row = {
             'date': date_str,
             'strategy_id': strategy_id,
-            **values,
-            **pct_changes,
             'avg_pct_change': avg_pct_change,
             'value': cumulative_value,
-            **currency_signals
         }
+
+        # Add currency columns in grouped order
+        for curr in CURRENCIES:
+            curr_lower = curr.lower()
+            output_row[curr_lower + '_value'] = values[curr_lower + '_value']
+            output_row[curr_lower + '_pct_change'] = pct_changes[curr_lower + '_pct_change']
+            output_row[curr_lower + '_signal'] = currency_signals[curr_lower + '_signal']
 
         output_rows.append(output_row)
 
