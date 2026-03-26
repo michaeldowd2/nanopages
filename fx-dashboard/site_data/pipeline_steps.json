@@ -915,7 +915,7 @@
           {
             "name": "value",
             "type": "float",
-            "decimal_places": 2,
+            "decimal_places": 6,
             "description": "Cumulative performance index (starts at 1.0)"
           },
           {
