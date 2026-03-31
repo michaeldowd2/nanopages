@@ -682,59 +682,59 @@
             "description": "Number of trades executed"
           },
           {
-            "name": "EUR",
+            "name": "eur_acc_val",
             "type": "float",
-            "description": "EUR balance"
+            "description": "EUR account balance"
           },
           {
-            "name": "USD",
+            "name": "usd_acc_val",
             "type": "float",
-            "description": "USD balance"
+            "description": "USD account balance"
           },
           {
-            "name": "GBP",
+            "name": "gbp_acc_val",
             "type": "float",
-            "description": "GBP balance"
+            "description": "GBP account balance"
           },
           {
-            "name": "JPY",
+            "name": "jpy_acc_val",
             "type": "float",
-            "description": "JPY balance"
+            "description": "JPY account balance"
           },
           {
-            "name": "CHF",
+            "name": "chf_acc_val",
             "type": "float",
-            "description": "CHF balance"
+            "description": "CHF account balance"
           },
           {
-            "name": "AUD",
+            "name": "aud_acc_val",
             "type": "float",
-            "description": "AUD balance"
+            "description": "AUD account balance"
           },
           {
-            "name": "CAD",
+            "name": "cad_acc_val",
             "type": "float",
-            "description": "CAD balance"
+            "description": "CAD account balance"
           },
           {
-            "name": "NOK",
+            "name": "nok_acc_val",
             "type": "float",
-            "description": "NOK balance"
+            "description": "NOK account balance"
           },
           {
-            "name": "SEK",
+            "name": "sek_acc_val",
             "type": "float",
-            "description": "SEK balance"
+            "description": "SEK account balance"
           },
           {
-            "name": "CNY",
+            "name": "cny_acc_val",
             "type": "float",
-            "description": "CNY balance"
+            "description": "CNY account balance"
           },
           {
-            "name": "MXN",
+            "name": "mxn_acc_val",
             "type": "float",
-            "description": "MXN balance"
+            "description": "MXN account balance"
           }
         ]
       },
@@ -787,7 +787,7 @@
             "description": "Cumulative performance index (starts at 1.0)"
           },
           {
-            "name": "eur_value",
+            "name": "eur_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in EUR"
@@ -805,7 +805,13 @@
             "description": "Weighted average signal for EUR"
           },
           {
-            "name": "usd_value",
+            "name": "eur_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "EUR account balance"
+          },
+          {
+            "name": "usd_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in USD"
@@ -823,7 +829,13 @@
             "description": "Weighted average signal for USD"
           },
           {
-            "name": "gbp_value",
+            "name": "usd_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "USD account balance"
+          },
+          {
+            "name": "gbp_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in GBP"
@@ -841,7 +853,13 @@
             "description": "Weighted average signal for GBP"
           },
           {
-            "name": "jpy_value",
+            "name": "gbp_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "GBP account balance"
+          },
+          {
+            "name": "jpy_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in JPY"
@@ -859,7 +877,13 @@
             "description": "Weighted average signal for JPY"
           },
           {
-            "name": "chf_value",
+            "name": "jpy_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "JPY account balance"
+          },
+          {
+            "name": "chf_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in CHF"
@@ -877,7 +901,13 @@
             "description": "Weighted average signal for CHF"
           },
           {
-            "name": "aud_value",
+            "name": "chf_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "CHF account balance"
+          },
+          {
+            "name": "aud_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in AUD"
@@ -895,7 +925,13 @@
             "description": "Weighted average signal for AUD"
           },
           {
-            "name": "cad_value",
+            "name": "aud_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "AUD account balance"
+          },
+          {
+            "name": "cad_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in CAD"
@@ -913,7 +949,13 @@
             "description": "Weighted average signal for CAD"
           },
           {
-            "name": "nok_value",
+            "name": "cad_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "CAD account balance"
+          },
+          {
+            "name": "nok_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in NOK"
@@ -931,7 +973,13 @@
             "description": "Weighted average signal for NOK"
           },
           {
-            "name": "sek_value",
+            "name": "nok_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "NOK account balance"
+          },
+          {
+            "name": "sek_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in SEK"
@@ -949,7 +997,13 @@
             "description": "Weighted average signal for SEK"
           },
           {
-            "name": "cny_value",
+            "name": "sek_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "SEK account balance"
+          },
+          {
+            "name": "cny_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in CNY"
@@ -967,7 +1021,13 @@
             "description": "Weighted average signal for CNY"
           },
           {
-            "name": "mxn_value",
+            "name": "cny_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "CNY account balance"
+          },
+          {
+            "name": "mxn_port_val",
             "type": "float",
             "decimal_places": 2,
             "description": "Portfolio value in MXN"
@@ -983,6 +1043,12 @@
             "type": "float",
             "decimal_places": 4,
             "description": "Weighted average signal for MXN"
+          },
+          {
+            "name": "mxn_acc_val",
+            "type": "float",
+            "decimal_places": 2,
+            "description": "MXN account balance"
           }
         ]
       },

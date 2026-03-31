@@ -191,12 +191,12 @@ def load_previous_valuations(date_str):
 
             try:
                 prev_rows = read_csv('process_11_valuations', date=check_date_str, validate=False)
-                # Build lookup: {strategy_id: {currency_value: value, value: cumulative_value}}
+                # Build lookup: {strategy_id: {currency_port_val: value, value: cumulative_port_val}}
                 prev_vals = {}
                 for row in prev_rows:
                     strategy_id = row['strategy_id']
                     prev_vals[strategy_id] = {
-                        curr.lower() + '_value': float(row[curr.lower() + '_value'])
+                        curr.lower() + '_port_val': float(row[curr.lower() + '_port_val'])
                         for curr in CURRENCIES
                     }
                     # Also store cumulative value for compounding
@@ -212,11 +212,11 @@ def load_previous_valuations(date_str):
         return {}
 
 
-def calculate_percentage_change(current_value, previous_value):
+def calculate_percentage_change(current_port_val, previous_port_val):
     """Calculate percentage change between two values."""
-    if previous_value == 0:
+    if previous_port_val == 0:
         return 0.0
-    return ((current_value - previous_value) / previous_value) * 100
+    return ((current_port_val - previous_port_val) / previous_port_val) * 100
 
 
 def main():
@@ -280,16 +280,22 @@ def main():
         strategy_id = portfolio['strategy_id']
         trader_id = portfolio.get('trader_id', '')
 
-        # Extract currency balances
+        # Extract currency balances (using new column names)
         balances = {
-            curr: float(portfolio.get(curr, 0))
+            curr: float(portfolio.get(curr.lower() + '_acc_val', 0))
+            for curr in CURRENCIES
+        }
+
+        # Store account values for output
+        account_values = {
+            curr.lower() + '_acc_val': float(portfolio.get(curr.lower() + '_acc_val', 0))
             for curr in CURRENCIES
         }
 
         # Calculate portfolio value in each currency
         values = {}
         for target_curr in CURRENCIES:
-            values[target_curr.lower() + '_value'] = calculate_value_in_currency(
+            values[target_curr.lower() + '_port_val'] = calculate_value_in_currency(
                 balances, rates, target_curr
             )
 
@@ -298,8 +304,8 @@ def main():
         if strategy_id in prev_valuations:
             for curr in CURRENCIES:
                 curr_lower = curr.lower()
-                current_val = values[curr_lower + '_value']
-                prev_val = prev_valuations[strategy_id][curr_lower + '_value']
+                current_val = values[curr_lower + '_port_val']
+                prev_val = prev_valuations[strategy_id][curr_lower + '_port_val']
                 pct_changes[curr_lower + '_pct_change'] = calculate_percentage_change(
                     current_val, prev_val
                 )
@@ -313,12 +319,12 @@ def main():
 
         # Calculate cumulative value (performance index starting at 1.0)
         if strategy_id in prev_valuations:
-            prev_value = prev_valuations[strategy_id]['value']
-            # Compound: new_value = prev_value × (1 + pct_change/100)
-            cumulative_value = prev_value * (1 + avg_pct_change / 100)
+            prev_port_val = prev_valuations[strategy_id]['value']
+            # Compound: new_port_val = prev_port_val × (1 + pct_change/100)
+            cumulative_port_val = prev_port_val * (1 + avg_pct_change / 100)
         else:
             # First day - start at 1.0
-            cumulative_value = 1.0
+            cumulative_port_val = 1.0
 
         # Calculate weighted currency signals based on trader's generator weights
         currency_signals = {}
@@ -327,20 +333,21 @@ def main():
             currency_signals[curr.lower() + '_signal'] = weighted_signal
 
         # Build output row with columns grouped by currency
-        # Format: date, strategy_id, avg_pct_change, value, then for each currency: X_value, X_pct_change, X_signal
+        # Format: date, strategy_id, avg_pct_change, value, then for each currency: X_port_val, X_pct_change, X_signal
         output_row = {
             'date': date_str,
             'strategy_id': strategy_id,
             'avg_pct_change': avg_pct_change,
-            'value': cumulative_value,
+            'value': cumulative_port_val,
         }
 
-        # Add currency columns in grouped order
+        # Add currency columns in grouped order (port_val, pct_change, signal, acc_val)
         for curr in CURRENCIES:
             curr_lower = curr.lower()
-            output_row[curr_lower + '_value'] = values[curr_lower + '_value']
+            output_row[curr_lower + '_port_val'] = values[curr_lower + '_port_val']
             output_row[curr_lower + '_pct_change'] = pct_changes[curr_lower + '_pct_change']
             output_row[curr_lower + '_signal'] = currency_signals[curr_lower + '_signal']
+            output_row[curr_lower + '_acc_val'] = account_values[curr_lower + '_acc_val']
 
         output_rows.append(output_row)
 
@@ -379,7 +386,7 @@ def main():
             if strategy_id in prev_valuations:
                 prev = prev_valuations[strategy_id]
                 # Check if EUR value is identical
-                if abs(row['eur_value'] - prev['eur_value']) < 0.01:
+                if abs(row['eur_port_val'] - prev['eur_port_val']) < 0.01:
                     unchanged_count += 1
 
         if unchanged_count > 0:
@@ -400,7 +407,7 @@ def main():
         print(f"\nSample: {sample['strategy_id']}")
         print("\nValues:")
         for curr in CURRENCIES:
-            key = curr.lower() + '_value'
+            key = curr.lower() + '_port_val'
             print(f"  {curr}: {sample[key]:,.2f}")
 
         print("\nPercentage Changes:")

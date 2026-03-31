@@ -87,8 +87,9 @@ def load_previous_portfolio(strategy_id, prev_date):
             if row['strategy_id'] == strategy_id:
                 portfolio = {}
                 for currency in CURRENCIES:
-                    if currency in row:
-                        portfolio[currency] = float(row[currency])
+                    col_name = currency.lower() + '_acc_val'
+                    if col_name in row:
+                        portfolio[currency] = float(row[col_name])
                     else:
                         portfolio[currency] = 0.0
                 return portfolio
@@ -311,7 +312,7 @@ def main(date_str=None):
 
             # Add currency balances
             for curr in CURRENCIES:
-                result[curr] = round(portfolio.get(curr, 0.0), 4)
+                result[curr.lower() + '_acc_val'] = round(portfolio.get(curr, 0.0), 4)
 
             results.append(result)
 
@@ -334,7 +335,7 @@ def main(date_str=None):
                 try:
                     prev_rows = read_csv('process_10_portfolio', date=prev_date, validate=False)
                     for row in prev_rows:
-                        prev_portfolios[row['strategy_id']] = {curr: float(row[curr]) for curr in CURRENCIES}
+                        prev_portfolios[row['strategy_id']] = {curr.lower() + '_acc_val': float(row[curr.lower() + '_acc_val']) for curr in CURRENCIES}
                 except:
                     pass  # Previous day might not exist
 
@@ -344,9 +345,9 @@ def main(date_str=None):
                         strategy_id = result['strategy_id']
                         if strategy_id in prev_portfolios:
                             prev = prev_portfolios[strategy_id]
-                            current = {curr: result[curr] for curr in CURRENCIES}
+                            current = {curr: result[curr.lower() + '_acc_val'] for curr in CURRENCIES}
                             # Check if all balances are identical
-                            if all(abs(prev[curr] - current[curr]) < 0.0001 for curr in CURRENCIES):
+                            if all(abs(prev[curr.lower() + '_acc_val'] - current[curr]) < 0.0001 for curr in CURRENCIES):
                                 unchanged_count += 1
 
                     if unchanged_count > 0:
