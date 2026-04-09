@@ -88,8 +88,9 @@ def load_previous_portfolio(strategy_id, prev_date):
             if row['strategy_id'] == strategy_id:
                 portfolio = {}
                 for currency in CURRENCIES:
-                    if currency in row:
-                        portfolio[currency] = float(row[currency])
+                    col_name = currency.lower() + '_acc_val'
+                    if col_name in row:
+                        portfolio[currency] = float(row[col_name])
                     else:
                         portfolio[currency] = 0.0
                 return portfolio
@@ -155,10 +156,6 @@ def execute_trade_with_details(trade, all_pairs, eur_rates, portfolio, max_trade
     buy_curr = trade['buy_currency']
     sell_curr = trade['sell_currency']
     trade_signal = trade['trade_signal']
-
-    # Check if trade meets confidence threshold
-    if trade_signal < confidence_threshold:
-        return None
 
     # Check available balance in sell_currency (converted to EUR)
     sell_balance = portfolio.get(sell_curr, 0)
@@ -321,23 +318,23 @@ def main(date_str=None):
             # Sort by trade_signal descending
             trader_trades.sort(key=lambda x: x['trade_signal'], reverse=True)
 
-            # Filter by confidence threshold
-            qualifying_trades = [t for t in trader_trades if t['trade_signal'] >= conf_threshold]
+            # Execute trades in order of signal strength until N trades executed or list exhausted
+            trades_executed_for_strategy = 0
+            trades_attempted = 0
 
-            # Limit to target number
-            if target_trades is not None:
-                trades_to_execute = qualifying_trades[:target_trades]
-            else:
-                trades_to_execute = qualifying_trades
+            for trade in trader_trades:
+                # Stop if we've executed target number of trades
+                if target_trades is not None and trades_executed_for_strategy >= target_trades:
+                    break
 
-            # Execute trades and capture details
-            for trade in trades_to_execute:
+                trades_attempted += 1
                 execution = execute_trade_with_details(
                     trade, all_pairs, eur_rates, portfolio, max_trade_size_pct,
                     conf_threshold, strategy_id, date_str
                 )
                 if execution:
                     all_executed_trades.append(execution)
+                    trades_executed_for_strategy += 1
 
             print(f"      Extracted {len([t for t in all_executed_trades if t['strategy_id'] == strategy_id])} trades")
             total_trades_extracted += len([t for t in all_executed_trades if t['strategy_id'] == strategy_id])
